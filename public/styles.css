@@ -1,0 +1,23 @@
+/* Base styles & reset */
+*,
+*::before,
++*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #1e3a8a;
+  --accent: #f97316;
+  --bg: #ffffff;
+  --text: #1f2937;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
