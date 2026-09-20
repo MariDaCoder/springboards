@@ -1,4 +1,7 @@
-// Springboards Landing Page - Client Script
+// Springboards for Community Development - Client Logic
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Springboards Landing workspace initialized.");
+  const yearSpan = document.getElementById("current-year");
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
 });

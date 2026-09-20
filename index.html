@@ -3,37 +3,173 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Springboards - Community Development</title>
+  <title>Springboards for Community Development</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body id="top">
+
   <!-- Navigation Bar -->
-  <header class="navbar-wrapper">
+  <header class="navbar-wrapper" id="navigation">
     <nav class="navbar" aria-label="Main Navigation">
+      <!-- Left: Oversized Logo -->
       <div class="nav-left">
-        <a href="/" class="nav-logo-link" aria-label="Springboards Home">
-          <img src="springboards_logo.jpg" alt="Springboards Community Development Logo" class="nav-logo">
+        <a href="#navigation" class="nav-logo-link" aria-label="Springboards Navigation">
+          <img src="springboards_logo.jpg" alt="Springboards for Community Development" class="nav-logo oversized-logo">
         </a>
       </div>
+
+      <!-- Center: Section links -->
       <div class="nav-center">
         <ul class="nav-links">
-          <li><a href="#mission" class="nav-link">Mission</a></li>
-          <li><a href="#training" class="nav-link">Training</a></li>
-          <li><a href="#service" class="nav-link">Service</a></li>
-          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li><a href="#our-mission" class="nav-link">Our Mission</a></li>
+          <li><a href="#our-programs" class="nav-link">Our Programs</a></li>
+          <li><a href="#news-events" class="nav-link">News & Events</a></li>
+          <li><a href="#footer" class="nav-link">Contact</a></li>
         </ul>
       </div>
+
+      <!-- Right: CTA Button -->
       <div class="nav-right">
-        <a href="#contact" class="btn-cta">Join Us</a>
+        <a href="#make-a-difference" class="btn-cta">Join Us</a>
       </div>
     </nav>
   </header>
+
   <main>
-    <!-- Subsequent sections will be added here as instructed -->
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="hero-placeholder-bg" aria-hidden="true">
+        <div class="placeholder-tag">[IMAGE PLACEHOLDER]</div>
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-container">
+        <div class="hero-badge">SPRINGBOARDS FOR COMMUNITY DEVELOPMENT</div>
+        <h1 class="hero-headline">Building Sustainable Pathways. Creating Living-Wage Careers.</h1>
+        <p class="hero-subtext">Debt-free vocational training, apprenticeship mastery, and wrap-around support for our communities.</p>
+        <div class="hero-buttons">
+          <a href="#make-a-difference" class="btn-primary">Join Us</a>
+          <a href="#our-programs" class="btn-secondary">Explore Programs</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION SECTION -->
+    <section class="section mission-section" id="our-mission">
+      <div class="container">
+        <span class="section-eyebrow">OUR MISSION</span>
+        <h2 class="section-title">Empowering Communities Through Vocational Mastery</h2>
+        <div class="mission-card">
+          <p class="mission-statement">
+            Springboards for Community Development empowers returning citizens, justice-involved individuals, and opportunity youth across the West Georgia and East Alabama corridor by providing rigorous, debt-free vocational training in high-demand construction trades. Through hands-on apprenticeship lab mastery, verifiable industry credentials, 1:1 peer mentorship, and comprehensive wrap-around support, Springboards expands viable economic options, breaks the cycle of recidivism, and builds sustainable, living-wage careers.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRAINING SECTION -->
+    <section class="section programs-section" id="our-programs">
+      <div class="container">
+        <span class="section-eyebrow">TRAINING</span>
+        <h2 class="section-title">Our Programs & Vocational Services</h2>
+        <p class="section-subtitle">Rigorous, debt-free vocational training with verifiable industry credentials and job placement.</p>
+        
+        <div class="programs-grid">
+          <article class="program-card">
+            <div class="program-icon">???</div>
+            <h3>Construction Trades</h3>
+            <p>Hands-on lab apprenticeship training in carpentry, framing, drywall, and structural construction adhering to OSHA standards.</p>
+          </article>
+          <article class="program-card">
+            <div class="program-icon">?</div>
+            <h3>Electrical Systems</h3>
+            <p>Residential and commercial electrical theory, circuitry, blueprint reading, and code compliance practicums.</p>
+          </article>
+          <article class="program-card">
+            <div class="program-icon">??</div>
+            <h3>Plumbing & Pipefitting</h3>
+            <p>Installation, maintenance, drainage systems, and piping infrastructure for modern residential and municipal projects.</p>
+          </article>
+          <article class="program-card">
+            <div class="program-icon">??</div>
+            <h3>NCCER & OSHA Certifications</h3>
+            <p>Verifiable credentials recognized nationwide to guarantee career readiness and safety on commercial job sites.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICE / NEWS & EVENTS SECTION -->
+    <section class="section service-section" id="news-events">
+      <div class="container">
+        <span class="section-eyebrow">SERVICE</span>
+        <h2 class="section-title">News, Updates & Community Giving</h2>
+        <p class="section-subtitle">Stay connected with our initiatives, neighborhood impact, and donation pathways.</p>
+
+        <div class="service-grid">
+          <div class="service-card">
+            <h3>Community Updates</h3>
+            <p>Follow our cohort graduation milestones, workforce placements, and neighborhood revitalization projects across West Georgia & East Alabama.</p>
+          </div>
+          <div class="service-card highlight-card">
+            <h3>Support & Donations</h3>
+            <p>Your contributions directly fund student toolkits, protective gear (PPE), certification exams, and transit assistance for trainees.</p>
+            <a href="#make-a-difference" class="btn-accent">Support Our Mission</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA / MAKE A DIFFERENCE SECTION -->
+    <section class="section cta-section" id="make-a-difference">
+      <div class="container cta-box">
+        <span class="section-eyebrow light">MAKE A DIFFERENCE</span>
+        <h2>Together, We Can Build Brighter Futures</h2>
+        <p>Whether you are looking to enroll, volunteer as a mentor, hire trained graduates, or support our operations, we welcome you.</p>
+        <div class="cta-actions">
+          <a href="mailto:info@springboardcd.org?subject=Join%20Us%20Inquiry" class="btn-cta-large">Join Us Today</a>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- FOOTER / CONTACT SECTION -->
+  <footer class="footer-section" id="footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <img src="springboards_logo.jpg" alt="Springboards Logo" class="footer-logo">
+        <p class="footer-desc">Springboards for Community Development ? Empowering individuals, revitalizing communities, and constructing careers.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#navigation">Top</a></li>
+          <li><a href="#our-mission">Our Mission</a></li>
+          <li><a href="#our-programs">Our Programs</a></li>
+          <li><a href="#news-events">News & Events</a></li>
+          <li><a href="#make-a-difference">Make a Difference</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact & Location</h4>
+        <p><strong>Address:</strong><br>
+          <a href="https://maps.google.com/?q=2269+15th+Ave+SW,+Lanett,+AL+36863" target="_blank" rel="noopener noreferrer" class="map-link">
+            ?? 2269 15th Ave. S.W.<br>Lanett, AL 36863 <br><span class="map-hint">(View on Google Maps ?)</span>
+          </a>
+        </p>
+        <p><strong>Email:</strong> <a href="mailto:info@springboardcd.org">info@springboardcd.org</a></p>
+        <p><strong>Phone:</strong> <a href="tel:+13345561234">(334) 556-1234</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; <span id="current-year"></span> Springboards for Community Development. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
   <script src="main.js" defer></script>
 </body>
 </html>
