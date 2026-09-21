@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="favicon.png">
   <title>Springboards for Community Development</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,24 +17,34 @@
     <nav class="navbar" aria-label="Main Navigation">
       <!-- Left: Oversized Logo -->
       <div class="nav-left">
-        <a href="#navigation" class="nav-logo-link" aria-label="Springboards Navigation">
+        <a href="#navigation" class="nav-logo-link" aria-label="Springboards Home">
           <img src="springboards_logo.png" alt="Springboards for Community Development" class="nav-logo oversized-logo">
         </a>
       </div>
 
-      <!-- Center: Section links -->
-      <div class="nav-center">
+      <!-- Mobile Hamburger Toggle -->
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+
+      <!-- Center: Section links & Mobile Drawer -->
+      <div class="nav-center" id="navMenu">
         <ul class="nav-links">
           <li><a href="#our-mission" class="nav-link">Mission</a></li>
           <li><a href="#our-programs" class="nav-link">Training</a></li>
           <li><a href="#our-service" class="nav-link">Service</a></li>
           <li><a href="#footer" class="nav-link">Contact</a></li>
         </ul>
+        <div class="mobile-cta-wrapper">
+          <a href="#make-a-difference" class="btn-cta mobile-cta">Join</a>
+        </div>
       </div>
 
-      <!-- Right: CTA Button -->
+      <!-- Right: CTA Button (Desktop) -->
       <div class="nav-right">
-        <a href="#make-a-difference" class="btn-cta">Join</a>
+        <a href="#make-a-difference" class="btn-cta desktop-cta">Join</a>
       </div>
     </nav>
   </header>
@@ -140,7 +151,7 @@
     <div class="container footer-grid">
       <div class="footer-col">
         <img src="springboards_logo.png" alt="Springboards Logo" class="footer-logo">
-        <p class="footer-desc">Springboards for Community Development ? Empowering individuals, revitalizing communities, and constructing careers.</p>
+        <p class="footer-desc">Springboards for Community Development — Empowering individuals, revitalizing communities, and constructing careers.</p>
       </div>
       <div class="footer-col">
         <h4>Navigation</h4>
@@ -156,7 +167,7 @@
         <h4>Contact & Location</h4>
         <p><strong>Address:</strong><br>
           <a href="https://maps.google.com/?q=2269+15th+Ave+SW,+Lanett,+AL+36863" target="_blank" rel="noopener noreferrer" class="map-link">
-            ?? 2269 15th Ave. S.W.<br>Lanett, AL 36863 <br><span class="map-hint">(View on Google Maps ?)</span>
+            2269 15th Ave. S.W.<br>Lanett, AL 36863 <br><span class="map-hint">(View on Google Maps &rarr;)</span>
           </a>
         </p>
         <p><strong>Email:</strong> <a href="mailto:info@springboardcd.org">info@springboardcd.org</a></p>
