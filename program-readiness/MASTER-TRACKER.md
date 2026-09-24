@@ -59,12 +59,33 @@ No program is currently classified as **Ready to promote** based on the evidence
 
 ## Immediate action queue
 
-1. Resolve the rejected Transitional Jobs job duties and obtain written acceptance.
-2. Confirm whether the Worksite Agreement is fully signed and submitted with the 2027-06-30 end date.
-3. Obtain the bank verification letter and workers’ compensation certificate.
-4. Submit the bank letter and current W-9 to Alicia Ford and retain confirmation.
-5. Obtain the complete ETPL application checklist from Jill Grant and map each attachment.
-6. Confirm E-Verify/MOU and OJT contract requirements before advertising OJT as available.
+These are ordered by their effect on legal operation, eligibility, reimbursement, or application readiness. Replace each **Confirm** date with the actual agency or internal deadline before treating the item as scheduled.
+
+1. **Confirm deadline:** resolve the rejected Transitional Jobs job duties and obtain written acceptance.
+2. **Confirm deadline:** verify the Worksite Agreement is fully signed and submitted with the 2027-06-30 end date.
+3. **Confirm deadline:** obtain the bank verification letter under the exact legal name.
+4. **Confirm deadline:** obtain the workers’ compensation certificate.
+5. **Confirm deadline:** submit the bank letter and current W-9 to Alicia Ford and retain confirmation.
+6. **Confirm deadline:** obtain the complete ETPL application checklist from Jill Grant and map every attachment.
+7. **Confirm deadline:** assemble the ETPL curriculum, instructor, facility, credential, cost, and outcome evidence.
+8. **Confirm deadline:** confirm E-Verify/MOU and OJT contract requirements before advertising OJT as available.
+9. **Confirm deadline:** assemble board/member, incorporation, EIN, bylaws, conflict-of-interest, and good-standing records.
+10. **Confirm deadline:** verify facility zoning, occupancy, life-safety, accessibility, and insurance records.
+11. **Confirm deadline:** create approved participant eligibility, attendance, outcome, and retention record procedures.
+
+## Compliance submission packet checklist
+
+For every submission, save the final copy and the receipt in a restricted evidence folder. Record the same information in the evidence log below:
+
+| Packet | Final copy saved | Submitted on | Submitted to | Confirmation saved | Follow-up deadline | Status |
+|---|---|---|---|---|---|---|
+| Transitional Jobs Worksite Agreement + approved job descriptions | ☐ |  | Julie Wood / Coretta Bozeman | ☐ |  | In preparation |
+| STAARS bank letter + current W-9 + insurance certificate | ☐ |  | Alicia Ford | ☐ |  | In preparation |
+| ETPL / ITA provider application | ☐ |  | Jill Grant | ☐ |  | In preparation |
+| OJT contract + E-Verify/MOU + insurance evidence | ☐ |  | Workforce agency / contract contact | ☐ |  | In preparation |
+| Corporate and board compliance records | ☐ |  | Internal governance file | ☐ |  | In preparation |
+| Facility, safety, accessibility, and insurance records | ☐ |  | Internal compliance file / agency | ☐ |  | In preparation |
+| Participant eligibility, outcomes, and reporting procedures | ☐ |  | Internal program file / agency | ☐ |  | In preparation |
 
 ## Evidence log
 
