@@ -272,6 +272,14 @@ textarea:focus-visible,
   color: #ffffff;
 }
 
+.hero-divider {
+  width: 64px;
+  height: 6px;
+  margin-bottom: 1.25rem;
+  border-radius: 7px;
+  background-color: var(--accent-orange);
+}
+
 .hero-subtext {
   font-size: 1.25rem;
   color: #ffffff;
