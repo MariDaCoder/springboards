@@ -1,18 +1,37 @@
-rules_version='2'
-
+rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    
+    // Deny all reads and writes across the entire database by default
     match /{document=**} {
-      // This rule allows anyone with your database reference to view, edit,
-      // and delete all data in your database. It is useful for getting
-      // started, but it is configured to expire after 30 days because it
-      // leaves your app open to attackers. At that time, all client
-      // requests to your database will be denied.
-      //
-      // Make sure to write security rules for your app before that time, or
-      // else all client requests to your database will be denied until you
-      // update your rules.
-      allow read, write: if request.time < timestamp.date(2026, 10, 20);
+      allow read, write: if false;
+    }
+
+    // Program inquiries: public write-only, no public reads, strict field validation
+    match /programInquiries/{inquiryId} {
+      allow read, update, delete: if false;
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 100
+                    && (
+                      (request.resource.data.email is string && request.resource.data.email.size() > 0) ||
+                      (request.resource.data.phone is string && request.resource.data.phone.size() > 0)
+                    )
+                    && request.resource.data.program is string
+                    && request.resource.data.createdAt is timestamp;
+    }
+
+    // Volunteer inquiries: public write-only, no public reads, strict field validation
+    match /volunteerSignups/{signupId} {
+      allow read, update, delete: if false;
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 100
+                    && (
+                      (request.resource.data.email is string && request.resource.data.email.size() > 0) ||
+                      (request.resource.data.phone is string && request.resource.data.phone.size() > 0)
+                    )
+                    && request.resource.data.createdAt is timestamp;
     }
   }
 }
