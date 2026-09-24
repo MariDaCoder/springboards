@@ -198,4 +198,87 @@ document.addEventListener("DOMContentLoaded", () => {
           submit.disabled = false;
         }
   });
+
+  const volunteerSignupModal = document.getElementById("volunteerSignupModal");
+  const volunteerSignupForm = document.getElementById("volunteerSignupForm");
+  const volunteerSignupDescription = document.getElementById("volunteerSignupDescription");
+  const today = new Date().toISOString().split("T")[0];
+  const volunteerSignupDetails = {
+    event: "",
+    location: ""
+  };
+
+  if (volunteerSignupModal && volunteerSignupForm) {
+    volunteerSignupForm.elements.date.min = today;
+
+    document.querySelectorAll(".event-signup-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        volunteerSignupDetails.event = button.dataset.event;
+        volunteerSignupDetails.location = button.dataset.location;
+        volunteerSignupForm.elements.event.value = volunteerSignupDetails.event;
+        volunteerSignupForm.elements.location.value = volunteerSignupDetails.location;
+        volunteerSignupDescription.textContent = `${volunteerSignupDetails.event} — ${volunteerSignupDetails.location}. Choose a date and share one way to reach you.`;
+        volunteerSignupForm.querySelector(".form-status").textContent = "";
+        volunteerSignupModal.hidden = false;
+        document.body.classList.add("modal-open");
+        volunteerSignupForm.elements.date.focus();
+      });
+    });
+
+    document.querySelectorAll("[data-volunteer-close]").forEach((control) => {
+      control.addEventListener("click", () => {
+        volunteerSignupModal.hidden = true;
+        document.body.classList.remove("modal-open");
+      });
+    });
+
+    volunteerSignupForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = volunteerSignupForm.querySelector(".form-status");
+      const submit = volunteerSignupForm.querySelector(".program-submit");
+      const formData = new FormData(volunteerSignupForm);
+      const name = String(formData.get("name") || "").trim();
+      const phone = String(formData.get("phone") || "").trim();
+      const email = String(formData.get("email") || "").trim();
+      const date = String(formData.get("date") || "").trim();
+      if (!phone && !email) {
+        status.textContent = "Please provide a phone number or email address.";
+        return;
+      }
+      submit.disabled = true;
+      status.textContent = "Saving your volunteer signup…";
+
+      try {
+        const response = await fetch(
+          "https://firestore.googleapis.com/v1/projects/springboards-community-dev/databases/(default)/documents/volunteerSignups",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fields: {
+                event: { stringValue: String(formData.get("event") || "") },
+                location: { stringValue: String(formData.get("location") || "") },
+                date: { stringValue: date },
+                name: { stringValue: name },
+                phone: { stringValue: phone },
+                email: { stringValue: email },
+                createdAt: { timestampValue: new Date().toISOString() }
+              }
+            })
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Volunteer signup failed with status ${response.status}.`);
+        }
+        volunteerSignupForm.reset();
+        volunteerSignupForm.elements.date.min = today;
+        status.textContent = "Thanks — your volunteer signup was received.";
+      } catch (error) {
+        console.error(error);
+        status.textContent = "We could not save your signup. Please try again.";
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
 });

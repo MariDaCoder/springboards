@@ -44,7 +44,7 @@
           <li class="nav-dropdown">
             <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false">Community <span aria-hidden="true">⌄</span></button>
             <ul class="nav-dropdown-menu">
-              <li><a href="#our-service" class="nav-sublink">Volunteer</a></li>
+              <li><a href="#volunteer-events" class="nav-sublink">Volunteer</a></li>
               <li><a href="#our-service" class="nav-sublink">Partner</a></li>
               <li><a href="#make-a-difference" class="nav-sublink">Donate</a></li>
             </ul>
@@ -280,35 +280,81 @@
       </div>
     </div>
 
-    <!-- SERVICE / NEWS & EVENTS SECTION -->
+    <!-- PARTNER SECTION -->
     <section class="section service-section" id="our-service">
-      <div class="container">
-        <span class="section-eyebrow">COMMUNITY</span>
-        <h2 class="section-title">News, Updates & Community Giving</h2>
-        <p class="section-subtitle">Stay connected with our initiatives, neighborhood impact, and donation pathways.</p>
-
-        <div class="service-grid">
-          <div class="service-card">
-            <h3>Community Updates</h3>
-            <p>Follow our cohort graduation milestones, workforce placements, and neighborhood revitalization projects across West Georgia & East Alabama.</p>
-          </div>
-          <div class="service-card highlight-card">
-            <h3>Support & Donations</h3>
-            <p>Your contributions directly fund student toolkits, protective gear (PPE), certification exams, and transit assistance for trainees.</p>
-            <a href="#make-a-difference" class="btn-accent">Support Our Mission</a>
-          </div>
+      <div class="container volunteer-feature">
+        <img src="city-council.jpg" alt="Community members gathered at a city council meeting">
+        <div class="volunteer-feature-panel">
+          <span class="section-eyebrow light">Grow with us</span>
+          <h2>Partner With Springboards.</h2>
+          <p>Organizations and businesses can help expand training, mentorship, and employment opportunities across our communities.</p>
+          <a class="btn-cta-outline" href="mailto:info@springboardsfcd.org?subject=Springboards%20Partnership%20Interest">Get involved <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
 
+    <!-- VOLUNTEER EVENTS SECTION -->
+    <section class="section volunteer-events-section" id="volunteer-events">
+      <div class="container">
+        <div class="events-heading">
+          <span class="section-eyebrow">News &amp; events</span>
+          <h2>What's Happening at Springboards</h2>
+        </div>
+        <div class="volunteer-events-grid">
+          <article class="volunteer-event-card">
+            <span class="event-type">Community</span>
+            <h3>Building Skills, Building Futures</h3>
+            <p>Follow our latest workforce development and construction training initiatives.</p>
+            <p class="event-meta"><strong>Date:</strong> To be announced<br><strong>Location:</strong> To be announced</p>
+            <button type="button" class="event-signup-button" data-event="Building Skills, Building Futures" data-location="To be announced">Sign up to volunteer <span aria-hidden="true">→</span></button>
+          </article>
+          <article class="volunteer-event-card">
+            <span class="event-type">Event</span>
+            <h3>Community Development Day</h3>
+            <p>Join volunteers, partners, and neighbors as we work together for local improvement.</p>
+            <p class="event-meta"><strong>Date:</strong> To be announced<br><strong>Location:</strong> To be announced</p>
+            <button type="button" class="event-signup-button" data-event="Community Development Day" data-location="To be announced">Sign up to volunteer <span aria-hidden="true">→</span></button>
+          </article>
+          <article class="volunteer-event-card">
+            <span class="event-type">Update</span>
+            <h3>Volunteer With Springboards</h3>
+            <p>Support hands-on service, mentoring, and project work when new opportunities are posted.</p>
+            <p class="event-meta"><strong>Date:</strong> To be announced<br><strong>Location:</strong> To be announced</p>
+            <button type="button" class="event-signup-button" data-event="Volunteer With Springboards" data-location="To be announced">Get involved <span aria-hidden="true">→</span></button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="inquiry-modal" id="volunteerSignupModal" hidden>
+      <div class="inquiry-modal-backdrop" data-volunteer-close></div>
+      <div class="inquiry-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="volunteerSignupTitle">
+        <button type="button" class="inquiry-modal-close" data-volunteer-close aria-label="Close volunteer signup form">×</button>
+        <span class="section-eyebrow">Volunteer signup</span>
+        <h2 id="volunteerSignupTitle">Choose a volunteer date</h2>
+        <p id="volunteerSignupDescription">Reserve your place and we will follow up with event details.</p>
+        <form class="program-inquiry-form" id="volunteerSignupForm">
+          <input type="hidden" name="event">
+          <input type="hidden" name="location">
+          <label>Volunteer date<input name="date" type="date" required></label>
+          <label>Name<input name="name" type="text" autocomplete="name" required></label>
+          <label>Phone <span>(optional if you provide email)</span><input name="phone" type="tel" autocomplete="tel"></label>
+          <label>Email <span>(optional if you provide phone)</span><input name="email" type="email" autocomplete="email"></label>
+          <button type="submit" class="program-submit">Submit signup</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
     <!-- CTA / MAKE A DIFFERENCE SECTION -->
     <section class="section cta-section" id="make-a-difference">
-      <div class="container cta-box">
-        <span class="section-eyebrow light">MAKE A DIFFERENCE</span>
-        <h2>Together, We Can Build Brighter Futures</h2>
-        <p>Whether you are looking to enroll, volunteer as a mentor, hire trained graduates, or support our operations, we welcome you.</p>
-        <div class="cta-actions">
-          <a href="mailto:info@springboardcd.org?subject=Join%20Us%20Inquiry" class="btn-cta-large">Join Us Today</a>
+      <div class="container cta-banner">
+        <div class="cta-box">
+          <span class="section-eyebrow">Make an impact</span>
+          <h2>Your Support Helps Build Opportunity.</h2>
+          <div class="cta-actions">
+            <a href="mailto:info@springboardsfcd.org?subject=Springboards%20Donation%20Collection" class="btn-cta-large">Donate to Springboards <span aria-hidden="true">→</span></a>
+          </div>
         </div>
       </div>
     </section>
@@ -317,29 +363,45 @@
   <!-- FOOTER / CONTACT SECTION -->
   <footer class="footer-section" id="footer">
     <div class="container footer-grid">
-      <div class="footer-col">
+      <div class="footer-col footer-brand">
         <img src="springboards_logo.png" alt="Springboards Logo" class="footer-logo">
         <p class="footer-desc">Springboards for Community Development — Empowering individuals, revitalizing communities, and constructing careers.</p>
       </div>
       <div class="footer-col">
-        <h4>Navigation</h4>
+        <h4>Quick links</h4>
         <ul>
           <li><a href="#navigation">Top</a></li>
-          <li><a href="#our-mission">Our Mission</a></li>
-          <li><a href="#our-programs">Our Programs</a></li>
-          <li><a href="#news-events">News & Events</a></li>
-          <li><a href="#make-a-difference">Make a Difference</a></li>
+          <li><a href="#our-mission">Mission</a></li>
+          <li><a href="#our-programs">Trades</a></li>
+          <li><a href="#volunteer-events">Volunteer</a></li>
+          <li><a href="#our-service">Partner</a></li>
+          <li><a href="#make-a-difference">Donate</a></li>
+          <li><a href="#footer">Connect</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Contact & Location</h4>
+        <h4>Contact us</h4>
         <p><strong>Address:</strong><br>
-          <a href="https://maps.google.com/?q=2269+15th+Ave+SW,+Lanett,+AL+36863" target="_blank" rel="noopener noreferrer" class="map-link">
+          <a href="https://www.google.com/maps/dir/?api=1&destination=2269+15th+Ave+SW,+Lanett,+AL+36863" target="_blank" rel="noopener noreferrer" class="map-link">
             2269 15th Ave. S.W.<br>Lanett, AL 36863 <br><span class="map-hint">(View on Google Maps &rarr;)</span>
           </a>
         </p>
-        <p><strong>Email:</strong> <a href="mailto:info@springboardcd.org">info@springboardcd.org</a></p>
-        <p><strong>Phone:</strong> <a href="tel:+13345561234">(334) 556-1234</a></p>
+        <iframe
+          class="footer-map"
+          title="Map showing Springboards for Community Development"
+          src="https://www.google.com/maps?q=2269+15th+Ave+SW,+Lanett,+AL+36863&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <p><strong>Email:</strong> <a class="footer-contact-link" href="mailto:info@springboardsfcd.org"><svg class="footer-link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3 6 9 7 9-7" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>info@springboardsfcd.org</span></a></p>
+        <p><strong>Website:</strong> <a class="footer-contact-link" href="https://springboardsfcd.org" target="_blank" rel="noopener noreferrer"><svg class="footer-link-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c2.5 2.5 3.5 5.5 3.5 9S14.5 18.5 12 21c-2.5-2.5-3.5-5.5-3.5-9S9.5 5.5 12 3Z" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>springboardsfcd.org</span></a></p>
+        <p><strong>Phone:</strong> <a class="footer-contact-link" href="tel:+13345561234"><svg class="footer-link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h3l1.5 4-2 1.5a13 13 0 0 0 6 6l1.5-2 4 1.5v3c0 1.1-.9 2-2 2C11.3 19 5 12.7 5 5c0-1.1.9-2 2-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><span>(334) 556-1234</span></a></p>
+      </div>
+      <div class="footer-col footer-connect">
+        <h4>General inquiries</h4>
+        <p>Reach out to learn more about Springboards programs and community work.</p>
+        <a class="footer-email-link footer-contact-link" href="mailto:info@springboardsfcd.org"><svg class="footer-link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3 6 9 7 9-7" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Email us</span></a>
+        <a class="footer-social-link footer-contact-link" href="https://www.facebook.com/groups/1367088638276683/" target="_blank" rel="noopener noreferrer"><svg class="footer-link-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4.5c-.5-.1-1.8-.2-3.3-.2-3.3 0-5.5 2-5.5 5.7v3.2H5v3.9h3.2V21H12v-3.9h3.2l.6-3.9H12V10.4c0-1.1.3-2.4 2-2.4Z" fill="currentColor"/></svg><span>Facebook</span></a>
       </div>
     </div>
     <div class="footer-bottom">
