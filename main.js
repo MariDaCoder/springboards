@@ -116,19 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  document.querySelectorAll("[data-program-target]").forEach((link) => {
-    link.addEventListener("click", () => {
-      const card = document.querySelector(`[data-program-card="${link.dataset.programTarget}"]`);
-      if (!card) {
-        return;
-      }
-      window.setTimeout(() => {
-        flipProgramCard(card, true);
-        card.focus({ preventScroll: true });
-      }, 250);
-    });
-  });
-
   const inquiryModal = document.getElementById("inquiryModal");
   const inquiryModalTitle = document.getElementById("inquiryModalTitle");
   const inquiryModalDescription = document.getElementById("inquiryModalDescription");

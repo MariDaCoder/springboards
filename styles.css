@@ -179,6 +179,12 @@ body {
   background-color: var(--bg-light);
 }
 
+.nav-sublink-inactive {
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
 .nav-link:hover {
   color: var(--accent-orange);
 }
