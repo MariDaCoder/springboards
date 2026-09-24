@@ -23,6 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
         navMenu.classList.remove("open");
         navToggle.setAttribute("aria-expanded", "false");
       });
+
+      navMenu.querySelectorAll(".nav-dropdown-toggle").forEach((toggle) => {
+        toggle.addEventListener("click", () => {
+          const dropdown = toggle.closest(".nav-dropdown");
+          const isOpen = dropdown.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", String(isOpen));
+        });
+      });
     });
 
     document.addEventListener("click", (e) => {
@@ -71,4 +79,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", updateActiveLink, { passive: true });
   updateActiveLink();
+
+  const impactSlides = document.querySelectorAll(".impact-slide");
+  const impactButtons = document.querySelectorAll(".impact-carousel-button");
+  impactButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedSlide = Number(button.dataset.slide);
+      impactSlides.forEach((slide, index) => {
+        slide.classList.toggle("is-active", index === selectedSlide);
+      });
+      impactButtons.forEach((control, index) => {
+        control.setAttribute("aria-pressed", String(index === selectedSlide));
+      });
+    });
+  });
 });

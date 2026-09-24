@@ -33,9 +33,23 @@
       <div class="nav-center" id="navMenu">
         <ul class="nav-links">
           <li><a href="#our-mission" class="nav-link">Mission</a></li>
-          <li><a href="#our-programs" class="nav-link">Training</a></li>
-          <li><a href="#our-service" class="nav-link">Service</a></li>
-          <li><a href="#footer" class="nav-link">Contact</a></li>
+          <li class="nav-dropdown">
+            <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false">Trades <span aria-hidden="true">⌄</span></button>
+            <ul class="nav-dropdown-menu">
+              <li><a href="#our-mission" class="nav-sublink">Learn</a></li>
+              <li><a href="#our-programs" class="nav-sublink">Train</a></li>
+              <li><a href="#our-impact" class="nav-sublink">Build</a></li>
+            </ul>
+          </li>
+          <li class="nav-dropdown">
+            <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false">Community <span aria-hidden="true">⌄</span></button>
+            <ul class="nav-dropdown-menu">
+              <li><a href="#our-service" class="nav-sublink">Volunteer</a></li>
+              <li><a href="#our-service" class="nav-sublink">Partner</a></li>
+              <li><a href="#make-a-difference" class="nav-sublink">Donate</a></li>
+            </ul>
+          </li>
+          <li><a href="#footer" class="nav-link">Connect</a></li>
         </ul>
         <div class="mobile-cta-wrapper">
           <a href="#make-a-difference" class="btn-cta mobile-cta">Join</a>
@@ -90,10 +104,63 @@
       </div>
     </section>
 
+    <!-- COMMUNITY IN ACTION SECTION -->
+    <section class="section impact-section" id="our-impact">
+      <div class="container">
+        <span class="section-eyebrow">COMMUNITY IN ACTION</span>
+        <h2 class="section-title">See the Work. Meet the Mission.</h2>
+        <p class="section-subtitle">A look at the people and hands-on work at the heart of Springboards.</p>
+
+        <div class="impact-carousel" aria-label="Community in action photos">
+          <div class="impact-slide is-active">
+            <img src="04_hero_photo_clean.jpg" alt="Springboards trainees working together on a construction project">
+            <div class="impact-slide-caption">
+              <h3>Hands-on Construction Training</h3>
+              <p>Learning by doing, with practical skills that connect training to opportunity.</p>
+            </div>
+          </div>
+          <div class="impact-slide">
+            <img src="director-marvin-thompson.png" alt="Marvin Thompson, Springboards director">
+            <div class="impact-slide-caption">
+              <h3>Leadership with Purpose</h3>
+              <p>Meet the people committed to expanding pathways through skilled trade mastery.</p>
+            </div>
+          </div>
+          <div class="impact-carousel-controls">
+            <button type="button" class="impact-carousel-button" data-slide="0" aria-label="Show construction training photo" aria-pressed="true">1</button>
+            <button type="button" class="impact-carousel-button" data-slide="1" aria-label="Show director photo" aria-pressed="false">2</button>
+          </div>
+        </div>
+
+        <div class="impact-proof-grid">
+          <article class="impact-proof-card">
+            <span class="impact-proof-line" aria-hidden="true"></span>
+            <h3>Mission in Action</h3>
+            <p>Discover how Springboards turns its mission into practical pathways and new possibilities.</p>
+          </article>
+          <article class="impact-proof-card">
+            <span class="impact-proof-line" aria-hidden="true"></span>
+            <h3>Trades That Open Doors</h3>
+            <p>Build the skills, confidence, and credentials employers are looking for.</p>
+          </article>
+          <article class="impact-proof-card">
+            <span class="impact-proof-line" aria-hidden="true"></span>
+            <h3>Community at Work</h3>
+            <p>See how trainees, mentors, and partners help strengthen the communities we serve.</p>
+          </article>
+          <article class="impact-proof-card">
+            <span class="impact-proof-line" aria-hidden="true"></span>
+            <h3>Connect With Us</h3>
+            <p>Volunteer, partner, or give to help expand pathways for future tradespeople.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- TRAINING SECTION -->
     <section class="section programs-section" id="our-programs">
       <div class="container">
-        <span class="section-eyebrow">TRAINING</span>
+        <span class="section-eyebrow">TRADES</span>
         <h2 class="section-title">Our Programs & Vocational Services</h2>
         <p class="section-subtitle">Rigorous, debt-free vocational training with verifiable industry credentials and job placement.</p>
         
@@ -125,7 +192,7 @@
     <!-- SERVICE / NEWS & EVENTS SECTION -->
     <section class="section service-section" id="our-service">
       <div class="container">
-        <span class="section-eyebrow">SERVICE</span>
+        <span class="section-eyebrow">COMMUNITY</span>
         <h2 class="section-title">News, Updates & Community Giving</h2>
         <p class="section-subtitle">Stay connected with our initiatives, neighborhood impact, and donation pathways.</p>
 
