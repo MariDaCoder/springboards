@@ -63,7 +63,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="main-content">
     <!-- HERO SECTION -->
     <section class="hero-section" id="hero">
       <div class="hero-placeholder-bg" aria-hidden="true"></div>
@@ -322,6 +322,7 @@
             <p>Report to the Springboards Community Center when you arrive for your scheduled hourly block.</p>
             <p class="event-meta"><strong>Address:</strong> 2269 15th Ave. S.W.<br>Lanett, AL 36863</p>
             <p class="event-availability">Volunteer dates and hourly sign-up details will be posted as they are scheduled.</p>
+            <button type="button" class="btn-volunteer-interest event-signup-button" data-event="General Volunteer Interest" data-location="Springboards Community Center">Express Volunteer Interest &rarr;</button>
           </article>
         </div>
       </div>
@@ -331,17 +332,31 @@
       <div class="inquiry-modal-backdrop" data-volunteer-close></div>
       <div class="inquiry-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="volunteerSignupTitle">
         <button type="button" class="inquiry-modal-close" data-volunteer-close aria-label="Close volunteer signup form">×</button>
-        <span class="section-eyebrow">Volunteer signup</span>
-        <h2 id="volunteerSignupTitle">Choose a volunteer date</h2>
-        <p id="volunteerSignupDescription">Reserve your place and we will follow up with event details.</p>
+        <span class="section-eyebrow">Volunteer interest</span>
+        <h2 id="volunteerSignupTitle">Express Volunteer Interest</h2>
+        <p id="volunteerSignupDescription">Volunteer dates and hourly signup blocks will be posted when confirmed. Share your availability and interests so we can reach out as upcoming projects open.</p>
         <form class="program-inquiry-form" id="volunteerSignupForm">
-          <input type="hidden" name="event">
-          <input type="hidden" name="location">
-          <label>Volunteer date<input name="date" type="date" required></label>
-          <label>Name<input name="name" type="text" autocomplete="name" required></label>
-          <label>Phone <span>(optional if you provide email)</span><input name="phone" type="tel" autocomplete="tel"></label>
-          <label>Email <span>(optional if you provide phone)</span><input name="email" type="email" autocomplete="email"></label>
-          <button type="submit" class="program-submit">Submit signup</button>
+          <input type="hidden" name="event" value="General Volunteer Interest">
+          <input type="hidden" name="location" value="Springboards Community Center">
+          <label>Name<input name="name" type="text" autocomplete="name" placeholder="Your full name" required></label>
+          <label>Phone <span>(optional if you provide email)</span><input name="phone" type="tel" autocomplete="tel" placeholder="(334) 556-0000"></label>
+          <label>Email <span>(optional if you provide phone)</span><input name="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+          <label>Availability preference
+            <select name="availability" class="form-select">
+              <option value="morning">Morning block (8:00 AM - 12:00 PM)</option>
+              <option value="afternoon">Afternoon block (12:00 PM - 4:00 PM)</option>
+              <option value="flexible">Flexible (Monday - Thursday)</option>
+            </select>
+          </label>
+          <label>Area of interest
+            <select name="interest" class="form-select">
+              <option value="cleaning-demo">Cleaning, repair, and demolition support</option>
+              <option value="tools-prep">Tools, equipment &amp; safety preparation</option>
+              <option value="community-outreach">Community outreach &amp; events</option>
+              <option value="general">General volunteer support</option>
+            </select>
+          </label>
+          <button type="submit" class="program-submit">Submit volunteer interest</button>
           <p class="form-status" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -365,7 +380,7 @@
   <footer class="footer-section" id="footer">
     <div class="container footer-grid">
       <div class="footer-col footer-brand">
-        <img src="springboards_logo.png" alt="Springboards Logo" class="footer-logo">
+        <img src="springboards_logo.png" alt="Springboards Logo" class="footer-logo" width="220" height="80" loading="lazy" decoding="async" width="220" height="80" loading="lazy" decoding="async">
         <p class="footer-desc">Springboards for Community Development — Empowering individuals, revitalizing communities, and constructing careers.</p>
       </div>
       <div class="footer-col">
