@@ -272,6 +272,11 @@ textarea:focus-visible,
   color: #ffffff;
 }
 
+.hero-headline span {
+  display: block;
+  white-space: nowrap;
+}
+
 .hero-divider {
   width: 64px;
   height: 6px;
