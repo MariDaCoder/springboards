@@ -381,6 +381,14 @@ textarea:focus-visible,
   align-items: center;
 }
 
+.mission-eyebrow {
+  color: #5c8a28;
+}
+
+.mission-title span {
+  display: block;
+}
+
 .mission-statement {
   font-size: 1.1rem;
   line-height: 1.7;
