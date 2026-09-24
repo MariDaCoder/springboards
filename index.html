@@ -36,9 +36,9 @@
           <li class="nav-dropdown">
             <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false">Trades <span aria-hidden="true">⌄</span></button>
             <ul class="nav-dropdown-menu">
-              <li><a href="#our-mission" class="nav-sublink">Learn</a></li>
-              <li><a href="#our-programs" class="nav-sublink">Train</a></li>
-              <li><a href="#our-impact" class="nav-sublink">Build</a></li>
+              <li><a href="#our-programs" class="nav-sublink" data-program-target="learn">Learn</a></li>
+              <li><a href="#our-programs" class="nav-sublink" data-program-target="train">Train</a></li>
+              <li><a href="#our-programs" class="nav-sublink" data-program-target="build">Build</a></li>
             </ul>
           </li>
           <li class="nav-dropdown">
@@ -197,33 +197,88 @@
         <p class="section-subtitle">Practical pathways that connect people with skills, support, and opportunity.</p>
         
         <div class="programs-grid">
-          <article class="program-card">
-            <div class="program-icon program-icon-green" aria-hidden="true">↗</div>
-            <h3>Youth Empowerment</h3>
-            <p>Equipping young people with skills, mentorship, and leadership opportunities.</p>
-            <a href="#our-mission" class="program-link">Learn more <span aria-hidden="true">→</span></a>
+          <article class="program-card program-card-flip" data-program-card="learn" tabindex="0" role="button" aria-expanded="false" aria-label="Show details for Learn">
+            <div class="program-card-inner">
+              <div class="program-card-face program-card-front">
+                <div class="program-icon program-icon-green" aria-hidden="true">↗</div>
+                <h3>Learn</h3>
+                <p>Trades training and certifications that build a foundation for opportunity.</p>
+              </div>
+              <div class="program-card-face program-card-back">
+                <h3>Learn</h3>
+                <p>Build foundational skills through trade-focused instruction and recognized credentials.</p>
+                <ul class="program-detail-list">
+                  <li>Carpentry &amp; drywall</li>
+                  <li>Plumbing</li>
+                  <li>Electrical</li>
+                  <li>HVAC</li>
+                  <li>Brick masonry</li>
+                </ul>
+                <button type="button" class="program-submit program-inquiry-button" data-program="Learn">Enroll with us</button>
+              </div>
+            </div>
           </article>
-          <article class="program-card">
-            <div class="program-icon program-icon-orange" aria-hidden="true">⚒</div>
-            <h3>Workforce Development</h3>
-            <p>Providing job training, certifications, and career resources for sustainable employment.</p>
-            <a href="#our-programs" class="program-link program-link-orange">Learn more <span aria-hidden="true">→</span></a>
+          <article class="program-card program-card-flip" data-program-card="train" tabindex="0" role="button" aria-expanded="false" aria-label="Show details for Train">
+            <div class="program-card-inner">
+              <div class="program-card-face program-card-front">
+                <div class="program-icon program-icon-orange" aria-hidden="true">⚒</div>
+                <h3>Train</h3>
+                <p>On-the-job training and transitional jobs that connect learning to work.</p>
+              </div>
+              <div class="program-card-face program-card-back">
+                <h3>Train</h3>
+                <p>Transitional Jobs and OJT provide a supported bridge into employment. Available materials describe state-subsidized training wages, up to 32 hours weekly, a 390-hour lifetime cap, and a pathway toward permanent placement.</p>
+                <ul class="program-detail-list">
+                  <li>Start with eligibility verification through a career center.</li>
+                  <li>Career center staff refer eligible participants to a participating worksite.</li>
+                  <li>Bring questions about current openings, schedule, and worksite placement.</li>
+                </ul>
+                <button type="button" class="program-submit program-inquiry-button" data-program="Train">Find a career center</button>
+              </div>
+            </div>
           </article>
-          <article class="program-card">
-            <div class="program-icon program-icon-green" aria-hidden="true">⌂</div>
-            <h3>Community Development</h3>
-            <p>Revitalizing neighborhoods through housing, public spaces, and community collaboration.</p>
-            <a href="#our-impact" class="program-link">Learn more <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="program-card">
-            <div class="program-icon program-icon-orange" aria-hidden="true">♡</div>
-            <h3>Family Support</h3>
-            <p>Offering resources and programs that strengthen families and promote well-being.</p>
-            <a href="#our-service" class="program-link program-link-orange">Learn more <span aria-hidden="true">→</span></a>
+          <article class="program-card program-card-flip" data-program-card="build" tabindex="0" role="button" aria-expanded="false" aria-label="Show details for Build">
+            <div class="program-card-inner">
+              <div class="program-card-face program-card-front">
+                <div class="program-icon program-icon-green" aria-hidden="true">⌂</div>
+                <h3>Build</h3>
+                <p>Apprenticeship programs where hands-on practice becomes trade mastery.</p>
+              </div>
+              <div class="program-card-face program-card-back">
+                <h3>Build</h3>
+                <p>Apprenticeship pathways turn supervised practice into trade mastery through hands-on mentoring and real worksite experience.</p>
+                <ul class="program-detail-list">
+                  <li>Carpentry &amp; drywall</li>
+                  <li>Plumbing</li>
+                  <li>Electrical</li>
+                  <li>HVAC</li>
+                  <li>Brick masonry</li>
+                </ul>
+                <button type="button" class="program-submit program-inquiry-button" data-program="Build">Ask about apprenticeship</button>
+              </div>
+            </div>
           </article>
         </div>
       </div>
     </section>
+
+    <div class="inquiry-modal" id="inquiryModal" hidden>
+      <div class="inquiry-modal-backdrop" data-inquiry-close></div>
+      <div class="inquiry-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="inquiryModalTitle">
+        <button type="button" class="inquiry-modal-close" data-inquiry-close aria-label="Close inquiry form">×</button>
+        <span class="section-eyebrow">Connect with us</span>
+        <h2 id="inquiryModalTitle">Program inquiry</h2>
+        <p id="inquiryModalDescription">Share your contact information and we will follow up about this pathway.</p>
+        <form class="program-inquiry-form" id="programInquiryForm">
+          <input type="hidden" name="program">
+          <label>Name<input name="name" type="text" autocomplete="name" required></label>
+          <label>Phone <span>(optional if you provide email)</span><input name="phone" type="tel" autocomplete="tel"></label>
+          <label>Email <span>(optional if you provide phone)</span><input name="email" type="email" autocomplete="email"></label>
+          <button type="submit" class="program-submit">Send inquiry</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
 
     <!-- SERVICE / NEWS & EVENTS SECTION -->
     <section class="section service-section" id="our-service">
