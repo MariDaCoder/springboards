@@ -237,12 +237,14 @@ textarea:focus-visible,
 .hero-placeholder-bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   background: url("04_hero_photo_clean.jpg") center center / cover no-repeat;
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: rgba(15, 23, 42, 0.25);
 }
 
