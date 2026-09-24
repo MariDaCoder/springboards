@@ -239,7 +239,7 @@ textarea:focus-visible,
   inset: 0;
   z-index: 0;
   background:
-    linear-gradient(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.25)),
+    linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
     url("04_hero_photo_clean.jpg") center center / cover no-repeat;
 }
 
