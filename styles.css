@@ -251,17 +251,13 @@ textarea:focus-visible,
   z-index: 10;
   max-width: 900px;
   margin: 0 auto;
-  text-align: center;
+  text-align: left;
   color: #ffffff;
 }
 
 .hero-badge {
-  display: inline-block;
-  background-color: rgba(234, 88, 12, 0.2);
-  color: #fdba74;
-  border: 1px solid rgba(234, 88, 12, 0.4);
-  padding: 0.4rem 1rem;
-  border-radius: 7px;
+  display: block;
+  color: #ffffff;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -278,15 +274,15 @@ textarea:focus-visible,
 
 .hero-subtext {
   font-size: 1.25rem;
-  color: #cbd5e1;
+  color: #ffffff;
   max-width: 720px;
-  margin: 0 auto 2.25rem;
+  margin: 0 0 2.25rem;
 }
 
 .hero-buttons {
   display: flex;
   gap: 1.25rem;
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 
