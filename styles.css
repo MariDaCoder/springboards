@@ -541,24 +541,74 @@ textarea:focus-visible,
 
 .programs-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
-  max-width: 920px;
+  max-width: 1080px;
   margin: 2.25rem auto 0;
 }
 
 .program-card {
-  background-color: var(--bg-card);
+  min-height: 380px;
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.program-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  transform-style: preserve-3d;
+  transition: transform 0.55s ease;
+}
+
+.program-card.is-flipped .program-card-inner {
+  transform: rotateY(180deg);
+}
+
+.program-card-flip:hover .program-card-inner,
+.program-card-flip:focus-within .program-card-inner {
+  transform: rotateY(180deg);
+}
+
+.program-card-flip:focus-visible {
+  outline: 3px solid var(--accent-orange);
+  outline-offset: 4px;
+}
+
+.program-card-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 1.75rem 1.5rem 1.5rem;
   border-radius: 8px;
   border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
   box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  backface-visibility: hidden;
 }
 
-.program-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 24px rgba(15, 23, 42, 0.1);
+.program-card-back {
+  align-items: stretch;
+  justify-content: flex-start;
+  text-align: left;
+  transform: rotateY(180deg);
+}
+
+.program-card-back h3 {
+  text-align: center;
+}
+
+.program-detail-list {
+  width: 100%;
+  margin: 0.5rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
 }
 
 .program-icon {
@@ -613,6 +663,118 @@ textarea:focus-visible,
 .program-link:hover,
 .program-link:focus-visible {
   text-decoration: underline;
+}
+
+.program-inquiry-form {
+  display: grid;
+  gap: 0.65rem;
+  width: 100%;
+  margin: 1rem 0 0.75rem;
+}
+
+.program-inquiry-form label {
+  display: grid;
+  gap: 0.25rem;
+  color: var(--primary-navy);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.program-inquiry-form input {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.program-inquiry-form,
+.program-inquiry-form input,
+.program-submit {
+  cursor: auto;
+}
+
+.program-submit {
+  margin-top: 0.25rem;
+  padding: 0.6rem 0.75rem;
+  border: 0;
+  border-radius: 5px;
+  background-color: var(--primary-navy);
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.program-inquiry-button {
+  margin-top: 1rem;
+}
+
+.program-submit:hover,
+.program-submit:focus-visible {
+  background-color: var(--secondary-navy);
+}
+
+.form-status {
+  min-height: 1.1rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.inquiry-modal[hidden] {
+  display: none;
+}
+
+.inquiry-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.inquiry-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.inquiry-modal-dialog {
+  position: relative;
+  width: min(100%, 460px);
+  padding: 2rem;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.3);
+}
+
+.inquiry-modal-dialog h2 {
+  margin: 0.35rem 0 0.5rem;
+  color: var(--primary-navy);
+}
+
+.inquiry-modal-dialog > p {
+  color: var(--text-muted);
+}
+
+.inquiry-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.9rem;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 /* SOCIAL PROOF / COMMUNITY IMPACT SECTION */
@@ -1062,6 +1224,11 @@ textarea:focus-visible,
 
   .programs-grid {
     grid-template-columns: 1fr;
+  }
+
+  .program-card,
+  .program-card-inner {
+    min-height: 410px;
   }
 
   .impact-slide,
