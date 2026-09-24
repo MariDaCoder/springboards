@@ -96,9 +96,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
+    // ACCESSIBLE PROGRAM CARDS
   const flipProgramCard = (card, shouldFlip) => {
     card.classList.toggle("is-flipped", shouldFlip);
     card.setAttribute("aria-expanded", String(shouldFlip));
+    const cardProgram = card.dataset.programCard || "program";
+    const programTitle = cardProgram.charAt(0).toUpperCase() + cardProgram.slice(1);
+    card.setAttribute("aria-label", shouldFlip ? `Hide details for ${programTitle}` : `Show details for ${programTitle}`);
+    
+    const frontFace = card.querySelector(".program-card-front");
+    const backFace = card.querySelector(".program-card-back");
+    if (frontFace && backFace) {
+      frontFace.setAttribute("aria-hidden", String(shouldFlip));
+      backFace.setAttribute("aria-hidden", String(!shouldFlip));
+    }
   };
 
   document.querySelectorAll(".program-card-flip").forEach((card) => {
@@ -116,6 +127,61 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // MODAL FOCUS TRAPPING & ACCESSIBILITY MANAGEMENT
+  let lastActiveModalTrigger = null;
+
+  const openModalWithFocus = (modal, initialElement) => {
+    lastActiveModalTrigger = document.activeElement;
+    modal.hidden = false;
+    document.body.classList.add("modal-open");
+    if (initialElement && typeof initialElement.focus === "function") {
+      initialElement.focus();
+    }
+  };
+
+  const closeModalWithFocus = (modal) => {
+    modal.hidden = true;
+    document.body.classList.remove("modal-open");
+    if (lastActiveModalTrigger && typeof lastActiveModalTrigger.focus === "function") {
+      lastActiveModalTrigger.focus();
+      lastActiveModalTrigger = null;
+    }
+  };
+
+  // Global trap for Tab and Escape across all modals
+  document.addEventListener("keydown", (event) => {
+    const activeModal = document.querySelector(".inquiry-modal:not([hidden])");
+    if (!activeModal) return;
+
+    if (event.key === "Escape") {
+      closeModalWithFocus(activeModal);
+      return;
+    }
+
+    if (event.key === "Tab") {
+      const focusable = activeModal.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+
+      const firstItem = focusable[0];
+      const lastItem = focusable[focusable.length - 1];
+
+      if (event.shiftKey) {
+        if (document.activeElement === firstItem) {
+          event.preventDefault();
+          lastItem.focus();
+        }
+      } else {
+        if (document.activeElement === lastItem) {
+          event.preventDefault();
+          firstItem.focus();
+        }
+      }
+    }
+  });
+
+  // PROGRAM INQUIRY MODAL
   const inquiryModal = document.getElementById("inquiryModal");
   const inquiryModalTitle = document.getElementById("inquiryModalTitle");
   const inquiryModalDescription = document.getElementById("inquiryModalDescription");
@@ -126,109 +192,87 @@ document.addEventListener("DOMContentLoaded", () => {
     Build: "Interested in apprenticeship? Share one way to reach you and we will follow up with current pathway information and next steps."
   };
 
-  document.querySelectorAll(".program-inquiry-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      inquiryForm.elements.program.value = button.dataset.program;
-      inquiryModalTitle.textContent = `${button.dataset.program} program inquiry`;
-      inquiryModalDescription.textContent = inquiryDetails[button.dataset.program];
-      inquiryForm.querySelector(".form-status").textContent = "";
-      inquiryModal.hidden = false;
-      document.body.classList.add("modal-open");
-      inquiryForm.elements.name.focus();
+  if (inquiryModal && inquiryForm) {
+    document.querySelectorAll(".program-inquiry-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        inquiryForm.elements.program.value = button.dataset.program;
+        inquiryModalTitle.textContent = `${button.dataset.program} program inquiry`;
+        inquiryModalDescription.textContent = inquiryDetails[button.dataset.program] || "Share your contact details.";
+        inquiryForm.querySelector(".form-status").textContent = "";
+        openModalWithFocus(inquiryModal, inquiryForm.elements.name);
+      });
     });
-  });
 
-  document.querySelectorAll("[data-inquiry-close]").forEach((control) => {
-    control.addEventListener("click", () => {
-      inquiryModal.hidden = true;
-      document.body.classList.remove("modal-open");
+    document.querySelectorAll("[data-inquiry-close]").forEach((control) => {
+      control.addEventListener("click", () => {
+        closeModalWithFocus(inquiryModal);
+      });
     });
-  });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && inquiryModal && !inquiryModal.hidden) {
-      inquiryModal.hidden = true;
-      document.body.classList.remove("modal-open");
-    }
-  });
+    inquiryForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const status = inquiryForm.querySelector(".form-status");
+      const submit = inquiryForm.querySelector(".program-submit");
+      const program = inquiryForm.elements.program.value;
+      const formData = new FormData(inquiryForm);
+      const name = String(formData.get("name") || "").trim();
+      const phone = String(formData.get("phone") || "").trim();
+      const email = String(formData.get("email") || "").trim();
+      if (!phone && !email) {
+        status.textContent = "Please provide a phone number or email address.";
+        return;
+      }
+      submit.disabled = true;
+      status.textContent = "Sending your inquiry...";
 
-  inquiryForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const status = inquiryForm.querySelector(".form-status");
-        const submit = inquiryForm.querySelector(".program-submit");
-        const program = inquiryForm.elements.program.value;
-        const formData = new FormData(inquiryForm);
-        const name = String(formData.get("name") || "").trim();
-        const phone = String(formData.get("phone") || "").trim();
-        const email = String(formData.get("email") || "").trim();
-        if (!phone && !email) {
-          status.textContent = "Please provide a phone number or email address.";
-          return;
-        }
-        submit.disabled = true;
-        status.textContent = "Sending your inquiry…";
-
-        try {
-          const response = await fetch(
-            "https://firestore.googleapis.com/v1/projects/springboards-community-dev/databases/(default)/documents/programInquiries",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                fields: {
-                  program: { stringValue: program },
-                  tag: { stringValue: `program-${program.toLowerCase()}` },
-                  name: { stringValue: name },
-                  phone: { stringValue: phone },
-                  email: { stringValue: email },
-                  createdAt: { timestampValue: new Date().toISOString() }
-                }
-              })
-            }
-          );
-          if (!response.ok) {
-            throw new Error(`Inquiry submission failed with status ${response.status}.`);
+      try {
+        const response = await fetch(
+          "https://firestore.googleapis.com/v1/projects/springboards-community-dev/databases/(default)/documents/programInquiries",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fields: {
+                program: { stringValue: program },
+                tag: { stringValue: `program-${program.toLowerCase()}` },
+                name: { stringValue: name },
+                phone: { stringValue: phone },
+                email: { stringValue: email },
+                createdAt: { timestampValue: new Date().toISOString() }
+              }
+            })
           }
-          inquiryForm.reset();
-          status.textContent = "Thanks — your inquiry was received.";
-        } catch (error) {
-          console.error(error);
-          status.textContent = "We could not submit this inquiry. Please try again.";
-        } finally {
-          submit.disabled = false;
+        );
+        if (!response.ok) {
+          throw new Error(`Inquiry submission failed with status ${response.status}.`);
         }
-  });
+        inquiryForm.reset();
+        status.textContent = "Thanks — your inquiry was received.";
+      } catch (error) {
+        console.error(error);
+        status.textContent = "We could not submit this inquiry. Please try again.";
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
 
+  // VOLUNTEER INTEREST INQUIRY MODAL (HARDENED - NO ARBITRARY DATES)
   const volunteerSignupModal = document.getElementById("volunteerSignupModal");
   const volunteerSignupForm = document.getElementById("volunteerSignupForm");
-  const volunteerSignupDescription = document.getElementById("volunteerSignupDescription");
-  const today = new Date().toISOString().split("T")[0];
-  const volunteerSignupDetails = {
-    event: "",
-    location: ""
-  };
 
   if (volunteerSignupModal && volunteerSignupForm) {
-    volunteerSignupForm.elements.date.min = today;
-
     document.querySelectorAll(".event-signup-button").forEach((button) => {
       button.addEventListener("click", () => {
-        volunteerSignupDetails.event = button.dataset.event;
-        volunteerSignupDetails.location = button.dataset.location;
-        volunteerSignupForm.elements.event.value = volunteerSignupDetails.event;
-        volunteerSignupForm.elements.location.value = volunteerSignupDetails.location;
-        volunteerSignupDescription.textContent = `${volunteerSignupDetails.event} — ${volunteerSignupDetails.location}. Choose a date and share one way to reach you.`;
         volunteerSignupForm.querySelector(".form-status").textContent = "";
-        volunteerSignupModal.hidden = false;
-        document.body.classList.add("modal-open");
-        volunteerSignupForm.elements.date.focus();
+        const nameField = volunteerSignupForm.elements.name;
+        openModalWithFocus(volunteerSignupModal, nameField);
       });
     });
 
     document.querySelectorAll("[data-volunteer-close]").forEach((control) => {
       control.addEventListener("click", () => {
-        volunteerSignupModal.hidden = true;
-        document.body.classList.remove("modal-open");
+        closeModalWithFocus(volunteerSignupModal);
       });
     });
 
@@ -240,13 +284,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = String(formData.get("name") || "").trim();
       const phone = String(formData.get("phone") || "").trim();
       const email = String(formData.get("email") || "").trim();
-      const date = String(formData.get("date") || "").trim();
+      const availability = String(formData.get("availability") || "flexible").trim();
+      const interest = String(formData.get("interest") || "general").trim();
+
       if (!phone && !email) {
         status.textContent = "Please provide a phone number or email address.";
         return;
       }
       submit.disabled = true;
-      status.textContent = "Saving your volunteer signup…";
+      status.textContent = "Submitting your volunteer interest...";
 
       try {
         const response = await fetch(
@@ -256,9 +302,10 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               fields: {
-                event: { stringValue: String(formData.get("event") || "") },
-                location: { stringValue: String(formData.get("location") || "") },
-                date: { stringValue: date },
+                event: { stringValue: "General Volunteer Interest" },
+                location: { stringValue: "Springboards Community Center" },
+                availability: { stringValue: availability },
+                interest: { stringValue: interest },
                 name: { stringValue: name },
                 phone: { stringValue: phone },
                 email: { stringValue: email },
@@ -268,14 +315,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         );
         if (!response.ok) {
-          throw new Error(`Volunteer signup failed with status ${response.status}.`);
+          throw new Error(`Volunteer interest submission failed with status ${response.status}.`);
         }
         volunteerSignupForm.reset();
-        volunteerSignupForm.elements.date.min = today;
-        status.textContent = "Thanks — your volunteer signup was received.";
+        status.textContent = "Thanks — your volunteer interest has been received. We will notify you when scheduled blocks open.";
       } catch (error) {
         console.error(error);
-        status.textContent = "We could not save your signup. Please try again.";
+        status.textContent = "We could not save your submission. Please try again.";
       } finally {
         submit.disabled = false;
       }
