@@ -374,20 +374,73 @@ textarea:focus-visible,
   border-bottom: 1px solid var(--border-color);
 }
 
-.mission-card {
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  border-left: 6px solid var(--accent-orange);
-  padding: 2.5rem 3rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-  margin-top: 1.5rem;
+.mission-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
+  gap: 4.5rem;
+  align-items: center;
 }
 
 .mission-statement {
-  font-size: 1.35rem;
-  line-height: 1.8;
+  font-size: 1.1rem;
+  line-height: 1.7;
   color: var(--text-dark);
   font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.mission-divider {
+  width: 48px;
+  height: 6px;
+  margin: 1.25rem 0 1.5rem;
+  border-radius: 7px;
+  background-color: var(--accent-orange);
+}
+
+.mission-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--primary-navy);
+  color: #ffffff;
+  padding: 0.85rem 1.25rem;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.mission-link:hover {
+  background-color: var(--secondary-navy);
+  transform: translateY(-2px);
+}
+
+.mission-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.mission-quote {
+  margin: 1.5rem 0 0;
+  padding: 0 0 0 1.25rem;
+  border-left: 3px solid var(--accent-orange);
+  color: var(--primary-navy);
+  font-size: 1rem;
+  line-height: 1.55;
+  font-style: italic;
+}
+
+.mission-quote cite {
+  display: block;
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-style: normal;
+  font-weight: 700;
 }
 
 /* PROGRAMS SECTION */
@@ -710,12 +763,13 @@ textarea:focus-visible,
     font-size: 2rem;
   }
 
-  .mission-card {
-    padding: 1.75rem;
+  .mission-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
 
   .mission-statement {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
   }
 }
 
