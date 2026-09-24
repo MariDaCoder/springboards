@@ -238,9 +238,7 @@ textarea:focus-visible,
   position: absolute;
   inset: 0;
   z-index: 0;
-  background:
-    linear-gradient(rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.45)),
-    url("04_hero_photo_clean.jpg") center center / cover no-repeat;
+  background: url("04_hero_photo_clean.jpg") center center / cover no-repeat;
 }
 
 .hero-overlay {
