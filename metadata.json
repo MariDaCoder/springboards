@@ -1,0 +1,8 @@
+{
+  "name": "Springboards for Community Development",
+  "description": "Empowering returning citizens, justice-involved individuals, and opportunity youth across West Georgia and East Alabama through debt-free vocational trade training.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
