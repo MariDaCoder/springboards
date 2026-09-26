@@ -2,14 +2,6 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// 1. Import Firebase Admin services
-import { initializeApp } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-
-// 2. Initialize the Admin SDK (No-cost, automatic credentials on App Hosting!)
-initializeApp();
-const db = getFirestore();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,6 +10,34 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json()); // Allows your routes to parse incoming JSON payloads
 app.use(express.static(__dirname));
+
+// Initialize Firebase Admin or fallback to in-memory store
+let db;
+try {
+  const { initializeApp, getApps } = await import('firebase-admin/app');
+  const { getFirestore } = await import('firebase-admin/firestore');
+  if (getApps().length === 0) {
+    initializeApp();
+  }
+  db = getFirestore();
+} catch {
+  console.warn('[AI Studio] Firebase Admin offline or unconfigured — using in-memory store');
+  const inMemoryInquiries = [];
+  db = {
+    collection: () => ({
+      get: async () => ({
+        docs: inMemoryInquiries.map((item, idx) => ({
+          id: `inquiry-${idx}`,
+          data: () => item
+        }))
+      }),
+      add: async (data) => {
+        inMemoryInquiries.push(data);
+        return { id: `inquiry-${Date.now()}` };
+      }
+    })
+  };
+}
 
 // 3. Example API Route using Firebase Admin
 app.get('/api/inquiries', async (req, res) => {
