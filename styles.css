@@ -375,6 +375,10 @@ textarea:focus-visible,
   text-wrap: pretty;
 }
 
+.hero-cta {
+  margin-top: 1.5rem;
+}
+
 .hero-buttons {
   display: flex;
   gap: 1.25rem;
