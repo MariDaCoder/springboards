@@ -454,6 +454,88 @@ textarea:focus-visible,
   margin-bottom: 3rem;
 }
 
+/* PROBLEM STATEMENT SECTION */
+.problem-section {
+  background-color: var(--primary-navy);
+  color: #ffffff;
+}
+
+.problem-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: clamp(2.5rem, 7vw, 7rem);
+  align-items: center;
+}
+
+.problem-content {
+  max-width: 48rem;
+}
+
+.problem-eyebrow {
+  color: #fdba74;
+}
+
+.problem-title {
+  max-width: 18ch;
+  color: #ffffff;
+  font-size: clamp(2.25rem, 4.5vw, 4.25rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.problem-intro {
+  max-width: 58ch;
+  margin-bottom: 1.75rem;
+  color: #cbd5e1;
+  font-size: 1.1rem;
+}
+
+.problem-list {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+}
+
+.problem-list li {
+  position: relative;
+  padding-left: 1.75rem;
+  color: #ffffff;
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.problem-list li::before {
+  position: absolute;
+  top: 0.55em;
+  left: 0;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background-color: var(--accent-orange);
+  content: "";
+}
+
+.problem-quote {
+  margin: 0;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-left: 4px solid var(--accent-orange);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.problem-quote cite {
+  display: block;
+  margin-top: 1rem;
+  color: #fdba74;
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: 700;
+}
+
 /* MISSION SECTION */
 .mission-section {
   background-color: var(--bg-white);
@@ -495,7 +577,35 @@ textarea:focus-visible,
   line-height: 1.7;
   color: var(--text-dark);
   font-weight: 500;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.mission-benefits {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.mission-benefits li {
+  position: relative;
+  padding-left: 1.75rem;
+  color: var(--text-dark);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.mission-benefits li::before {
+  position: absolute;
+  top: 0.5em;
+  left: 0;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background-color: var(--accent-orange);
+  content: "";
 }
 
 .mission-divider {
@@ -540,6 +650,35 @@ textarea:focus-visible,
   border-radius: 22px;
   background: #f8fafc;
   box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1);
+}
+
+.guide-introduction {
+  padding: 1.5rem 0.25rem 0;
+}
+
+.guide-eyebrow {
+  color: var(--accent-orange);
+  margin-bottom: 0.35rem;
+}
+
+.guide-name {
+  color: var(--primary-navy);
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.guide-role {
+  margin-top: 0.35rem;
+  color: var(--accent-orange);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.guide-bio {
+  margin-top: 0.85rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
 }
 
 .director-placeholder {
@@ -659,6 +798,81 @@ textarea:focus-visible,
   font-size: 0.72rem;
   font-style: italic;
   text-align: center;
+}
+
+/* GETTING STARTED SECTION */
+.process-section {
+  background-color: var(--bg-light);
+  border-top: 1px solid var(--border-color);
+}
+
+.process-heading {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.process-heading .section-subtitle {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.process-card {
+  position: relative;
+  min-height: 290px;
+  padding: 2rem 1.75rem 1.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.process-number {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 1.5rem;
+  place-items: center;
+  border-radius: 50%;
+  background-color: var(--accent-orange);
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.process-card h3 {
+  margin-bottom: 0.75rem;
+  color: var(--primary-navy);
+  font-size: 1.25rem;
+}
+
+.process-card p {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.process-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+  color: var(--accent-orange);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.process-link:hover,
+.process-link:focus-visible {
+  color: var(--accent-orange-hover);
+  text-decoration: underline;
 }
 
 .program-icon {
@@ -1497,6 +1711,11 @@ body.modal-open {
     gap: 2.5rem;
   }
 
+  .problem-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
   .mission-title {
     max-width: 12ch;
   }
@@ -1535,6 +1754,10 @@ body.modal-open {
   }
 
   .programs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .process-grid {
     grid-template-columns: 1fr;
   }
 
