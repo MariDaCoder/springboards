@@ -1,10 +1,10 @@
 {
-  "archive": "springboards_site_archive_20260926_220427Z.tar.gz",
+  "archive": "springboards_site_archive_20260926_222724Z.tar.gz",
   "latest": "springboards_offline_archive_latest.tar.gz",
-  "createdAt": "2026-09-26T22:04:27Z",
-  "gitCommit": "8a689a4846bc4c6673ed74eefca39552304cfad0",
-  "fileSize": "11M",
-  "sha256": "21fb7be0e29fb33f33fb439802e0ba464423b5eda60bf0e0c5e5e1e912c680ac",
+  "createdAt": "2026-09-26T22:27:25Z",
+  "gitCommit": "51b0fc7d6efbb0be84996d82443a31b23b670fcc",
+  "fileSize": "12M",
+  "sha256": "76a30c4ca28d9ea2613fe68964f4cd537a11129c5359bd65d4c95460cfc8b471",
   "contents": [
     "index.html",
     "404.html",

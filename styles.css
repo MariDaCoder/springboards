@@ -16,32 +16,46 @@
 }
 
 :root {
-  /* Brand Palette - Exact match to Springboards Logo (springboards_logo.png) */
-  --primary-navy: #022D57;        /* Exact Springboards Logo Deep Navy (RGB: 2, 45, 87) */
-  --secondary-navy: #0A3B6D;      /* Logo Royal Navy Midtone (RGB: 10, 59, 109) */
-  --navy-surface: #011830;        /* Logo Midnight Navy Surface for Navbars & Footers */
-  --accent-green: #5C8A28;        /* Exact Springboards Logo Spring Green (RGB: 92, 138, 40) */
-  --accent-green-hover: #486E1E;  /* Deeper Logo Green for button hover (RGB: 72, 110, 30) */
-  --accent-green-light: #EBF3E1;  /* Soft Spring Green Tint for tags & badge surfaces */
-  --accent-orange: #5C8A28;       /* Primary interactive accent aligned with logo green */
-  --accent-orange-hover: #486E1E; /* Primary hover aligned with logo green */
-  --accent-orange-light: #EBF3E1; /* Primary highlight tint */
-  --accent-gold: #C49C46;         /* Logo Architectural Ochre Gold (RGB: 196, 156, 70) */
+  /* --------------------------------------------------------------------------
+     Aesthetic Design System - Vocational Trades & Civic Foundation
+     Harmonized 60-30-10 Color Architecture
+     -------------------------------------------------------------------------- */
 
-  /* Neutral Surface & Background Tokens */
+  /* 30% Structural Depth & Authoritative Navy Anchor */
+  --primary-navy: #0B192C;        /* Deep Architectural Midnight Navy */
+  --secondary-navy: #1E3E62;      /* Maritime Slate Midtone for elevated elements */
+  --navy-surface: #06101E;        /* Ultra-deep obsidian navy for header, footer & scrims */
+  --navy-card: #0F233D;           /* Deep card surface on dark sections */
+
+  /* 10% High-Intent Accents (Trades Amber & Renewal Emerald) */
+  --accent-orange: #E05615;       /* Warm High-Visibility Safety Amber / Terracotta */
+  --accent-orange-hover: #C2410C; /* Deep Rust Amber on hover */
+  --accent-orange-light: #FFF7ED; /* Warm Luminous Tint */
+  --accent-orange-border: #FDBA74;/* Subtle amber border */
+
+  --accent-green: #059669;        /* Vivid Spring Emerald 600 (Revival, Growth, Credentials) */
+  --accent-green-hover: #047857;  /* Deep Emerald 700 */
+  --accent-green-light: #ECFDF5;  /* Mint / Spring Clean Tint for badges */
+  --accent-green-border: #A7F3D0; /* Crisp Emerald Hairline Border */
+
+  --accent-gold: #D97706;         /* Architectural Amber-Gold */
+  --accent-blue: #2563EB;         /* Deep Trust Royal Blue */
+  --accent-blue-light: #EFF6FF;   /* Crisp Ice Blue Tint */
+
+  /* 60% Dominant Neutral Canvas & Surfaces */
   --bg-white: #ffffff;
-  --bg-light: #F7FAF5;           /* Gentle organic surface tint */
-  --bg-subtle: #EEF4EB;          /* Light spring sage-tinted neutral */
-  --bg-card: #ffffff;
-  --border-color: #CAD7C2;       /* Natural brand-aligned border */
-  --border-subtle: #E2ECE0;
+  --bg-light: #F8FAFC;            /* Clean, luminous Slate-50 off-white */
+  --bg-subtle: #F1F5F9;           /* Slate-100 neutral section alternating tone */
+  --bg-card: #ffffff;             /* Pure white elevated card surfaces */
+  --border-color: #E2E8F0;        /* Subtle 1px hairline border (Slate-200) */
+  --border-subtle: #F1F5F9;       /* Delicate Slate-100 border */
 
-  /* Typography Colors */
-  --text-dark: #022D57;           /* Logo Deep Navy for crisp, high-contrast headings & text */
-  --text-body: #163657;           /* Logo Navy body tone for readable, cohesive typography */
-  --text-muted: #4A6581;          /* Secondary metadata in muted navy */
-  --text-light: #F7FAF5;          /* Light text on dark sections */
-  --text-light-muted: #CAD7C2;    /* Light muted text on dark sections */
+  /* Typographic Hierarchy & Contrast */
+  --text-dark: #0F172A;           /* Deep Slate-900 for high-contrast, commanding titles */
+  --text-body: #334155;           /* Slate-700 for effortless reading legibility (7.5:1 contrast) */
+  --text-muted: #64748B;          /* Slate-500 for secondary metadata & captions */
+  --text-light: #F8FAFC;          /* Clean light text on dark sections */
+  --text-light-muted: #94A3B8;    /* Slate-400 for secondary text on dark sections */
 
   /* Layout & Geometry */
   --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -157,7 +171,7 @@ textarea:focus-visible,
   border: 2px solid var(--accent-orange);
   border-radius: var(--radius-md);
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(92, 138, 40, 0.28);
+  box-shadow: 0 4px 14px rgba(224, 86, 21, 0.24);
   transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
@@ -166,12 +180,12 @@ textarea:focus-visible,
   border-color: var(--accent-orange-hover);
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(92, 138, 40, 0.38);
+  box-shadow: 0 8px 20px rgba(224, 86, 21, 0.32);
 }
 
 .btn-cta:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(92, 138, 40, 0.25);
+  box-shadow: 0 2px 6px rgba(224, 86, 21, 0.20);
 }
 
 /* Secondary / Outline Button Variant */
@@ -500,9 +514,9 @@ textarea:focus-visible,
   z-index: 1;
   background: linear-gradient(
     90deg,
-    rgba(2, 45, 87, 0.94) 0%,
-    rgba(2, 45, 87, 0.82) 55%,
-    rgba(2, 45, 87, 0.50) 100%
+    rgba(11, 25, 44, 0.95) 0%,
+    rgba(11, 25, 44, 0.84) 55%,
+    rgba(11, 25, 44, 0.52) 100%
   );
 }
 
@@ -518,7 +532,7 @@ textarea:focus-visible,
 
 .hero-badge {
   display: inline-block;
-  color: #A2D65B;
+  color: #34D399;
   font-size: 0.8125rem;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -888,7 +902,7 @@ textarea:focus-visible,
 .impact-carousel-button:focus-visible {
   border-color: var(--accent-orange);
   color: #ffffff;
-  background-color: rgba(92, 138, 40, 0.25);
+  background-color: rgba(224, 86, 21, 0.18);
 }
 
 .impact-carousel-button[aria-pressed="true"] {
@@ -952,7 +966,7 @@ textarea:focus-visible,
 }
 
 .program-card {
-  min-height: 400px;
+  min-height: 480px;
   perspective: 1200px;
   cursor: pointer;
   border-radius: var(--radius-lg);
@@ -962,7 +976,7 @@ textarea:focus-visible,
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 400px;
+  min-height: 480px;
   transform-style: preserve-3d;
   transition: transform 0.55s ease;
   border-radius: var(--radius-lg);
@@ -981,7 +995,7 @@ textarea:focus-visible,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2.25rem 2rem 2rem;
+  padding: 2rem 1.75rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
   background-color: var(--bg-card);
@@ -1015,7 +1029,7 @@ textarea:focus-visible,
 }
 
 .program-icon-orange {
-  background-color: var(--accent-green);
+  background-color: var(--accent-orange);
 }
 
 .program-card-front h3 {
@@ -1038,35 +1052,38 @@ textarea:focus-visible,
   transform: rotateY(180deg);
   background-color: #ffffff;
   border: 2px solid var(--accent-orange);
-  padding: 2rem;
+  padding: 1.5rem 1.35rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
 }
 
 .program-card-back h3 {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--primary-navy);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .program-card-back p {
   color: var(--text-dark);
-  font-size: 0.95rem;
-  line-height: 1.55;
-  margin-bottom: 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
 }
 
 .program-detail-list {
   width: 100%;
-  margin: 0.5rem 0 1rem;
+  margin: 0.35rem 0 0.65rem;
   padding-left: 1.25rem;
   color: var(--text-body);
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.85rem;
+  line-height: 1.5;
 }
 
 .program-detail-list li {
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.25rem;
 }
 
 .program-availability {
@@ -1176,9 +1193,9 @@ textarea:focus-visible,
   min-height: 380px;
   overflow: hidden;
   border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, #022D57 0%, #0A3B6D 55%, #13467A 100%);
-  border: 1px solid rgba(92, 138, 40, 0.4);
-  box-shadow: 0 20px 48px rgba(2, 45, 87, 0.22);
+  background: linear-gradient(135deg, #0B192C 0%, #1E3E62 60%, #172554 100%);
+  border: 1px solid rgba(224, 86, 21, 0.3);
+  box-shadow: 0 20px 48px rgba(11, 25, 44, 0.22);
 }
 
 .volunteer-feature > img {
