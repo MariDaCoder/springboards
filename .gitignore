@@ -1,3 +1,5 @@
+# .gitignore
+service-account.json
 .firebase/
 node_modules/
 .env
