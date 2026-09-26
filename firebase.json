@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "springboards-landing-page",
+    "site": "springboards-community-dev",
     "public": ".",
     "ignore": [
       "firebase.json",
