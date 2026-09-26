@@ -384,6 +384,7 @@ textarea:focus-visible,
   gap: 1.25rem;
   justify-content: flex-start;
   flex-wrap: wrap;
+  margin-top: 1.75rem;
 }
 
 .btn-primary {
