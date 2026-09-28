@@ -52,12 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const missionToggle = document.querySelector(".nav-dropdown-toggle");
   const sections = [
-    { id: "our-mission", link: missionToggle },
-    { id: "governance", link: missionToggle },
-    { id: "our-programs", link: document.querySelectorAll(".nav-dropdown-toggle")[1] },
-    { id: "our-impact", link: document.querySelectorAll(".nav-dropdown-toggle")[2] },
+    { id: "our-mission", link: document.querySelector(".nav-link[href='#our-mission']") },
+    { id: "our-programs", link: document.querySelectorAll(".nav-dropdown-toggle")[0] },
+    { id: "our-impact", link: document.querySelectorAll(".nav-dropdown-toggle")[1] },
     { id: "footer", link: document.querySelector(".nav-link[href='#footer']") }
   ].filter(s => s.link && document.getElementById(s.id));
 
