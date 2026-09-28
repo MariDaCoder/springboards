@@ -749,17 +749,97 @@
       </div>
     </div>
 
-    <!-- TRANSITIONAL JOBS CANDIDATE INTAKE MODAL -->
+    <!-- TRANSITIONAL JOBS CANDIDATE INTAKE & PRE-SCREEN MODAL -->
     <div class="inquiry-modal" id="candidateModal" hidden>
       <div class="inquiry-modal-backdrop" data-candidate-close></div>
       <div class="inquiry-modal-dialog modal-large" role="dialog" aria-modal="true" aria-labelledby="candidateModalTitle">
         <button type="button" class="inquiry-modal-close" data-candidate-close aria-label="Close candidate application">×</button>
-        <div class="modal-form-view" id="candidateFormView">
-          <span class="section-eyebrow">Second Chances • Real Wages • Zero Debt</span>
-          <h2 id="candidateModalTitle">Transitional Jobs &amp; OJT Application</h2>
-          <p class="modal-subtext">Apply for state-subsidized on-the-job training with direct pathways into permanent trade employment.</p>
+        
+        <!-- STEP INDICATOR / STEPPER -->
+        <div class="modal-stepper" id="candidateStepper">
+          <div class="stepper-step is-active" data-step="1">
+            <span class="stepper-number">1</span>
+            <span class="stepper-label">Quick Pre-Screen</span>
+          </div>
+          <div class="stepper-line"></div>
+          <div class="stepper-step" data-step="2">
+            <span class="stepper-number">2</span>
+            <span class="stepper-label">Your Info &amp; Trade</span>
+          </div>
+          <div class="stepper-line"></div>
+          <div class="stepper-step" data-step="3">
+            <span class="stepper-number">3</span>
+            <span class="stepper-label">Next Steps</span>
+          </div>
+        </div>
+
+        <!-- STAGE 1: GUIDED PRE-SCREEN QUIZ -->
+        <div class="modal-form-view" id="candidateQuizView">
+          <span class="section-eyebrow">Paid Training • Temp-to-Hire Pathway</span>
+          <h2 id="candidateModalTitle">Check Your Eligibility</h2>
+          <p class="modal-subtext">Answer 3 quick questions to see if you qualify for state-paid, temp-to-hire construction training through our local Career Center partnership.</p>
+          
+          <div class="quiz-question-group" style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
+            <div class="quiz-card" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+              <p style="font-weight: 700; color: var(--primary-navy); margin-bottom: 0.5rem;">1. Are you at least 18 years old and eligible to work in the United States?</p>
+              <div style="display: flex; gap: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-weight: 600;"><input type="radio" name="quiz_age" value="yes" checked> Yes</label>
+                <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-weight: 600;"><input type="radio" name="quiz_age" value="no"> No</label>
+              </div>
+            </div>
+
+            <div class="quiz-card" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+              <p style="font-weight: 700; color: var(--primary-navy); margin-bottom: 0.5rem;">2. Which description best matches your current situation?</p>
+              <select id="quiz_situation" class="form-select" style="width: 100%; padding: 0.65rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: white;">
+                <option value="returning_citizen">Returning citizen or justice-impacted individual seeking a fresh start</option>
+                <option value="opportunity_youth">Young adult ages 18 to 24 looking for a career direction</option>
+                <option value="underemployed">Unemployed or working part-time / temporary jobs wanting a living-wage career</option>
+                <option value="veteran">Military veteran transitioning to civilian construction trades</option>
+                <option value="community_other">Community member interested in building skills or volunteering</option>
+              </select>
+            </div>
+
+            <div class="quiz-card" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
+              <p style="font-weight: 700; color: var(--primary-navy); margin-bottom: 0.5rem;">3. Are you ready to participate in paid, hands-on construction training?</p>
+              <div style="display: flex; gap: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-weight: 600;"><input type="radio" name="quiz_ready" value="yes" checked> Yes, ready now</label>
+                <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-weight: 600;"><input type="radio" name="quiz_ready" value="curious"> Just exploring options / Community volunteer</label>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button type="button" class="btn-cta" id="btnQuizContinue" style="min-width: 180px;">Continue to Application &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STAGE 1B: ALTERNATIVE PATHWAY (WHEN NOT ELIGIBLE FOR PAID TRAINING) -->
+        <div class="modal-form-view" id="candidateAltView" hidden>
+          <span class="section-eyebrow" style="color: var(--accent-orange);">Community Pathways</span>
+          <h2>Explore Community &amp; Volunteer Opportunities</h2>
+          <p class="modal-subtext">Paid temp-to-hire training requires state work eligibility. But we would still love to have you involved with Springboards!</p>
+          <div style="background: #FFFBEB; border: 1px solid #FCD34D; border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
+            <h4 style="color: #92400E; margin-bottom: 0.5rem;">Alternative Ways to Participate:</h4>
+            <ul style="color: #78350F; font-size: 0.9rem; line-height: 1.6; padding-left: 1.25rem;">
+              <li>Join our weekend community build and volunteer sessions</li>
+              <li>Attend free introductory tool and safety workshops</li>
+              <li>Connect with our outreach team for local youth and community resources</li>
+            </ul>
+          </div>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button type="button" class="btn-cta btn-volunteer-redirect" style="background: var(--accent-green);">Sign Up as Volunteer &rarr;</button>
+            <button type="button" class="btn-cta" id="btnQuizBack" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-dark);">Back to Pre-Screen</button>
+          </div>
+        </div>
+
+        <!-- STAGE 2: APPLICATION FORM -->
+        <div class="modal-form-view" id="candidateFormView" hidden>
+          <span class="section-eyebrow">Pre-Screen Passed • Step 2 of 3</span>
+          <h2>Tell Us About Yourself</h2>
+          <p class="modal-subtext">This is a <strong>temp-to-hire</strong> training position. You will train on a working jobsite, earn regular wages while you learn entry-level skills, and work toward a full-time career placement upon completing your hours.</p>
           <form class="program-inquiry-form" id="candidateApplicationForm" novalidate>
             <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="hidden" name="quiz_situation_result" id="quiz_situation_result" value="">
             <label>Full Legal Name
               <input name="name" type="text" autocomplete="name" placeholder="First and last name" minlength="2" maxlength="80" required>
             </label>
@@ -782,17 +862,6 @@
                   <option value="Undecided / Open to Guidance">Undecided / Open to Guidance</option>
                 </select>
               </label>
-              <label>Background Status
-                <select name="backgroundStatus" class="form-select">
-                  <option value="Returning Citizen / Justice-Involved">Returning Citizen / Justice-Involved</option>
-                  <option value="Opportunity Youth">Opportunity Youth ages 18 to 24</option>
-                  <option value="Underemployed Adult / Career Changer">Underemployed Adult / Career Changer</option>
-                  <option value="Military Veteran">Military Veteran</option>
-                  <option value="Community Member">Community Member Seeking Trade Skills</option>
-                </select>
-              </label>
-            </div>
-            <div class="form-grid-row">
               <label>Transportation Status
                 <select name="transportation" class="form-select">
                   <option value="Personal Vehicle">Have Personal Vehicle</option>
@@ -801,20 +870,41 @@
                   <option value="Need Transportation Assistance">Need Transportation Assistance</option>
                 </select>
               </label>
-              <label>Career Center Registration
+            </div>
+            <div class="form-grid-row">
+              <label>Career Center Registration Status
                 <select name="careerCenter" class="form-select">
-                  <option value="Registered with AL Works / WorkSource GA">Yes, registered with AL Works / WorkSource GA</option>
-                  <option value="Need Help Registering">Not yet / Need help registering</option>
+                  <option value="Need Help Registering">I need help connecting with the Career Center</option>
+                  <option value="Registered with AL Works / WorkSource GA">Already registered with Alabama Career Center / AL Works</option>
+                </select>
+              </label>
+              <label>Entry-Level Helper Role
+                <select name="preferredRole" class="form-select">
+                  <option value="Carpenter Helper">Carpenter Helper</option>
+                  <option value="Electrician Helper">Electrician Helper</option>
+                  <option value="Plumber Helper">Plumber Helper</option>
+                  <option value="Tool & Inventory Clerk">Tool &amp; Inventory Clerk</option>
+                  <option value="Material Handler / General Laborer">Material Handler / General Laborer</option>
                 </select>
               </label>
             </div>
-            <label>Prior Experience, Certifications, or Questions
-              <textarea name="notes" rows="3" class="form-input" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: inherit;" placeholder="Tell us about any past construction experience or specific scheduling needs..."></textarea>
+            <label>Past Experience or Any Questions
+              <textarea name="notes" rows="2" class="form-input" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: inherit;" placeholder="Tell us about any past construction experience or specific scheduling needs..."></textarea>
             </label>
-            <button type="submit" class="btn-cta program-submit">Submit Candidate Application</button>
+            
+            <div style="background: #F1F5F9; border-left: 4px solid var(--accent-orange); padding: 0.85rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.82rem; color: #334155;">
+              <strong>Important Program Notice:</strong> This is an entry-level helper position. It is designed as a temp-to-hire program where you gain hands-on trade skills up to a set training period, after which we help transition you into permanent, full-time employment.
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+              <button type="button" class="btn-cta" id="btnFormBackToQuiz" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-dark);">Back to Pre-Screen</button>
+              <button type="submit" class="btn-cta program-submit">Submit Application &rarr;</button>
+            </div>
             <p class="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
+
+        <!-- STAGE 3: CONFIRMATION & CAREER CENTER CO-ENROLLMENT -->
         <div class="modal-confirmation-screen" id="candidateConfirmationScreen" hidden>
           <div class="confirmation-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -822,17 +912,36 @@
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
           </div>
-          <span class="section-eyebrow confirm-eyebrow">Application Received</span>
+          <span class="section-eyebrow confirm-eyebrow">Step 3 of 3 • Application Received</span>
           <h2 class="confirmation-title">You're On Your Way!</h2>
-          <p class="confirmation-text">Thank you, <strong class="confirm-name">there</strong>! We've received your application for the <strong class="confirm-trade">Carpentry &amp; Construction Technology</strong> transitional jobs track. An intake counselor will contact you by phone or email within 1–2 business days to schedule your intake interview and verify required documents.</p>
-          <div class="confirmation-meta">
-            <p><strong>Intake Documents to Prepare:</strong><br>
+          <p class="confirmation-text">Thank you, <strong class="confirm-name">there</strong>! We've received your application for the <strong class="confirm-trade">Carpentry &amp; Construction Technology</strong> temp-to-hire training track.</p>
+          
+          <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin: 1.25rem 0; text-align: left;">
+            <h4 style="color: var(--primary-navy); margin-bottom: 0.5rem; font-size: 1rem;">Here is How the Process Works:</h4>
+            <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.85rem; color: #475569;">
+              <div style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                <span style="background: var(--accent-orange); color: white; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.75rem;">1</span>
+                <div><strong>Springboards Intake:</strong> An intake coordinator will contact you by phone or text within 1 to 2 business days to verify basic documents.</div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                <span style="background: var(--accent-orange); color: white; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.75rem;">2</span>
+                <div><strong>Career Center Co-Enrollment:</strong> We will connect you with our partner Alabama Career Center (Valley or Opelika) for quick official registration.</div>
+              </div>
+              <div style="display: flex; gap: 0.5rem; align-items: flex-start;">
+                <span style="background: var(--accent-green); color: white; border-radius: 50%; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.75rem;">3</span>
+                <div><strong>Begin Paid Temp-to-Hire Training:</strong> Start paid hands-on construction training with safety equipment provided!</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="confirmation-meta" style="text-align: left;">
+            <p><strong>Documents to Have Ready:</strong><br>
             • Valid Government Photo ID or Driver's License<br>
             • Social Security Card or Work Authorization<br>
-            • Career Center Referral or on-site enrollment assistance<br>
             Center Location: 2269 15th Ave. S.W., Lanett, AL 36863 | Phone: <a href="tel:+16156031157">615-603-1157</a></p>
           </div>
           <button type="button" class="btn-cta confirmation-done-button" data-candidate-close>Done <span aria-hidden="true">✓</span></button>
+        </div>
         </div>
       </div>
     </div>
@@ -845,7 +954,7 @@
         <div class="modal-form-view" id="partnerFormView">
           <span class="section-eyebrow">Workforce Collaboration</span>
           <h2 id="partnerModalTitle">Partner With Springboards</h2>
-          <p class="modal-subtext">Host subsidized On-the-Job Training participants, hire certified trade graduates, or sponsor equipment and training materials.</p>
+          <p class="modal-subtext">Partner with us by contributing building materials, donating commercial tools and equipment, or providing guest trade mentorship.</p>
           <form class="program-inquiry-form" id="partnerApplicationForm" novalidate>
             <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
             <div class="form-grid-row">
@@ -867,11 +976,11 @@
             <div class="form-grid-row">
               <label>Partnership Interest
                 <select name="partnershipType" class="form-select">
-                  <option value="Host Worksite for Subsidized OJT">Host Worksite for Subsidized OJT / Transitional Jobs</option>
-                  <option value="Hiring Partner for Certified Graduates">Hiring Partner for Certified Graduates</option>
-                  <option value="Tool, Equipment & Material Donation">Tool, Equipment &amp; Material Donation</option>
-                  <option value="Trade Mentor / Guest Instructor">Trade Mentor / Guest Instructor</option>
+                  <option value="Tool, Equipment & Material Donation">Tool, Equipment &amp; Building Material Donation</option>
+                  <option value="Trade Mentor / Guest Instructor">Trade Mentor / Guest Craft Instructor</option>
+                  <option value="Building Materials Supplier">Building Materials Supplier / Retail Partner</option>
                   <option value="Corporate / Foundation Sponsorship">Corporate / Foundation Sponsorship</option>
+                  <option value="Civic / Non-Profit Partner">Civic / Community Non-Profit Collaboration</option>
                 </select>
               </label>
               <label>Trade Specialization
@@ -886,10 +995,10 @@
                 </select>
               </label>
             </div>
-            <label>Estimated Openings or Project Description
-              <textarea name="message" rows="3" class="form-input" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: inherit;" placeholder="Describe your upcoming project sites, estimated apprentice openings, or equipment you wish to donate..."></textarea>
+            <label>Resource Description or Items Offered
+              <textarea name="message" rows="3" class="form-input" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: inherit;" placeholder="Describe materials, lumber, tools, or equipment you wish to contribute to the training facility..."></textarea>
             </label>
-            <button type="submit" class="btn-cta program-submit">Submit Partnership Inquiry</button>
+            <button type="submit" class="btn-cta program-submit">Submit Resource Partnership</button>
             <p class="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -900,9 +1009,9 @@
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
           </div>
-          <span class="section-eyebrow confirm-eyebrow">Inquiry Received</span>
-          <h2 class="confirmation-title">Thank You for Partnering!</h2>
-          <p class="confirmation-text">Thank you, <strong class="confirm-name">Partner</strong> from <strong class="confirm-company">your company</strong>! Executive Director Marvin Thompson and our workforce development team will connect with you to review worksite agreements, wage subsidies, and candidate matching.</p>
+          <span class="section-eyebrow confirm-eyebrow">Partnership Received</span>
+          <h2 class="confirmation-title">Thank You for Supporting Our Community!</h2>
+          <p class="confirmation-text">Thank you, <strong class="confirm-name">Partner</strong> from <strong class="confirm-company">your company</strong>! Executive Director Marvin Thompson and our operations team will connect with you to coordinate material drop-offs, tool receipt documentation, and sponsorship acknowledgment.</p>
           <div class="confirmation-meta">
             <p>Direct Partner Line: <a href="tel:+16156031157">615-603-1157</a> &bull; Email: <a href="mailto:info@springboardsfcd.org">info@springboardsfcd.org</a><br>Springboards Community Center • 2269 15th Ave. S.W., Lanett, AL 36863</p>
           </div>

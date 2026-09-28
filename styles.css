@@ -2147,6 +2147,74 @@ body.modal-open {
   overflow-y: auto;
 }
 
+/* Modal Stepper Indicator */
+.modal-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stepper-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.5;
+  transition: opacity var(--transition-fast);
+}
+
+.stepper-step.is-active {
+  opacity: 1;
+}
+
+.stepper-step.is-completed {
+  opacity: 0.85;
+}
+
+.stepper-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: var(--text-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepper-step.is-active .stepper-number {
+  background: var(--accent-orange);
+  color: #ffffff;
+}
+
+.stepper-step.is-completed .stepper-number {
+  background: var(--accent-green);
+  color: #ffffff;
+}
+
+.stepper-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary-navy);
+}
+
+.stepper-line {
+  flex: 1;
+  height: 2px;
+  background: #e2e8f0;
+  margin: 0 0.75rem;
+}
+
+@media (max-width: 600px) {
+  .stepper-label {
+    display: none;
+  }
+}
+
 .modal-subtext {
   font-size: 0.95rem;
   color: var(--text-dark);

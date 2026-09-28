@@ -772,6 +772,9 @@
           🏛️ Board &amp; Governance
         </button>
         <!-- Admin Only Tabs -->
+        <button class="nav-tab-btn admin-only" id="tab-nav-candidates" style="display: none;" onclick="switchNavTab('candidates')">
+          👤 Candidate Applications <span class="admin-badge">Admin</span>
+        </button>
         <button class="nav-tab-btn admin-only" id="tab-nav-compliance" style="display: none;" onclick="switchNavTab('compliance')">
           📋 Compliance Tracker <span class="admin-badge">Admin</span>
         </button>
@@ -925,7 +928,61 @@
         </div>
       </section>
 
-      <!-- 5. STAFF ROSTER & PHONE ACCESS (ADMIN ONLY) -->
+      <!-- 5. CANDIDATE APPLICATIONS & CASE MANAGEMENT (ADMIN ONLY) -->
+      <section id="panel-candidates" class="panel admin-only" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <h2 style="font-size: 1.3rem; font-weight: 800;">Candidate Applications &amp; Case Files</h2>
+            <p style="font-size: 0.82rem; color: #94A3B8;">Review new website intake submissions, update case progress, and track Career Center referral milestones</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <button onclick="loadBackofficeState()" style="background: transparent; border: 1px solid #334155; color: #94A3B8; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; cursor: pointer;">
+              🔄 Refresh List
+            </button>
+          </div>
+        </div>
+
+        <!-- Candidate KPI Summary Cards -->
+        <div class="kpi-grid" style="margin-bottom: 1.25rem;">
+          <div class="kpi-card">
+            <span class="kpi-number" id="kpi-total-candidates">0</span>
+            <span class="kpi-label">Total Applicants</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-number" style="color: #F59E0B;" id="kpi-pending-candidates">0</span>
+            <span class="kpi-label">Pending Intake</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-number" style="color: #38BDF8;" id="kpi-docs-candidates">0</span>
+            <span class="kpi-label">Docs Verified</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-number" style="color: #10B981;" id="kpi-placed-candidates">0</span>
+            <span class="kpi-label">Placed / Active Training</span>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 0; overflow-x: auto;">
+          <table class="compliance-table" style="width: 100%;">
+            <thead>
+              <tr>
+                <th>Applicant</th>
+                <th>Trade &amp; Helper Role</th>
+                <th>Background &amp; Transit</th>
+                <th>Career Center Status</th>
+                <th>Intake Stage</th>
+                <th>Case Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="candidates-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6. STAFF ROSTER & PHONE ACCESS (ADMIN ONLY) -->
       <section id="panel-roster" class="panel admin-only" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
           <div>
@@ -1295,6 +1352,7 @@
         renderDocuments();
         renderBoardStructure();
         if (currentUser.isAdmin) {
+          renderCandidates();
           renderComplianceTable();
           renderRoster();
         }
@@ -1660,6 +1718,125 @@
           </div>
         `;
       }).join('');
+    }
+
+    // Candidate Intake & Case Management Functions (Admin)
+    function renderCandidates() {
+      const tbody = document.getElementById('candidates-table-body');
+      if (!tbody) return;
+      const candidates = appState.candidateApplications || [];
+
+      // Update KPIs
+      const totalEl = document.getElementById('kpi-total-candidates');
+      const pendingEl = document.getElementById('kpi-pending-candidates');
+      const docsEl = document.getElementById('kpi-docs-candidates');
+      const placedEl = document.getElementById('kpi-placed-candidates');
+
+      if (totalEl) totalEl.textContent = candidates.length;
+      if (pendingEl) pendingEl.textContent = candidates.filter(c => (c.stage || 'Pending Intake') === 'Pending Intake').length;
+      if (docsEl) docsEl.textContent = candidates.filter(c => c.stage === 'Documents Collected' || c.stage === 'Orientation Scheduled').length;
+      if (placedEl) placedEl.textContent = candidates.filter(c => c.stage === 'Active Worksite Training' || c.stage === 'Placed in Job').length;
+
+      if (candidates.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; padding: 2rem; color: #94A3B8;">
+              No candidate applications received yet. Submissions from the public website intake modal will appear here in real-time.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = candidates.map(c => {
+        const stageColors = {
+          'Pending Intake': 'background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3);',
+          'Documents Collected': 'background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.3);',
+          'Orientation Scheduled': 'background: rgba(168, 85, 247, 0.15); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3);',
+          'Active Worksite Training': 'background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3);',
+          'Placed in Job': 'background: rgba(34, 197, 94, 0.25); color: #4ADE80; border: 1px solid #22C55E;',
+          'Inactive / On Hold': 'background: rgba(100, 116, 139, 0.2); color: #94A3B8; border: 1px solid #475569;'
+        };
+        const curStage = c.stage || 'Pending Intake';
+        const badgeStyle = stageColors[curStage] || stageColors['Pending Intake'];
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight: 700; color: #F8FAFC; font-size: 0.9rem;">${escapeHtml(c.name)}</div>
+              <div style="font-size: 0.78rem; color: #38BDF8; margin-top: 2px;">
+                <a href="tel:${escapeHtml(c.phone)}" style="color: #38BDF8; text-decoration: none;">📞 ${escapeHtml(c.phone || 'No phone')}</a>
+              </div>
+              ${c.email ? `<div style="font-size: 0.74rem; color: #94A3B8; margin-top: 1px;"><a href="mailto:${escapeHtml(c.email)}" style="color: #94A3B8;">✉️ ${escapeHtml(c.email)}</a></div>` : ''}
+              <div style="font-size: 0.7rem; color: #64748B; margin-top: 4px;">Applied: ${c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'Recent'}</div>
+            </td>
+            <td>
+              <div style="font-weight: 600; color: #E2E8F0; font-size: 0.85rem;">${escapeHtml(c.trade || 'General Construction')}</div>
+              <div style="font-size: 0.76rem; color: #F59E0B; margin-top: 2px;">Helper: ${escapeHtml(c.preferredRole || 'Carpenter Helper')}</div>
+            </td>
+            <td>
+              <div style="font-size: 0.8rem; color: #CBD5E1;">${escapeHtml(c.backgroundStatus || 'Standard')}</div>
+              <div style="font-size: 0.74rem; color: #94A3B8; margin-top: 2px;">Transit: ${escapeHtml(c.transportation || 'Flexible')}</div>
+            </td>
+            <td>
+              <span style="font-size: 0.78rem; color: ${c.careerCenterStatus && c.careerCenterStatus.includes('Need') ? '#F59E0B' : '#10B981'}; font-weight: 600;">
+                ${escapeHtml(c.careerCenterStatus || 'Pending Registration')}
+              </span>
+            </td>
+            <td>
+              <select onchange="updateCandidateStage('${c.id}', this.value)" style="padding: 4px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; ${badgeStyle}">
+                <option value="Pending Intake" ${curStage === 'Pending Intake' ? 'selected' : ''}>Pending Intake</option>
+                <option value="Documents Collected" ${curStage === 'Documents Collected' ? 'selected' : ''}>Documents Collected</option>
+                <option value="Orientation Scheduled" ${curStage === 'Orientation Scheduled' ? 'selected' : ''}>Orientation Scheduled</option>
+                <option value="Active Worksite Training" ${curStage === 'Active Worksite Training' ? 'selected' : ''}>Active Worksite Training</option>
+                <option value="Placed in Job" ${curStage === 'Placed in Job' ? 'selected' : ''}>Placed in Job</option>
+                <option value="Inactive / On Hold" ${curStage === 'Inactive / On Hold' ? 'selected' : ''}>Inactive / On Hold</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" value="${escapeHtml(c.intakeNotes || c.notes || '')}" placeholder="Add case notes..." onblur="updateCandidateNotes('${c.id}', this.value)" style="background: #0B192C; border: 1px solid #1E293B; color: #CBD5E1; border-radius: 4px; padding: 4px 8px; font-size: 0.78rem; width: 100%; min-width: 140px;">
+            </td>
+            <td>
+              <button onclick="deleteCandidateRecord('${c.id}')" style="background: #7F1D1D; border: none; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.72rem; cursor: pointer; white-space: nowrap;">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function updateCandidateStage(id, newStage) {
+      try {
+        await fetch('/api/backoffice/candidates/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, stage: newStage })
+        });
+        await loadBackofficeState();
+      } catch (err) {
+        console.error('Error updating candidate stage:', err);
+      }
+    }
+
+    async function updateCandidateNotes(id, newNotes) {
+      try {
+        await fetch('/api/backoffice/candidates/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, intakeNotes: newNotes })
+        });
+      } catch (err) {
+        console.error('Error updating candidate notes:', err);
+      }
+    }
+
+    async function deleteCandidateRecord(id) {
+      if (!confirm('Are you sure you want to delete this applicant record?')) return;
+      try {
+        await fetch(`/api/backoffice/candidates/${id}`, { method: 'DELETE' });
+        await loadBackofficeState();
+      } catch (err) {
+        console.error('Error deleting candidate:', err);
+      }
     }
 
     // Modal Helpers

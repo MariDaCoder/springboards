@@ -576,28 +576,46 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // TRANSITIONAL JOBS CANDIDATE INTAKE MODAL
+  // TRANSITIONAL JOBS CANDIDATE INTAKE & PRE-SCREEN MODAL
   const candidateModal = document.getElementById("candidateModal");
+  const candidateStepper = document.getElementById("candidateStepper");
+  const candidateQuizView = document.getElementById("candidateQuizView");
+  const candidateAltView = document.getElementById("candidateAltView");
   const candidateFormView = document.getElementById("candidateFormView");
   const candidateConfirmationScreen = document.getElementById("candidateConfirmationScreen");
   const candidateForm = document.getElementById("candidateApplicationForm");
 
+  const setStepperStep = (stepNumber) => {
+    if (!candidateStepper) return;
+    candidateStepper.querySelectorAll(".stepper-step").forEach((step) => {
+      const stepVal = Number(step.dataset.step);
+      step.classList.toggle("is-active", stepVal === stepNumber);
+      step.classList.toggle("is-completed", stepVal < stepNumber);
+    });
+  };
+
   const openCandidateModal = (defaultTrade) => {
-    if (!candidateModal || !candidateForm) return;
-    candidateForm.reset();
-    candidateFormView.hidden = false;
-    candidateConfirmationScreen.hidden = true;
-    candidateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
-    const status = candidateForm.querySelector(".form-status");
-    if (status) {
-      status.textContent = "";
-      status.classList.remove("is-error");
+    if (!candidateModal) return;
+    if (candidateForm) candidateForm.reset();
+    if (candidateQuizView) candidateQuizView.hidden = false;
+    if (candidateAltView) candidateAltView.hidden = true;
+    if (candidateFormView) candidateFormView.hidden = true;
+    if (candidateConfirmationScreen) candidateConfirmationScreen.hidden = true;
+    setStepperStep(1);
+
+    if (candidateForm) {
+      candidateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+      const status = candidateForm.querySelector(".form-status");
+      if (status) {
+        status.textContent = "";
+        status.classList.remove("is-error");
+      }
+      if (defaultTrade && candidateForm.elements.trade) {
+        candidateForm.elements.trade.value = defaultTrade;
+      }
     }
-    if (defaultTrade && candidateForm.elements.trade) {
-      candidateForm.elements.trade.value = defaultTrade;
-    }
-    const nameField = candidateForm.elements.name;
-    openModalWithFocus(candidateModal, nameField);
+    const continueBtn = document.getElementById("btnQuizContinue");
+    openModalWithFocus(candidateModal, continueBtn);
   };
 
   document.querySelectorAll(".btn-candidate-trigger").forEach((btn) => {
@@ -605,6 +623,64 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const defaultTrade = btn.dataset.tradeDefault || "Carpentry & Construction Technology";
       openCandidateModal(defaultTrade);
+    });
+  });
+
+  // Quiz navigation buttons
+  const btnQuizContinue = document.getElementById("btnQuizContinue");
+  if (btnQuizContinue) {
+    btnQuizContinue.addEventListener("click", () => {
+      const ageChoice = document.querySelector('input[name="quiz_age"]:checked')?.value;
+      const situationChoice = document.getElementById("quiz_situation")?.value;
+      const readyChoice = document.querySelector('input[name="quiz_ready"]:checked')?.value;
+
+      if (ageChoice === "no") {
+        candidateQuizView.hidden = true;
+        candidateAltView.hidden = false;
+        return;
+      }
+
+      // Store situation result into candidate form hidden field
+      const hiddenSituation = document.getElementById("quiz_situation_result");
+      if (hiddenSituation) {
+        hiddenSituation.value = situationChoice || "qualified_candidate";
+      }
+
+      candidateQuizView.hidden = true;
+      candidateFormView.hidden = false;
+      setStepperStep(2);
+      if (candidateForm && candidateForm.elements.name) {
+        candidateForm.elements.name.focus();
+      }
+    });
+  }
+
+  const btnQuizBack = document.getElementById("btnQuizBack");
+  if (btnQuizBack) {
+    btnQuizBack.addEventListener("click", () => {
+      candidateAltView.hidden = true;
+      candidateQuizView.hidden = false;
+      setStepperStep(1);
+    });
+  }
+
+  const btnFormBackToQuiz = document.getElementById("btnFormBackToQuiz");
+  if (btnFormBackToQuiz) {
+    btnFormBackToQuiz.addEventListener("click", () => {
+      candidateFormView.hidden = true;
+      candidateQuizView.hidden = false;
+      setStepperStep(1);
+    });
+  }
+
+  // Redirect from alt view to volunteer signups
+  document.querySelectorAll(".btn-volunteer-redirect").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      closeModalWithFocus(candidateModal);
+      const volunteerSection = document.getElementById("volunteer-events");
+      if (volunteerSection) {
+        volunteerSection.scrollIntoView({ behavior: "smooth" });
+      }
     });
   });
 
@@ -625,6 +701,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (formData.get("website_url")) {
         candidateFormView.hidden = true;
         candidateConfirmationScreen.hidden = false;
+        setStepperStep(3);
         candidateForm.reset();
         return;
       }
@@ -633,9 +710,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const phone = String(formData.get("phone") || "").trim();
       const email = String(formData.get("email") || "").trim();
       const trade = String(formData.get("trade") || "Carpentry & Construction Technology").trim();
-      const backgroundStatus = String(formData.get("backgroundStatus") || "").trim();
       const transportation = String(formData.get("transportation") || "").trim();
       const careerCenter = String(formData.get("careerCenter") || "").trim();
+      const preferredRole = String(formData.get("preferredRole") || "Carpenter Helper").trim();
+      const backgroundStatus = String(formData.get("quiz_situation_result") || "Pre-screened Candidate").trim();
       const notes = String(formData.get("notes") || "").trim();
 
       status.classList.remove("is-error");
@@ -660,7 +738,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (phone && !isValidPhone(phone)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number (e.g. 555-123-4567).";
+        status.textContent = "Please enter a valid 10-digit phone number, e.g. 555-123-4567.";
         candidateForm.elements.phone.classList.add("is-invalid");
         candidateForm.elements.phone.focus();
         return;
@@ -683,7 +761,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const res = await fetch("/api/candidates", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, phone, email, trade, backgroundStatus, transportation, careerCenter, notes })
+            body: JSON.stringify({ name, phone, email, trade, backgroundStatus, transportation, careerCenter, preferredRole, notes })
           });
           if (res.ok) delivered = true;
         } catch {}
@@ -701,6 +779,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   phone: { stringValue: phone },
                   email: { stringValue: email },
                   trade: { stringValue: trade },
+                  preferredRole: { stringValue: preferredRole },
                   backgroundStatus: { stringValue: backgroundStatus },
                   transportation: { stringValue: transportation },
                   careerCenter: { stringValue: careerCenter },
@@ -714,6 +793,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         candidateFormView.hidden = true;
         candidateConfirmationScreen.hidden = false;
+        setStepperStep(3);
         const confirmName = candidateConfirmationScreen.querySelector(".confirm-name");
         const confirmTrade = candidateConfirmationScreen.querySelector(".confirm-trade");
         if (confirmName) confirmName.textContent = name;

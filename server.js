@@ -283,26 +283,35 @@ app.post('/api/candidates', async (req, res) => {
     }
 
     const newRecord = {
+      id: `cand-${Date.now()}`,
       type: 'transitional_candidate_application',
       name: trimmedName,
       phone: trimmedPhone,
       email: trimmedEmail,
       trade: trimmedTrade,
+      preferredRole: String(req.body.preferredRole || 'Carpenter Helper').trim(),
       backgroundStatus: trimmedBackground,
       transportation: trimmedTransit,
       careerCenterStatus: trimmedCareerCenter,
       notes: trimmedNotes,
-      status: 'pending_intake',
+      stage: 'Pending Intake',
+      intakeNotes: '',
       deliveredTo: DESIGNATED_INBOX,
       createdAt: new Date().toISOString()
     };
+
+    if (!Array.isArray(backofficeData.candidateApplications)) {
+      backofficeData.candidateApplications = [];
+    }
+    backofficeData.candidateApplications.unshift(newRecord);
+    saveBackofficeData();
 
     const docRef = await db.collection('candidateApplications').add(newRecord);
     deliveredInboxLog.push({ ...newRecord, id: docRef.id });
 
     return res.status(200).json({
       success: true,
-      id: docRef.id,
+      id: newRecord.id,
       deliveredTo: DESIGNATED_INBOX,
       message: `Your application for the Transitional Jobs & OJT pathway has been routed to our intake team at ${DESIGNATED_INBOX}.`
     });
@@ -723,7 +732,7 @@ app.post('/api/backoffice/auth', (req, res) => {
   return res.status(401).json({ error: 'Phone number or staff PIN not recognized. Please contact Marilynn or Marvin to be added to the team roster.' });
 });
 
-// Get state (chat, calendar, documents, compliance, and roster if authorized)
+// Get state (chat, calendar, documents, compliance, candidates, and roster if authorized)
 app.get('/api/backoffice/state', (req, res) => {
   const isAdmin = req.headers['x-admin-auth'] === 'true' || req.query.admin === 'true';
 
@@ -732,6 +741,7 @@ app.get('/api/backoffice/state', (req, res) => {
     calendarEvents: backofficeData.calendarEvents || [],
     sharedDocuments: backofficeData.sharedDocuments || [],
     complianceItems: backofficeData.complianceItems || [],
+    candidateApplications: backofficeData.candidateApplications || [],
     boardStructure: backofficeData.boardStructure || [],
     staffRoster: isAdmin ? backofficeData.staffRoster : (backofficeData.staffRoster || []).map(m => ({ id: m.id, name: m.name, role: m.role, status: m.status }))
   });
@@ -853,6 +863,29 @@ app.post('/api/backoffice/compliance/update', (req, res) => {
 
   saveBackofficeData();
   return res.status(200).json({ success: true, item });
+});
+
+// Update candidate stage & intake notes
+app.post('/api/backoffice/candidates/update', (req, res) => {
+  const { id, stage, intakeNotes } = req.body || {};
+  const cand = (backofficeData.candidateApplications || []).find(c => c.id === id);
+  if (!cand) {
+    return res.status(404).json({ error: 'Candidate record not found.' });
+  }
+
+  if (stage) cand.stage = stage;
+  if (intakeNotes !== undefined) cand.intakeNotes = intakeNotes;
+
+  saveBackofficeData();
+  return res.status(200).json({ success: true, candidate: cand });
+});
+
+// Delete candidate record
+app.delete('/api/backoffice/candidates/:id', (req, res) => {
+  const { id } = req.params;
+  backofficeData.candidateApplications = (backofficeData.candidateApplications || []).filter(c => c.id !== id);
+  saveBackofficeData();
+  return res.status(200).json({ success: true });
 });
 
 // Backoffice and Portal route

@@ -109,6 +109,51 @@
       "location": "Backoffice Portal",
       "category": "administrative",
       "description": "Submit bi-weekly participant training hours (verify max 32 hrs/week limit)."
+    },
+    {
+      "id": "event-5",
+      "title": "Task: Complete Sirius Staffing Avionte Timesheet Checklist",
+      "date": "2026-10-03",
+      "time": "11:00 AM",
+      "location": "Administrative Office / Sirius Portal",
+      "category": "administrative",
+      "description": "Review and verify the Sirius Staffing Avionte Timesheet Checklist for field supervisors to ensure compliance with the 32 hr/wk ceiling and overtime prohibition."
+    }
+  ],
+  "candidateApplications": [
+    {
+      "id": "cand-demo-1",
+      "type": "transitional_candidate_application",
+      "name": "DeMarcus Jenkins",
+      "phone": "(334) 555-0142",
+      "email": "djenkins.workforce@gmail.com",
+      "trade": "Carpentry & Construction Technology",
+      "preferredRole": "Carpenter Helper",
+      "backgroundStatus": "Returning Citizen / Justice-Involved",
+      "transportation": "Have Personal Vehicle",
+      "careerCenterStatus": "Registered with AL Works / WorkSource GA",
+      "notes": "Has 6 months framing helper experience; looking for full-time living wage career path.",
+      "stage": "Pending Intake",
+      "intakeNotes": "Intro call scheduled for Tuesday 10am.",
+      "deliveredTo": "info@springboardsfcd.org",
+      "createdAt": "2026-09-27T18:20:00.000Z"
+    },
+    {
+      "id": "cand-demo-2",
+      "type": "transitional_candidate_application",
+      "name": "Brandon Mitchell",
+      "phone": "(334) 756-8891",
+      "email": "bmitchell99@yahoo.com",
+      "trade": "Electrical & Wiring",
+      "preferredRole": "Electrician Helper",
+      "backgroundStatus": "Opportunity Youth ages 18 to 24",
+      "transportation": "Public Transit / Walking",
+      "careerCenterStatus": "Need Help Registering",
+      "notes": "Very motivated to learn residential wiring and conduit bending.",
+      "stage": "Documents Collected",
+      "intakeNotes": "ID and SS card verified; coordinating Valley Career Center referral.",
+      "deliveredTo": "info@springboardsfcd.org",
+      "createdAt": "2026-09-26T14:15:00.000Z"
     }
   ],
   "complianceItems": [
