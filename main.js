@@ -202,9 +202,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const phoneNumberLength = phoneNumber.length;
     if (phoneNumberLength < 4) return phoneNumber;
     if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+      return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3)}`;
     }
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   };
 
   const isValidEmail = (email) => {
@@ -291,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 1. Validate Name
       if (!name || name.length < 2) {
         status.classList.add("is-error");
-        status.textContent = "Please enter your full name (minimum 2 characters).";
+        status.textContent = "Please enter your full name, minimum 2 characters.";
         inquiryForm.elements.name.classList.add("is-invalid");
         inquiryForm.elements.name.focus();
         return;
@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Validate Phone format if provided
       if (phone && !isValidPhone(phone)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number, e.g. (334) 556-1234.";
+        status.textContent = "Please enter a valid 10-digit phone number, e.g. 334-556-1234.";
         inquiryForm.elements.phone.classList.add("is-invalid");
         inquiryForm.elements.phone.focus();
         return;
@@ -319,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 4. Validate Email format if provided
       if (email && !isValidEmail(email)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid email address (e.g. name@example.com).";
+        status.textContent = "Please enter a valid email address, e.g. name@example.com.";
         inquiryForm.elements.email.classList.add("is-invalid");
         inquiryForm.elements.email.focus();
         return;
@@ -445,7 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 1. Validate Name
       if (!name || name.length < 2) {
         status.classList.add("is-error");
-        status.textContent = "Please enter your full name (minimum 2 characters).";
+        status.textContent = "Please enter your full name, minimum 2 characters.";
         volunteerSignupForm.elements.name.classList.add("is-invalid");
         volunteerSignupForm.elements.name.focus();
         return;
@@ -464,7 +464,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Validate Phone format if provided
       if (phone && !isValidPhone(phone)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number, e.g. (334) 556-1234.";
+        status.textContent = "Please enter a valid 10-digit phone number, e.g. 334-556-1234.";
         volunteerSignupForm.elements.phone.classList.add("is-invalid");
         volunteerSignupForm.elements.phone.focus();
         return;
@@ -473,7 +473,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 4. Validate Email format if provided
       if (email && !isValidEmail(email)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid email address (e.g. name@example.com).";
+        status.textContent = "Please enter a valid email address, e.g. name@example.com.";
         volunteerSignupForm.elements.email.classList.add("is-invalid");
         volunteerSignupForm.elements.email.focus();
         return;
@@ -643,7 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!name || name.length < 2) {
         status.classList.add("is-error");
-        status.textContent = "Please enter your full legal name (minimum 2 characters).";
+        status.textContent = "Please enter your full legal name, minimum 2 characters.";
         candidateForm.elements.name.classList.add("is-invalid");
         candidateForm.elements.name.focus();
         return;
@@ -660,7 +660,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (phone && !isValidPhone(phone)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number, e.g. (334) 556-1234.";
+        status.textContent = "Please enter a valid 10-digit phone number, e.g. 334-556-1234.";
         candidateForm.elements.phone.classList.add("is-invalid");
         candidateForm.elements.phone.focus();
         return;
@@ -668,7 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (email && !isValidEmail(email)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid email address (e.g. name@example.com).";
+        status.textContent = "Please enter a valid email address, e.g. name@example.com.";
         candidateForm.elements.email.classList.add("is-invalid");
         candidateForm.elements.email.focus();
         return;
@@ -726,7 +726,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (err) {
         console.error(err);
         status.classList.add("is-error");
-        status.textContent = "Could not submit application. Please call (334) 556-1234 or email info@springboardsfcd.org.";
+        status.textContent = "Could not submit application. Please call 334-556-1234 or email info@springboardsfcd.org.";
       } finally {
         submit.disabled = false;
       }
@@ -861,7 +861,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (err) {
         console.error(err);
         status.classList.add("is-error");
-        status.textContent = "Could not submit inquiry. Please call (334) 556-1234 or email info@springboardsfcd.org.";
+        status.textContent = "Could not submit inquiry. Please call 334-556-1234 or email info@springboardsfcd.org.";
       } finally {
         submit.disabled = false;
       }
@@ -1100,7 +1100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
           await navigator.share({
             title: "Springboards for Community Development",
-            text: "Debt-free trade training and career pathways in West Georgia & East Alabama.",
+            text: "WIOA-authorized trade training and career pathways: based in Shawmut, Alabama, serving East Alabama.",
             url: window.location.href
           });
         } catch {
