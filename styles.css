@@ -2399,7 +2399,7 @@ body.modal-open {
   }
 
   a[href^="http"]::after {
-    content: " (" attr(href) ")";
+    content: " - " attr(href);
     font-size: 9pt;
     color: #555555;
   }
@@ -2407,4 +2407,177 @@ body.modal-open {
   a[href^="#"]::after {
     content: "";
   }
+}
+
+/* --------------------------------------------------------------------------
+   Governance & Board of Directors Section
+   -------------------------------------------------------------------------- */
+.governance-section {
+  background-color: var(--bg-cream, #fdfbf7);
+  border-bottom: 1px solid var(--border-color);
+  padding: clamp(3.5rem, 6vw, 6rem) 0;
+}
+
+.governance-header {
+  text-align: center;
+  max-width: 52rem;
+  margin: 0 auto 3rem;
+}
+
+.governance-eyebrow {
+  color: var(--accent-orange);
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.governance-title {
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--primary-navy);
+  margin-bottom: 0.75rem;
+}
+
+.governance-subtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-orange);
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+
+.governance-intro {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #475569;
+}
+
+.governance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.governance-card {
+  background: #ffffff;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.governance-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  border-color: #CBD5E1;
+}
+
+.governance-card.is-featured {
+  border-top: 4px solid var(--accent-orange);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);
+}
+
+.governance-card.is-officer {
+  border-top: 4px solid var(--primary-navy);
+}
+
+.governance-card.is-member {
+  border-top: 4px solid var(--accent-green);
+}
+
+.governance-badge {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  margin-bottom: 0.85rem;
+}
+
+.governance-badge.badge-executive {
+  background-color: #FFF7ED;
+  color: #C2410C;
+  border: 1px solid #FFEDD5;
+}
+
+.governance-badge.badge-officer {
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #DBEAFE;
+}
+
+.governance-badge.badge-member {
+  background-color: #F0FDF4;
+  color: #15803D;
+  border: 1px solid #DCFCE7;
+}
+
+.governance-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin-bottom: 0.25rem;
+  line-height: 1.25;
+}
+
+.governance-role {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.governance-divider {
+  height: 1px;
+  background: #F1F5F9;
+  margin-bottom: 1rem;
+}
+
+.governance-responsibilities-title {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.65rem;
+}
+
+.governance-responsibilities {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: #334155;
+  line-height: 1.45;
+}
+
+.governance-responsibilities li {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.governance-responsibilities li::before {
+  content: "•";
+  position: absolute;
+  left: 0.25rem;
+  color: var(--accent-orange);
+  font-weight: bold;
 }

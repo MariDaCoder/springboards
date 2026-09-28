@@ -1,0 +1,430 @@
+{
+  "staffRoster": [
+    {
+      "id": "staff-1",
+      "name": "Marilynn Ward",
+      "role": "Workforce Director / Compliance Admin",
+      "phone": "(615) 603-1157",
+      "pin": "2026",
+      "isAdmin": true,
+      "status": "Active"
+    },
+    {
+      "id": "staff-2",
+      "name": "Marvin Thompson",
+      "role": "Executive Director",
+      "phone": "(334) 756-0123",
+      "pin": "1985",
+      "isAdmin": true,
+      "status": "Active"
+    },
+    {
+      "id": "staff-melvin",
+      "name": "Melvin M.L. Ward",
+      "role": "Founder / Board President",
+      "phone": "(706) 302-5326",
+      "pin": "1985",
+      "isAdmin": true,
+      "status": "Active"
+    },
+    {
+      "id": "staff-3",
+      "name": "Johnathan Washington",
+      "role": "Lead Trades Instructor / Field Supervisor",
+      "phone": "(334) 749-8812",
+      "pin": "4421",
+      "isAdmin": false,
+      "status": "Active"
+    },
+    {
+      "id": "staff-4",
+      "name": "Trade Crew Member",
+      "role": "General Laborer / Trades Helper",
+      "phone": "(334) 555-0199",
+      "pin": "1234",
+      "isAdmin": false,
+      "status": "Active"
+    }
+  ],
+  "chatMessages": [
+    {
+      "id": "msg-1",
+      "senderName": "Marilynn Ward",
+      "senderRole": "Workforce Director",
+      "text": "Welcome to the Springboards Staff Hub. Use this chat to coordinate daily work schedules, safety notes, and download timesheets. No Google Workspace seat is required—just your phone number.",
+      "channel": "general",
+      "timestamp": "2026-09-27T10:00:00.000Z"
+    },
+    {
+      "id": "msg-2",
+      "senderName": "Marvin Thompson",
+      "senderRole": "Executive Director",
+      "text": "Reminder for tomorrow: All crews must have personal protective equipment (hard hats, eye protection, work boots) on-site by 7:45 AM before toolbox briefing.",
+      "channel": "safety",
+      "timestamp": "2026-09-27T14:30:00.000Z"
+    },
+    {
+      "id": "msg-1790561904654",
+      "senderName": "Marilynn Ward",
+      "senderRole": "Workforce Director",
+      "text": "System check: Staff portal is active and operating smoothly.",
+      "channel": "general",
+      "attachment": null,
+      "timestamp": "2026-09-28T02:18:24.654Z"
+    }
+  ],
+  "calendarEvents": [
+    {
+      "id": "event-1",
+      "title": "Morning Tool & Safety Briefing",
+      "date": "2026-09-28",
+      "time": "7:45 AM - 8:15 AM",
+      "location": "Springboards Training Facility, Shawmut, AL",
+      "category": "safety",
+      "description": "Daily mandatory OSHA review, PPE audit, and task distribution."
+    },
+    {
+      "id": "event-2",
+      "title": "Transitional Jobs Worksite Practical Session",
+      "date": "2026-09-29",
+      "time": "8:30 AM - 3:00 PM",
+      "location": "Project Site Corridor (Chambers County)",
+      "category": "training",
+      "description": "Carpentry framing helper and electrical conduit bending practical modules."
+    },
+    {
+      "id": "event-3",
+      "title": "Career Center Referral Intake Orientation",
+      "date": "2026-10-01",
+      "time": "10:00 AM - 12:00 PM",
+      "location": "Valley Career Center / Springboards Annex",
+      "category": "onboarding",
+      "description": "Intake verification for candidate referrals from Valley and Opelika."
+    },
+    {
+      "id": "event-4",
+      "title": "Bi-Weekly Timesheet & Case Record Deadline",
+      "date": "2026-10-02",
+      "time": "5:00 PM",
+      "location": "Backoffice Portal",
+      "category": "administrative",
+      "description": "Submit bi-weekly participant training hours (verify max 32 hrs/week limit)."
+    }
+  ],
+  "complianceItems": [
+    {
+      "id": "comp-1",
+      "contact": "Alicia Ford",
+      "program": "STAARS (State Vendor / Payment Registration)",
+      "requirement": "Signed Bank Verification Letter",
+      "details": "Letter on bank letterhead under exact legal name: Springboards for Community Development",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-18",
+      "dueDate": "2026-09-25",
+      "owner": "Marvin / Dad",
+      "targetRecipient": "Alicia Ford",
+      "notes": "Bank account opened; requesting formal verification letter from banking officer."
+    },
+    {
+      "id": "comp-2",
+      "contact": "Alicia Ford",
+      "program": "STAARS (State Vendor / Payment Registration)",
+      "requirement": "Current Signed Form W-9",
+      "details": "Must have matching legal entity name, EIN, and officer signature",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-18",
+      "dueDate": "2026-09-25",
+      "owner": "Marilynn Ward",
+      "targetRecipient": "Alicia Ford",
+      "notes": "Draft W-9 prepared; ready for signature and submission."
+    },
+    {
+      "id": "comp-3",
+      "contact": "Alicia Ford",
+      "program": "STAARS (State Vendor / Payment Registration)",
+      "requirement": "Workers' Compensation Certificate",
+      "details": "Certificate of Insurance meeting State of Alabama vendor compliance",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-20",
+      "dueDate": "2026-09-30",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "Alicia Ford",
+      "notes": "Insurance quote received; obtaining binder and certificate."
+    },
+    {
+      "id": "comp-4",
+      "contact": "Coretta Bozeman & Julie Wood",
+      "program": "Transitional Jobs (WIOA)",
+      "requirement": "Fully Executed Worksite Agreement",
+      "details": "Countersigned agreement confirming the mandatory end date of 2027-06-30",
+      "status": "Evidence ready/submitted",
+      "requestDate": "2026-09-15",
+      "dueDate": "2026-09-22",
+      "owner": "Marilynn / Marvin",
+      "targetRecipient": "Coretta Bozeman / Julie Wood",
+      "notes": "Worksite Agreement signed and submitted; awaiting formal written state acceptance."
+    },
+    {
+      "id": "comp-5",
+      "contact": "Coretta Bozeman & Julie Wood",
+      "program": "Transitional Jobs (WIOA)",
+      "requirement": "Approved Non-Supervisory Job Descriptions",
+      "details": "Revised entry-level job duties removing all unapproved/supervisory tasks",
+      "status": "In revision",
+      "requestDate": "2026-09-16",
+      "dueDate": "2026-09-24",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "Career Center / Agency",
+      "notes": "Draft revisions completed for helper roles; submitting for final Career Center signoff."
+    },
+    {
+      "id": "comp-6",
+      "contact": "Coretta Bozeman & Julie Wood",
+      "program": "Transitional Jobs (WIOA)",
+      "requirement": "Avionte / Sirius Staffing Signer Authorization",
+      "details": "Primary & backup supervisor authorization submitted to wfonboarding@siriusstaffing.com",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-19",
+      "dueDate": "2026-09-29",
+      "owner": "Marilynn Ward",
+      "targetRecipient": "Sirius Staffing Onboarding",
+      "notes": "Designated supervisors identified; awaiting portal login credentials."
+    },
+    {
+      "id": "comp-7",
+      "contact": "Jill Grant",
+      "program": "ITA / ETPL (Eligible Training Provider List)",
+      "requirement": "WIOA New Training Provider Application",
+      "details": "Full provider application packet under AD-Policy PY-2025-11 Change 2",
+      "status": "Evidence ready/submitted",
+      "requestDate": "2026-09-10",
+      "dueDate": "2026-09-26",
+      "owner": "Marilynn Ward",
+      "targetRecipient": "Jill Grant",
+      "notes": "Application packet compiled; verifying all agency attachment criteria."
+    },
+    {
+      "id": "comp-8",
+      "contact": "Jill Grant",
+      "program": "ITA / ETPL (Eligible Training Provider List)",
+      "requirement": "Curriculum, Clock Hours & Credential Syllabi",
+      "details": "NCCER trade credentials, instructor certifications, training hours breakdown",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-14",
+      "dueDate": "2026-09-28",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "Jill Grant",
+      "notes": "Trade descriptions assembled; finalizing instructor certification attachments."
+    },
+    {
+      "id": "comp-9",
+      "contact": "Jill Grant",
+      "program": "ITA / ETPL (Eligible Training Provider List)",
+      "requirement": "Facility Capacity & ADA Accessibility Documentation",
+      "details": "Zoning, life-safety inspection, equipment list, ADA accessibility documentation",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-14",
+      "dueDate": "2026-09-28",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "Jill Grant",
+      "notes": "Facility inspection walkthrough scheduled."
+    },
+    {
+      "id": "comp-10",
+      "contact": "Marvin Thompson",
+      "program": "Corporate Governance & OJT",
+      "requirement": "Corporate Governance & Board Records",
+      "details": "Articles of Incorporation, EIN letter, 501(c)(3) determination status, Bylaws, Good Standing",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-12",
+      "dueDate": "2026-09-27",
+      "owner": "Marvin Thompson / Board",
+      "targetRecipient": "Internal Records",
+      "notes": "Articles on file; IRS 501(c)(3) determination pending review."
+    },
+    {
+      "id": "comp-11",
+      "contact": "Marvin Thompson",
+      "program": "On-the-Job Training (OJT)",
+      "requirement": "E-Verify Registration & Electronically Signed DHS MOU",
+      "details": "Federal E-Verify company enrollment and executed Department of Homeland Security MOU",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-15",
+      "dueDate": "2026-09-30",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "DHS / E-Verify",
+      "notes": "Enrollment portal accessed; pending digital signature from authorized executive."
+    }
+  ],
+  "sharedDocuments": [
+    {
+      "id": "doc-1",
+      "title": "Transitional Jobs Program Overview & Guidelines",
+      "category": "Program Guidelines",
+      "fileName": "Transitional_Jobs_Program_Overview.png",
+      "fileUrl": "/Transitional_Jobs_Program_Overview.png",
+      "fileSize": "2.9 MB",
+      "updatedAt": "2026-09-27",
+      "description": "Comprehensive overview of the WIOA Transitional Jobs pathway, eligibility requirements, and program milestones."
+    },
+    {
+      "id": "doc-2",
+      "title": "Approved Entry-Level Job Descriptions (Trade Helpers)",
+      "category": "Job Descriptions",
+      "fileName": "Job_Descriptions_Entry_Level_Springboards.pdf",
+      "fileUrl": "#view-job-descriptions",
+      "fileSize": "68 KB",
+      "updatedAt": "2026-09-27",
+      "description": "Official duties for Carpenter Helper, Electrician Helper, Plumber Helper, Tool & Inventory Clerk, Janitor, and Material Handler."
+    },
+    {
+      "id": "doc-3",
+      "title": "Worksite Agreement (State Compliance Copy)",
+      "category": "Compliance & Contracts",
+      "fileName": "Worksite Agreement_Springboards.pdf",
+      "fileUrl": "/Worksite Agreement_Springboards.pdf",
+      "fileSize": "1.0 MB",
+      "updatedAt": "2026-09-27",
+      "description": "Submitted Worksite Agreement establishing approved project locations and contractual terms ending 2027-06-30."
+    },
+    {
+      "id": "doc-4",
+      "title": "Springboards Community & Workforce Informational Flyer",
+      "category": "Community Outreach",
+      "fileName": "springboards flyer 1.jpg",
+      "fileUrl": "/springboards flyer 1.jpg",
+      "fileSize": "2.3 MB",
+      "updatedAt": "2026-09-27",
+      "description": "Public informational flyer detailing vocational trade pathways, community partnerships, and contact avenues."
+    },
+    {
+      "id": "doc-5",
+      "title": "Participant Timesheet & Safety Protocol Guidance",
+      "category": "Operational Forms",
+      "fileName": "Timesheet_and_Safety_Standard.pdf",
+      "fileUrl": "#view-timesheet-guide",
+      "fileSize": "45 KB",
+      "updatedAt": "2026-09-27",
+      "description": "Bi-weekly timecard submission instructions, 32-hr weekly ceiling, and mandatory personal protective equipment rules."
+    }
+  ],
+  "boardStructure": [
+    {
+      "id": "board-1",
+      "position": "Chairperson",
+      "name": "M.L. Ward",
+      "phone": "706-302-5326",
+      "primaryResponsibility": "Leads the Board, sets priorities, oversees accountability",
+      "duties": [
+        "Leads the Board of Directors",
+        "Presides over Board meetings",
+        "Keeps Board members focused on mission and governance",
+        "Works with Executive Director",
+        "Helps evaluate Executive Director"
+      ]
+    },
+    {
+      "id": "board-2",
+      "position": "Executive Director",
+      "name": "Marvin Thompson",
+      "phone": "334-756-0123",
+      "primaryResponsibility": "Runs the organization daily operations and leads community development",
+      "duties": [
+        "Runs the organization daily operations",
+        "Supervises employees and volunteers",
+        "Develops and manages programs",
+        "Builds community partnerships",
+        "Oversees fundraising and grant implementations",
+        "Reports organizational performance to the Board",
+        "Implements decisions approved by the board"
+      ]
+    },
+    {
+      "id": "board-3",
+      "position": "Secretary",
+      "name": "Shamia Morgan",
+      "primaryResponsibility": "Minutes, records, notices, policies and Board documentation",
+      "duties": [
+        "Maintain accurate Board minutes and records",
+        "Distribute meeting notices and agendas",
+        "Maintain organization and resolutions"
+      ]
+    },
+    {
+      "id": "board-4",
+      "position": "Treasurer",
+      "name": "Krisse Pollard Story",
+      "primaryResponsibility": "Financial oversight, budgets, financial reports and controls",
+      "duties": [
+        "Review financial statements",
+        "Help develop and monitor the annual budget",
+        "Ensure appropriate financial controls",
+        "Report financial concerns to the Board"
+      ]
+    },
+    {
+      "id": "board-5",
+      "position": "Construction / Trades Member",
+      "name": "Johnathan Washington",
+      "phone": "334-749-8812",
+      "primaryResponsibility": "Provides construction industry knowledge and employer connections",
+      "duties": [
+        "Advise on construction industry needs",
+        "Help identify qualified instructors and industry partners",
+        "Assist with employer relationships and job opportunities",
+        "Help ensure training reflects actual workplace requirements"
+      ]
+    },
+    {
+      "id": "board-6",
+      "position": "Workforce Development Member",
+      "name": "Marilynn Ward",
+      "phone": "615-603-1157",
+      "primaryResponsibility": "Connects training to employment, apprenticeships and certifications",
+      "duties": [
+        "Develop relationships with employers, workforce agencies and apprenticeship programs",
+        "Employment, Apprenticeships and Career Pathways",
+        "IT and Web page coordination"
+      ]
+    },
+    {
+      "id": "board-7",
+      "position": "Education / Training Member",
+      "name": "Giselle Campos",
+      "primaryResponsibility": "Advises on curriculum, instructors, testing and credentials",
+      "duties": [
+        "Training institutions and credentials",
+        "Assure Compliance with applicable licensing, safety, workforce and programs",
+        "Assure Certification for Instructor",
+        "Develops education partnerships",
+        "Identifies learning opportunities",
+        "Supports programs that improve community education outcomes",
+        "Coordinate job training and certification programs"
+      ]
+    },
+    {
+      "id": "board-8",
+      "position": "Community Member",
+      "name": "Danny Williams",
+      "primaryResponsibility": "Represents residents, participants and community needs",
+      "duties": [
+        "Represents community needs",
+        "Gathers resident input",
+        "Public relations",
+        "Builds trust and connects residents with the organization program and sources"
+      ]
+    },
+    {
+      "id": "board-9",
+      "position": "Business / Grant Development Member",
+      "name": "Rasheeda Abdullah",
+      "primaryResponsibility": "Partnerships, fundraising, grants and organizational growth",
+      "duties": [
+        "Builds relationships with businesses",
+        "Identifies grant opportunities",
+        "Supports grant applications",
+        "Develops funding partnerships"
+      ]
+    }
+  ]
+}

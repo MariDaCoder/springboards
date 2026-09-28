@@ -163,7 +163,7 @@ app.post('/api/inquiries', async (req, res) => {
     }
 
     if (trimmedPhone && !isValidPhone(trimmedPhone)) {
-      return res.status(400).json({ error: 'Please provide a valid 10-digit phone number (e.g. (334) 556-1234).' });
+      return res.status(400).json({ error: 'Please provide a valid 10-digit phone number (e.g. (615) 603-1157).' });
     }
 
     const newRecord = {
@@ -218,7 +218,7 @@ app.post('/api/volunteer-signups', async (req, res) => {
     }
 
     if (trimmedPhone && !isValidPhone(trimmedPhone)) {
-      return res.status(400).json({ error: 'Please provide a valid 10-digit phone number (e.g. (334) 556-1234).' });
+      return res.status(400).json({ error: 'Please provide a valid 10-digit phone number (e.g. (615) 603-1157).' });
     }
 
     const newRecord = {
@@ -279,7 +279,7 @@ app.post('/api/candidates', async (req, res) => {
     }
 
     if (trimmedPhone && !isValidPhone(trimmedPhone)) {
-      return res.status(400).json({ error: 'Please provide a valid 10-digit phone number (e.g. (334) 556-1234).' });
+      return res.status(400).json({ error: 'Please provide a valid 10-digit phone number (e.g. (615) 603-1157).' });
     }
 
     const newRecord = {
@@ -600,6 +600,268 @@ app.get('/api/inquiries', async (req, res) => {
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// --- Backoffice Portal & Staff Hub System ---
+const BACKOFFICE_FILE = path.join(__dirname, 'backoffice-data.json');
+let backofficeData = {
+  staffRoster: [],
+  chatMessages: [],
+  calendarEvents: [],
+  complianceItems: [],
+  sharedDocuments: []
+};
+
+try {
+  if (fs.existsSync(BACKOFFICE_FILE)) {
+    const raw = fs.readFileSync(BACKOFFICE_FILE, 'utf8');
+    backofficeData = JSON.parse(raw);
+  }
+} catch (e) {
+  console.warn('[Backoffice] Error loading backoffice-data.json:', e.message);
+}
+
+function saveBackofficeData() {
+  try {
+    fs.writeFileSync(BACKOFFICE_FILE, JSON.stringify(backofficeData, null, 2), 'utf8');
+  } catch (e) {
+    console.error('[Backoffice] Failed to persist backoffice-data.json:', e);
+  }
+}
+
+// Backoffice Authentication (Phone + PIN for Staff, Google or Admin PIN for Admin)
+app.post('/api/backoffice/auth', (req, res) => {
+  const { type, phone, pin, adminEmail, adminCode } = req.body || {};
+
+  // Admin bypass with designated admin email or code
+  if (type === 'admin') {
+    if (adminCode === '2026' || adminCode === '1985' || adminEmail === 'marilynnlward@gmail.com' || adminEmail === 'info@springboardsfcd.org') {
+      return res.status(200).json({
+        success: true,
+        user: {
+          id: 'admin-1',
+          name: adminEmail === 'marilynnlward@gmail.com' ? 'Marilynn Ward' : 'Administrator',
+          role: 'Workforce Director / Compliance Admin',
+          isAdmin: true,
+          email: adminEmail || 'marilynnlward@gmail.com'
+        }
+      });
+    }
+    return res.status(401).json({ error: 'Invalid admin credentials.' });
+  }
+
+  // Staff phone + PIN authentication
+  const cleanedInputPhone = String(phone || '').replace(/\D/g, '');
+  const trimmedPin = String(pin || '').trim();
+
+  if (!cleanedInputPhone || cleanedInputPhone.length < 10) {
+    return res.status(400).json({ error: 'Please enter a valid 10-digit mobile phone number.' });
+  }
+  if (!trimmedPin) {
+    return res.status(400).json({ error: 'Please enter your 4-digit staff PIN.' });
+  }
+
+  const staffMatch = backofficeData.staffRoster.find(member => {
+    const memberPhone = String(member.phone || '').replace(/\D/g, '');
+    return memberPhone.endsWith(cleanedInputPhone.slice(-10)) && String(member.pin).trim() === trimmedPin;
+  });
+
+  if (staffMatch) {
+    return res.status(200).json({
+      success: true,
+      user: {
+        id: staffMatch.id,
+        name: staffMatch.name,
+        role: staffMatch.role,
+        isAdmin: !!staffMatch.isAdmin,
+        phone: staffMatch.phone
+      }
+    });
+  }
+
+  // Quick access helpers for leadership
+  if (cleanedInputPhone.endsWith('6031157') || cleanedInputPhone.endsWith('7560123') || cleanedInputPhone.endsWith('3025326')) {
+    if (trimmedPin === '2026' || trimmedPin === '1985') {
+      if (cleanedInputPhone.endsWith('6031157') || trimmedPin === '2026') {
+        return res.status(200).json({
+          success: true,
+          user: {
+            id: 'staff-marilynn',
+            name: 'Marilynn Ward',
+            role: 'Workforce Director / Compliance Admin',
+            isAdmin: true,
+            phone: '(615) 603-1157'
+          }
+        });
+      } else if (cleanedInputPhone.endsWith('3025326')) {
+        return res.status(200).json({
+          success: true,
+          user: {
+            id: 'staff-melvin',
+            name: 'Melvin M.L. Ward',
+            role: 'Founder / Board President',
+            isAdmin: true,
+            phone: '706-302-5326'
+          }
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          user: {
+            id: 'staff-marvin',
+            name: 'Marvin Thompson',
+            role: 'Executive Director',
+            isAdmin: true,
+            phone: '(334) 756-0123'
+          }
+        });
+      }
+    }
+  }
+
+  return res.status(401).json({ error: 'Phone number or staff PIN not recognized. Please contact Marilynn or Marvin to be added to the team roster.' });
+});
+
+// Get state (chat, calendar, documents, compliance, and roster if authorized)
+app.get('/api/backoffice/state', (req, res) => {
+  const isAdmin = req.headers['x-admin-auth'] === 'true' || req.query.admin === 'true';
+
+  res.status(200).json({
+    chatMessages: backofficeData.chatMessages || [],
+    calendarEvents: backofficeData.calendarEvents || [],
+    sharedDocuments: backofficeData.sharedDocuments || [],
+    complianceItems: backofficeData.complianceItems || [],
+    boardStructure: backofficeData.boardStructure || [],
+    staffRoster: isAdmin ? backofficeData.staffRoster : (backofficeData.staffRoster || []).map(m => ({ id: m.id, name: m.name, role: m.role, status: m.status }))
+  });
+});
+
+// Post chat message
+app.post('/api/backoffice/chat', (req, res) => {
+  const { senderName, senderRole, text, channel, attachment } = req.body || {};
+  const trimmedText = String(text || '').trim();
+
+  if (!trimmedText && !attachment) {
+    return res.status(400).json({ error: 'Message cannot be empty.' });
+  }
+
+  const newMsg = {
+    id: `msg-${Date.now()}`,
+    senderName: String(senderName || 'Staff Member').trim(),
+    senderRole: String(senderRole || 'Team Member').trim(),
+    text: trimmedText,
+    channel: channel || 'general',
+    attachment: attachment || null,
+    timestamp: new Date().toISOString()
+  };
+
+  if (!Array.isArray(backofficeData.chatMessages)) {
+    backofficeData.chatMessages = [];
+  }
+
+  backofficeData.chatMessages.push(newMsg);
+  // Keep last 150 messages
+  if (backofficeData.chatMessages.length > 150) {
+    backofficeData.chatMessages = backofficeData.chatMessages.slice(-150);
+  }
+  saveBackofficeData();
+
+  return res.status(200).json({ success: true, message: newMsg });
+});
+
+// Add calendar event (admin)
+app.post('/api/backoffice/calendar', (req, res) => {
+  const { title, date, time, location, category, description } = req.body || {};
+  if (!title || !date) {
+    return res.status(400).json({ error: 'Title and date are required.' });
+  }
+
+  const newEvent = {
+    id: `event-${Date.now()}`,
+    title: String(title).trim(),
+    date: String(date).trim(),
+    time: String(time || 'All Day').trim(),
+    location: String(location || 'Springboards Facility').trim(),
+    category: String(category || 'general').trim(),
+    description: String(description || '').trim()
+  };
+
+  if (!Array.isArray(backofficeData.calendarEvents)) {
+    backofficeData.calendarEvents = [];
+  }
+  backofficeData.calendarEvents.push(newEvent);
+  saveBackofficeData();
+
+  return res.status(200).json({ success: true, event: newEvent });
+});
+
+// Delete calendar event
+app.delete('/api/backoffice/calendar/:id', (req, res) => {
+  const { id } = req.params;
+  backofficeData.calendarEvents = (backofficeData.calendarEvents || []).filter(e => e.id !== id);
+  saveBackofficeData();
+  return res.status(200).json({ success: true });
+});
+
+// Add staff member to roster (admin)
+app.post('/api/backoffice/roster', (req, res) => {
+  const { name, role, phone, pin, isAdmin } = req.body || {};
+  if (!name || !phone || !pin) {
+    return res.status(400).json({ error: 'Name, phone number, and 4-digit PIN are required.' });
+  }
+
+  const newMember = {
+    id: `staff-${Date.now()}`,
+    name: String(name).trim(),
+    role: String(role || 'Trades Crew Member').trim(),
+    phone: String(phone).trim(),
+    pin: String(pin).trim(),
+    isAdmin: !!isAdmin,
+    status: 'Active'
+  };
+
+  if (!Array.isArray(backofficeData.staffRoster)) {
+    backofficeData.staffRoster = [];
+  }
+  backofficeData.staffRoster.push(newMember);
+  saveBackofficeData();
+
+  return res.status(200).json({ success: true, member: newMember });
+});
+
+// Delete staff member from roster
+app.delete('/api/backoffice/roster/:id', (req, res) => {
+  const { id } = req.params;
+  backofficeData.staffRoster = (backofficeData.staffRoster || []).filter(m => m.id !== id);
+  saveBackofficeData();
+  return res.status(200).json({ success: true });
+});
+
+// Update compliance item status & notes
+app.post('/api/backoffice/compliance/update', (req, res) => {
+  const { id, status, notes, requestDate, dueDate } = req.body || {};
+  const item = (backofficeData.complianceItems || []).find(c => c.id === id);
+  if (!item) {
+    return res.status(404).json({ error: 'Compliance item not found.' });
+  }
+
+  if (status) item.status = status;
+  if (notes !== undefined) item.notes = notes;
+  if (requestDate) item.requestDate = requestDate;
+  if (dueDate) item.dueDate = dueDate;
+
+  saveBackofficeData();
+  return res.status(200).json({ success: true, item });
+});
+
+// Backoffice and Portal route
+app.get(['/backoffice', '/portal'], (req, res) => {
+  const backofficeHtmlPath = path.join(__dirname, 'backoffice.html');
+  if (fs.existsSync(backofficeHtmlPath)) {
+    res.sendFile(backofficeHtmlPath);
+  } else {
+    res.redirect('/');
   }
 });
 

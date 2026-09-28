@@ -52,10 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const missionToggle = document.querySelector(".nav-dropdown-toggle");
   const sections = [
-    { id: "our-mission", link: document.querySelector(".nav-link[href='#our-mission']") },
-    { id: "our-programs", link: document.querySelector(".nav-link[href='#our-programs']") },
-    { id: "our-service", link: document.querySelector(".nav-link[href='#our-service']") },
+    { id: "our-mission", link: missionToggle },
+    { id: "governance", link: missionToggle },
+    { id: "our-programs", link: document.querySelectorAll(".nav-dropdown-toggle")[1] },
+    { id: "our-impact", link: document.querySelectorAll(".nav-dropdown-toggle")[2] },
     { id: "footer", link: document.querySelector(".nav-link[href='#footer']") }
   ].filter(s => s.link && document.getElementById(s.id));
 
@@ -310,7 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Validate Phone format if provided
       if (phone && !isValidPhone(phone)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number, e.g. 334-556-1234.";
+        status.textContent = "Please enter a valid 10-digit phone number (e.g. 555-123-4567).";
         inquiryForm.elements.phone.classList.add("is-invalid");
         inquiryForm.elements.phone.focus();
         return;
@@ -464,7 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 3. Validate Phone format if provided
       if (phone && !isValidPhone(phone)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number, e.g. 334-556-1234.";
+        status.textContent = "Please enter a valid 10-digit phone number (e.g. 555-123-4567).";
         volunteerSignupForm.elements.phone.classList.add("is-invalid");
         volunteerSignupForm.elements.phone.focus();
         return;
@@ -660,7 +662,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (phone && !isValidPhone(phone)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number, e.g. 334-556-1234.";
+        status.textContent = "Please enter a valid 10-digit phone number (e.g. 555-123-4567).";
         candidateForm.elements.phone.classList.add("is-invalid");
         candidateForm.elements.phone.focus();
         return;
@@ -726,7 +728,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (err) {
         console.error(err);
         status.classList.add("is-error");
-        status.textContent = "Could not submit application. Please call 334-556-1234 or email info@springboardsfcd.org.";
+        status.textContent = "Could not submit application. Please call 615-603-1157 or email info@springboardsfcd.org.";
       } finally {
         submit.disabled = false;
       }
@@ -861,7 +863,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (err) {
         console.error(err);
         status.classList.add("is-error");
-        status.textContent = "Could not submit inquiry. Please call 334-556-1234 or email info@springboardsfcd.org.";
+        status.textContent = "Could not submit inquiry. Please call 615-603-1157 or email info@springboardsfcd.org.";
       } finally {
         submit.disabled = false;
       }

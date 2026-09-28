@@ -4,6 +4,8 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /backoffice
+Disallow: /portal
 
 # Sitemap location for Googlebot, Bingbot, and search engines
 Sitemap: https://springboardsfcd.org/sitemap.xml
