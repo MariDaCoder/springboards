@@ -394,9 +394,10 @@
 
       <div class="admin-controls">
         <div id="header-user-info" style="display: none;" class="admin-user-pill">
-          <span>👤</span>
+          <span style="display:inline-block; width:8px; height:8px; background:#10B981; border-radius:50%; box-shadow: 0 0 0 2px rgba(16,185,129,0.3);" title="Real-Time Sync Active"></span>
           <strong id="admin-user-name">Marilynn L. Ward</strong>
-          <span class="admin-badge-tag">Executive Admin</span>
+          <span class="admin-badge-tag" id="admin-user-email">marilynn.ward@springboards.org</span>
+          <span id="live-sync-indicator" style="font-size:0.75rem; color:#047857; font-weight:700; margin-left:0.25rem;">● Live Sync</span>
         </div>
         <a href="/" class="admin-btn admin-btn-secondary" target="_blank" rel="noopener">Public Website ↗</a>
         <button id="btn-logout" class="admin-btn admin-btn-danger" style="display: none;" onclick="logoutAdmin()">Sign Out</button>
@@ -414,8 +415,8 @@
         Dedicated administrative management portal for <strong>Marilynn L. Ward</strong> (Workforce Director &amp; Compliance Administrator).
       </p>
 
-      <div style="background: #FFFBEB; border: 1px solid #FCD34D; border-radius: var(--radius-sm); padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.8rem; color: #92400E; text-align: left;">
-        ℹ️ <strong>System Notice:</strong> Additional staff PIN logins and board member integrations will be activated here at a later date.
+      <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: var(--radius-sm); padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.8rem; color: #166534; text-align: left;">
+        🟢 <strong>Workspace Account Linked:</strong> Configured for <strong>marilynn.ward@springboards.org</strong> with live candidate updates and reminders.
       </div>
 
       <button type="button" class="btn-google" onclick="loginWithGoogle()">
@@ -425,7 +426,7 @@
           <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
           <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
         </svg>
-        Sign In as marilynnlward@gmail.com
+        Sign In as marilynn.ward@springboards.org
       </button>
 
       <div style="display: flex; align-items: center; margin: 1.25rem 0; gap: 0.75rem;">
@@ -754,11 +755,14 @@
       }
     });
 
+    let syncIntervalId = null;
+    let lastCandidateCount = null;
+
     async function loginWithGoogle() {
-      // Direct executive login for Marilynn L. Ward
+      // Direct executive login for Marilynn L. Ward with her official Springboards Google Workspace
       await executeAdminLogin({
         type: 'admin',
-        adminEmail: 'marilynnlward@gmail.com'
+        adminEmail: 'marilynn.ward@springboards.org'
       });
     }
 
@@ -767,7 +771,8 @@
       const code = document.getElementById('input-passcode').value.trim();
       await executeAdminLogin({
         type: 'admin',
-        adminCode: code
+        adminCode: code,
+        adminEmail: 'marilynn.ward@springboards.org'
       });
     }
 
@@ -803,12 +808,28 @@
       document.getElementById('section-portal').style.display = 'block';
       document.getElementById('header-user-info').style.display = 'flex';
       document.getElementById('btn-logout').style.display = 'inline-flex';
-      if (appState.user && appState.user.name) {
-        document.getElementById('admin-user-name').textContent = appState.user.name;
-      }
+      const userName = (appState.user && appState.user.name) ? appState.user.name : 'Marilynn L. Ward';
+      const userEmail = (appState.user && appState.user.email) ? appState.user.email : 'marilynn.ward@springboards.org';
+      document.getElementById('admin-user-name').textContent = userName;
+      const emailBadge = document.getElementById('admin-user-email');
+      if (emailBadge) emailBadge.textContent = userEmail;
+
+      // Start continuous real-time background sync
+      startRealtimeSync();
+    }
+
+    function startRealtimeSync() {
+      if (syncIntervalId) clearInterval(syncIntervalId);
+      syncIntervalId = setInterval(() => {
+        loadBackofficeData(true);
+      }, 5000);
     }
 
     function logoutAdmin() {
+      if (syncIntervalId) {
+        clearInterval(syncIntervalId);
+        syncIntervalId = null;
+      }
       appState.user = null;
       localStorage.removeItem('sb_admin_user');
       document.getElementById('section-portal').style.display = 'none';
@@ -828,29 +849,72 @@
       if (targetPanel) targetPanel.classList.add('active');
     }
 
-    async function loadBackofficeData() {
+    async function loadBackofficeData(isBackground = false) {
       try {
         const res = await fetch('/api/backoffice/state?admin=true', {
           headers: { 'x-admin-auth': 'true' }
         });
         if (res.ok) {
           const data = await res.json();
-          appState.candidateApplications = data.candidateApplications || [];
+          const newCandidates = data.candidateApplications || [];
+          
+          // Check for incoming real-time candidates
+          if (lastCandidateCount !== null && newCandidates.length > lastCandidateCount) {
+            const addedCount = newCandidates.length - lastCandidateCount;
+            const newest = newCandidates[0];
+            showLiveNotification(`🔔 New Candidate Intake: ${newest.name} applied for ${newest.trade || 'Trades'}!`);
+          }
+          lastCandidateCount = newCandidates.length;
+
+          appState.candidateApplications = newCandidates;
           appState.inboxMessages = data.inboxMessages || [];
           appState.complianceItems = data.complianceItems || [];
 
           renderCandidates();
           renderInbox();
           renderCompliance();
-          loadAnalytics();
+          if (!isBackground) {
+            loadAnalytics();
+          }
+
+          // Update live indicator
+          const liveSyncEl = document.getElementById('live-sync-indicator');
+          if (liveSyncEl) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            liveSyncEl.innerHTML = `● Live Sync (${timeStr})`;
+            liveSyncEl.style.color = '#059669';
+          }
         }
       } catch (err) {
         console.error('Failed to load portal data:', err);
+        const liveSyncEl = document.getElementById('live-sync-indicator');
+        if (liveSyncEl) {
+          liveSyncEl.innerHTML = '⚠️ Reconnecting...';
+          liveSyncEl.style.color = '#DC2626';
+        }
       }
     }
 
+    function showLiveNotification(msg) {
+      let toast = document.getElementById('admin-live-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'admin-live-toast';
+        toast.style.cssText = 'position: fixed; bottom: 24px; right: 24px; background: #064E3B; color: #ECFDF5; padding: 14px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.25); z-index: 99999; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 10px; border-left: 5px solid #10B981; transition: all 0.3s ease;';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateY(0)';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+      }, 6000);
+    }
+
     function refreshData() {
-      loadBackofficeData();
+      loadBackofficeData(false);
     }
 
     // Render Candidates
@@ -991,7 +1055,10 @@
               <input type="text" value="${escapeHtml(c.intakeNotes || c.notes || '')}" placeholder="Add follow-up notes, referral date..." onblur="updateCandidateNotes('${c.id}', this.value)" style="padding: 0.35rem 0.65rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.8rem; width: 100%; min-width: 170px;">
             </td>
             <td>
-              <button onclick="deleteCandidate('${c.id}')" class="admin-btn admin-btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">Delete</button>
+              <div style="display: flex; gap: 0.35rem; align-items: center;">
+                ${c.email ? `<a href="mailto:${escapeHtml(c.email)}?subject=Springboards%20Workforce%20Intake%20-%20${encodeURIComponent(c.name)}&body=Hello%20${encodeURIComponent(c.name)},%0A%0AThank%20you%20for%20applying%20to%20the%20Springboards%20Transitional%20Jobs%20program%20for%20${encodeURIComponent(c.trade || 'skilled trades')}.%0A%0AWe%20would%20like%20to%20coordinate%20your%20next%20steps%20for%20Career%20Center%20qualification.%20Please%20reply%20to%20this%20email%20or%20call%20me%20directly.%0A%0ASincerely,%0AMarilynn%20L.%20Ward%0AWorkforce%20Director%20%26%20Compliance%20Administrator%0ASpringboards%20for%20Community%20Development%0Amarilynn.ward@springboards.org%0A(615)%20603-1157" class="admin-btn admin-btn-secondary" style="padding: 0.3rem 0.5rem; font-size: 0.72rem; text-decoration: none; color: #1E40AF; border-color: #93C5FD;" title="Email applicant directly from marilynn.ward@springboards.org">✉️ Email</a>` : ''}
+                <button onclick="deleteCandidate('${c.id}')" class="admin-btn admin-btn-danger" style="padding: 0.3rem 0.5rem; font-size: 0.72rem;">Delete</button>
+              </div>
             </td>
           </tr>
         `;

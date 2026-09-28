@@ -2,8 +2,9 @@
   "staffRoster": [
     {
       "id": "staff-1",
-      "name": "Marilynn Ward",
-      "role": "Workforce Director / Compliance Admin",
+      "name": "Marilynn L. Ward",
+      "email": "marilynn.ward@springboards.org",
+      "role": "Workforce Director & Compliance Administrator",
       "phone": "(615) 603-1157",
       "pin": "2026",
       "isAdmin": true,

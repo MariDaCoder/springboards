@@ -9,7 +9,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 const DESIGNATED_INBOX = 'info@springboardsfcd.org';
-const ALERT_EMAIL = 'marilynnlward@gmail.com';
+const ALERT_EMAIL = 'marilynn.ward@springboards.org';
+const BACKUP_ALERT_EMAIL = 'marilynnlward@gmail.com';
 
 // Trust reverse proxy for SSL and Host headers (Cloud Run / Load Balancer)
 app.set('trust proxy', true);
@@ -656,15 +657,16 @@ app.post('/api/backoffice/auth', (req, res) => {
 
   // Admin bypass with designated admin email or code
   if (type === 'admin') {
-    if (adminCode === '2026' || adminCode === '1985' || adminEmail === 'marilynnlward@gmail.com' || adminEmail === 'info@springboardsfcd.org') {
+    const isMarilynn = adminEmail === 'marilynn.ward@springboards.org' || adminEmail === 'marilynnlward@gmail.com';
+    if (adminCode === '2026' || adminCode === '1985' || isMarilynn || adminEmail === 'info@springboardsfcd.org') {
       return res.status(200).json({
         success: true,
         user: {
           id: 'admin-1',
-          name: adminEmail === 'marilynnlward@gmail.com' ? 'Marilynn Ward' : 'Administrator',
-          role: 'Workforce Director / Compliance Admin',
+          name: isMarilynn ? 'Marilynn L. Ward' : 'Administrator',
+          role: 'Workforce Director & Compliance Administrator',
           isAdmin: true,
-          email: adminEmail || 'marilynnlward@gmail.com'
+          email: isMarilynn ? 'marilynn.ward@springboards.org' : (adminEmail || 'marilynn.ward@springboards.org')
         }
       });
     }
@@ -708,9 +710,10 @@ app.post('/api/backoffice/auth', (req, res) => {
           success: true,
           user: {
             id: 'staff-marilynn',
-            name: 'Marilynn Ward',
-            role: 'Workforce Director / Compliance Admin',
+            name: 'Marilynn L. Ward',
+            role: 'Workforce Director & Compliance Administrator',
             isAdmin: true,
+            email: 'marilynn.ward@springboards.org',
             phone: '(615) 603-1157'
           }
         });
