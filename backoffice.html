@@ -2,1789 +2,943 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Admin Portal | Springboards for Community Development</title>
   <meta name="robots" content="noindex, nofollow">
-  <title>Staff & Leadership Hub | Springboards for Community Development</title>
-  <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <meta name="theme-color" content="#0B192C">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Google Identity Services for Admin Gmail Sync -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Scoped styling mirroring the main website aesthetic */
+    :root {
+      --admin-bg: #F8FAFC;
+      --admin-card: #FFFFFF;
+      --admin-border: #E2E8F0;
+    }
+
     body {
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: #06101E;
-      color: #F8FAFC;
+      background-color: var(--admin-bg);
+      color: var(--text-dark);
+      font-family: var(--font-family);
+      margin: 0;
+      padding: 0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      -webkit-font-smoothing: antialiased;
-    }
-    :root {
-      --primary-navy: #0B192C;
-      --secondary-navy: #1E3E62;
-      --accent-orange: #E05615;
-      --accent-orange-hover: #C2410C;
-      --accent-green: #059669;
-      --accent-green-hover: #047857;
-      --border-dark: #1E293B;
-      --card-bg: #0F172A;
-      --card-elevated: #1E293B;
     }
 
-    /* Container */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; width: 100%; }
-
-    /* Header */
-    header {
-      background: #0B192C;
-      border-bottom: 1px solid var(--border-dark);
+    /* Top Admin Header */
+    .admin-header {
+      background-color: var(--primary-navy);
+      color: #FFFFFF;
+      border-bottom: 3px solid var(--accent-orange);
+      padding: 0.85rem 1.5rem;
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 1000;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
     }
-    .header-inner {
+
+    .admin-header-inner {
+      max-width: 1300px;
+      margin: 0 auto;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      height: 70px;
-    }
-    .brand-wrap {
-      display: flex;
       align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: white;
-    }
-    .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 8px;
-      object-fit: contain;
-      background: white;
-      padding: 2px;
-    }
-    .brand-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      line-height: 1.2;
-    }
-    .brand-subtitle {
-      font-size: 0.75rem;
-      color: #94A3B8;
-      display: block;
-    }
-
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: #1E293B;
-      padding: 0.4rem 0.85rem;
-      border-radius: 9999px;
-      border: 1px solid #334155;
-    }
-    .user-info { text-align: right; }
-    .user-name { font-size: 0.85rem; font-weight: 700; display: block; line-height: 1.2; }
-    .user-role { font-size: 0.7rem; color: #38BDF8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .btn-logout {
-      background: #DC2626;
-      color: white;
-      border: none;
-      padding: 0.35rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-logout:hover { background: #B91C1C; }
-
-    /* Auth Card */
-    .auth-wrapper {
-      max-width: 480px;
-      margin: 3rem auto;
-      padding: 0 1rem;
-      width: 100%;
-    }
-    .auth-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-dark);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
-    }
-    .auth-tabs {
-      display: flex;
-      gap: 0.5rem;
-      background: #0B192C;
-      padding: 4px;
-      border-radius: 10px;
-      margin-bottom: 1.5rem;
-    }
-    .auth-tab-btn {
-      flex: 1;
-      padding: 0.6rem;
-      text-align: center;
-      border: none;
-      background: transparent;
-      color: #94A3B8;
-      font-weight: 600;
-      font-size: 0.85rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .auth-tab-btn.active {
-      background: #1E293B;
-      color: #F8FAFC;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    }
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-    .form-label {
-      display: block;
-      font-size: 0.82rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: #CBD5E1;
-    }
-    .form-input {
-      width: 100%;
-      background: #0B192C;
-      border: 1px solid #334155;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      color: white;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .form-input:focus {
-      border-color: #38BDF8;
-    }
-    .btn-primary {
-      width: 100%;
-      background: var(--accent-orange);
-      color: white;
-      border: none;
-      padding: 0.85rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .btn-primary:hover {
-      background: var(--accent-orange-hover);
-    }
-    .btn-google {
-      width: 100%;
-      background: white;
-      color: #1F2937;
-      border: 1px solid #E5E7EB;
-      padding: 0.85rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-      transition: background 0.2s;
-    }
-    .btn-google:hover {
-      background: #F3F4F6;
-    }
-    .auth-hint {
-      font-size: 0.78rem;
-      color: #94A3B8;
-      text-align: center;
-      margin-top: 1.25rem;
-      line-height: 1.4;
-    }
-    .quick-chips {
-      display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid #1E293B;
-    }
-    .chip {
-      font-size: 0.72rem;
-      background: #1E293B;
-      color: #94A3B8;
-      border: 1px solid #334155;
-      padding: 0.25rem 0.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .chip:hover {
-      background: #334155;
-      color: white;
+      gap: 1rem;
     }
 
-    /* Main App Interface */
-    .app-main {
-      padding: 1.5rem 0 3rem 0;
-      flex: 1;
-    }
-    .nav-tabs {
-      display: flex;
-      overflow-x: auto;
-      gap: 0.5rem;
-      padding-bottom: 0.5rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-dark);
-      -webkit-overflow-scrolling: touch;
-    }
-    .nav-tab-btn {
-      background: transparent;
-      border: none;
-      color: #94A3B8;
-      font-size: 0.9rem;
-      font-weight: 600;
-      padding: 0.65rem 1.15rem;
-      border-radius: 8px;
-      cursor: pointer;
+    .admin-brand {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-    .nav-tab-btn:hover {
-      background: #1E293B;
-      color: white;
-    }
-    .nav-tab-btn.active {
-      background: #1E293B;
-      color: #38BDF8;
-      border-bottom: 2px solid #38BDF8;
-    }
-    .admin-badge {
-      background: #0284C7;
-      color: white;
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 700;
-      text-transform: uppercase;
-      margin-left: 4px;
+      gap: 1rem;
+      text-decoration: none;
+      color: #FFFFFF;
     }
 
-    /* Card Panels */
-    .panel {
-      display: none;
-      animation: fadeIn 0.25s ease-in-out;
-    }
-    .panel.active {
+    .admin-logo {
+      height: 48px;
+      width: auto;
       display: block;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
 
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-dark);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    /* Chat System */
-    .chat-layout {
-      display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 1.5rem;
-      min-height: 540px;
-    }
-    @media (max-width: 768px) {
-      .chat-layout { grid-template-columns: 1fr; }
-    }
-    .chat-channels {
-      background: #0B192C;
-      border: 1px solid var(--border-dark);
-      border-radius: 12px;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .channel-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      color: #64748B;
-      font-weight: 700;
+    .admin-badge-tag {
+      background-color: var(--accent-orange);
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 800;
       letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-      padding: 0 0.5rem;
-    }
-    .channel-btn {
-      text-align: left;
-      background: transparent;
-      border: none;
-      color: #94A3B8;
-      padding: 0.6rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
-    }
-    .channel-btn:hover { background: #1E293B; color: white; }
-    .channel-btn.active { background: #1E293B; color: #38BDF8; }
-
-    .chat-window {
-      background: var(--card-bg);
-      border: 1px solid var(--border-dark);
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      height: 600px;
-    }
-    .chat-header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--border-dark);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .chat-header h3 { font-size: 1rem; font-weight: 700; }
-    .chat-header span { font-size: 0.75rem; color: #94A3B8; }
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .chat-msg {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      max-width: 85%;
-    }
-    .chat-msg.mine {
-      align-self: flex-end;
-      align-items: flex-end;
-    }
-    .chat-msg-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.75rem;
-      color: #94A3B8;
-    }
-    .chat-msg-sender { font-weight: 700; color: #F8FAFC; }
-    .chat-bubble {
-      background: #1E293B;
-      border: 1px solid #334155;
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-      font-size: 0.88rem;
-      line-height: 1.45;
-      color: #F1F5F9;
-    }
-    .chat-msg.mine .chat-bubble {
-      background: #0369A1;
-      border-color: #0284C7;
-      color: white;
-    }
-    .chat-input-bar {
-      padding: 1rem;
-      border-top: 1px solid var(--border-dark);
-      background: #0B192C;
-      display: flex;
-      gap: 0.5rem;
-    }
-    .chat-input {
-      flex: 1;
-      background: #1E293B;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      padding: 0.65rem 1rem;
-      color: white;
-      font-size: 0.9rem;
-      outline: none;
-    }
-    .btn-send {
-      background: var(--accent-orange);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.65rem 1.25rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* Calendar Grid */
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1rem;
-    }
-    .event-card {
-      background: #0B192C;
-      border: 1px solid var(--border-dark);
-      border-left: 4px solid #38BDF8;
-      border-radius: 8px;
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    .event-card.safety { border-left-color: #EF4444; }
-    .event-card.training { border-left-color: #10B981; }
-    .event-card.onboarding { border-left-color: #F59E0B; }
-    .event-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
-    .event-title { font-size: 1rem; font-weight: 700; color: white; }
-    .event-badge {
-      font-size: 0.65rem;
-      padding: 2px 6px;
-      border-radius: 4px;
       text-transform: uppercase;
-      font-weight: 700;
-      background: #1E293B;
-      color: #94A3B8;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
     }
-    .event-meta {
-      font-size: 0.8rem;
-      color: #94A3B8;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-    .event-desc { font-size: 0.85rem; color: #CBD5E1; margin-top: 0.25rem; line-height: 1.4; }
 
-    /* Documents Grid */
-    .docs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1rem;
-    }
-    .doc-card {
-      background: #0B192C;
-      border: 1px solid var(--border-dark);
-      border-radius: 10px;
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .doc-category { font-size: 0.7rem; color: #38BDF8; font-weight: 700; text-transform: uppercase; margin-bottom: 0.25rem; }
-    .doc-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.3; }
-    .doc-desc { font-size: 0.82rem; color: #94A3B8; margin-bottom: 1rem; line-height: 1.4; flex: 1; }
-    .doc-footer {
+    .admin-controls {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding-top: 0.75rem;
-      border-top: 1px solid #1E293B;
+      gap: 0.85rem;
+      flex-wrap: wrap;
     }
-    .doc-size { font-size: 0.75rem; color: #64748B; }
-    .btn-doc {
-      background: #1E293B;
-      border: 1px solid #334155;
-      color: white;
-      padding: 0.4rem 0.85rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
+
+    .admin-user-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .admin-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      transition: all 0.2s;
-    }
-    .btn-doc:hover { background: #38BDF8; color: #06101E; border-color: #38BDF8; }
-
-    /* Compliance Table & KPI */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-    .kpi-card {
-      background: #0B192C;
-      border: 1px solid var(--border-dark);
-      border-radius: 10px;
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-    .kpi-number { font-size: 1.8rem; font-weight: 800; color: #38BDF8; }
-    .kpi-label { font-size: 0.78rem; color: #94A3B8; text-transform: uppercase; font-weight: 600; }
-
-    .compliance-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
-    .compliance-table th {
-      text-align: left;
-      padding: 0.85rem 1rem;
-      background: #0B192C;
-      color: #94A3B8;
+      padding: 0.45rem 0.95rem;
+      font-size: 0.82rem;
       font-weight: 700;
-      text-transform: uppercase;
-      font-size: 0.72rem;
-      border-bottom: 1px solid var(--border-dark);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      border: none;
     }
-    .compliance-table td {
-      padding: 1rem;
-      border-bottom: 1px solid #1E293B;
-      vertical-align: top;
-    }
-    .status-tag {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-    .status-tag.ready { background: #065F46; color: #A7F3D0; }
-    .status-tag.identified { background: #7C2D12; color: #FDBA74; }
-    .status-tag.revision { background: #78350F; color: #FCD34D; }
 
-    /* Gmail Live Sync Banner */
-    .gmail-sync-box {
-      background: linear-gradient(135deg, #0B192C 0%, #1E293B 100%);
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
+    .admin-btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
-    .gmail-sync-info h4 { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
-    .gmail-sync-info p { font-size: 0.82rem; color: #94A3B8; line-height: 1.4; max-width: 600px; }
 
-    /* Modal */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      padding: 1rem;
+    .admin-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
     }
-    .modal-overlay.active { display: flex; }
-    .modal-box {
-      background: var(--card-bg);
-      border: 1px solid #334155;
-      border-radius: 16px;
-      max-width: 700px;
+
+    .admin-btn-danger {
+      background: #DC2626;
+      color: #FFFFFF;
+    }
+
+    .admin-btn-danger:hover {
+      background: #B91C1C;
+    }
+
+    /* Container */
+    .admin-container {
+      max-width: 1300px;
       width: 100%;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      margin: 0 auto;
+      padding: 1.75rem clamp(1rem, 3vw, 2rem);
+      flex: 1;
     }
-    .modal-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border-dark);
+
+    /* Notice Banner */
+    .admin-notice {
+      background: #EFF6FF;
+      border-left: 4px solid var(--accent-blue);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-size: 0.88rem;
+      color: #1E3A8A;
     }
-    .modal-header h3 { font-size: 1.1rem; font-weight: 700; }
-    .btn-close-modal {
+
+    /* Nav Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--admin-border);
+      margin-bottom: 1.75rem;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .admin-tab {
       background: transparent;
       border: none;
-      color: #94A3B8;
-      font-size: 1.5rem;
+      border-bottom: 3px solid transparent;
+      padding: 0.75rem 1.25rem;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-muted);
       cursor: pointer;
-      line-height: 1;
-    }
-    .modal-body {
-      padding: 1.5rem;
-      overflow-y: auto;
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: #CBD5E1;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      margin-bottom: -2px;
     }
 
-    /* Roster Table */
-    .roster-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    .roster-table th { padding: 0.75rem; background: #0B192C; color: #94A3B8; text-align: left; font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid var(--border-dark); }
-    .roster-table td { padding: 0.85rem 0.75rem; border-bottom: 1px solid #1E293B; }
+    .admin-tab:hover {
+      color: var(--primary-navy);
+    }
+
+    .admin-tab.active {
+      color: var(--accent-orange);
+      border-bottom-color: var(--accent-orange);
+    }
+
+    .tab-badge {
+      background: var(--admin-border);
+      color: var(--text-dark);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+    }
+
+    .admin-tab.active .tab-badge {
+      background: var(--accent-orange);
+      color: #FFFFFF;
+    }
+
+    /* Cards */
+    .admin-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+      margin-bottom: 1.5rem;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .kpi-card {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-orange);
+    }
+
+    .kpi-card.green::before { background: var(--accent-green); }
+    .kpi-card.blue::before { background: var(--accent-blue); }
+    .kpi-card.gold::before { background: var(--accent-gold); }
+
+    .kpi-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .kpi-value {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: var(--primary-navy);
+      line-height: 1.1;
+      margin: 0.35rem 0 0.2rem;
+    }
+
+    .kpi-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Tables */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--admin-border);
+      border-radius: var(--radius-md);
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+      background: #FFFFFF;
+    }
+
+    .admin-table th {
+      background: #F1F5F9;
+      color: var(--text-dark);
+      font-weight: 700;
+      padding: 0.85rem 1rem;
+      border-bottom: 2px solid var(--admin-border);
+      white-space: nowrap;
+    }
+
+    .admin-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--admin-border);
+      vertical-align: middle;
+    }
+
+    .admin-table tr:hover {
+      background: #F8FAFC;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge-amber { background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
+    .badge-green { background: #DCFCE7; color: #166534; border: 1px solid #86EFAC; }
+    .badge-blue { background: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
+    .badge-gray { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+
+    /* Auth Modal Screen */
+    .login-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 120px);
+      padding: 2rem 1rem;
+    }
+
+    .login-card {
+      background: #FFFFFF;
+      border: 1px solid var(--admin-border);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.5rem, 5vw, 2.5rem);
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .login-logo {
+      height: 64px;
+      margin: 0 auto 1.25rem;
+      display: block;
+    }
+
+    .btn-google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      width: 100%;
+      padding: 0.85rem 1.25rem;
+      background: #FFFFFF;
+      color: #374151;
+      border: 1px solid #D1D5DB;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      transition: all var(--transition-fast);
+      margin-bottom: 1.25rem;
+    }
+
+    .btn-google:hover {
+      background: #F9FAFB;
+      border-color: #9CA3AF;
+    }
+
+    /* Tabs Content Panels */
+    .admin-panel {
+      display: none;
+    }
+
+    .admin-panel.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation Header -->
-  <header>
-    <div class="container header-inner">
-      <a href="/" class="brand-wrap">
-        <img src="/springboards_logo.webp" alt="Springboards Logo" class="brand-logo">
+  <!-- Top Sticky Header -->
+  <header class="admin-header">
+    <div class="admin-header-inner">
+      <a href="/" class="admin-brand">
+        <img src="springboards_logo.png" alt="Springboards Logo" class="admin-logo">
         <div>
-          <span class="brand-title">Springboards Hub</span>
-          <span class="brand-subtitle">Staff & Leadership Portal</span>
+          <div style="font-weight: 800; font-size: 1.05rem; letter-spacing: -0.02em;">SPRINGBOARDS</div>
+          <div style="font-size: 0.72rem; color: #94A3B8; font-weight: 600;">Executive Administrator Portal</div>
         </div>
       </a>
 
-      <div id="header-user-section" style="display: none;">
-        <div class="user-badge">
-          <div class="user-info">
-            <span class="user-name" id="user-display-name">Marilynn Ward</span>
-            <span class="user-role" id="user-display-role">Admin</span>
-          </div>
-          <button class="btn-logout" id="btn-logout">Exit</button>
+      <div class="admin-controls">
+        <div id="header-user-info" style="display: none;" class="admin-user-pill">
+          <span>👤</span>
+          <strong id="admin-user-name">Marilynn L. Ward</strong>
+          <span class="admin-badge-tag">Executive Admin</span>
         </div>
+        <a href="/" class="admin-btn admin-btn-secondary" target="_blank" rel="noopener">Public Website ↗</a>
+        <button id="btn-logout" class="admin-btn admin-btn-danger" style="display: none;" onclick="logoutAdmin()">Sign Out</button>
       </div>
     </div>
   </header>
 
-  <!-- Login Section -->
-  <div id="auth-section" class="auth-wrapper">
-    <div class="auth-card">
-      <div style="text-align: center; margin-bottom: 1.5rem;">
-        <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.25rem;">Staff & Leadership Login</h2>
-        <p style="font-size: 0.82rem; color: #94A3B8;">Sign in to access group chat, work schedule, and documents</p>
+  <!-- Login Section (when unauthenticated) -->
+  <div id="section-auth" class="login-wrapper">
+    <div class="login-card">
+      <img src="springboards_logo.png" alt="Springboards Logo" class="login-logo">
+      <span class="section-eyebrow" style="color: var(--accent-orange);">Leadership Portal</span>
+      <h1 class="section-title" style="font-size: 1.65rem; margin-bottom: 0.5rem;">Executive Admin Sign-In</h1>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+        Dedicated administrative management portal for <strong>Marilynn L. Ward</strong> (Workforce Director &amp; Compliance Administrator).
+      </p>
+
+      <div style="background: #FFFBEB; border: 1px solid #FCD34D; border-radius: var(--radius-sm); padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.8rem; color: #92400E; text-align: left;">
+        ℹ️ <strong>System Notice:</strong> Multi-user staff PIN logins and board member integrations will be re-enabled here at a later date.
       </div>
 
-      <!-- Auth Tabs -->
-      <div class="auth-tabs">
-        <button class="auth-tab-btn active" id="tab-btn-staff" onclick="switchAuthTab('staff')">Staff Mobile Login</button>
-        <button class="auth-tab-btn" id="tab-btn-admin" onclick="switchAuthTab('admin')">Leadership / Admin</button>
+      <button type="button" class="btn-google" onclick="loginWithGoogle()">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+        </svg>
+        Sign In as marilynnlward@gmail.com
+      </button>
+
+      <div style="display: flex; align-items: center; margin: 1.25rem 0; gap: 0.75rem;">
+        <div style="flex: 1; height: 1px; background: var(--admin-border);"></div>
+        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700;">OR ENTER PASSCODE</span>
+        <div style="flex: 1; height: 1px; background: var(--admin-border);"></div>
       </div>
 
-      <!-- Staff Mobile Login Form -->
-      <form id="form-staff-login" onsubmit="handleStaffLogin(event)">
-        <div class="form-group">
-          <label class="form-label" for="staff-phone">Your Mobile Phone Number</label>
-          <input type="tel" id="staff-phone" class="form-input" placeholder="(334) 555-0199" required autocomplete="tel">
+      <form onsubmit="loginWithPasscode(event)">
+        <div style="text-align: left; margin-bottom: 1rem;">
+          <label style="font-size: 0.82rem; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 0.35rem;" for="input-passcode">Executive Passcode</label>
+          <input type="password" id="input-passcode" class="form-input" value="2026" placeholder="Enter admin passcode" style="width: 100%; padding: 0.75rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 1rem;">
         </div>
-
-        <div class="form-group">
-          <label class="form-label" for="staff-pin">4-Digit Staff PIN</label>
-          <input type="password" id="staff-pin" class="form-input" placeholder="••••" maxlength="4" required inputmode="numeric">
-        </div>
-
-        <button type="submit" class="btn-primary" id="btn-staff-submit">
-          Sign In to Staff Hub
-        </button>
-
-        <p class="auth-hint">
-          ✓ No Google Workspace seat required.<br>
-          Authorized staff can log in directly from any smartphone.
-        </p>
-
-        <!-- Quick Demo Testing Chips -->
-        <div class="quick-chips">
-          <span style="font-size: 0.72rem; color: #64748B; width: 100%; display: block; margin-bottom: 2px;">Quick Test Login:</span>
-          <button type="button" class="chip" onclick="quickFillStaff('(334) 555-0199', '1234')">Trades Crew Member - PIN 1234</button>
-          <button type="button" class="chip" onclick="quickFillStaff('(334) 756-0123', '1985')">Marvin Thompson - PIN 1985</button>
-          <button type="button" class="chip" onclick="quickFillStaff('(706) 302-5326', '1985')">Melvin M.L. Ward - PIN 1985</button>
-          <button type="button" class="chip" onclick="quickFillStaff('(615) 603-1157', '2026')">Marilynn Ward - PIN 2026</button>
-        </div>
-      </form>
-
-      <!-- Admin / Executive Login Form -->
-      <form id="form-admin-login" style="display: none;" onsubmit="handleAdminLogin(event)">
-        <div style="margin-bottom: 1.25rem;">
-          <p style="font-size: 0.82rem; color: #94A3B8; margin-bottom: 0.75rem;">
-            Authenticate with your designated administrator account to sync Gmail and manage compliance records:
-          </p>
-
-          <button type="button" class="btn-google" onclick="triggerGoogleSignIn()">
-            <svg width="18" height="18" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-              <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
-              <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
-              <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-            </svg>
-            Sign in with Google - marilynnlward@gmail.com
-          </button>
-        </div>
-
-        <div style="display: flex; align-items: center; margin: 1rem 0; gap: 0.75rem;">
-          <div style="flex: 1; height: 1px; background: #334155;"></div>
-          <span style="font-size: 0.75rem; color: #64748B;">OR USE ADMIN PASSCODE</span>
-          <div style="flex: 1; height: 1px; background: #334155;"></div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="admin-passcode">Executive Admin Passcode</label>
-          <input type="password" id="admin-passcode" class="form-input" placeholder="Enter admin passcode" value="2026">
-        </div>
-
-        <button type="submit" class="btn-primary">
-          Enter Leadership Backoffice
+        <button type="submit" class="btn-cta" style="width: 100%; padding: 0.85rem; font-size: 1rem;">
+          Enter Leadership Backoffice &rarr;
         </button>
       </form>
 
-      <div id="auth-error-msg" style="display: none; background: #7F1D1D; border: 1px solid #DC2626; color: #FECACA; padding: 0.75rem; border-radius: 8px; font-size: 0.8rem; margin-top: 1rem; text-align: center;"></div>
+      <div id="auth-error-alert" style="display: none; background: #FEE2E2; border: 1px solid #F87171; color: #991B1B; padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-top: 1rem;"></div>
     </div>
   </div>
 
-  <!-- Main Portal Interface (Visible when logged in) -->
-  <main id="portal-main" class="app-main" style="display: none;">
-    <div class="container">
+  <!-- Authenticated Portal View -->
+  <main id="section-portal" class="admin-container" style="display: none;">
 
-      <!-- Navigation Tabs -->
-      <nav class="nav-tabs" id="main-nav-tabs">
-        <button class="nav-tab-btn active" onclick="switchNavTab('chat')">
-          💬 Team Chat
-        </button>
-        <button class="nav-tab-btn" onclick="switchNavTab('calendar')">
-          📅 Work Schedule & Calendar
-        </button>
-        <button class="nav-tab-btn" onclick="switchNavTab('documents')">
-          📁 Document Vault
-        </button>
-        <button class="nav-tab-btn" onclick="switchNavTab('governance')">
-          🏛️ Board &amp; Governance
-        </button>
-        <!-- Admin Only Tabs -->
-        <button class="nav-tab-btn admin-only" id="tab-nav-candidates" style="display: none;" onclick="switchNavTab('candidates')">
-          👤 Candidate Applications <span class="admin-badge">Admin</span>
-        </button>
-        <button class="nav-tab-btn admin-only" id="tab-nav-compliance" style="display: none;" onclick="switchNavTab('compliance')">
-          📋 Compliance Tracker <span class="admin-badge">Admin</span>
-        </button>
-        <button class="nav-tab-btn admin-only" id="tab-nav-roster" style="display: none;" onclick="switchNavTab('roster')">
-          👥 Staff Access <span class="admin-badge">Admin</span>
-        </button>
-      </nav>
+    <!-- System Notice -->
+    <div class="admin-notice">
+      <div>
+        <strong>Executive Portal Mode Active.</strong> Currently configured for Marilynn L. Ward. Multi-user staff PIN logins and board governance modules will be re-enabled at a later date.
+      </div>
+      <button onclick="refreshData()" class="admin-btn admin-btn-secondary" style="color: #1E3A8A; border-color: #93C5FD; background: #DBEAFE;">↻ Refresh Data</button>
+    </div>
 
-      <!-- 1. TEAM CHAT PANEL -->
-      <section id="panel-chat" class="panel active">
-        <div class="chat-layout">
-          <!-- Channels Sidebar -->
-          <div class="chat-channels">
-            <div class="channel-title">Team Channels</div>
-            <button class="channel-btn active" onclick="selectChannel('general')"># general-worksite</button>
-            <button class="channel-btn" onclick="selectChannel('safety')"># safety-and-ppe</button>
-            <button class="channel-btn" onclick="selectChannel('timesheets')"># timesheet-checkins</button>
-            
-            <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid #1E293B;">
-              <span style="font-size: 0.72rem; color: #64748B; display: block; line-height: 1.3;">
-                All staff messages sync automatically in real time across devices.
-              </span>
-            </div>
-          </div>
+    <!-- Navigation Tabs -->
+    <nav class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('candidates')">
+        👤 Candidate Pipeline <span id="badge-candidates-count" class="tab-badge">0</span>
+      </button>
+      <button class="admin-tab" onclick="switchTab('inbox')">
+        📬 Inquiries &amp; Leads <span id="badge-inbox-count" class="tab-badge">0</span>
+      </button>
+      <button class="admin-tab" onclick="switchTab('compliance')">
+        📋 Compliance &amp; WIOA Tracker
+      </button>
+      <button class="admin-tab" onclick="switchTab('flyers')">
+        📄 Job Flyer &amp; Files
+      </button>
+      <button class="admin-tab" onclick="switchTab('analytics')">
+        📊 Site Traffic &amp; Stats
+      </button>
+    </nav>
 
-          <!-- Chat Window -->
-          <div class="chat-window">
-            <div class="chat-header">
-              <div>
-                <h3 id="current-channel-title"># general-worksite</h3>
-                <span>Open communication for field crew and project leads</span>
-              </div>
-              <button onclick="loadChatMessages()" style="background: transparent; border: 1px solid #334155; color: #94A3B8; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer;">
-                🔄 Refresh
-              </button>
-            </div>
-
-            <!-- Messages Stream -->
-            <div class="chat-messages" id="chat-messages-container">
-              <!-- Dynamically populated -->
-            </div>
-
-            <!-- Input Bar -->
-            <form class="chat-input-bar" onsubmit="handleSendMessage(event)">
-              <input type="text" id="chat-input-text" class="chat-input" placeholder="Type a message or worksite update..." required>
-              <button type="submit" class="btn-send">Send</button>
-            </form>
-          </div>
+    <!-- 1. CANDIDATE PIPELINE PANEL -->
+    <section id="panel-candidates" class="admin-panel active">
+      <!-- KPI Metric Summary -->
+      <div class="kpi-grid">
+        <div class="kpi-card green">
+          <div class="kpi-label">Total Applicants</div>
+          <div id="kpi-cand-total" class="kpi-value">0</div>
+          <div class="kpi-desc">Transitional trade candidates</div>
         </div>
-      </section>
+        <div class="kpi-card">
+          <div class="kpi-label">Pending Intake</div>
+          <div id="kpi-cand-pending" class="kpi-value">0</div>
+          <div class="kpi-desc">Awaiting first follow-up call</div>
+        </div>
+        <div class="kpi-card blue">
+          <div class="kpi-label">Onboarding / Documents</div>
+          <div id="kpi-cand-onboarding" class="kpi-value">0</div>
+          <div class="kpi-desc">Collecting ID &amp; Career Center referral</div>
+        </div>
+        <div class="kpi-card gold">
+          <div class="kpi-label">Active / Placed</div>
+          <div id="kpi-cand-placed" class="kpi-value">0</div>
+          <div class="kpi-desc">In hands-on training or job placement</div>
+        </div>
+      </div>
 
-      <!-- 2. CALENDAR & SCHEDULE PANEL -->
-      <section id="panel-calendar" class="panel">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
           <div>
-            <h2 style="font-size: 1.3rem; font-weight: 800;">Worksite & Training Schedule</h2>
-            <p style="font-size: 0.82rem; color: #94A3B8;">Upcoming field shifts, safety reviews, and administrative deadlines</p>
+            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.2rem;">Candidate Intake Applications</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Real-time submissions from the public website candidate intake quiz.</p>
           </div>
-          <button id="btn-add-event" class="admin-only" style="display: none; background: #0284C7; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700; font-size: 0.82rem; cursor: pointer;" onclick="openAddEventModal()">
-            + Add Schedule Item
-          </button>
-        </div>
-
-        <div class="calendar-grid" id="calendar-grid-container">
-          <!-- Dynamically populated -->
-        </div>
-      </section>
-
-      <!-- 3. DOCUMENT VAULT PANEL -->
-      <section id="panel-documents" class="panel">
-        <div style="margin-bottom: 1.25rem;">
-          <h2 style="font-size: 1.3rem; font-weight: 800;">Shared Team Document Vault</h2>
-          <p style="font-size: 0.82rem; color: #94A3B8;">Approved guidelines, timesheet instructions, and field references</p>
-        </div>
-
-        <div class="docs-grid" id="docs-grid-container">
-          <!-- Dynamically populated -->
-        </div>
-      </section>
-
-      <!-- 4. EXECUTIVE COMPLIANCE & GMAIL TRACKER (ADMIN ONLY) -->
-      <section id="panel-compliance" class="panel admin-only" style="display: none;">
-        <!-- Live Gmail Sync Banner -->
-        <div class="gmail-sync-box">
-          <div class="gmail-sync-info">
-            <h4>Google Workspace & Gmail Correspondence Sync</h4>
-            <p>
-              Connect your Google account <code>marilynnlward@gmail.com</code> to scan correspondence from <strong>Alicia Ford</strong>, <strong>Coretta Bozeman</strong>, <strong>Jill Grant</strong>, and <strong>Marvin Thompson</strong>. Tracks days elapsed since request, unread notifications, and submission replies.
-            </p>
-          </div>
-          <button class="btn-primary" style="width: auto; padding: 0.75rem 1.5rem;" onclick="syncLiveGmailEmails()">
-            Sync Gmail Correspondence
-          </button>
-        </div>
-
-        <!-- Sync Results Box (Populated on sync) -->
-        <div id="gmail-sync-results" style="display: none; margin-bottom: 1.5rem;" class="card">
-          <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: #38BDF8;">
-            Live Inbox Correspondence Analysis
-          </h3>
-          <div id="gmail-threads-list" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
-        </div>
-
-        <!-- Compliance KPI Counters -->
-        <div class="kpi-row">
-          <div class="kpi-card">
-            <span class="kpi-number" id="kpi-total-docs">11</span>
-            <span class="kpi-label">Required Documents</span>
-          </div>
-          <div class="kpi-card">
-            <span class="kpi-number" style="color: #10B981;" id="kpi-submitted-docs">3</span>
-            <span class="kpi-label">Submitted / Pending Agency</span>
-          </div>
-          <div class="kpi-card">
-            <span class="kpi-number" style="color: #F59E0B;" id="kpi-pending-docs">8</span>
-            <span class="kpi-label">In Preparation</span>
-          </div>
-          <div class="kpi-card">
-            <span class="kpi-number" style="color: #EF4444;" id="kpi-overdue-docs">2</span>
-            <span class="kpi-label">Action Items Requiring Attention</span>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <input type="text" id="cand-search-input" placeholder="Search applicant by name, phone, trade..." oninput="filterCandidates()" style="padding: 0.45rem 0.85rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.85rem; min-width: 240px;">
+            <select id="cand-stage-filter" onchange="filterCandidates()" style="padding: 0.45rem 0.85rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.85rem;">
+              <option value="ALL">All Stages</option>
+              <option value="Pending Intake">Pending Intake</option>
+              <option value="Documents Collected">Documents Collected</option>
+              <option value="Orientation Scheduled">Orientation Scheduled</option>
+              <option value="Active Worksite Training">Active Worksite Training</option>
+              <option value="Placed in Job">Placed in Job</option>
+              <option value="Inactive / On Hold">Inactive / On Hold</option>
+            </select>
           </div>
         </div>
 
-        <!-- Filter Bar -->
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; overflow-x: auto; padding-bottom: 4px;">
-          <button class="chip" style="background: #1E293B; color: white;" onclick="filterCompliance('all')">All Contacts</button>
-          <button class="chip" onclick="filterCompliance('Alicia Ford')">Alicia Ford - STAARS</button>
-          <button class="chip" onclick="filterCompliance('Coretta Bozeman')">Coretta Bozeman - Transitional Jobs</button>
-          <button class="chip" onclick="filterCompliance('Jill Grant')">Jill Grant - ITA / ETPL</button>
-          <button class="chip" onclick="filterCompliance('Marvin Thompson')">Marvin Thompson - Operations</button>
-        </div>
-
-        <!-- Compliance Table -->
-        <div class="card" style="padding: 0; overflow-x: auto;">
-          <table class="compliance-table">
+        <div class="table-responsive">
+          <table class="admin-table">
             <thead>
               <tr>
-                <th>Document / Requirement</th>
-                <th>Program</th>
-                <th>Contact</th>
-                <th>Requested / Due</th>
-                <th>Days Elapsed</th>
-                <th>Current Status</th>
-                <th>Action Notes</th>
-              </tr>
-            </thead>
-            <tbody id="compliance-table-body">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- 5. CANDIDATE APPLICATIONS & CASE MANAGEMENT (ADMIN ONLY) -->
-      <section id="panel-candidates" class="panel admin-only" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
-          <div>
-            <h2 style="font-size: 1.3rem; font-weight: 800;">Candidate Applications &amp; Case Files</h2>
-            <p style="font-size: 0.82rem; color: #94A3B8;">Review new website intake submissions, update case progress, and track Career Center referral milestones</p>
-          </div>
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <button onclick="loadBackofficeState()" style="background: transparent; border: 1px solid #334155; color: #94A3B8; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; cursor: pointer;">
-              🔄 Refresh List
-            </button>
-          </div>
-        </div>
-
-        <!-- Candidate KPI Summary Cards -->
-        <div class="kpi-grid" style="margin-bottom: 1.25rem;">
-          <div class="kpi-card">
-            <span class="kpi-number" id="kpi-total-candidates">0</span>
-            <span class="kpi-label">Total Applicants</span>
-          </div>
-          <div class="kpi-card">
-            <span class="kpi-number" style="color: #F59E0B;" id="kpi-pending-candidates">0</span>
-            <span class="kpi-label">Pending Intake</span>
-          </div>
-          <div class="kpi-card">
-            <span class="kpi-number" style="color: #38BDF8;" id="kpi-docs-candidates">0</span>
-            <span class="kpi-label">Docs Verified</span>
-          </div>
-          <div class="kpi-card">
-            <span class="kpi-number" style="color: #10B981;" id="kpi-placed-candidates">0</span>
-            <span class="kpi-label">Placed / Active Training</span>
-          </div>
-        </div>
-
-        <div class="card" style="padding: 0; overflow-x: auto;">
-          <table class="compliance-table" style="width: 100%;">
-            <thead>
-              <tr>
-                <th>Applicant</th>
+                <th>Applicant Contact</th>
                 <th>Trade &amp; Helper Role</th>
                 <th>Background &amp; Transit</th>
                 <th>Career Center Status</th>
                 <th>Intake Stage</th>
                 <th>Case Notes</th>
-                <th>Actions</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody id="candidates-table-body">
-              <!-- Dynamically populated -->
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                  Loading candidate applications...
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- 6. STAFF ROSTER & PHONE ACCESS (ADMIN ONLY) -->
-      <section id="panel-roster" class="panel admin-only" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+    <!-- 2. INBOX & WEBSITE LEADS PANEL -->
+    <section id="panel-inbox" class="admin-panel">
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
           <div>
-            <h2 style="font-size: 1.3rem; font-weight: 800;">Staff Phone Login & Roster Management</h2>
-            <p style="font-size: 0.82rem; color: #94A3B8;">Authorize team mobile phone numbers and assign 4-digit PINs at $0 license cost</p>
+            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.2rem;">Website Inquiries &amp; Community Leads</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">All submissions delivered to <strong>info@springboardsfcd.org</strong>.</p>
           </div>
-          <button class="btn-primary" style="width: auto; padding: 0.5rem 1rem; font-size: 0.82rem;" onclick="openAddStaffModal()">
-            + Add Staff Phone & PIN
-          </button>
+          <div style="display: flex; gap: 0.5rem;">
+            <select id="inbox-filter-type" onchange="filterInboxMessages()" style="padding: 0.45rem 0.85rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.85rem;">
+              <option value="ALL">All Submission Types</option>
+              <option value="program_inquiry">Program Inquiries</option>
+              <option value="volunteer_interest">Volunteer Signups</option>
+              <option value="business_partnership_inquiry">Employer &amp; Material Partnerships</option>
+              <option value="donation_pledge">Donation Pledges</option>
+            </select>
+          </div>
         </div>
 
-        <div class="card" style="padding: 0; overflow-x: auto;">
-          <table class="roster-table">
+        <div class="table-responsive">
+          <table class="admin-table">
             <thead>
               <tr>
-                <th>Staff Member</th>
-                <th>Assigned Role</th>
-                <th>Authorized Phone</th>
-                <th>4-Digit PIN</th>
-                <th>Access Level</th>
-                <th>Actions</th>
+                <th>Received Date</th>
+                <th>Type</th>
+                <th>Contact Name</th>
+                <th>Email &amp; Phone</th>
+                <th>Details &amp; Message</th>
               </tr>
             </thead>
-            <tbody id="roster-table-body">
-              <!-- Dynamically populated -->
+            <tbody id="inbox-table-body">
+              <tr>
+                <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                  Loading website inquiries...
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- 6. BOARD & GOVERNANCE PANEL -->
-      <section id="panel-governance" class="panel">
-        <div style="background: #111D32; border: 1px solid #1E293B; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-            <div>
-              <h3 style="font-size: 1.25rem; font-weight: 700; color: #F8FAFC;">Board of Directors and Governance Charter</h3>
-              <p style="color: #94A3B8; font-size: 0.85rem; margin-top: 0.25rem;">
-                Official nine-member leadership structure establishing fiduciary oversight, compliance accountability, and community stewardship.
-              </p>
-            </div>
-            <span style="font-size: 0.75rem; background: #0B192C; border: 1px solid #334155; padding: 0.35rem 0.75rem; border-radius: 9999px; color: #38BDF8; font-weight: 700;">
-              9-Member Structure
-            </span>
+    <!-- 3. COMPLIANCE & WIOA TRACKER PANEL -->
+    <section id="panel-compliance" class="admin-panel">
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.2rem;">WIOA &amp; Worksite Compliance Management</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Track Chambers County Career Center referral certifications, ETPL/ITA status, and wage subsidy limits.</p>
           </div>
         </div>
 
-        <div id="board-grid-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
-          <!-- Dynamically populated from boardStructure -->
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Compliance Item &amp; Description</th>
+                <th>Regulatory Authority</th>
+                <th>Current Status</th>
+                <th>Due / Review Date</th>
+                <th>Compliance Action &amp; Notes</th>
+              </tr>
+            </thead>
+            <tbody id="compliance-table-body">
+              <!-- Dynamically populated from state -->
+            </tbody>
+          </table>
         </div>
-      </section>
+      </div>
+    </section>
 
-    </div>
+    <!-- 4. JOB FLYER & DOCUMENTS PANEL -->
+    <section id="panel-flyers" class="admin-panel">
+      <div class="admin-card">
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.2rem;">Official Program Flyers &amp; Documents</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Quickly view, share, or download high-resolution flyers and worksite agreements for candidates and employer partners.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+          <!-- Card 1: Transitional Jobs Flyer -->
+          <div style="border: 1px solid var(--admin-border); border-radius: var(--radius-md); padding: 1.25rem; background: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Official Job Flyer</span>
+              <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">Transitional Jobs Program Overview Flyer</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Full-color overview detailing state-subsidized on-the-job training, up to 32 hours weekly, 390-hour lifetime cap, and host worksite guidelines.</p>
+              <div style="text-align: center; margin-bottom: 1rem;">
+                <img src="transitional-jobs-overview.webp" alt="Transitional Jobs Flyer Preview" style="max-height: 240px; width: auto; margin: 0 auto; border-radius: 4px; border: 1px solid var(--admin-border);">
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <a href="Transitional_Jobs_Program_Overview.png" download="Springboards_Transitional_Jobs_Flyer.png" class="btn-cta" style="flex: 1; text-align: center; padding: 0.55rem 0.85rem; font-size: 0.85rem; text-decoration: none;">Download PNG ↓</a>
+              <a href="transitional-jobs-overview.webp" target="_blank" class="admin-btn admin-btn-secondary" style="color: var(--primary-navy); border-color: var(--admin-border);">Preview ↗</a>
+            </div>
+          </div>
+
+          <!-- Card 2: Worksite Agreement PDF -->
+          <div style="border: 1px solid var(--admin-border); border-radius: var(--radius-md); padding: 1.25rem; background: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge badge-green" style="margin-bottom: 0.5rem;">Employer Agreement</span>
+              <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">Host Worksite Agreement Form</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Official WIOA worksite host agreement document outlining supervisor expectations, safety requirements, and Sirius Workforce wage reimbursement terms.</p>
+              <div style="padding: 2.5rem 1rem; background: #F8FAFC; border: 1px dashed var(--admin-border); border-radius: 4px; text-align: center; margin-bottom: 1rem;">
+                <span style="font-size: 2.5rem;">📑</span>
+                <div style="font-weight: 700; color: var(--primary-navy); margin-top: 0.5rem; font-size: 0.9rem;">Worksite Agreement_Springboards.pdf</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">PDF Document</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <a href="Worksite Agreement_Springboards.pdf" download="Worksite_Agreement_Springboards.pdf" class="btn-cta" style="flex: 1; text-align: center; padding: 0.55rem 0.85rem; font-size: 0.85rem; text-decoration: none; background: var(--accent-green);">Download PDF ↓</a>
+              <a href="Worksite Agreement_Springboards.pdf" target="_blank" class="admin-btn admin-btn-secondary" style="color: var(--primary-navy); border-color: var(--admin-border);">Open PDF ↗</a>
+            </div>
+          </div>
+
+          <!-- Card 3: Volunteer Schedule Flyer -->
+          <div style="border: 1px solid var(--admin-border); border-radius: var(--radius-md); padding: 1.25rem; background: #FFFFFF; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="badge badge-blue" style="margin-bottom: 0.5rem;">Community Resource</span>
+              <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">Community Volunteer Flyer</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Lanett community center flyer detailing volunteer hours (Monday–Thursday, 8:00 AM – 4:00 PM), dress code, and tool prep projects.</p>
+              <div style="text-align: center; margin-bottom: 1rem;">
+                <img src="springboards-community-flyer.webp" alt="Community Flyer Preview" style="max-height: 240px; width: auto; margin: 0 auto; border-radius: 4px; border: 1px solid var(--admin-border);">
+              </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <a href="springboards flyer 1.jpg" download="Springboards_Community_Flyer.jpg" class="btn-cta" style="flex: 1; text-align: center; padding: 0.55rem 0.85rem; font-size: 0.85rem; text-decoration: none;">Download Flyer ↓</a>
+              <a href="springboards-community-flyer.webp" target="_blank" class="admin-btn admin-btn-secondary" style="color: var(--primary-navy); border-color: var(--admin-border);">Preview ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ANALYTICS & STATS PANEL -->
+    <section id="panel-analytics" class="admin-panel">
+      <div class="kpi-grid">
+        <div class="kpi-card blue">
+          <div class="kpi-label">Total Page Views</div>
+          <div id="stat-pageviews" class="kpi-value">0</div>
+          <div class="kpi-desc">Public website page loads</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-label">Unique Visitors</div>
+          <div id="stat-sessions" class="kpi-value">0</div>
+          <div class="kpi-desc">Distinct browser sessions</div>
+        </div>
+        <div class="kpi-card gold">
+          <div class="kpi-label">Total Leads Received</div>
+          <div id="stat-leads" class="kpi-value">0</div>
+          <div class="kpi-desc">Inquiries, partners, volunteers, applicants</div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 1rem;">Referral Sources &amp; Top Button Clicks</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          <div>
+            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.75rem;">Top Referral Channels</h4>
+            <div id="referrals-container" style="font-size: 0.85rem; color: var(--text-body);">
+              Loading traffic data...
+            </div>
+          </div>
+          <div>
+            <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.75rem;">Top User Actions &amp; Clicks</h4>
+            <div id="actions-container" style="font-size: 0.85rem; color: var(--text-body);">
+              Loading button interaction metrics...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Job Descriptions Viewer Modal -->
-  <div class="modal-overlay" id="modal-job-desc">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3 id="modal-job-desc-title">Approved Entry-Level Job Descriptions</h3>
-        <button class="btn-close-modal" onclick="closeModal('modal-job-desc')">&times;</button>
-      </div>
-      <div class="modal-body" id="modal-job-desc-content">
-        <h4 style="color: #38BDF8; margin-bottom: 0.5rem;">WIOA Non-Supervisory Helper Positions:</h4>
-        <p style="margin-bottom: 1rem;">The following entry-level positions are structured specifically for the Transitional Jobs and On-the-Job Training pathways in compliance with Career Center directives:</p>
-        
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-          <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border: 1px solid #1E293B;">
-            <strong style="color: #F8FAFC; display: block; font-size: 0.95rem;">1. Carpenter Helper</strong>
-            <p style="color: #94A3B8; font-size: 0.82rem;">Assists lead carpenters with structural framing, measurement, material handling, and assembly while adhering to strict fall protection and power tool safety standards.</p>
-          </div>
-          <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border: 1px solid #1E293B;">
-            <strong style="color: #F8FAFC; display: block; font-size: 0.95rem;">2. Electrician Helper</strong>
-            <p style="color: #94A3B8; font-size: 0.82rem;">Assists licensed electricians with conduit bending, wire pulling, staging equipment, and lockout/tagout safety compliance under direct supervision.</p>
-          </div>
-          <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border: 1px solid #1E293B;">
-            <strong style="color: #F8FAFC; display: block; font-size: 0.95rem;">3. Plumber Helper</strong>
-            <p style="color: #94A3B8; font-size: 0.82rem;">Aids plumbing professionals with pipe staging, trench safety precautions, pressure testing observation, and tool calibration.</p>
-          </div>
-          <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border: 1px solid #1E293B;">
-            <strong style="color: #F8FAFC; display: block; font-size: 0.95rem;">4. Tool & Inventory Clerk</strong>
-            <p style="color: #94A3B8; font-size: 0.82rem;">Tracks worksite equipment, checks tool safety guards and calibrations, and maintains daily equipment logs for project audit readiness.</p>
-          </div>
-          <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border: 1px solid #1E293B;">
-            <strong style="color: #F8FAFC; display: block; font-size: 0.95rem;">5. Material Handler / General Laborer</strong>
-            <p style="color: #94A3B8; font-size: 0.82rem;">Performs physical worksite preparation, heavy lifting protocol execution, hazard cleanup, and logistics support.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Timesheet Guidance Modal -->
-  <div class="modal-overlay" id="modal-timesheet">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3>Timesheet & Safety Protocol Guide</h3>
-        <button class="btn-close-modal" onclick="closeModal('modal-timesheet')">&times;</button>
-      </div>
-      <div class="modal-body">
-        <h4 style="color: #38BDF8; margin-bottom: 0.5rem;">Key Participation Guidelines:</h4>
-        <ul style="padding-left: 1.25rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
-          <li><strong>390-Hour Lifetime Maximum:</strong> Participants are limited to a maximum of 390 subsidized hours under Transitional Jobs policy.</li>
-          <li><strong>32-Hour Weekly Ceiling:</strong> Participants may not exceed 32 hours in any single payroll week.</li>
-          <li><strong>Supervisor Sign-Off:</strong> All timesheets must be initialed daily by the designated field supervisor and verified in Avionte / Sirius Staffing.</li>
-          <li><strong>Mandatory Safety PPE:</strong> Hard hats, high-visibility vests, eye protection, and work boots are required at all times when on site.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Add Staff Modal -->
-  <div class="modal-overlay" id="modal-add-staff">
-    <div class="modal-box" style="max-width: 480px;">
-      <div class="modal-header">
-        <h3>Add Staff Phone & PIN</h3>
-        <button class="btn-close-modal" onclick="closeModal('modal-add-staff')">&times;</button>
-      </div>
-      <form class="modal-body" onsubmit="handleSaveStaff(event)">
-        <div class="form-group">
-          <label class="form-label">Employee Name</label>
-          <input type="text" id="new-staff-name" class="form-input" placeholder="e.g. John Doe" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Work Role / Trade</label>
-          <input type="text" id="new-staff-role" class="form-input" placeholder="e.g. Carpentry Helper" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Mobile Phone Number</label>
-          <input type="tel" id="new-staff-phone" class="form-input" placeholder="(334) 555-0100" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Assign 4-Digit PIN</label>
-          <input type="text" id="new-staff-pin" class="form-input" placeholder="e.g. 5432" maxlength="4" required>
-        </div>
-        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Save Staff Access</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Add Calendar Event Modal -->
-  <div class="modal-overlay" id="modal-add-event">
-    <div class="modal-box" style="max-width: 480px;">
-      <div class="modal-header">
-        <h3>Add Schedule Event</h3>
-        <button class="btn-close-modal" onclick="closeModal('modal-add-event')">&times;</button>
-      </div>
-      <form class="modal-body" onsubmit="handleSaveEvent(event)">
-        <div class="form-group">
-          <label class="form-label">Event Title</label>
-          <input type="text" id="event-input-title" class="form-input" placeholder="e.g. Safety Toolbox Meeting" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Date</label>
-          <input type="date" id="event-input-date" class="form-input" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Time</label>
-          <input type="text" id="event-input-time" class="form-input" placeholder="8:00 AM - 12:00 PM" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Location</label>
-          <input type="text" id="event-input-location" class="form-input" placeholder="Shawmut Facility" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Category</label>
-          <select id="event-input-category" class="form-input">
-            <option value="training">Vocational Training</option>
-            <option value="safety">Safety Review</option>
-            <option value="onboarding">Career Center Intake</option>
-            <option value="administrative">Timesheet Deadline</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Description</label>
-          <input type="text" id="event-input-desc" class="form-input" placeholder="Brief notes for crew">
-        </div>
-        <button type="submit" class="btn-primary" style="margin-top: 1rem;">Save Event</button>
-      </form>
-    </div>
-  </div>
-
   <script>
-    // Global State
-    let currentUser = null;
     let appState = {
-      chatMessages: [],
-      calendarEvents: [],
-      sharedDocuments: [],
-      complianceItems: [],
-      staffRoster: []
+      user: null,
+      candidateApplications: [],
+      inboxMessages: [],
+      complianceItems: []
     };
-    let currentChannel = 'general';
-    let complianceFilter = 'all';
 
-    const OAUTH_CLIENT_ID = "651964189612-8mlesd5n7afa5737h3trnmhotpd3ifk3.apps.googleusercontent.com";
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
 
-    // Auto-login from sessionStorage if exists
+    // Auto-login if session in localStorage
     document.addEventListener('DOMContentLoaded', () => {
-      const savedUser = sessionStorage.getItem('sb_user');
-      if (savedUser) {
+      const stored = localStorage.getItem('sb_admin_user');
+      if (stored) {
         try {
-          currentUser = JSON.parse(savedUser);
-          renderAuthenticatedView();
-        } catch (e) {
-          sessionStorage.removeItem('sb_user');
+          appState.user = JSON.parse(stored);
+          showPortal();
+          loadBackofficeData();
+        } catch {
+          localStorage.removeItem('sb_admin_user');
         }
       }
     });
 
-    // Tab Switching in Auth
-    function switchAuthTab(tab) {
-      const staffBtn = document.getElementById('tab-btn-staff');
-      const adminBtn = document.getElementById('tab-btn-admin');
-      const staffForm = document.getElementById('form-staff-login');
-      const adminForm = document.getElementById('form-admin-login');
-      const errBox = document.getElementById('auth-error-msg');
-      errBox.style.display = 'none';
-
-      if (tab === 'staff') {
-        staffBtn.classList.add('active');
-        adminBtn.classList.remove('active');
-        staffForm.style.display = 'block';
-        adminForm.style.display = 'none';
-      } else {
-        adminBtn.classList.add('active');
-        staffBtn.classList.remove('active');
-        staffForm.style.display = 'none';
-        adminForm.style.display = 'block';
-      }
+    async function loginWithGoogle() {
+      // Direct executive login for Marilynn L. Ward
+      await executeAdminLogin({
+        type: 'admin',
+        adminEmail: 'marilynnlward@gmail.com'
+      });
     }
 
-    function quickFillStaff(phone, pin) {
-      document.getElementById('staff-phone').value = phone;
-      document.getElementById('staff-pin').value = pin;
-    }
-
-    // Staff Login Handler
-    async function handleStaffLogin(e) {
+    async function loginWithPasscode(e) {
       e.preventDefault();
-      const phone = document.getElementById('staff-phone').value.trim();
-      const pin = document.getElementById('staff-pin').value.trim();
-      const errBox = document.getElementById('auth-error-msg');
+      const code = document.getElementById('input-passcode').value.trim();
+      await executeAdminLogin({
+        type: 'admin',
+        adminCode: code
+      });
+    }
+
+    async function executeAdminLogin(payload) {
+      const errBox = document.getElementById('auth-error-alert');
       errBox.style.display = 'none';
 
       try {
         const res = await fetch('/api/backoffice/auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'staff', phone, pin })
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data.error || 'Authentication failed');
-        }
-        currentUser = data.user;
-        sessionStorage.setItem('sb_user', JSON.stringify(currentUser));
-        renderAuthenticatedView();
-      } catch (err) {
-        errBox.textContent = err.message;
-        errBox.style.display = 'block';
-      }
-    }
-
-    // Admin Passcode Login
-    async function handleAdminLogin(e) {
-      e.preventDefault();
-      const passcode = document.getElementById('admin-passcode').value.trim();
-      const errBox = document.getElementById('auth-error-msg');
-      errBox.style.display = 'none';
-
-      try {
-        const res = await fetch('/api/backoffice/auth', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'admin', adminCode: passcode, adminEmail: 'marilynnlward@gmail.com' })
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Invalid passcode');
-        currentUser = data.user;
-        sessionStorage.setItem('sb_user', JSON.stringify(currentUser));
-        renderAuthenticatedView();
-      } catch (err) {
-        errBox.textContent = err.message;
-        errBox.style.display = 'block';
-      }
-    }
-
-    // Google Sign-In Trigger
-    function triggerGoogleSignIn() {
-      if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) {
-        alert('Google Identity Services script is loading. Please try again in 2 seconds.');
-        return;
-      }
-      const tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: OAUTH_CLIENT_ID,
-        scope: 'https://www.googleapis.com/auth/gmail.readonly',
-        callback: (response) => {
-          if (response && response.access_token) {
-            currentUser = {
-              id: 'admin-google',
-              name: 'Marilynn Ward',
-              role: 'Workforce Director / Admin',
-              isAdmin: true,
-              email: 'marilynnlward@gmail.com',
-              googleAccessToken: response.access_token
-            };
-            sessionStorage.setItem('sb_user', JSON.stringify(currentUser));
-            renderAuthenticatedView();
-          }
-        }
-      });
-      tokenClient.requestAccessToken();
-    }
-
-    // Render Authenticated State
-    async function renderAuthenticatedView() {
-      document.getElementById('auth-section').style.display = 'none';
-      document.getElementById('portal-main').style.display = 'block';
-      document.getElementById('header-user-section').style.display = 'flex';
-
-      document.getElementById('user-display-name').textContent = currentUser.name;
-      document.getElementById('user-display-role').textContent = currentUser.isAdmin ? 'Admin' : currentUser.role;
-
-      // Toggle Admin specific elements
-      const adminElements = document.querySelectorAll('.admin-only');
-      adminElements.forEach(el => {
-        el.style.display = currentUser.isAdmin ? '' : 'none';
-      });
-
-      // Load app state
-      await loadBackofficeState();
-
-      // Poll chat every 8 seconds
-      setInterval(loadChatMessages, 8000);
-    }
-
-    // Logout
-    document.getElementById('btn-logout').addEventListener('click', () => {
-      sessionStorage.removeItem('sb_user');
-      currentUser = null;
-      window.location.reload();
-    });
-
-    // Navigation Tabs
-    function switchNavTab(tabId) {
-      document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-
-      event.currentTarget.classList.add('active');
-      const panel = document.getElementById(`panel-${tabId}`);
-      if (panel) panel.classList.add('active');
-    }
-
-    // Load backoffice data
-    async function loadBackofficeState() {
-      try {
-        const headers = {};
-        if (currentUser && currentUser.isAdmin) {
-          headers['x-admin-auth'] = 'true';
-        }
-        const res = await fetch('/api/backoffice/state', { headers });
-        if (!res.ok) return;
-        appState = await res.json();
-
-        renderChatMessages();
-        renderCalendar();
-        renderDocuments();
-        renderBoardStructure();
-        if (currentUser.isAdmin) {
-          renderCandidates();
-          renderComplianceTable();
-          renderRoster();
-        }
-      } catch (e) {
-        console.error('Failed to load backoffice state:', e);
-      }
-    }
-
-    // Chat Functions
-    function selectChannel(ch) {
-      currentChannel = ch;
-      document.querySelectorAll('.channel-btn').forEach(btn => btn.classList.remove('active'));
-      event.currentTarget.classList.add('active');
-      document.getElementById('current-channel-title').textContent = `# ${ch}`;
-      renderChatMessages();
-    }
-
-    async function loadChatMessages() {
-      try {
-        const res = await fetch('/api/backoffice/state');
-        const data = await res.json();
-        appState.chatMessages = data.chatMessages || [];
-        renderChatMessages();
-      } catch (e) {}
-    }
-
-    function renderChatMessages() {
-      const container = document.getElementById('chat-messages-container');
-      const filtered = (appState.chatMessages || []).filter(m => m.channel === currentChannel || (!m.channel && currentChannel === 'general'));
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align: center; color: #64748B; font-size: 0.85rem; margin-top: 3rem;">No messages in #${currentChannel} yet. Be the first to post!</div>`;
-        return;
-      }
-
-      container.innerHTML = filtered.map(msg => {
-        const isMine = currentUser && (msg.senderName === currentUser.name);
-        const timeFormatted = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        return `
-          <div class="chat-msg ${isMine ? 'mine' : ''}">
-            <div class="chat-msg-meta">
-              <span class="chat-msg-sender">${msg.senderName}</span>
-              <span>•</span>
-              <span>${msg.senderRole || 'Staff'}</span>
-              <span>•</span>
-              <span>${timeFormatted}</span>
-            </div>
-            <div class="chat-bubble">
-              ${escapeHtml(msg.text)}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      container.scrollTop = container.scrollHeight;
-    }
-
-    async function handleSendMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('chat-input-text');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const payload = {
-        senderName: currentUser.name,
-        senderRole: currentUser.role,
-        text,
-        channel: currentChannel
-      };
-
-      input.value = '';
-
-      try {
-        const res = await fetch('/api/backoffice/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+
         const data = await res.json();
-        if (data.success) {
-          appState.chatMessages.push(data.message);
-          renderChatMessages();
+        if (res.ok && data.success) {
+          appState.user = data.user;
+          localStorage.setItem('sb_admin_user', JSON.stringify(data.user));
+          showPortal();
+          await loadBackofficeData();
+        } else {
+          errBox.textContent = data.error || 'Authentication failed. Please verify credentials.';
+          errBox.style.display = 'block';
         }
-      } catch (e) {
-        console.error('Failed to send message:', e);
+      } catch (err) {
+        errBox.textContent = 'Server connection error. Please try again.';
+        errBox.style.display = 'block';
       }
     }
 
-    // Calendar Functions
-    function renderCalendar() {
-      const container = document.getElementById('calendar-grid-container');
-      const events = appState.calendarEvents || [];
-
-      if (events.length === 0) {
-        container.innerHTML = `<p style="color: #64748B;">No upcoming schedule items posted.</p>`;
-        return;
-      }
-
-      container.innerHTML = events.map(evt => {
-        return `
-          <div class="event-card ${evt.category || 'general'}">
-            <div class="event-header">
-              <h4 class="event-title">${escapeHtml(evt.title)}</h4>
-              <span class="event-badge">${evt.category || 'general'}</span>
-            </div>
-            <div class="event-meta">
-              <span>📅 ${evt.date} • ⏰ ${evt.time}</span>
-              <span>📍 ${escapeHtml(evt.location)}</span>
-            </div>
-            ${evt.description ? `<p class="event-desc">${escapeHtml(evt.description)}</p>` : ''}
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openAddEventModal() {
-      document.getElementById('modal-add-event').classList.add('active');
-    }
-
-    async function handleSaveEvent(e) {
-      e.preventDefault();
-      const title = document.getElementById('event-input-title').value.trim();
-      const date = document.getElementById('event-input-date').value;
-      const time = document.getElementById('event-input-time').value.trim();
-      const location = document.getElementById('event-input-location').value.trim();
-      const category = document.getElementById('event-input-category').value;
-      const description = document.getElementById('event-input-desc').value.trim();
-
-      const res = await fetch('/api/backoffice/calendar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, date, time, location, category, description })
-      });
-      if (res.ok) {
-        closeModal('modal-add-event');
-        await loadBackofficeState();
+    function showPortal() {
+      document.getElementById('section-auth').style.display = 'none';
+      document.getElementById('section-portal').style.display = 'block';
+      document.getElementById('header-user-info').style.display = 'flex';
+      document.getElementById('btn-logout').style.display = 'inline-flex';
+      if (appState.user && appState.user.name) {
+        document.getElementById('admin-user-name').textContent = appState.user.name;
       }
     }
 
-    // Documents Functions
-    function renderDocuments() {
-      const container = document.getElementById('docs-grid-container');
-      const docs = appState.sharedDocuments || [];
+    function logoutAdmin() {
+      appState.user = null;
+      localStorage.removeItem('sb_admin_user');
+      document.getElementById('section-portal').style.display = 'none';
+      document.getElementById('section-auth').style.display = 'flex';
+      document.getElementById('header-user-info').style.display = 'none';
+      document.getElementById('btn-logout').style.display = 'none';
+    }
 
-      container.innerHTML = docs.map(doc => {
-        let actionBtn = `<a href="${doc.fileUrl}" target="_blank" class="btn-doc">📥 Download</a>`;
-        if (doc.fileUrl === '#view-job-descriptions') {
-          actionBtn = `<button class="btn-doc" onclick="openModal('modal-job-desc')">👁️ Read Descriptions</button>`;
-        } else if (doc.fileUrl === '#view-timesheet-guide') {
-          actionBtn = `<button class="btn-doc" onclick="openModal('modal-timesheet')">👁️ Read Guide</button>`;
+    function switchTab(tabId) {
+      document.querySelectorAll('.admin-tab').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.admin-panel').forEach(panel => panel.classList.remove('active'));
+
+      const targetTab = Array.from(document.querySelectorAll('.admin-tab')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (targetTab) targetTab.classList.add('active');
+
+      const targetPanel = document.getElementById(`panel-${tabId}`);
+      if (targetPanel) targetPanel.classList.add('active');
+    }
+
+    async function loadBackofficeData() {
+      try {
+        const res = await fetch('/api/backoffice/state?admin=true', {
+          headers: { 'x-admin-auth': 'true' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          appState.candidateApplications = data.candidateApplications || [];
+          appState.inboxMessages = data.inboxMessages || [];
+          appState.complianceItems = data.complianceItems || [];
+
+          renderCandidates();
+          renderInbox();
+          renderCompliance();
+          loadAnalytics();
         }
-
-        return `
-          <div class="doc-card">
-            <div>
-              <span class="doc-category">${escapeHtml(doc.category)}</span>
-              <h4 class="doc-title">${escapeHtml(doc.title)}</h4>
-              <p class="doc-desc">${escapeHtml(doc.description)}</p>
-            </div>
-            <div class="doc-footer">
-              <span class="doc-size">${doc.fileSize} • Updated ${doc.updatedAt}</span>
-              ${actionBtn}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Compliance Matrix Functions (Admin)
-    function filterCompliance(filter) {
-      complianceFilter = filter;
-      renderComplianceTable();
-    }
-
-    function renderComplianceTable() {
-      const tbody = document.getElementById('compliance-table-body');
-      let items = appState.complianceItems || [];
-
-      if (complianceFilter !== 'all') {
-        items = items.filter(i => (i.contact || '').includes(complianceFilter));
-      }
-
-      // Calculate days elapsed from request date
-      const today = new Date('2026-09-27');
-
-      tbody.innerHTML = items.map(item => {
-        const reqDate = item.requestDate ? new Date(item.requestDate) : null;
-        let daysElapsed = '—';
-        if (reqDate) {
-          const diffTime = Math.abs(today - reqDate);
-          daysElapsed = `${Math.ceil(diffTime / (1000 * 60 * 60 * 24))} days ago`;
-        }
-
-        let tagClass = 'identified';
-        if (item.status.includes('ready') || item.status.includes('submitted')) tagClass = 'ready';
-        if (item.status.includes('revision')) tagClass = 'revision';
-
-        return `
-          <tr>
-            <td>
-              <strong style="color: white; display: block;">${escapeHtml(item.requirement)}</strong>
-              <span style="font-size: 0.75rem; color: #94A3B8;">${escapeHtml(item.details)}</span>
-            </td>
-            <td><span style="font-size: 0.8rem; color: #38BDF8;">${escapeHtml(item.program)}</span></td>
-            <td><strong>${escapeHtml(item.contact)}</strong></td>
-            <td>
-              <span style="display: block;">Req: ${item.requestDate || 'N/A'}</span>
-              <span style="font-size: 0.75rem; color: #F59E0B;">Due: ${item.dueDate || 'Confirm'}</span>
-            </td>
-            <td><span style="font-weight: 700; color: #CBD5E1;">${daysElapsed}</span></td>
-            <td><span class="status-tag ${tagClass}">${escapeHtml(item.status)}</span></td>
-            <td style="max-width: 250px;">
-              <span style="font-size: 0.8rem; color: #94A3B8;">${escapeHtml(item.notes || '')}</span>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    // Gmail Live Sync Execution
-    async function syncLiveGmailEmails() {
-      const resultsContainer = document.getElementById('gmail-sync-results');
-      const list = document.getElementById('gmail-threads-list');
-      resultsContainer.style.display = 'block';
-      list.innerHTML = `<div style="color: #38BDF8; font-size: 0.85rem;">⏳ Querying Gmail inbox for correspondence from Alicia Ford, Coretta Bozeman, Jill Grant, and Marvin Thompson...</div>`;
-
-      // If user has access token
-      if (currentUser && currentUser.googleAccessToken) {
-        try {
-          const q = encodeURIComponent('from:Alicia OR to:Alicia OR from:Coretta OR to:Coretta OR from:Jill OR to:Jill OR from:Marvin OR to:Marvin');
-          const gmailRes = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${q}&maxResults=10`, {
-            headers: { 'Authorization': `Bearer ${currentUser.googleAccessToken}` }
-          });
-          const gmailData = await gmailRes.json();
-
-          if (gmailData.messages && gmailData.messages.length > 0) {
-            list.innerHTML = `
-              <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border: 1px solid #1E293B;">
-                <span style="color: #10B981; font-weight: 700;">✓ Found ${gmailData.messages.length} relevant message threads in your inbox.</span>
-                <p style="font-size: 0.82rem; color: #94A3B8; margin-top: 0.25rem;">
-                  Correspondence threads for STAARS (Alicia Ford), Transitional Jobs (Coretta Bozeman), and ETPL (Jill Grant) were indexed.
-                </p>
-              </div>
-            `;
-            return;
-          }
-        } catch (e) {
-          console.warn('Gmail API query error, showing recorded correspondence:', e);
-        }
-      }
-
-      // Display indexed timeline
-      list.innerHTML = `
-        <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border-left: 4px solid #10B981;">
-          <div style="display: flex; justify-content: space-between;">
-            <strong>Coretta Bozeman & Julie Wood (Transitional Jobs)</strong>
-            <span style="color: #94A3B8; font-size: 0.75rem;">Received: Sep 15, 2026 (12 days ago)</span>
-          </div>
-          <p style="font-size: 0.82rem; color: #CBD5E1; margin-top: 0.25rem;">
-            Worksite Agreement with 2027-06-30 end date received. Response sent with signed copy; awaiting Career Center signoff on non-supervisory helper descriptions.
-          </p>
-        </div>
-
-        <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border-left: 4px solid #F59E0B;">
-          <div style="display: flex; justify-content: space-between;">
-            <strong>Alicia Ford (STAARS Vendor Setup)</strong>
-            <span style="color: #94A3B8; font-size: 0.75rem;">Received: Sep 18, 2026 (9 days ago)</span>
-          </div>
-          <p style="font-size: 0.82rem; color: #CBD5E1; margin-top: 0.25rem;">
-            Requested bank verification letter on bank letterhead under exact legal name + signed W-9. Overdue by 2 days past initial follow-up window.
-          </p>
-        </div>
-
-        <div style="background: #0B192C; padding: 1rem; border-radius: 8px; border-left: 4px solid #38BDF8;">
-          <div style="display: flex; justify-content: space-between;">
-            <strong>Jill Grant (ITA / ETPL Application)</strong>
-            <span style="color: #94A3B8; font-size: 0.75rem;">Received: Sep 10, 2026 (17 days ago)</span>
-          </div>
-          <p style="font-size: 0.82rem; color: #CBD5E1; margin-top: 0.25rem;">
-            WIOA Provider Guide received. Curriculum syllabi, trade hours, and training facility documentation pending final assembly.
-          </p>
-        </div>
-      `;
-    }
-
-    // Roster Functions (Admin)
-    function renderRoster() {
-      const tbody = document.getElementById('roster-table-body');
-      const roster = appState.staffRoster || [];
-
-      tbody.innerHTML = roster.map(m => {
-        return `
-          <tr>
-            <td><strong>${escapeHtml(m.name)}</strong></td>
-            <td><span style="color: #38BDF8;">${escapeHtml(m.role)}</span></td>
-            <td>${escapeHtml(m.phone)}</td>
-            <td><code style="background: #1E293B; padding: 2px 6px; border-radius: 4px; color: #F59E0B;">${escapeHtml(m.pin)}</code></td>
-            <td><span class="status-tag ${m.isAdmin ? 'ready' : 'identified'}">${m.isAdmin ? 'Admin' : 'Staff'}</span></td>
-            <td>
-              <button onclick="deleteStaffMember('${m.id}')" style="background: #7F1D1D; border: none; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.72rem; cursor: pointer;">Remove</button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    function openAddStaffModal() {
-      document.getElementById('modal-add-staff').classList.add('active');
-    }
-
-    async function handleSaveStaff(e) {
-      e.preventDefault();
-      const name = document.getElementById('new-staff-name').value.trim();
-      const role = document.getElementById('new-staff-role').value.trim();
-      const phone = document.getElementById('new-staff-phone').value.trim();
-      const pin = document.getElementById('new-staff-pin').value.trim();
-
-      const res = await fetch('/api/backoffice/roster', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, role, phone, pin })
-      });
-      if (res.ok) {
-        closeModal('modal-add-staff');
-        await loadBackofficeState();
+      } catch (err) {
+        console.error('Failed to load portal data:', err);
       }
     }
 
-    async function deleteStaffMember(id) {
-      if (!confirm('Remove this staff member from phone login access?')) return;
-      await fetch(`/api/backoffice/roster/${id}`, { method: 'DELETE' });
-      await loadBackofficeState();
+    function refreshData() {
+      loadBackofficeData();
     }
 
-    // Board of Directors & Governance Functions
-    function renderBoardStructure() {
-      const container = document.getElementById('board-grid-container');
-      if (!container) return;
-      const board = appState.boardStructure || [];
-
-      container.innerHTML = board.map((item, idx) => {
-        const dutiesList = (item.duties || []).map(d => `<li style="position: relative; padding-left: 1rem; margin-bottom: 0.35rem; font-size: 0.82rem; color: #CBD5E1;">• ${escapeHtml(d)}</li>`).join('');
-        const phoneDisplay = item.phone ? `<div style="font-size: 0.8rem; color: #38BDF8; margin-top: 0.25rem;">Direct Phone: ${escapeHtml(item.phone)}</div>` : '';
-
-        return `
-          <div style="background: #111D32; border: 1px solid #1E293B; border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-              <span style="font-size: 0.7rem; font-weight: 800; color: #F59E0B; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(245, 158, 11, 0.1); padding: 2px 8px; border-radius: 4px;">Position ${idx + 1}</span>
-              <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Governance Charter</span>
-            </div>
-            <h4 style="font-size: 1.1rem; font-weight: 700; color: #F8FAFC; margin-bottom: 0.15rem;">${escapeHtml(item.name)}</h4>
-            <div style="font-size: 0.82rem; font-weight: 600; color: #38BDF8; margin-bottom: 0.5rem;">${escapeHtml(item.position)}</div>
-            ${phoneDisplay}
-            <div style="background: #0B192C; border-left: 3px solid #F59E0B; padding: 0.65rem; border-radius: 4px; margin: 0.75rem 0; font-size: 0.82rem; color: #E2E8F0; line-height: 1.4;">
-              <strong>Primary Responsibility:</strong><br>${escapeHtml(item.primaryResponsibility)}
-            </div>
-            <div style="margin-top: 0.5rem;">
-              <span style="font-size: 0.72rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 0.35rem;">Key Duties</span>
-              <ul style="list-style: none; padding: 0; margin: 0;">
-                ${dutiesList}
-              </ul>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // Candidate Intake & Case Management Functions (Admin)
+    // Render Candidates
     function renderCandidates() {
+      const candidates = appState.candidateApplications || [];
+      const badgeCount = document.getElementById('badge-candidates-count');
+      if (badgeCount) badgeCount.textContent = candidates.length;
+
+      // KPIs
+      const pendingCount = candidates.filter(c => !c.stage || c.stage === 'Pending Intake').length;
+      const onboardingCount = candidates.filter(c => c.stage === 'Documents Collected' || c.stage === 'Orientation Scheduled').length;
+      const placedCount = candidates.filter(c => c.stage === 'Active Worksite Training' || c.stage === 'Placed in Job').length;
+
+      document.getElementById('kpi-cand-total').textContent = candidates.length;
+      document.getElementById('kpi-cand-pending').textContent = pendingCount;
+      document.getElementById('kpi-cand-onboarding').textContent = onboardingCount;
+      document.getElementById('kpi-cand-placed').textContent = placedCount;
+
+      filterCandidates();
+    }
+
+    function filterCandidates() {
       const tbody = document.getElementById('candidates-table-body');
       if (!tbody) return;
-      const candidates = appState.candidateApplications || [];
 
-      // Update KPIs
-      const totalEl = document.getElementById('kpi-total-candidates');
-      const pendingEl = document.getElementById('kpi-pending-candidates');
-      const docsEl = document.getElementById('kpi-docs-candidates');
-      const placedEl = document.getElementById('kpi-placed-candidates');
+      const query = (document.getElementById('cand-search-input')?.value || '').toLowerCase().trim();
+      const stageFilter = document.getElementById('cand-stage-filter')?.value || 'ALL';
 
-      if (totalEl) totalEl.textContent = candidates.length;
-      if (pendingEl) pendingEl.textContent = candidates.filter(c => (c.stage || 'Pending Intake') === 'Pending Intake').length;
-      if (docsEl) docsEl.textContent = candidates.filter(c => c.stage === 'Documents Collected' || c.stage === 'Orientation Scheduled').length;
-      if (placedEl) placedEl.textContent = candidates.filter(c => c.stage === 'Active Worksite Training' || c.stage === 'Placed in Job').length;
+      let list = appState.candidateApplications || [];
 
-      if (candidates.length === 0) {
+      if (stageFilter !== 'ALL') {
+        list = list.filter(c => (c.stage || 'Pending Intake') === stageFilter);
+      }
+
+      if (query) {
+        list = list.filter(c => {
+          return (c.name || '').toLowerCase().includes(query) ||
+                 (c.phone || '').toLowerCase().includes(query) ||
+                 (c.email || '').toLowerCase().includes(query) ||
+                 (c.trade || '').toLowerCase().includes(query);
+        });
+      }
+
+      if (list.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="7" style="text-align: center; padding: 2rem; color: #94A3B8;">
-              No candidate applications received yet. Submissions from the public website intake modal will appear here in real-time.
+            <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+              No candidate applications match this view. Submissions from the public website intake quiz appear here in real-time.
             </td>
           </tr>
         `;
         return;
       }
 
-      tbody.innerHTML = candidates.map(c => {
-        const stageColors = {
-          'Pending Intake': 'background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3);',
-          'Documents Collected': 'background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.3);',
-          'Orientation Scheduled': 'background: rgba(168, 85, 247, 0.15); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3);',
-          'Active Worksite Training': 'background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3);',
-          'Placed in Job': 'background: rgba(34, 197, 94, 0.25); color: #4ADE80; border: 1px solid #22C55E;',
-          'Inactive / On Hold': 'background: rgba(100, 116, 139, 0.2); color: #94A3B8; border: 1px solid #475569;'
-        };
+      const stageColors = {
+        'Pending Intake': 'badge-amber',
+        'Documents Collected': 'badge-blue',
+        'Orientation Scheduled': 'badge-blue',
+        'Active Worksite Training': 'badge-green',
+        'Placed in Job': 'badge-green',
+        'Inactive / On Hold': 'badge-gray'
+      };
+
+      tbody.innerHTML = list.map(c => {
         const curStage = c.stage || 'Pending Intake';
-        const badgeStyle = stageColors[curStage] || stageColors['Pending Intake'];
+        const dateStr = c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'Recent';
 
         return `
           <tr>
             <td>
-              <div style="font-weight: 700; color: #F8FAFC; font-size: 0.9rem;">${escapeHtml(c.name)}</div>
-              <div style="font-size: 0.78rem; color: #38BDF8; margin-top: 2px;">
-                <a href="tel:${escapeHtml(c.phone)}" style="color: #38BDF8; text-decoration: none;">📞 ${escapeHtml(c.phone || 'No phone')}</a>
+              <div style="font-weight: 800; color: var(--primary-navy); font-size: 0.95rem;">${escapeHtml(c.name)}</div>
+              <div style="font-size: 0.8rem; margin-top: 2px;">
+                <a href="tel:${escapeHtml(c.phone)}" style="color: var(--accent-orange); font-weight: 700; text-decoration: none;">📞 ${escapeHtml(c.phone || 'No phone')}</a>
               </div>
-              ${c.email ? `<div style="font-size: 0.74rem; color: #94A3B8; margin-top: 1px;"><a href="mailto:${escapeHtml(c.email)}" style="color: #94A3B8;">✉️ ${escapeHtml(c.email)}</a></div>` : ''}
-              <div style="font-size: 0.7rem; color: #64748B; margin-top: 4px;">Applied: ${c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'Recent'}</div>
+              ${c.email ? `<div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 1px;"><a href="mailto:${escapeHtml(c.email)}" style="color: inherit;">✉️ ${escapeHtml(c.email)}</a></div>` : ''}
+              <div style="font-size: 0.72rem; color: #94A3B8; margin-top: 3px;">Applied: ${dateStr}</div>
             </td>
             <td>
-              <div style="font-weight: 600; color: #E2E8F0; font-size: 0.85rem;">${escapeHtml(c.trade || 'General Construction')}</div>
-              <div style="font-size: 0.76rem; color: #F59E0B; margin-top: 2px;">Helper: ${escapeHtml(c.preferredRole || 'Carpenter Helper')}</div>
+              <div style="font-weight: 700; color: var(--text-dark);">${escapeHtml(c.trade || 'Carpentry')}</div>
+              <div style="font-size: 0.78rem; color: var(--accent-orange); font-weight: 600;">Helper: ${escapeHtml(c.preferredRole || 'Carpenter Helper')}</div>
             </td>
             <td>
-              <div style="font-size: 0.8rem; color: #CBD5E1;">${escapeHtml(c.backgroundStatus || 'Standard')}</div>
-              <div style="font-size: 0.74rem; color: #94A3B8; margin-top: 2px;">Transit: ${escapeHtml(c.transportation || 'Flexible')}</div>
+              <div style="font-size: 0.82rem; color: var(--text-dark);">${escapeHtml(c.backgroundStatus || 'Standard')}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Transit: ${escapeHtml(c.transportation || 'Flexible')}</div>
             </td>
             <td>
-              <span style="font-size: 0.78rem; color: ${c.careerCenterStatus && c.careerCenterStatus.includes('Need') ? '#F59E0B' : '#10B981'}; font-weight: 600;">
-                ${escapeHtml(c.careerCenterStatus || 'Pending Registration')}
+              <span class="badge ${c.careerCenterStatus && c.careerCenterStatus.includes('Need') ? 'badge-amber' : 'badge-green'}">
+                ${escapeHtml(c.careerCenterStatus || 'Pending')}
               </span>
             </td>
             <td>
-              <select onchange="updateCandidateStage('${c.id}', this.value)" style="padding: 4px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; ${badgeStyle}">
+              <select onchange="updateCandidateStage('${c.id}', this.value)" style="padding: 0.35rem 0.65rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 700; border: 1px solid var(--admin-border); cursor: pointer;">
                 <option value="Pending Intake" ${curStage === 'Pending Intake' ? 'selected' : ''}>Pending Intake</option>
                 <option value="Documents Collected" ${curStage === 'Documents Collected' ? 'selected' : ''}>Documents Collected</option>
                 <option value="Orientation Scheduled" ${curStage === 'Orientation Scheduled' ? 'selected' : ''}>Orientation Scheduled</option>
@@ -1794,10 +948,10 @@
               </select>
             </td>
             <td>
-              <input type="text" value="${escapeHtml(c.intakeNotes || c.notes || '')}" placeholder="Add case notes..." onblur="updateCandidateNotes('${c.id}', this.value)" style="background: #0B192C; border: 1px solid #1E293B; color: #CBD5E1; border-radius: 4px; padding: 4px 8px; font-size: 0.78rem; width: 100%; min-width: 140px;">
+              <input type="text" value="${escapeHtml(c.intakeNotes || c.notes || '')}" placeholder="Add case notes..." onblur="updateCandidateNotes('${c.id}', this.value)" style="padding: 0.35rem 0.65rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.8rem; width: 100%; min-width: 140px;">
             </td>
             <td>
-              <button onclick="deleteCandidateRecord('${c.id}')" style="background: #7F1D1D; border: none; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.72rem; cursor: pointer; white-space: nowrap;">Delete</button>
+              <button onclick="deleteCandidate('${c.id}')" class="admin-btn admin-btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">Delete</button>
             </td>
           </tr>
         `;
@@ -1811,45 +965,204 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id, stage: newStage })
         });
-        await loadBackofficeState();
+        await loadBackofficeData();
       } catch (err) {
-        console.error('Error updating candidate stage:', err);
+        console.error(err);
       }
     }
 
-    async function updateCandidateNotes(id, newNotes) {
+    async function updateCandidateNotes(id, notes) {
       try {
         await fetch('/api/backoffice/candidates/update', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, intakeNotes: newNotes })
+          body: JSON.stringify({ id, intakeNotes: notes })
         });
       } catch (err) {
-        console.error('Error updating candidate notes:', err);
+        console.error(err);
       }
     }
 
-    async function deleteCandidateRecord(id) {
-      if (!confirm('Are you sure you want to delete this applicant record?')) return;
+    async function deleteCandidate(id) {
+      if (!confirm('Permanently delete this candidate intake record?')) return;
       try {
         await fetch(`/api/backoffice/candidates/${id}`, { method: 'DELETE' });
-        await loadBackofficeState();
+        await loadBackofficeData();
       } catch (err) {
-        console.error('Error deleting candidate:', err);
+        console.error(err);
       }
     }
 
-    // Modal Helpers
-    function openModal(id) { document.getElementById(id).classList.add('active'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    // Render Inbox Messages & Leads
+    function renderInbox() {
+      const messages = appState.inboxMessages || [];
+      const badge = document.getElementById('badge-inbox-count');
+      if (badge) badge.textContent = messages.length;
+      filterInboxMessages();
+    }
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    function filterInboxMessages() {
+      const tbody = document.getElementById('inbox-table-body');
+      if (!tbody) return;
+
+      const typeFilter = document.getElementById('inbox-filter-type')?.value || 'ALL';
+      let list = appState.inboxMessages || [];
+
+      if (typeFilter !== 'ALL') {
+        list = list.filter(m => m.type === typeFilter);
+      }
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+              No submissions found for this filter. As visitors submit inquiries, volunteer signups, or employer partnerships on the website, they will appear here.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = list.map(m => {
+        const typeLabels = {
+          'program_inquiry': '<span class="badge badge-amber">Program Inquiry</span>',
+          'volunteer_interest': '<span class="badge badge-blue">Volunteer Signup</span>',
+          'business_partnership_inquiry': '<span class="badge badge-green">Employer Partnership</span>',
+          'donation_pledge': '<span class="badge badge-amber">Donation Pledge</span>'
+        };
+
+        const typeBadge = typeLabels[m.type] || `<span class="badge badge-gray">${escapeHtml(m.type)}</span>`;
+        const dateStr = m.createdAt ? new Date(m.createdAt).toLocaleString() : 'Recent';
+
+        let details = '';
+        if (m.type === 'program_inquiry') {
+          details = `<strong>Pathway:</strong> ${escapeHtml(m.program || 'General')}`;
+        } else if (m.type === 'volunteer_interest') {
+          details = `<strong>Availability:</strong> ${escapeHtml(m.availability)} | <strong>Interest:</strong> ${escapeHtml(m.interest)}`;
+        } else if (m.type === 'business_partnership_inquiry') {
+          details = `<strong>Company:</strong> ${escapeHtml(m.company)} (${escapeHtml(m.specialty)})<br>${escapeHtml(m.message || 'No additional note')}`;
+        } else if (m.type === 'donation_pledge') {
+          details = `<strong>Pledge:</strong> ${escapeHtml(m.pledgeAmount)} (${escapeHtml(m.donationType)})<br>${escapeHtml(m.notes || '')}`;
+        } else {
+          details = escapeHtml(JSON.stringify(m));
+        }
+
+        return `
+          <tr>
+            <td style="white-space: nowrap; font-size: 0.8rem; color: var(--text-muted);">${dateStr}</td>
+            <td>${typeBadge}</td>
+            <td><strong style="color: var(--primary-navy);">${escapeHtml(m.name || m.contact || m.donor || 'Lead')}</strong></td>
+            <td>
+              ${m.email ? `<div><a href="mailto:${escapeHtml(m.email)}" style="color: var(--accent-orange); font-weight: 600;">${escapeHtml(m.email)}</a></div>` : ''}
+              ${m.phone ? `<div style="font-size: 0.78rem; color: var(--text-muted);"><a href="tel:${escapeHtml(m.phone)}" style="color: inherit;">📞 ${escapeHtml(m.phone)}</a></div>` : ''}
+            </td>
+            <td style="font-size: 0.82rem; line-height: 1.5;">${details}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Render Compliance Tracker
+    function renderCompliance() {
+      const tbody = document.getElementById('compliance-table-body');
+      if (!tbody) return;
+
+      const items = appState.complianceItems || [];
+      if (items.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+              Loading compliance milestones...
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = items.map(c => {
+        const statusColors = {
+          'Approved': 'badge-green',
+          'In Review': 'badge-amber',
+          'Pending Verification': 'badge-amber',
+          'Active Protocol': 'badge-blue',
+          'Compliant': 'badge-green'
+        };
+
+        const badgeClass = statusColors[c.status] || 'badge-gray';
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight: 800; color: var(--primary-navy);">${escapeHtml(c.title)}</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(c.description || '')}</div>
+            </td>
+            <td><span class="badge badge-gray">${escapeHtml(c.authority || 'WIOA / State')}</span></td>
+            <td><span class="badge ${badgeClass}">${escapeHtml(c.status)}</span></td>
+            <td style="font-size: 0.82rem; color: var(--text-muted);">${escapeHtml(c.dueDate || 'Ongoing')}</td>
+            <td>
+              <input type="text" value="${escapeHtml(c.notes || '')}" placeholder="Update compliance notes..." onblur="updateComplianceNotes('${c.id}', this.value)" style="padding: 0.35rem 0.65rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.8rem; width: 100%; min-width: 180px;">
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function updateComplianceNotes(id, notes) {
+      try {
+        await fetch('/api/backoffice/compliance/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, notes })
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Analytics
+    async function loadAnalytics() {
+      try {
+        const res = await fetch('/api/analytics/stats');
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('stat-pageviews').textContent = data.totalPageViews || 0;
+          document.getElementById('stat-sessions').textContent = data.uniqueSessionsCount || 0;
+          const totalLeads = (appState.candidateApplications?.length || 0) + (appState.inboxMessages?.length || 0);
+          document.getElementById('stat-leads').textContent = totalLeads;
+
+          // Referrals
+          const refContainer = document.getElementById('referrals-container');
+          const refs = data.topReferralSources || {};
+          const refKeys = Object.keys(refs);
+          if (refKeys.length === 0) {
+            refContainer.textContent = 'Direct / Bookmarks';
+          } else {
+            refContainer.innerHTML = refKeys.map(k => `
+              <div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid var(--admin-border);">
+                <span>${escapeHtml(k)}</span>
+                <strong>${refs[k]}</strong>
+              </div>
+            `).join('');
+          }
+
+          // Clicks
+          const actContainer = document.getElementById('actions-container');
+          const clicks = data.buttonClickBreakdown || {};
+          const clickKeys = Object.keys(clicks);
+          if (clickKeys.length === 0) {
+            actContainer.textContent = 'Waiting for user button interactions...';
+          } else {
+            actContainer.innerHTML = clickKeys.map(k => `
+              <div style="display: flex; justify-content: space-between; padding: 0.35rem 0; border-bottom: 1px solid var(--admin-border);">
+                <span>${escapeHtml(k)}</span>
+                <strong>${clicks[k]} clicks</strong>
+              </div>
+            `).join('');
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load analytics:', err);
+      }
     }
   </script>
 </body>

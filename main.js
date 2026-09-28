@@ -1064,76 +1064,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // DOCUMENT CENTER & DOWNLOAD HUB MODAL
-  const documentModal = document.getElementById("documentModal");
-  const docPreviewContainer = document.getElementById("docPreviewContainer");
-  const docPreviewImg = document.getElementById("docPreviewImg");
-  const docPreviewTitle = document.getElementById("docPreviewTitle");
-  const docPreviewDownloadBtn = document.getElementById("docPreviewDownloadBtn");
-  const closeDocPreviewBtn = document.getElementById("closeDocPreviewBtn");
+  // TRANSITIONAL JOB FLYER MODAL
+  const jobFlyerModal = document.getElementById("jobFlyerModal");
 
-  const docAssetMap = {
-    "transitional-jobs-overview": {
-      title: "Transitional Jobs Program Overview & Guidelines",
-      preview: "/transitional-jobs-overview.webp",
-      download: "/Transitional_Jobs_Program_Overview.png",
-      filename: "Springboards_Transitional_Jobs_Overview.png"
-    },
-    "springboards-community-flyer": {
-      title: "Springboards Community Flyer & Volunteer Schedule",
-      preview: "/springboards-community-flyer.webp",
-      download: "/springboards flyer 1.jpg",
-      filename: "Springboards_Community_Flyer.jpg"
-    }
+  const openJobFlyerModal = () => {
+    if (!jobFlyerModal) return;
+    openModalWithFocus(jobFlyerModal, jobFlyerModal.querySelector(".btn-cta"));
   };
 
-  const openDocumentCenter = (previewDocId) => {
-    if (!documentModal) return;
-    openModalWithFocus(documentModal, documentModal.querySelector(".btn-cta"));
-    if (previewDocId && docAssetMap[previewDocId]) {
-      showDocPreview(previewDocId);
-    } else if (docPreviewContainer) {
-      docPreviewContainer.style.display = "none";
-    }
-  };
-
-  const showDocPreview = (docId) => {
-    const asset = docAssetMap[docId];
-    if (!asset || !docPreviewContainer || !docPreviewImg) return;
-    docPreviewTitle.textContent = asset.title;
-    docPreviewImg.src = asset.preview;
-    docPreviewImg.alt = asset.title;
-    docPreviewDownloadBtn.href = asset.download;
-    docPreviewDownloadBtn.download = asset.filename;
-    docPreviewContainer.style.display = "block";
-    docPreviewContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  };
-
-  document.querySelectorAll(".btn-doc-trigger").forEach((btn) => {
+  document.querySelectorAll(".btn-job-flyer-trigger, [data-flyer-open]").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      const docId = btn.dataset.docView || null;
-      openDocumentCenter(docId);
+      openJobFlyerModal();
     });
   });
 
-  document.querySelectorAll(".btn-view-doc").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const docId = btn.dataset.docView;
-      showDocPreview(docId);
-    });
-  });
-
-  if (closeDocPreviewBtn) {
-    closeDocPreviewBtn.addEventListener("click", () => {
-      if (docPreviewContainer) docPreviewContainer.style.display = "none";
-    });
-  }
-
-  if (documentModal) {
-    documentModal.querySelectorAll("[data-doc-close]").forEach((btn) => {
+  if (jobFlyerModal) {
+    jobFlyerModal.querySelectorAll("[data-flyer-close]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        closeModalWithFocus(documentModal);
+        closeModalWithFocus(jobFlyerModal);
       });
     });
   }

@@ -205,7 +205,7 @@
               <li><a href="#volunteer-events" class="nav-sublink">Volunteer Schedule</a></li>
               <li><button type="button" class="nav-sublink btn-partner-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Employer Partnership &rarr;</button></li>
               <li><button type="button" class="nav-sublink btn-donate-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Ways to Give &amp; Donate &rarr;</button></li>
-              <li><button type="button" class="nav-sublink btn-doc-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Documents &amp; Flyer &rarr;</button></li>
+              <li><button type="button" class="nav-sublink btn-job-flyer-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Transitional Job Flyer &rarr;</button></li>
             </ul>
           </li>
           <li><a href="#footer" class="nav-link">Connect</a></li>
@@ -425,7 +425,7 @@
                 </ul>
                 <div class="train-card-actions" style="margin-top: 0.65rem; display: flex; flex-direction: column; gap: 0.35rem;">
                   <button type="button" class="btn-cta btn-candidate-trigger" data-trade-default="Carpentry & Construction Technology" style="font-size: 0.85rem; min-height: 40px; padding: 0.5rem 0.85rem; width: 100%;">Apply for Transitional Jobs <span aria-hidden="true">&rarr;</span></button>
-                  <button type="button" class="btn-doc-trigger" data-doc-view="transitional-jobs-overview" style="background: none; border: none; color: var(--accent-orange); font-size: 0.78rem; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0.2rem 0; text-align: center;">View Worksite Guidelines &amp; PDF</button>
+                  <button type="button" class="btn-job-flyer-trigger" style="background: none; border: none; color: var(--accent-orange); font-size: 0.78rem; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0.2rem 0; text-align: center;">View Job Flyer &amp; Worksite Guidelines</button>
                 </div>
               </div>
             </div>
@@ -538,7 +538,7 @@
           <p>Organizations, employers, and local businesses can help expand training, mentorship, and sustainable employment pathways across our communities.</p>
           <div class="partner-cta-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem;">
             <button type="button" class="btn-cta btn-cta-secondary btn-partner-trigger" id="openPartnerModalBtn">Partner With Us <span aria-hidden="true">&rarr;</span></button>
-            <button type="button" class="btn-cta btn-doc-trigger" data-doc-view="transitional-jobs-overview" style="background: transparent; border: 2px solid #ffffff; color: #ffffff;">Download Worksite Overview <span aria-hidden="true">&darr;</span></button>
+            <button type="button" class="btn-cta btn-job-flyer-trigger" style="background: transparent; border: 2px solid #ffffff; color: #ffffff;">View Transitional Job Flyer <span aria-hidden="true">&darr;</span></button>
           </div>
         </div>
       </div>
@@ -1140,62 +1140,24 @@
       </div>
     </div>
 
-    <!-- DOCUMENT CENTER & DOWNLOAD HUB MODAL -->
-    <div class="inquiry-modal" id="documentModal" hidden>
-      <div class="inquiry-modal-backdrop" data-doc-close></div>
-      <div class="inquiry-modal-dialog modal-large" role="dialog" aria-modal="true" aria-labelledby="documentModalTitle">
-        <button type="button" class="inquiry-modal-close" data-doc-close aria-label="Close document center">×</button>
-        <span class="section-eyebrow">Official Resources</span>
-        <h2 id="documentModalTitle">Program Documents &amp; Downloads</h2>
-        <p class="modal-subtext">Official overview documents, worksite guides, volunteer schedule flyers, and candidate requirements for download and printing.</p>
+    <!-- TRANSITIONAL JOB FLYER MODAL -->
+    <div class="inquiry-modal" id="jobFlyerModal" hidden>
+      <div class="inquiry-modal-backdrop" data-flyer-close></div>
+      <div class="inquiry-modal-dialog modal-large" role="dialog" aria-modal="true" aria-labelledby="jobFlyerModalTitle">
+        <button type="button" class="inquiry-modal-close" data-flyer-close aria-label="Close job flyer">×</button>
+        <span class="section-eyebrow" style="color: var(--accent-orange);">Job Pathway Flyer</span>
+        <h2 id="jobFlyerModalTitle">Transitional Jobs Program Overview</h2>
+        <p class="modal-subtext">Official worksite guidelines and state-subsidized on-the-job training overview for prospective trainees and host employers.</p>
 
-        <div class="document-item-card">
-          <div class="document-info">
-            <span class="document-badge">Program Guide</span>
-            <h4>Transitional Jobs Program Overview &amp; Guidelines</h4>
-            <p>Comprehensive overview of subsidized on-the-job training, wage subsidies, up to 32 hours weekly, 390-hour lifetime cap, and permanent employer worksite expectations.</p>
-            <span style="font-size: 0.8rem; color: #64748b;">Optimized Web Asset • Original High-Res</span>
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin: 1rem 0; box-shadow: 0 4px 14px rgba(0,0,0,0.06);">
+          <div style="text-align: center; margin-bottom: 1rem;">
+            <img src="transitional-jobs-overview.webp" alt="Transitional Jobs Program Overview Flyer" style="max-height: 480px; width: auto; margin: 0 auto; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.12);" loading="lazy">
           </div>
-          <div class="document-actions">
-            <button type="button" class="btn-cta btn-view-doc" data-doc-view="transitional-jobs-overview">View Preview</button>
-            <a href="Transitional_Jobs_Program_Overview.png" download="Springboards_Transitional_Jobs_Overview.png" class="btn-cta btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 0.85rem; text-decoration: none;">Download File ↓</a>
-          </div>
-        </div>
 
-        <div class="document-item-card">
-          <div class="document-info">
-            <span class="document-badge">Community Flyer</span>
-            <h4>Springboards Community Flyer &amp; Volunteer Schedule</h4>
-            <p>Official community center flyer outlining Monday–Thursday work block hours from 8:00 AM to 4:00 PM, dress code, tool prep, and civic service opportunities.</p>
-            <span style="font-size: 0.8rem; color: #64748b;">Optimized Web Asset • Original High-Res</span>
-          </div>
-          <div class="document-actions">
-            <button type="button" class="btn-cta btn-view-doc" data-doc-view="springboards-community-flyer">View Preview</button>
-            <a href="springboards flyer 1.jpg" download="Springboards_Community_Flyer.jpg" class="btn-cta btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 0.85rem; text-decoration: none;">Download File ↓</a>
-          </div>
-        </div>
-
-        <div class="document-item-card">
-          <div class="document-info">
-            <span class="document-badge">Checklist</span>
-            <h4>Trainee Intake Checklist &amp; Required Documents</h4>
-            <p>Everything you need to bring to your enrollment session: Valid Government Photo ID, Social Security Card or Work Authorization, and Career Center registration.</p>
-            <span style="font-size: 0.8rem; color: #64748b;">Digital Intake Guide</span>
-          </div>
-          <div class="document-actions">
-            <button type="button" class="btn-cta btn-candidate-trigger">Start Intake Now →</button>
-          </div>
-        </div>
-
-        <!-- Document Preview Sub-Panel -->
-        <div id="docPreviewContainer" style="display: none; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
-          <h4 id="docPreviewTitle" style="color: var(--primary-navy); margin-bottom: 0.5rem;">Document Preview</h4>
-          <div class="document-preview-modal-body">
-            <img id="docPreviewImg" src="" alt="Document Preview" class="document-preview-image" loading="lazy">
-            <div style="margin-top: 0.75rem;">
-              <a id="docPreviewDownloadBtn" href="#" download class="btn-cta" style="display: inline-block;">Download Full High-Resolution File ↓</a>
-              <button type="button" id="closeDocPreviewBtn" class="btn-cta" style="background: var(--primary-navy); color: #ffffff; margin-left: 0.5rem;">Close Preview</button>
-            </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+            <a href="Transitional_Jobs_Program_Overview.png" download="Springboards_Transitional_Jobs_Flyer.png" class="btn-cta" style="padding: 0.65rem 1.25rem; text-decoration: none;">Download High-Res Flyer (PNG) ↓</a>
+            <a href="Worksite Agreement_Springboards.pdf" download="Springboards_Worksite_Agreement.pdf" class="btn-cta btn-secondary" style="padding: 0.65rem 1.25rem; text-decoration: none;">Download Worksite Agreement (PDF) ↓</a>
+            <button type="button" class="btn-cta btn-candidate-trigger" data-flyer-close style="background: var(--accent-green); padding: 0.65rem 1.25rem;">Apply for This Job Track →</button>
           </div>
         </div>
       </div>
@@ -1209,7 +1171,7 @@
           <h2>Your Support Helps Build Opportunity.</h2>
           <div class="cta-actions" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
             <button type="button" class="btn-cta btn-cta-large btn-donate-trigger" id="openDonateModalBtn">Ways to Give &amp; Pledge Support <span aria-hidden="true">&rarr;</span></button>
-            <button type="button" class="btn-cta btn-cta-large btn-doc-trigger" style="background: transparent; border: 2px solid #ffffff; color: #ffffff;">Download Program Documents <span aria-hidden="true">&darr;</span></button>
+            <button type="button" class="btn-cta btn-cta-large btn-job-flyer-trigger" style="background: transparent; border: 2px solid #ffffff; color: #ffffff;">View Transitional Job Flyer <span aria-hidden="true">&darr;</span></button>
           </div>
         </div>
       </div>
@@ -1232,7 +1194,7 @@
           <li><a href="#candidateModal" class="btn-candidate-trigger" style="color: var(--accent-green); font-weight: 700;">Apply for Training</a></li>
           <li><a href="#partnerModal" class="btn-partner-trigger">Partner With Us</a></li>
           <li><a href="#donateModal" class="btn-donate-trigger">Donate &amp; Pledge</a></li>
-          <li><a href="#documentModal" class="btn-doc-trigger">Documents Hub</a></li>
+          <li><button type="button" class="btn-job-flyer-trigger" style="background: none; border: none; padding: 0; color: inherit; font: inherit; text-decoration: underline; cursor: pointer;">Transitional Job Flyer</button></li>
           <li><a href="#volunteer-events">Volunteer Schedule</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#footer">Connect</a></li>
@@ -1272,7 +1234,7 @@
         <div class="footer-legal-group">
           <a href="#faq" class="footer-legal-link">FAQ</a>
           <button type="button" class="footer-legal-link" id="openPrivacyModal">Privacy Policy &amp; Terms</button>
-          <a href="/backoffice" class="footer-legal-link">Staff Portal</a>
+          <a href="/backoffice" class="footer-legal-link">Admin Portal</a>
           <button type="button" class="btn-share-page" id="sharePageButton" aria-label="Share Springboards">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <circle cx="18" cy="5" r="3"></circle>

@@ -742,6 +742,7 @@ app.get('/api/backoffice/state', (req, res) => {
     sharedDocuments: backofficeData.sharedDocuments || [],
     complianceItems: backofficeData.complianceItems || [],
     candidateApplications: backofficeData.candidateApplications || [],
+    inboxMessages: deliveredInboxLog || [],
     boardStructure: backofficeData.boardStructure || [],
     staffRoster: isAdmin ? backofficeData.staffRoster : (backofficeData.staffRoster || []).map(m => ({ id: m.id, name: m.name, role: m.role, status: m.status }))
   });
