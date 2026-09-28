@@ -576,7 +576,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // TRANSITIONAL JOBS CANDIDATE INTAKE & PRE-SCREEN MODAL
+  // TRANSITIONAL JOBS CANDIDATE INTAKE & PRELIMINARY MODAL
   const candidateModal = document.getElementById("candidateModal");
   const candidateStepper = document.getElementById("candidateStepper");
   const candidateQuizView = document.getElementById("candidateQuizView");
@@ -709,11 +709,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = String(formData.get("name") || "").trim();
       const phone = String(formData.get("phone") || "").trim();
       const email = String(formData.get("email") || "").trim();
+      const streetAddress = String(formData.get("streetAddress") || "").trim();
+      const cityZip = String(formData.get("cityZip") || "").trim();
       const trade = String(formData.get("trade") || "Carpentry & Construction Technology").trim();
       const transportation = String(formData.get("transportation") || "").trim();
       const careerCenter = String(formData.get("careerCenter") || "").trim();
       const preferredRole = String(formData.get("preferredRole") || "Carpenter Helper").trim();
-      const backgroundStatus = String(formData.get("quiz_situation_result") || "Pre-screened Candidate").trim();
+      const backgroundStatus = String(formData.get("quiz_situation_result") || "Preliminary Candidate").trim();
       const notes = String(formData.get("notes") || "").trim();
 
       status.classList.remove("is-error");
@@ -752,6 +754,34 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      // Determine nearest career center based on address input (Valley, Opelika, or Phenix City)
+      const locText = `${streetAddress} ${cityZip}`.toLowerCase();
+      let matchedCenter = {
+        name: "Valley Career Center",
+        address: "3300 23rd Drive, Valley, AL 36854 (inside Growth Academy)",
+        hours: "Mon – Fri, 8:00 AM – 4:30 PM (Eastern Time)",
+        phone: "(334) 756-3065",
+        shortCity: "Valley / Chambers County"
+      };
+
+      if (locText.includes("opelika") || locText.includes("auburn") || locText.includes("36801") || locText.includes("36802") || locText.includes("36803") || locText.includes("36804") || locText.includes("36830") || locText.includes("36831") || locText.includes("36832") || locText.includes("lee county")) {
+        matchedCenter = {
+          name: "Opelika Career Center",
+          address: "2300 Frederick Road, Opelika, AL 36801",
+          hours: "Mon – Fri, 8:00 AM – 4:30 PM (Central Time)",
+          phone: "(334) 749-5065",
+          shortCity: "Opelika / Lee County"
+        };
+      } else if (locText.includes("phenix") || locText.includes("russell") || locText.includes("columbus") || locText.includes("36867") || locText.includes("36868") || locText.includes("36869") || locText.includes("cvcc")) {
+        matchedCenter = {
+          name: "Phenix City Career Center",
+          address: "2602 College Dr on CVCC’s campus in Brassell Hall Room 132, Phenix City, AL 36869",
+          hours: "Mon – Fri, 8:00 AM – 4:30 PM (Eastern Time)",
+          phone: "(334) 214-4828",
+          shortCity: "Phenix City / Russell County"
+        };
+      }
+
       submit.disabled = true;
       status.textContent = "Submitting candidate application...";
 
@@ -761,7 +791,21 @@ document.addEventListener("DOMContentLoaded", () => {
           const res = await fetch("/api/candidates", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, phone, email, trade, backgroundStatus, transportation, careerCenter, preferredRole, notes })
+            body: JSON.stringify({
+              name,
+              phone,
+              email,
+              streetAddress,
+              cityZip,
+              matchedCenter: matchedCenter.name,
+              matchedCenterAddress: matchedCenter.address,
+              trade,
+              backgroundStatus,
+              transportation,
+              careerCenter,
+              preferredRole,
+              notes
+            })
           });
           if (res.ok) delivered = true;
         } catch {}
@@ -778,6 +822,10 @@ document.addEventListener("DOMContentLoaded", () => {
                   name: { stringValue: name },
                   phone: { stringValue: phone },
                   email: { stringValue: email },
+                  streetAddress: { stringValue: streetAddress },
+                  cityZip: { stringValue: cityZip },
+                  matchedCenter: { stringValue: matchedCenter.name },
+                  matchedCenterAddress: { stringValue: matchedCenter.address },
                   trade: { stringValue: trade },
                   preferredRole: { stringValue: preferredRole },
                   backgroundStatus: { stringValue: backgroundStatus },
@@ -794,10 +842,26 @@ document.addEventListener("DOMContentLoaded", () => {
         candidateFormView.hidden = true;
         candidateConfirmationScreen.hidden = false;
         setStepperStep(3);
+
         const confirmName = candidateConfirmationScreen.querySelector(".confirm-name");
         const confirmTrade = candidateConfirmationScreen.querySelector(".confirm-trade");
         if (confirmName) confirmName.textContent = name;
         if (confirmTrade) confirmTrade.textContent = trade;
+
+        const confirmApplicantLocation = document.getElementById("confirmApplicantLocation");
+        if (confirmApplicantLocation) {
+          confirmApplicantLocation.textContent = cityZip ? `${streetAddress ? streetAddress + ', ' : ''}${cityZip}` : "Your area";
+        }
+
+        const centerNameDisplay = document.getElementById("centerNameDisplay");
+        const centerAddressDisplay = document.getElementById("centerAddressDisplay");
+        const centerHoursDisplay = document.getElementById("centerHoursDisplay");
+
+        if (centerNameDisplay) centerNameDisplay.textContent = matchedCenter.name;
+        if (centerAddressDisplay) centerAddressDisplay.innerHTML = `${matchedCenter.address}`;
+        if (centerHoursDisplay) {
+          centerHoursDisplay.innerHTML = `🕒 <strong>Hours:</strong> ${matchedCenter.hours} &bull; Phone: <a href="tel:${matchedCenter.phone.replace(/\\D/g, '')}" style="color: var(--accent-orange); font-weight: 700;">${matchedCenter.phone}</a>`;
+        }
 
         const doneBtn = candidateConfirmationScreen.querySelector(".confirmation-done-button");
         if (doneBtn) doneBtn.focus();
@@ -1129,7 +1193,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
           await navigator.share({
             title: "Springboards for Community Development",
-            text: "WIOA-authorized trade training and career pathways: based in Shawmut, Alabama, serving East Alabama.",
+            text: "WIOA authorized trade training and career pathways: based in Shawmut, Alabama, serving East Alabama.",
             url: window.location.href
           });
         } catch {

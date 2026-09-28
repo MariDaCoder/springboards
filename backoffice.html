@@ -409,13 +409,13 @@
     <div class="login-card">
       <img src="springboards_logo.png" alt="Springboards Logo" class="login-logo">
       <span class="section-eyebrow" style="color: var(--accent-orange);">Leadership Portal</span>
-      <h1 class="section-title" style="font-size: 1.65rem; margin-bottom: 0.5rem;">Executive Admin Sign-In</h1>
+      <h1 class="section-title" style="font-size: 1.65rem; margin-bottom: 0.5rem;">Executive Admin Login</h1>
       <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.5rem;">
         Dedicated administrative management portal for <strong>Marilynn L. Ward</strong> (Workforce Director &amp; Compliance Administrator).
       </p>
 
       <div style="background: #FFFBEB; border: 1px solid #FCD34D; border-radius: var(--radius-sm); padding: 0.75rem; margin-bottom: 1.25rem; font-size: 0.8rem; color: #92400E; text-align: left;">
-        ℹ️ <strong>System Notice:</strong> Multi-user staff PIN logins and board member integrations will be re-enabled here at a later date.
+        ℹ️ <strong>System Notice:</strong> Additional staff PIN logins and board member integrations will be activated here at a later date.
       </div>
 
       <button type="button" class="btn-google" onclick="loginWithGoogle()">
@@ -454,7 +454,7 @@
     <!-- System Notice -->
     <div class="admin-notice">
       <div>
-        <strong>Executive Portal Mode Active.</strong> Currently configured for Marilynn L. Ward. Multi-user staff PIN logins and board governance modules will be re-enabled at a later date.
+        <strong>Executive Portal Mode Active.</strong> Currently configured for Marilynn L. Ward. Additional staff PIN logins and board governance modules will be activated at a later date.
       </div>
       <button onclick="refreshData()" class="admin-btn admin-btn-secondary" style="color: #1E3A8A; border-color: #93C5FD; background: #DBEAFE;">↻ Refresh Data</button>
     </div>
@@ -482,43 +482,46 @@
     <section id="panel-candidates" class="admin-panel active">
       <!-- KPI Metric Summary -->
       <div class="kpi-grid">
-        <div class="kpi-card green">
-          <div class="kpi-label">Total Applicants</div>
+        <div class="kpi-card blue">
+          <div class="kpi-label">Total Prospects</div>
           <div id="kpi-cand-total" class="kpi-value">0</div>
-          <div class="kpi-desc">Transitional trade candidates</div>
+          <div class="kpi-desc">Total applicants logged</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-label">Pending Intake</div>
+          <div class="kpi-label">Reminder Needed</div>
           <div id="kpi-cand-pending" class="kpi-value">0</div>
-          <div class="kpi-desc">Awaiting first follow-up call</div>
-        </div>
-        <div class="kpi-card blue">
-          <div class="kpi-label">Onboarding / Documents</div>
-          <div id="kpi-cand-onboarding" class="kpi-value">0</div>
-          <div class="kpi-desc">Collecting ID &amp; Career Center referral</div>
+          <div class="kpi-desc">Awaiting intake phone call</div>
         </div>
         <div class="kpi-card gold">
-          <div class="kpi-label">Active / Placed</div>
+          <div class="kpi-label">Career Center Visiting</div>
+          <div id="kpi-cand-onboarding" class="kpi-value">0</div>
+          <div class="kpi-desc">Coordinating qualification visit</div>
+        </div>
+        <div class="kpi-card green">
+          <div class="kpi-label">Cleared for Day 1 Work</div>
           <div id="kpi-cand-placed" class="kpi-value">0</div>
-          <div class="kpi-desc">In hands-on training or job placement</div>
+          <div class="kpi-desc">WIOA approved &amp; Sirius cleared</div>
         </div>
       </div>
 
       <div class="admin-card">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
           <div>
-            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.2rem;">Candidate Intake Applications</h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Real-time submissions from the public website candidate intake quiz.</p>
+            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.2rem;">Candidate Intake, Qualification &amp; Onboarding Tracker</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Tracks prospects from intake inquiry to nearest Career Center qualification and first day worksite clearance.
+            </p>
           </div>
           <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-            <input type="text" id="cand-search-input" placeholder="Search applicant by name, phone, trade..." oninput="filterCandidates()" style="padding: 0.45rem 0.85rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.85rem; min-width: 240px;">
+            <input type="text" id="cand-search-input" placeholder="Search by name, address, trade, phone..." oninput="filterCandidates()" style="padding: 0.45rem 0.85rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.85rem; min-width: 260px;">
             <select id="cand-stage-filter" onchange="filterCandidates()" style="padding: 0.45rem 0.85rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.85rem;">
-              <option value="ALL">All Stages</option>
-              <option value="Pending Intake">Pending Intake</option>
-              <option value="Documents Collected">Documents Collected</option>
-              <option value="Orientation Scheduled">Orientation Scheduled</option>
-              <option value="Active Worksite Training">Active Worksite Training</option>
-              <option value="Placed in Job">Placed in Job</option>
+              <option value="ALL">All Pipeline Stages</option>
+              <option value="Prospect - Pending Reminder">Prospect - Pending Reminder</option>
+              <option value="Career Center Appointment Set">Career Center Appointment Set</option>
+              <option value="Qualified & Onboarding Documents">Qualified &amp; Onboarding Documents</option>
+              <option value="Cleared for First Day Worksite">Cleared for First Day Worksite</option>
+              <option value="Active Worksite Training (32 hrs/wk)">Active Worksite Training (32 hrs/wk)</option>
+              <option value="Placed in Permanent Unsubsidized Job">Placed in Permanent Job</option>
               <option value="Inactive / On Hold">Inactive / On Hold</option>
             </select>
           </div>
@@ -528,18 +531,19 @@
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Applicant Contact</th>
+                <th>Applicant Contact &amp; Address</th>
+                <th>Designated Career Center</th>
                 <th>Trade &amp; Helper Role</th>
-                <th>Background &amp; Transit</th>
-                <th>Career Center Status</th>
-                <th>Intake Stage</th>
-                <th>Case Notes</th>
+                <th>Career Center Qualification</th>
+                <th>Pipeline Stage</th>
+                <th>Day 1 Clearance</th>
+                <th>Intake Notes &amp; Reminder</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody id="candidates-table-body">
               <tr>
-                <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-muted);">
                   Loading candidate applications...
                 </td>
               </tr>
@@ -624,7 +628,7 @@
     <section id="panel-flyers" class="admin-panel">
       <div class="admin-card">
         <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.2rem;">Official Program Flyers &amp; Documents</h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Quickly view, share, or download high-resolution flyers and worksite agreements for candidates and employer partners.</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Quickly view, share, or download detailed flyers and worksite agreements for candidates and employer partners.</p>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
           <!-- Card 1: Transitional Jobs Flyer -->
@@ -632,7 +636,7 @@
             <div>
               <span class="badge badge-amber" style="margin-bottom: 0.5rem;">Official Job Flyer</span>
               <h3 style="font-size: 1.05rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">Transitional Jobs Program Overview Flyer</h3>
-              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Full-color overview detailing state-subsidized on-the-job training, up to 32 hours weekly, 390-hour lifetime cap, and host worksite guidelines.</p>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Color overview detailing public workplace training, up to 32 hours weekly, 390 hour lifetime cap, and host worksite guidelines.</p>
               <div style="text-align: center; margin-bottom: 1rem;">
                 <img src="transitional-jobs-overview.webp" alt="Transitional Jobs Flyer Preview" style="max-height: 240px; width: auto; margin: 0 auto; border-radius: 4px; border: 1px solid var(--admin-border);">
               </div>
@@ -856,14 +860,14 @@
       if (badgeCount) badgeCount.textContent = candidates.length;
 
       // KPIs
-      const pendingCount = candidates.filter(c => !c.stage || c.stage === 'Pending Intake').length;
-      const onboardingCount = candidates.filter(c => c.stage === 'Documents Collected' || c.stage === 'Orientation Scheduled').length;
-      const placedCount = candidates.filter(c => c.stage === 'Active Worksite Training' || c.stage === 'Placed in Job').length;
+      const pendingCount = candidates.filter(c => !c.stage || c.stage.includes('Pending') || c.stage.includes('Prospect')).length;
+      const ccVisitingCount = candidates.filter(c => (c.stage && (c.stage.includes('Appointment') || c.stage.includes('Visiting') || c.stage.includes('Qualified'))) || (c.qualificationStatus && c.qualificationStatus.includes('Pending'))).length;
+      const day1ClearedCount = candidates.filter(c => c.firstDayCleared || c.stage === 'Cleared for First Day Worksite' || c.stage === 'Active Worksite Training (32 hrs/wk)' || c.stage === 'Placed in Permanent Unsubsidized Job').length;
 
       document.getElementById('kpi-cand-total').textContent = candidates.length;
       document.getElementById('kpi-cand-pending').textContent = pendingCount;
-      document.getElementById('kpi-cand-onboarding').textContent = onboardingCount;
-      document.getElementById('kpi-cand-placed').textContent = placedCount;
+      document.getElementById('kpi-cand-onboarding').textContent = ccVisitingCount;
+      document.getElementById('kpi-cand-placed').textContent = day1ClearedCount;
 
       filterCandidates();
     }
@@ -878,7 +882,13 @@
       let list = appState.candidateApplications || [];
 
       if (stageFilter !== 'ALL') {
-        list = list.filter(c => (c.stage || 'Pending Intake') === stageFilter);
+        list = list.filter(c => {
+          const s = c.stage || 'Prospect - Pending Reminder';
+          if (stageFilter === 'Prospect - Pending Reminder') {
+            return s === 'Prospect - Pending Reminder' || s === 'Prospect - Pending Followup';
+          }
+          return s === stageFilter;
+        });
       }
 
       if (query) {
@@ -886,14 +896,17 @@
           return (c.name || '').toLowerCase().includes(query) ||
                  (c.phone || '').toLowerCase().includes(query) ||
                  (c.email || '').toLowerCase().includes(query) ||
-                 (c.trade || '').toLowerCase().includes(query);
+                 (c.trade || '').toLowerCase().includes(query) ||
+                 (c.streetAddress || '').toLowerCase().includes(query) ||
+                 (c.cityZip || '').toLowerCase().includes(query) ||
+                 (c.matchedCenter || '').toLowerCase().includes(query);
         });
       }
 
       if (list.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+            <td colspan="8" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
               No candidate applications match this view. Submissions from the public website intake quiz appear here in real-time.
             </td>
           </tr>
@@ -902,17 +915,25 @@
       }
 
       const stageColors = {
+        'Prospect - Pending Reminder': 'badge-amber',
+        'Prospect - Pending Followup': 'badge-amber',
+        'Career Center Appointment Set': 'badge-blue',
+        'Qualified & Onboarding Documents': 'badge-blue',
+        'Cleared for First Day Worksite': 'badge-green',
+        'Active Worksite Training (32 hrs/wk)': 'badge-green',
+        'Placed in Permanent Unsubsidized Job': 'badge-green',
         'Pending Intake': 'badge-amber',
         'Documents Collected': 'badge-blue',
-        'Orientation Scheduled': 'badge-blue',
-        'Active Worksite Training': 'badge-green',
-        'Placed in Job': 'badge-green',
         'Inactive / On Hold': 'badge-gray'
       };
 
       tbody.innerHTML = list.map(c => {
-        const curStage = c.stage || 'Pending Intake';
+        const curStage = c.stage || 'Prospect - Pending Reminder';
+        const curQual = c.qualificationStatus || 'Pending Career Center Visit';
+        const isDay1Cleared = !!c.firstDayCleared;
         const dateStr = c.createdAt ? new Date(c.createdAt).toLocaleDateString() : 'Recent';
+        const matchedCenterName = c.matchedCenter || 'Valley Career Center';
+        const matchedCenterAddr = c.matchedCenterAddress || '3300 23rd Drive, Valley, AL 36854';
 
         return `
           <tr>
@@ -922,33 +943,52 @@
                 <a href="tel:${escapeHtml(c.phone)}" style="color: var(--accent-orange); font-weight: 700; text-decoration: none;">📞 ${escapeHtml(c.phone || 'No phone')}</a>
               </div>
               ${c.email ? `<div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 1px;"><a href="mailto:${escapeHtml(c.email)}" style="color: inherit;">✉️ ${escapeHtml(c.email)}</a></div>` : ''}
-              <div style="font-size: 0.72rem; color: #94A3B8; margin-top: 3px;">Applied: ${dateStr}</div>
+              <div style="font-size: 0.75rem; color: #475569; margin-top: 3px; font-weight: 600;">
+                🏠 ${escapeHtml(c.streetAddress ? c.streetAddress + ', ' : '')}${escapeHtml(c.cityZip || 'Lanett / Local Area')}
+              </div>
+              <div style="font-size: 0.7rem; color: #94A3B8; margin-top: 2px;">Applied: ${dateStr}</div>
             </td>
             <td>
-              <div style="font-weight: 700; color: var(--text-dark);">${escapeHtml(c.trade || 'Carpentry')}</div>
-              <div style="font-size: 0.78rem; color: var(--accent-orange); font-weight: 600;">Helper: ${escapeHtml(c.preferredRole || 'Carpenter Helper')}</div>
+              <div style="font-weight: 700; color: #1E40AF; font-size: 0.85rem;">🏛️ ${escapeHtml(matchedCenterName)}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">${escapeHtml(matchedCenterAddr)}</div>
+              <div style="margin-top: 4px;">
+                <span class="badge ${c.careerCenterStatus && c.careerCenterStatus.includes('Already') ? 'badge-green' : 'badge-amber'}" style="font-size: 0.7rem;">
+                  ${escapeHtml(c.careerCenterStatus || 'Needs Visit')}
+                </span>
+              </div>
             </td>
             <td>
-              <div style="font-size: 0.82rem; color: var(--text-dark);">${escapeHtml(c.backgroundStatus || 'Standard')}</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Transit: ${escapeHtml(c.transportation || 'Flexible')}</div>
+              <div style="font-weight: 700; color: var(--text-dark); font-size: 0.85rem;">${escapeHtml(c.trade || 'Carpentry')}</div>
+              <div style="font-size: 0.78rem; color: var(--accent-orange); font-weight: 600;">Role: ${escapeHtml(c.preferredRole || 'Carpenter Helper')}</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;">Transit: ${escapeHtml(c.transportation || 'Flexible')}</div>
             </td>
             <td>
-              <span class="badge ${c.careerCenterStatus && c.careerCenterStatus.includes('Need') ? 'badge-amber' : 'badge-green'}">
-                ${escapeHtml(c.careerCenterStatus || 'Pending')}
-              </span>
-            </td>
-            <td>
-              <select onchange="updateCandidateStage('${c.id}', this.value)" style="padding: 0.35rem 0.65rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 700; border: 1px solid var(--admin-border); cursor: pointer;">
-                <option value="Pending Intake" ${curStage === 'Pending Intake' ? 'selected' : ''}>Pending Intake</option>
-                <option value="Documents Collected" ${curStage === 'Documents Collected' ? 'selected' : ''}>Documents Collected</option>
-                <option value="Orientation Scheduled" ${curStage === 'Orientation Scheduled' ? 'selected' : ''}>Orientation Scheduled</option>
-                <option value="Active Worksite Training" ${curStage === 'Active Worksite Training' ? 'selected' : ''}>Active Worksite Training</option>
-                <option value="Placed in Job" ${curStage === 'Placed in Job' ? 'selected' : ''}>Placed in Job</option>
-                <option value="Inactive / On Hold" ${curStage === 'Inactive / On Hold' ? 'selected' : ''}>Inactive / On Hold</option>
+              <select onchange="updateCandidateQualification('${c.id}', this.value)" style="padding: 0.35rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 700; border: 1px solid var(--admin-border); cursor: pointer; width: 100%;">
+                <option value="Pending Career Center Visit" ${curQual === 'Pending Career Center Visit' ? 'selected' : ''}>⏳ Pending Center Visit</option>
+                <option value="Appointment Confirmed" ${curQual === 'Appointment Confirmed' ? 'selected' : ''}>📅 Appointment Set</option>
+                <option value="Eligible Adult/DLW Verified" ${curQual === 'Eligible Adult/DLW Verified' ? 'selected' : ''}>✅ WIOA Adult/DLW Verified</option>
+                <option value="Online Assessment Passed" ${curQual === 'Online Assessment Passed' ? 'selected' : ''}>📝 Assessment Completed</option>
+                <option value="Ineligible / Non-Qualifying" ${curQual === 'Ineligible / Non-Qualifying' ? 'selected' : ''}>❌ Ineligible</option>
               </select>
             </td>
             <td>
-              <input type="text" value="${escapeHtml(c.intakeNotes || c.notes || '')}" placeholder="Add case notes..." onblur="updateCandidateNotes('${c.id}', this.value)" style="padding: 0.35rem 0.65rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.8rem; width: 100%; min-width: 140px;">
+              <select onchange="updateCandidateStage('${c.id}', this.value)" style="padding: 0.35rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 700; border: 1px solid var(--admin-border); cursor: pointer; width: 100%;">
+                <option value="Prospect - Pending Reminder" ${curStage === 'Prospect - Pending Reminder' || curStage === 'Prospect - Pending Followup' || curStage === 'Pending Intake' ? 'selected' : ''}>1. Prospect - Reminder</option>
+                <option value="Career Center Appointment Set" ${curStage === 'Career Center Appointment Set' ? 'selected' : ''}>2. Career Center Visit Set</option>
+                <option value="Qualified & Onboarding Documents" ${curStage === 'Qualified & Onboarding Documents' || curStage === 'Documents Collected' ? 'selected' : ''}>3. Qualified &amp; Docs Collected</option>
+                <option value="Cleared for First Day Worksite" ${curStage === 'Cleared for First Day Worksite' ? 'selected' : ''}>4. Cleared for Day 1 Work</option>
+                <option value="Active Worksite Training (32 hrs/wk)" ${curStage === 'Active Worksite Training (32 hrs/wk)' || curStage === 'Active Worksite Training' ? 'selected' : ''}>5. Active Worksite Training</option>
+                <option value="Placed in Permanent Unsubsidized Job" ${curStage === 'Placed in Permanent Unsubsidized Job' || curStage === 'Placed in Job' ? 'selected' : ''}>6. Permanent Job Placed</option>
+                <option value="Inactive / On Hold" ${curStage === 'Inactive / On Hold' ? 'selected' : ''}>On Hold / Inactive</option>
+              </select>
+            </td>
+            <td style="text-align: center;">
+              <button onclick="toggleDay1Clearance('${c.id}', ${!isDay1Cleared})" class="badge ${isDay1Cleared ? 'badge-green' : 'badge-amber'}" style="cursor: pointer; border: none; padding: 0.35rem 0.65rem; font-size: 0.75rem;">
+                ${isDay1Cleared ? '✅ Cleared for Day 1' : '⏳ Awaiting Clear'}
+              </button>
+            </td>
+            <td>
+              <input type="text" value="${escapeHtml(c.intakeNotes || c.notes || '')}" placeholder="Add follow-up notes, referral date..." onblur="updateCandidateNotes('${c.id}', this.value)" style="padding: 0.35rem 0.65rem; border: 1px solid var(--admin-border); border-radius: var(--radius-sm); font-size: 0.8rem; width: 100%; min-width: 170px;">
             </td>
             <td>
               <button onclick="deleteCandidate('${c.id}')" class="admin-btn admin-btn-danger" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">Delete</button>
@@ -964,6 +1004,36 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id, stage: newStage })
+        });
+        await loadBackofficeData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function updateCandidateQualification(id, qualStatus) {
+      try {
+        await fetch('/api/backoffice/candidates/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, qualificationStatus: qualStatus })
+        });
+        await loadBackofficeData();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function toggleDay1Clearance(id, clearedState) {
+      try {
+        await fetch('/api/backoffice/candidates/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id,
+            firstDayCleared: clearedState,
+            stage: clearedState ? 'Cleared for First Day Worksite' : 'Qualified & Onboarding Documents'
+          })
         });
         await loadBackofficeData();
       } catch (err) {

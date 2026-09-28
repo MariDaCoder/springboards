@@ -1,6 +1,6 @@
 {
   "name": "Springboards for Community Development",
-  "description": "Empowering returning citizens, justice-involved individuals, and opportunity youth: based in Shawmut, Alabama, offering WIOA-authorized trade training across East Alabama.",
+  "description": "Empowering jobseekers, youth, and underemployed workers: based in Shawmut, Alabama, offering WIOA certified trade training across East Alabama.",
   "permissions": [],
   "capabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

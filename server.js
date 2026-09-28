@@ -260,10 +260,14 @@ app.post('/api/candidates', async (req, res) => {
     const trimmedName = String(name || '').trim();
     const trimmedPhone = String(phone || '').trim();
     const trimmedEmail = String(email || '').trim();
+    const trimmedStreet = String(req.body.streetAddress || '').trim();
+    const trimmedCityZip = String(req.body.cityZip || '').trim();
+    const trimmedMatchedCenter = String(req.body.matchedCenter || 'Valley Career Center').trim();
+    const trimmedMatchedCenterAddress = String(req.body.matchedCenterAddress || '3300 23rd Drive, Valley, AL 36854').trim();
     const trimmedTrade = String(trade || 'Carpentry & Construction Technology').trim();
     const trimmedBackground = String(backgroundStatus || 'Unspecified').trim();
     const trimmedTransit = String(transportation || 'Flexible').trim();
-    const trimmedCareerCenter = String(careerCenter || 'Pending').trim();
+    const trimmedCareerCenter = String(careerCenter || 'Pending Qualification Visit').trim();
     const trimmedNotes = String(notes || '').trim();
 
     if (!trimmedName || trimmedName.length < 2) {
@@ -288,14 +292,21 @@ app.post('/api/candidates', async (req, res) => {
       name: trimmedName,
       phone: trimmedPhone,
       email: trimmedEmail,
+      streetAddress: trimmedStreet,
+      cityZip: trimmedCityZip,
+      matchedCenter: trimmedMatchedCenter,
+      matchedCenterAddress: trimmedMatchedCenterAddress,
       trade: trimmedTrade,
       preferredRole: String(req.body.preferredRole || 'Carpenter Helper').trim(),
       backgroundStatus: trimmedBackground,
       transportation: trimmedTransit,
       careerCenterStatus: trimmedCareerCenter,
       notes: trimmedNotes,
-      stage: 'Pending Intake',
-      intakeNotes: '',
+      stage: 'Prospect - Pending Followup',
+      qualificationStatus: 'Pending Career Center Visit',
+      firstDayCleared: false,
+      siriusPlacementFormSubmitted: false,
+      intakeNotes: `Nearest Career Center: ${trimmedMatchedCenter} (${trimmedMatchedCenterAddress}). Follow-up required for Career Center documentation.`,
       deliveredTo: DESIGNATED_INBOX,
       createdAt: new Date().toISOString()
     };
@@ -868,7 +879,7 @@ app.post('/api/backoffice/compliance/update', (req, res) => {
 
 // Update candidate stage & intake notes
 app.post('/api/backoffice/candidates/update', (req, res) => {
-  const { id, stage, intakeNotes } = req.body || {};
+  const { id, stage, intakeNotes, qualificationStatus, firstDayCleared, siriusPlacementFormSubmitted } = req.body || {};
   const cand = (backofficeData.candidateApplications || []).find(c => c.id === id);
   if (!cand) {
     return res.status(404).json({ error: 'Candidate record not found.' });
@@ -876,6 +887,9 @@ app.post('/api/backoffice/candidates/update', (req, res) => {
 
   if (stage) cand.stage = stage;
   if (intakeNotes !== undefined) cand.intakeNotes = intakeNotes;
+  if (qualificationStatus !== undefined) cand.qualificationStatus = qualificationStatus;
+  if (firstDayCleared !== undefined) cand.firstDayCleared = Boolean(firstDayCleared);
+  if (siriusPlacementFormSubmitted !== undefined) cand.siriusPlacementFormSubmitted = Boolean(siriusPlacementFormSubmitted);
 
   saveBackofficeData();
   return res.status(200).json({ success: true, candidate: cand });
