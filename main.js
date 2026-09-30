@@ -576,46 +576,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // TRANSITIONAL JOBS CANDIDATE INTAKE & PRELIMINARY MODAL
+  // CANDIDATE INTAKE MODAL
   const candidateModal = document.getElementById("candidateModal");
-  const candidateStepper = document.getElementById("candidateStepper");
-  const candidateQuizView = document.getElementById("candidateQuizView");
-  const candidateAltView = document.getElementById("candidateAltView");
   const candidateFormView = document.getElementById("candidateFormView");
   const candidateConfirmationScreen = document.getElementById("candidateConfirmationScreen");
   const candidateForm = document.getElementById("candidateApplicationForm");
 
-  const setStepperStep = (stepNumber) => {
-    if (!candidateStepper) return;
-    candidateStepper.querySelectorAll(".stepper-step").forEach((step) => {
-      const stepVal = Number(step.dataset.step);
-      step.classList.toggle("is-active", stepVal === stepNumber);
-      step.classList.toggle("is-completed", stepVal < stepNumber);
-    });
-  };
-
   const openCandidateModal = (defaultTrade) => {
-    if (!candidateModal) return;
-    if (candidateForm) candidateForm.reset();
-    if (candidateQuizView) candidateQuizView.hidden = false;
-    if (candidateAltView) candidateAltView.hidden = true;
-    if (candidateFormView) candidateFormView.hidden = true;
-    if (candidateConfirmationScreen) candidateConfirmationScreen.hidden = true;
-    setStepperStep(1);
-
-    if (candidateForm) {
-      candidateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
-      const status = candidateForm.querySelector(".form-status");
-      if (status) {
-        status.textContent = "";
-        status.classList.remove("is-error");
-      }
-      if (defaultTrade && candidateForm.elements.trade) {
-        candidateForm.elements.trade.value = defaultTrade;
-      }
+    if (!candidateModal || !candidateForm) return;
+    candidateForm.reset();
+    candidateFormView.hidden = false;
+    candidateConfirmationScreen.hidden = true;
+    candidateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+    const status = candidateForm.querySelector(".form-status");
+    if (status) {
+      status.textContent = "";
+      status.classList.remove("is-error");
     }
-    const continueBtn = document.getElementById("btnQuizContinue");
-    openModalWithFocus(candidateModal, continueBtn);
+    if (defaultTrade && candidateForm.elements.trade) {
+      candidateForm.elements.trade.value = defaultTrade;
+    }
+    const nameField = candidateForm.elements.name;
+    openModalWithFocus(candidateModal, nameField);
   };
 
   document.querySelectorAll(".btn-candidate-trigger").forEach((btn) => {
@@ -623,64 +605,6 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const defaultTrade = btn.dataset.tradeDefault || "Carpentry & Construction Technology";
       openCandidateModal(defaultTrade);
-    });
-  });
-
-  // Quiz navigation buttons
-  const btnQuizContinue = document.getElementById("btnQuizContinue");
-  if (btnQuizContinue) {
-    btnQuizContinue.addEventListener("click", () => {
-      const ageChoice = document.querySelector('input[name="quiz_age"]:checked')?.value;
-      const situationChoice = document.getElementById("quiz_situation")?.value;
-      const readyChoice = document.querySelector('input[name="quiz_ready"]:checked')?.value;
-
-      if (ageChoice === "no") {
-        candidateQuizView.hidden = true;
-        candidateAltView.hidden = false;
-        return;
-      }
-
-      // Store situation result into candidate form hidden field
-      const hiddenSituation = document.getElementById("quiz_situation_result");
-      if (hiddenSituation) {
-        hiddenSituation.value = situationChoice || "qualified_candidate";
-      }
-
-      candidateQuizView.hidden = true;
-      candidateFormView.hidden = false;
-      setStepperStep(2);
-      if (candidateForm && candidateForm.elements.name) {
-        candidateForm.elements.name.focus();
-      }
-    });
-  }
-
-  const btnQuizBack = document.getElementById("btnQuizBack");
-  if (btnQuizBack) {
-    btnQuizBack.addEventListener("click", () => {
-      candidateAltView.hidden = true;
-      candidateQuizView.hidden = false;
-      setStepperStep(1);
-    });
-  }
-
-  const btnFormBackToQuiz = document.getElementById("btnFormBackToQuiz");
-  if (btnFormBackToQuiz) {
-    btnFormBackToQuiz.addEventListener("click", () => {
-      candidateFormView.hidden = true;
-      candidateQuizView.hidden = false;
-      setStepperStep(1);
-    });
-  }
-
-  // Redirect from alt view to volunteer signups
-  document.querySelectorAll(".btn-volunteer-redirect").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      closeModalWithFocus(candidateModal);
-      const volunteerSection = document.getElementById("volunteer-events");
-      if (volunteerSection) {
-        volunteerSection.scrollIntoView({ behavior: "smooth" });
-      }
     });
   });
 
@@ -701,7 +625,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (formData.get("website_url")) {
         candidateFormView.hidden = true;
         candidateConfirmationScreen.hidden = false;
-        setStepperStep(3);
         candidateForm.reset();
         return;
       }
@@ -709,13 +632,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const name = String(formData.get("name") || "").trim();
       const phone = String(formData.get("phone") || "").trim();
       const email = String(formData.get("email") || "").trim();
-      const streetAddress = String(formData.get("streetAddress") || "").trim();
-      const cityZip = String(formData.get("cityZip") || "").trim();
       const trade = String(formData.get("trade") || "Carpentry & Construction Technology").trim();
+      const backgroundStatus = String(formData.get("backgroundStatus") || "").trim();
       const transportation = String(formData.get("transportation") || "").trim();
       const careerCenter = String(formData.get("careerCenter") || "").trim();
-      const preferredRole = String(formData.get("preferredRole") || "Carpenter Helper").trim();
-      const backgroundStatus = String(formData.get("quiz_situation_result") || "Preliminary Candidate").trim();
       const notes = String(formData.get("notes") || "").trim();
 
       status.classList.remove("is-error");
@@ -723,7 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!name || name.length < 2) {
         status.classList.add("is-error");
-        status.textContent = "Please enter your full legal name, minimum 2 characters.";
+        status.textContent = "Please enter your full legal name (minimum 2 characters).";
         candidateForm.elements.name.classList.add("is-invalid");
         candidateForm.elements.name.focus();
         return;
@@ -740,7 +660,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (phone && !isValidPhone(phone)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number, e.g. 555-123-4567.";
+        status.textContent = "Please enter a valid 10-digit phone number, e.g. (334) 556-1234.";
         candidateForm.elements.phone.classList.add("is-invalid");
         candidateForm.elements.phone.focus();
         return;
@@ -748,38 +668,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (email && !isValidEmail(email)) {
         status.classList.add("is-error");
-        status.textContent = "Please enter a valid email address, e.g. name@example.com.";
+        status.textContent = "Please enter a valid email address (e.g. name@example.com).";
         candidateForm.elements.email.classList.add("is-invalid");
         candidateForm.elements.email.focus();
         return;
-      }
-
-      // Determine nearest career center based on address input (Valley, Opelika, or Phenix City)
-      const locText = `${streetAddress} ${cityZip}`.toLowerCase();
-      let matchedCenter = {
-        name: "Valley Career Center",
-        address: "3300 23rd Drive, Valley, AL 36854 (inside Growth Academy)",
-        hours: "Mon – Fri, 8:00 AM – 4:30 PM (Eastern Time)",
-        phone: "(334) 756-3065",
-        shortCity: "Valley / Chambers County"
-      };
-
-      if (locText.includes("opelika") || locText.includes("auburn") || locText.includes("36801") || locText.includes("36802") || locText.includes("36803") || locText.includes("36804") || locText.includes("36830") || locText.includes("36831") || locText.includes("36832") || locText.includes("lee county")) {
-        matchedCenter = {
-          name: "Opelika Career Center",
-          address: "2300 Frederick Road, Opelika, AL 36801",
-          hours: "Mon – Fri, 8:00 AM – 4:30 PM (Central Time)",
-          phone: "(334) 749-5065",
-          shortCity: "Opelika / Lee County"
-        };
-      } else if (locText.includes("phenix") || locText.includes("russell") || locText.includes("columbus") || locText.includes("36867") || locText.includes("36868") || locText.includes("36869") || locText.includes("cvcc")) {
-        matchedCenter = {
-          name: "Phenix City Career Center",
-          address: "2602 College Dr on CVCC’s campus in Brassell Hall Room 132, Phenix City, AL 36869",
-          hours: "Mon – Fri, 8:00 AM – 4:30 PM (Eastern Time)",
-          phone: "(334) 214-4828",
-          shortCity: "Phenix City / Russell County"
-        };
       }
 
       submit.disabled = true;
@@ -791,21 +683,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const res = await fetch("/api/candidates", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name,
-              phone,
-              email,
-              streetAddress,
-              cityZip,
-              matchedCenter: matchedCenter.name,
-              matchedCenterAddress: matchedCenter.address,
-              trade,
-              backgroundStatus,
-              transportation,
-              careerCenter,
-              preferredRole,
-              notes
-            })
+            body: JSON.stringify({ name, phone, email, trade, backgroundStatus, transportation, careerCenter, notes })
           });
           if (res.ok) delivered = true;
         } catch {}
@@ -822,12 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   name: { stringValue: name },
                   phone: { stringValue: phone },
                   email: { stringValue: email },
-                  streetAddress: { stringValue: streetAddress },
-                  cityZip: { stringValue: cityZip },
-                  matchedCenter: { stringValue: matchedCenter.name },
-                  matchedCenterAddress: { stringValue: matchedCenter.address },
                   trade: { stringValue: trade },
-                  preferredRole: { stringValue: preferredRole },
                   backgroundStatus: { stringValue: backgroundStatus },
                   transportation: { stringValue: transportation },
                   careerCenter: { stringValue: careerCenter },
@@ -841,31 +714,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         candidateFormView.hidden = true;
         candidateConfirmationScreen.hidden = false;
-        setStepperStep(3);
-
         const confirmName = candidateConfirmationScreen.querySelector(".confirm-name");
         const confirmTrade = candidateConfirmationScreen.querySelector(".confirm-trade");
         if (confirmName) confirmName.textContent = name;
         if (confirmTrade) confirmTrade.textContent = trade;
-
-        const confirmApplicantLocation = document.getElementById("confirmApplicantLocation");
-        if (confirmApplicantLocation) {
-          confirmApplicantLocation.textContent = cityZip ? `${streetAddress ? streetAddress + ', ' : ''}${cityZip}` : "Your area";
-        }
-
-        const centerNameDisplay = document.getElementById("centerNameDisplay");
-        const centerAddressDisplay = document.getElementById("centerAddressDisplay");
-        const centerHoursDisplay = document.getElementById("centerHoursDisplay");
-
-        if (centerNameDisplay) centerNameDisplay.textContent = matchedCenter.name;
-        if (centerAddressDisplay) centerAddressDisplay.innerHTML = `${matchedCenter.address}`;
-        if (centerHoursDisplay) {
-          centerHoursDisplay.innerHTML = `🕒 <strong>Hours:</strong> ${matchedCenter.hours} &bull; Phone: <a href="tel:${matchedCenter.phone.replace(/\\D/g, '')}" style="color: var(--accent-orange); font-weight: 700;">${matchedCenter.phone}</a>`;
-        }
-
         const doneBtn = candidateConfirmationScreen.querySelector(".confirmation-done-button");
         if (doneBtn) doneBtn.focus();
-
         candidateForm.reset();
       } catch (err) {
         console.error(err);
@@ -1128,25 +982,72 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // TRANSITIONAL JOB FLYER MODAL
-  const jobFlyerModal = document.getElementById("jobFlyerModal");
+  // DOCUMENT CENTER & DOWNLOAD HUB MODAL
+  const documentModal = document.getElementById("documentModal");
+  const docPreviewContainer = document.getElementById("docPreviewContainer");
+  const docPreviewImg = document.getElementById("docPreviewImg");
+  const docPreviewTitle = document.getElementById("docPreviewTitle");
+  const docPreviewDownloadBtn = document.getElementById("docPreviewDownloadBtn");
+  const closeDocPreviewBtn = document.getElementById("closeDocPreviewBtn");
 
-  const openJobFlyerModal = () => {
-    if (!jobFlyerModal) return;
-    openModalWithFocus(jobFlyerModal, jobFlyerModal.querySelector(".btn-cta"));
+  const docAssetMap = {
+    "springboards-community-flyer": {
+      title: "Springboards Community Flyer & Volunteer Schedule",
+      preview: "/springboards-community-flyer.webp",
+      download: "/springboards flyer 1.jpg",
+      filename: "Springboards_Community_Flyer.jpg"
+    }
   };
 
-  document.querySelectorAll(".btn-job-flyer-trigger, [data-flyer-open]").forEach((btn) => {
+  const openDocumentCenter = (previewDocId) => {
+    if (!documentModal) return;
+    openModalWithFocus(documentModal, documentModal.querySelector(".btn-cta"));
+    if (previewDocId && docAssetMap[previewDocId]) {
+      showDocPreview(previewDocId);
+    } else if (docPreviewContainer) {
+      docPreviewContainer.style.display = "none";
+    }
+  };
+
+  const showDocPreview = (docId) => {
+    const asset = docAssetMap[docId];
+    if (!asset || !docPreviewContainer || !docPreviewImg) return;
+    docPreviewTitle.textContent = asset.title;
+    docPreviewImg.src = asset.preview;
+    docPreviewImg.alt = asset.title;
+    if (docPreviewDownloadBtn) {
+      docPreviewDownloadBtn.href = asset.download;
+      docPreviewDownloadBtn.download = asset.filename;
+    }
+    docPreviewContainer.style.display = "block";
+    docPreviewContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+
+  document.querySelectorAll(".btn-doc-trigger").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      openJobFlyerModal();
+      const docId = btn.dataset.docView || null;
+      openDocumentCenter(docId);
     });
   });
 
-  if (jobFlyerModal) {
-    jobFlyerModal.querySelectorAll("[data-flyer-close]").forEach((btn) => {
+  document.querySelectorAll(".btn-view-doc").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const docId = btn.dataset.docView;
+      showDocPreview(docId);
+    });
+  });
+
+  if (closeDocPreviewBtn) {
+    closeDocPreviewBtn.addEventListener("click", () => {
+      if (docPreviewContainer) docPreviewContainer.style.display = "none";
+    });
+  }
+
+  if (documentModal) {
+    documentModal.querySelectorAll("[data-doc-close]").forEach((btn) => {
       btn.addEventListener("click", () => {
-        closeModalWithFocus(jobFlyerModal);
+        closeModalWithFocus(documentModal);
       });
     });
   }

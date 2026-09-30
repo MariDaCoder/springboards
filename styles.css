@@ -2649,3 +2649,1377 @@ body.modal-open {
   color: var(--accent-orange);
   font-weight: bold;
 }
+
+/* --------------------------------------------------------------------------
+   Transitional Jobs Flow & Eligibility (Stage 1)
+   -------------------------------------------------------------------------- */
+.transitional-jobs-section {
+  background-color: #F8FAFC;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: clamp(3rem, 5vw, 5rem) 0;
+}
+
+.tj-section-header {
+  text-align: center;
+  max-width: 48rem;
+  margin: 0 auto clamp(2rem, 3.5vw, 3rem);
+}
+
+.tj-eyebrow {
+  color: var(--accent-green);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  font-size: 0.82rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Visual Anchor Card */
+.tj-visual-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+}
+
+.tj-visual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  align-items: stretch;
+}
+
+@media (max-width: 860px) {
+  .tj-visual-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tj-visual-media {
+  position: relative;
+  min-height: 280px;
+  background: #0f172a;
+}
+
+.tj-visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tj-visual-badge {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #F8FAFC;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tj-visual-content {
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tj-pill {
+  display: inline-block;
+  align-self: flex-start;
+  background: rgba(224, 86, 36, 0.1);
+  color: var(--accent-orange);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  margin-bottom: 0.75rem;
+}
+
+.tj-visual-title {
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin-bottom: 0.65rem;
+  letter-spacing: -0.02em;
+}
+
+.tj-visual-desc {
+  font-size: 0.92rem;
+  color: var(--text-dark);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.tj-benefit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tj-benefit-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+  color: #334155;
+  line-height: 1.5;
+}
+
+.tj-check {
+  color: var(--accent-green);
+  font-weight: 900;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+/* Video Explainer */
+.tj-video-wrapper {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 3vw, 2rem);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2.5rem;
+}
+
+.tj-video-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.tj-video-container {
+  max-width: 800px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  background: #0f172a;
+  position: relative;
+}
+
+.tj-video-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F766E 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.tj-play-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--accent-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 8px 20px rgba(224, 86, 36, 0.4);
+}
+
+/* Quiz Card & Buttons */
+.tj-quiz-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 2px solid #E2E8F0;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.07);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  margin-bottom: 2rem;
+}
+
+.tj-quiz-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-audio-listen {
+  background: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  color: var(--primary-navy);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-audio-listen:hover {
+  background: #E2E8F0;
+  color: var(--accent-orange);
+}
+
+.tj-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 820px) {
+  .tj-buttons-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tj-quiz-btn-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.tj-quiz-btn {
+  background: #F8FAFC;
+  border: 2px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1rem;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.tj-quiz-btn:hover {
+  border-color: var(--accent-green);
+  background: #F0FDF4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.15);
+}
+
+.tj-quiz-btn.is-selected {
+  border-color: var(--accent-green);
+  background: #ECFDF5;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+}
+
+.tj-btn-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.tj-btn-text strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--primary-navy);
+  margin-bottom: 0.2rem;
+  font-weight: 800;
+}
+
+.tj-btn-text span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.tj-details-toggle-wrap {
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.tj-details-toggle {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tj-details-panel {
+  display: none;
+  font-size: 0.78rem;
+  color: #475569;
+  background: #F8FAFC;
+  border-left: 3px solid var(--accent-orange);
+  padding: 0.5rem 0.65rem;
+  border-radius: 4px;
+  margin-top: 0.35rem;
+  line-height: 1.45;
+}
+
+.tj-details-panel.is-open {
+  display: block;
+  animation: fadeIn 0.2s ease-in;
+}
+
+/* Pre-Qualify Banner */
+.tj-prequalify-banner {
+  background: #ECFDF5;
+  border: 2px solid #10B981;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+.tj-prequalify-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tj-prequalify-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.tj-prequalify-body {
+  flex: 1;
+  min-width: 260px;
+}
+
+.tj-scroll-prompt {
+  background: #10B981;
+  color: #ffffff;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Alternative Situation */
+.tj-alternative-wrapper {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.25rem;
+}
+
+.tj-alt-btn {
+  background: none;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+
+.tj-alt-btn:hover {
+  color: var(--primary-navy);
+}
+
+.tj-alt-chevron {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.tj-alt-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.tj-alt-box {
+  background: #FFFBEB;
+  border: 1px solid #FCD34D;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+/* Stage 2 Slide-Down Container */
+.tj-stage2-wrapper {
+  animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 2rem;
+}
+
+.tj-stage2-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--accent-orange);
+  box-shadow: 0 16px 40px rgba(224, 86, 36, 0.12);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+}
+
+.tj-stage-badge {
+  display: inline-block;
+  background: var(--accent-orange);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  margin-bottom: 0.5rem;
+}
+
+.tj-steps-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .tj-steps-preview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tj-step-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+}
+
+.tj-step-num {
+  display: inline-block;
+  background: var(--primary-navy);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.35rem;
+}
+
+.tj-step-box strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--primary-navy);
+  margin-bottom: 0.25rem;
+}
+
+.tj-step-box p {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.4;
+  margin: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Stage 2: Eligibility Check, 5-Card Status Grid & Interactive Map
+   -------------------------------------------------------------------------- */
+.see-more-link {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  text-decoration: underline;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.see-more-link:hover {
+  color: var(--primary-navy);
+}
+
+.details-panel {
+  display: none;
+  font-size: 0.78rem;
+  color: #475569;
+  background: #F8FAFC;
+  border-left: 3px solid var(--accent-orange);
+  padding: 0.5rem 0.65rem;
+  border-radius: 4px;
+  margin-top: 0.35rem;
+  line-height: 1.45;
+}
+
+.details-panel.is-open {
+  display: block;
+  animation: fadeIn 0.2s ease-in;
+}
+
+/* 5 Cards Selection Grid */
+.tj-5cards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .tj-5cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .tj-5cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Interactive Career Center Map & Location Chooser */
+.tj-map-section-wrapper {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  margin-top: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.tj-map-container {
+  background: #0f172a;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.tj-map-svg {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  display: block;
+}
+
+.tj-map-pin {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.tj-map-pin:hover {
+  transform: scale(1.15);
+}
+
+.tj-map-pin.is-active circle {
+  fill: #10B981 !important;
+  stroke: #ffffff !important;
+  stroke-width: 3 !important;
+}
+
+.tj-centers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .tj-centers-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tj-center-card {
+  background: #F8FAFC;
+  border: 2px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tj-center-card:hover {
+  border-color: var(--accent-orange);
+  background: #FFFDF9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(224, 86, 36, 0.12);
+}
+
+.tj-center-card.is-selected {
+  border-color: var(--accent-green);
+  background: #ECFDF5;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+}
+
+.tj-center-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin-bottom: 0.25rem;
+}
+
+.tj-center-address {
+  font-size: 0.82rem;
+  color: var(--text-dark);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.tj-center-hours {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.tj-center-phone-link {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.tj-center-select-btn {
+  margin-top: 0.75rem;
+  background: var(--primary-navy);
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.tj-center-select-btn:hover {
+  background: var(--accent-orange);
+}
+
+/* What to Bring Checklist in Popup */
+.tj-what-to-bring-box {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.tj-doc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(191, 219, 254, 0.6);
+}
+
+.tj-doc-item:last-child {
+  border-bottom: none;
+}
+
+.tj-doc-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.tj-state-notice-callout {
+  background: #FEF3C7;
+  border-left: 4px solid #F59E0B;
+  color: #92400E;
+  padding: 0.85rem 1rem;
+  border-radius: 4px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.45;
+  margin: 1rem 0;
+}
+
+/* --------------------------------------------------------------------------
+   What to Expect on the Job & Stage 3 Career Center Pass Styles
+   -------------------------------------------------------------------------- */
+.tj-expect-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.tj-expect-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .tj-expect-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .tj-expect-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tj-expect-item {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.tj-expect-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.tj-expect-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin-bottom: 0.35rem;
+}
+
+/* Stage 3 City Selector */
+.tj-city-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+@media (max-width: 768px) {
+  .tj-city-selector-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tj-city-btn {
+  background: #F8FAFC;
+  border: 2px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tj-city-btn:hover {
+  border-color: var(--accent-orange);
+  background: #FFFDF9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(224, 86, 36, 0.12);
+}
+
+.tj-city-btn.is-active {
+  border-color: var(--accent-green);
+  background: #ECFDF5;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+}
+
+.tj-city-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tj-city-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+/* Interactive Checkbox List in Document Checklist */
+.tj-doc-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: #ffffff;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.tj-doc-checkbox-row:hover {
+  background: #F0FDF4;
+}
+
+.tj-doc-checkbox-row input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  accent-color: #10B981;
+  cursor: pointer;
+  margin-top: 0.15rem;
+}
+
+/* Digital Career Center Pass Card */
+.tj-pass-card {
+  background: #ffffff;
+  border: 2px solid #1E3A8A;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 32px rgba(30, 58, 138, 0.12);
+  padding: 1.5rem;
+  margin: 1.25rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.tj-pass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #1E3A8A 0%, #E05624 50%, #10B981 100%);
+}
+
+.tj-pass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border-bottom: 1px dashed #CBD5E1;
+  padding-bottom: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.tj-pass-badge {
+  background: #ECFDF5;
+  color: #065F46;
+  border: 1px solid #A7F3D0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.tj-pass-code {
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #1E3A8A;
+  letter-spacing: 0.05em;
+  background: #F1F5F9;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Google Calendar Action Buttons */
+.tj-calendar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.btn-gcal-action {
+  background: #1A73E8;
+  color: #ffffff;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.65rem 1.15rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-gcal-action:hover {
+  background: #1557B0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+}
+
+.btn-gcal-staff {
+  background: #F8FAFC;
+  color: #1E293B;
+  border: 1px solid #CBD5E1;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-gcal-staff:hover {
+  background: #EFF6FF;
+  border-color: #3B82F6;
+  color: #1E3A8A;
+}
+
+/* State Clearance Guarantee Banner */
+.tj-clearance-guarantee-banner {
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  border-left: 5px solid #10B981;
+  color: #F8FAFC;
+  padding: 1.1rem 1.35rem;
+  border-radius: var(--radius-sm);
+  margin: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+}
+
+.tj-clearance-guarantee-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.tj-clearance-guarantee-text strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #34D399;
+  margin-bottom: 0.2rem;
+}
+
+.tj-clearance-guarantee-text p {
+  font-size: 0.85rem;
+  color: #E2E8F0;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Stage 4: Worksite Onboarding, Hours, & Internal Career Transition
+   -------------------------------------------------------------------------- */
+.tj-stage4-card {
+  background: #ffffff;
+  border: 2px solid #0F766E;
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  box-shadow: 0 16px 36px rgba(15, 118, 110, 0.08);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Video Reel Card */
+.tj-reel-card {
+  background: #0f172a;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+.tj-reel-img {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: cover;
+  display: block;
+}
+
+.tj-reel-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 60%, transparent 100%);
+  padding: 1.5rem;
+  color: #F8FAFC;
+}
+
+/* Interactive Career Roadmap */
+.tj-roadmap-wrapper {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.tj-roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  .tj-roadmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .tj-roadmap-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tj-roadmap-node {
+  background: #ffffff;
+  border: 2px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tj-roadmap-node:hover {
+  border-color: #0F766E;
+  box-shadow: 0 6px 16px rgba(15, 118, 110, 0.12);
+}
+
+.tj-roadmap-node.is-complete {
+  border-color: #10B981;
+  background: #F0FDF4;
+}
+
+.tj-roadmap-node.is-active {
+  border-color: #0F766E;
+  background: #F0FDFA;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
+}
+
+.tj-node-step {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #0F766E;
+  margin-bottom: 0.25rem;
+}
+
+.tj-node-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin-bottom: 0.35rem;
+}
+
+.tj-node-desc {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+/* Progress Gauges */
+.tj-gauges-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+@media (max-width: 720px) {
+  .tj-gauges-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tj-gauge-card {
+  background: #ffffff;
+  border: 1px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.tj-gauge-visual {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+}
+
+.tj-gauge-svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.tj-gauge-circle-bg {
+  fill: none;
+  stroke: #E2E8F0;
+  stroke-width: 8;
+}
+
+.tj-gauge-circle-fill {
+  fill: none;
+  stroke: #0F766E;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s ease;
+}
+
+.tj-gauge-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.tj-gauge-center-num {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--primary-navy);
+  line-height: 1;
+}
+
+.tj-gauge-center-unit {
+  font-size: 0.65rem;
+  color: #64748B;
+  font-weight: 700;
+}
+
+.tj-gauge-info strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--primary-navy);
+  margin-bottom: 0.2rem;
+}
+
+.tj-gauge-info p {
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Internal Retention Highlight Callout */
+.tj-retention-callout {
+  background: #ECFDF5;
+  border: 2px solid #059669;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.tj-retention-callout-icon {
+  font-size: 2rem;
+  line-height: 1;
+  color: #059669;
+}
+
+.tj-retention-callout-body strong {
+  display: block;
+  font-size: 1.05rem;
+  color: #065F46;
+  margin-bottom: 0.35rem;
+}
+
+.tj-retention-callout-body p {
+  font-size: 0.88rem;
+  color: #047857;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Private Trainee Portal Button & Modal */
+.btn-trainee-portal-trigger {
+  background: #0F766E;
+  color: #ffffff;
+  border: none;
+  font-size: 0.88rem;
+  font-weight: 800;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-trainee-portal-trigger:hover {
+  background: #115E59;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(15, 118, 110, 0.3);
+}
+
+.tj-clockin-box {
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1rem;
+}
+
+/* Official Google Sign-In Material Button */
+.gsi-material-button {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-appearance: none;
+  background-color: #FFFFFF;
+  background-image: none;
+  border: 1px solid #747775;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #1F1F1F;
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: 14px;
+  height: 42px;
+  letter-spacing: 0.25px;
+  outline: none;
+  overflow: hidden;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  transition: background-color .218s, border-color .218s, box-shadow .218s;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gsi-material-button .gsi-material-button-icon {
+  height: 20px;
+  margin-right: 12px;
+  min-width: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.gsi-material-button .gsi-material-button-content-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.gsi-material-button .gsi-material-button-contents {
+  flex-grow: 1;
+  font-family: var(--font-family);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.gsi-material-button .gsi-material-button-state {
+  transition: opacity .218s;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.gsi-material-button:disabled {
+  cursor: not-allowed;
+  background-color: #FFFFFF61;
+  border-color: #1F1F1F1F;
+}
+
+.gsi-material-button:disabled .gsi-material-button-contents {
+  opacity: 38%;
+}
+
+.gsi-material-button:not(:disabled):hover {
+  box-shadow: 0 2px 6px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+  border-color: #4285F4;
+}
+
+.gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+  background-color: #303030;
+  opacity: 6%;
+}
+
+/* Google Workspace Sync Hub */
+.workspace-hub-card {
+  background: #FFFFFF;
+  border: 2px solid #059669;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.08);
+}
+
+.workspace-hub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E2E8F0;
+  margin-bottom: 1rem;
+}
+
+.workspace-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.workspace-badge-connected {
+  background: #DCFCE7;
+  color: #166534;
+  border: 1px solid #86EFAC;
+}
+
+.workspace-badge-pending {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FCD34D;
+}

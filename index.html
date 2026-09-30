@@ -162,7 +162,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1790022300340">
+  <link rel="stylesheet" href="styles.css?v=20260929b">
 </head>
 <body id="top">
   <!-- Accessibility Skip Link -->
@@ -192,20 +192,20 @@
           <li class="nav-dropdown">
             <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Trades <span aria-hidden="true">⌄</span></button>
             <ul class="nav-dropdown-menu">
-              <li><a href="#our-programs" class="nav-sublink" data-flip-target="learn">Learn &mdash; Foundations</a></li>
-              <li><a href="#our-programs" class="nav-sublink" data-flip-target="train">Train &mdash; Transitional &amp; OJT</a></li>
-              <li><a href="#our-programs" class="nav-sublink" data-flip-target="build">Build &mdash; Apprenticeship</a></li>
-              <li><button type="button" class="nav-sublink btn-candidate-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer; font-weight:700; color:var(--accent-green);">Apply for Training &rarr;</button></li>
+              <li><a href="#our-programs" class="nav-sublink" data-flip-target="learn">Learn</a></li>
+              <li><a href="#our-programs" class="nav-sublink" data-flip-target="train">Train</a></li>
+              <li><a href="#our-programs" class="nav-sublink" data-flip-target="build">Build</a></li>
+              <li><button type="button" class="nav-sublink btn-candidate-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer; font-weight:700; color:var(--accent-green);">Apply</button></li>
             </ul>
           </li>
           <li class="nav-dropdown">
             <button type="button" class="nav-link nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">Community <span aria-hidden="true">⌄</span></button>
             <ul class="nav-dropdown-menu">
-              <li><a href="#our-impact" class="nav-sublink">Photo Gallery &amp; Impact</a></li>
-              <li><a href="#volunteer-events" class="nav-sublink">Volunteer Schedule</a></li>
-              <li><button type="button" class="nav-sublink btn-partner-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Employer Partnership &rarr;</button></li>
-              <li><button type="button" class="nav-sublink btn-donate-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Ways to Give &amp; Donate &rarr;</button></li>
-              <li><button type="button" class="nav-sublink btn-job-flyer-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Transitional Job Flyer &rarr;</button></li>
+              <li><a href="#our-impact" class="nav-sublink">Impact</a></li>
+              <li><a href="#volunteer-events" class="nav-sublink">Volunteer</a></li>
+              <li><button type="button" class="nav-sublink btn-partner-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Partner</button></li>
+              <li><button type="button" class="nav-sublink btn-donate-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Donate</button></li>
+              <li><button type="button" class="nav-sublink btn-doc-trigger" style="background:none; border:none; text-align:left; width:100%; cursor:pointer;">Documents</button></li>
             </ul>
           </li>
           <li><a href="#footer" class="nav-link">Connect</a></li>
@@ -424,8 +424,8 @@
                   <li>Direct pathway to permanent employment</li>
                 </ul>
                 <div class="train-card-actions" style="margin-top: 0.65rem; display: flex; flex-direction: column; gap: 0.35rem;">
-                  <button type="button" class="btn-cta btn-candidate-trigger" data-trade-default="Carpentry & Construction Technology" style="font-size: 0.85rem; min-height: 40px; padding: 0.5rem 0.85rem; width: 100%;">Apply for Transitional Jobs <span aria-hidden="true">&rarr;</span></button>
-                  <button type="button" class="btn-job-flyer-trigger" style="background: none; border: none; color: var(--accent-orange); font-size: 0.78rem; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0.2rem 0; text-align: center;">View Transitional Job Flyer</button>
+                  <button type="button" class="btn-cta btn-candidate-trigger" data-trade-default="Carpentry & Construction Technology" style="font-size: 0.85rem; min-height: 40px; padding: 0.5rem 0.85rem; width: 100%;">Apply for Training <span aria-hidden="true">&rarr;</span></button>
+                  <button type="button" class="btn-doc-trigger" style="background: none; border: none; color: var(--accent-orange); font-size: 0.78rem; font-weight: 700; text-decoration: underline; cursor: pointer; padding: 0.2rem 0; text-align: center;">View Program Documents</button>
                 </div>
               </div>
             </div>
@@ -538,7 +538,7 @@
           <p>Organizations, employers, and local businesses can help expand training, mentorship, and sustainable employment pathways across our communities.</p>
           <div class="partner-cta-group" style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem;">
             <button type="button" class="btn-cta btn-cta-secondary btn-partner-trigger" id="openPartnerModalBtn">Partner With Us <span aria-hidden="true">&rarr;</span></button>
-            <button type="button" class="btn-cta btn-job-flyer-trigger" style="background: transparent; border: 2px solid #ffffff; color: #ffffff;">View Transitional Job Flyer <span aria-hidden="true">&darr;</span></button>
+            <button type="button" class="btn-cta btn-doc-trigger" style="background: transparent; border: 2px solid #ffffff; color: #ffffff;">Download Program Documents <span aria-hidden="true">&darr;</span></button>
           </div>
         </div>
       </div>
@@ -749,119 +749,28 @@
       </div>
     </div>
 
-    <!-- TRANSITIONAL JOBS CANDIDATE INTAKE & PRELIMINARY MODAL -->
+    <!-- CANDIDATE INTAKE MODAL -->
     <div class="inquiry-modal" id="candidateModal" hidden>
       <div class="inquiry-modal-backdrop" data-candidate-close></div>
       <div class="inquiry-modal-dialog modal-large" role="dialog" aria-modal="true" aria-labelledby="candidateModalTitle">
         <button type="button" class="inquiry-modal-close" data-candidate-close aria-label="Close candidate application">×</button>
-        
-        <!-- STEP INDICATOR / STEPPER -->
-        <div class="modal-stepper" id="candidateStepper">
-          <div class="stepper-step is-active" data-step="1">
-            <span class="stepper-number">1</span>
-            <span class="stepper-label">Quick Preliminary</span>
-          </div>
-          <div class="stepper-line"></div>
-          <div class="stepper-step" data-step="2">
-            <span class="stepper-number">2</span>
-            <span class="stepper-label">Your Info &amp; Trade</span>
-          </div>
-          <div class="stepper-line"></div>
-          <div class="stepper-step" data-step="3">
-            <span class="stepper-number">3</span>
-            <span class="stepper-label">Next Steps</span>
-          </div>
-        </div>
-
-        <!-- STAGE 1: GUIDED PRELIMINARY QUIZ -->
-        <div class="modal-form-view" id="candidateQuizView">
-          <span class="section-eyebrow">Paid Training • Career Pathway</span>
-          <h2 id="candidateModalTitle">Check Your Eligibility</h2>
-          <p class="modal-subtext">Answer 3 quick questions to see if you qualify for state paid construction training through our local Career Center partnership.</p>
-          
-          <div class="quiz-question-group" style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 1.5rem;">
-            <div class="quiz-card" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
-              <p style="font-weight: 700; color: var(--primary-navy); margin-bottom: 0.5rem;">1. Are you at least 18 years old and eligible to work in the United States?</p>
-              <div style="display: flex; gap: 1rem;">
-                <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-weight: 600;"><input type="radio" name="quiz_age" value="yes" checked> Yes</label>
-                <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-weight: 600;"><input type="radio" name="quiz_age" value="no"> No</label>
-              </div>
-            </div>
-
-            <div class="quiz-card" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
-              <p style="font-weight: 700; color: var(--primary-navy); margin-bottom: 0.5rem;">2. Which description best matches your current situation?</p>
-              <select id="quiz_situation" class="form-select" style="width: 100%; padding: 0.65rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: white;">
-                <option value="returning_citizen">Jobseeker seeking a fresh start</option>
-                <option value="opportunity_youth">Young adult ages 18 to 24 looking for a career direction</option>
-                <option value="underemployed">Unemployed or working temporary jobs wanting a living wage career</option>
-                <option value="veteran">Military veteran transitioning to civilian construction trades</option>
-                <option value="community_other">Community member interested in building skills or volunteering</option>
-              </select>
-            </div>
-
-            <div class="quiz-card" style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem;">
-              <p style="font-weight: 700; color: var(--primary-navy); margin-bottom: 0.5rem;">3. Are you ready to participate in paid practical construction training?</p>
-              <div style="display: flex; gap: 1rem;">
-                <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-weight: 600;"><input type="radio" name="quiz_ready" value="yes" checked> Yes, ready now</label>
-                <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; font-weight: 600;"><input type="radio" name="quiz_ready" value="curious"> Just exploring options / Community volunteer</label>
-              </div>
-            </div>
-          </div>
-
-          <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
-            <button type="button" class="btn-cta" id="btnQuizContinue" style="min-width: 180px;">Continue to Application &rarr;</button>
-          </div>
-        </div>
-
-        <!-- STAGE 1B: ALTERNATIVE PATHWAY (WHEN NOT ELIGIBLE FOR PAID TRAINING) -->
-        <div class="modal-form-view" id="candidateAltView" hidden>
-          <span class="section-eyebrow" style="color: var(--accent-orange);">Community Pathways</span>
-          <h2>Explore Community &amp; Volunteer Opportunities</h2>
-          <p class="modal-subtext">Paid training requires state work eligibility. But we would still love to have you involved with Springboards!</p>
-          <div style="background: #FFFBEB; border: 1px solid #FCD34D; border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
-            <h4 style="color: #92400E; margin-bottom: 0.5rem;">Alternative Ways to Participate:</h4>
-            <ul style="color: #78350F; font-size: 0.9rem; line-height: 1.6; padding-left: 1.25rem;">
-              <li>Join our weekend community build and volunteer sessions</li>
-              <li>Attend free introductory tool and safety workshops</li>
-              <li>Connect with our outreach team for local youth and community resources</li>
-            </ul>
-          </div>
-          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-            <button type="button" class="btn-cta btn-volunteer-redirect" style="background: var(--accent-green);">Sign Up as Volunteer &rarr;</button>
-            <button type="button" class="btn-cta" id="btnQuizBack" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-dark);">Back to Preliminary</button>
-          </div>
-        </div>
-
-        <!-- STAGE 2: APPLICATION FORM -->
-        <div class="modal-form-view" id="candidateFormView" hidden>
-          <span class="section-eyebrow">Preliminary Passed • Step 2 of 3</span>
-          <h2>Tell Us About Yourself</h2>
-          <p class="modal-subtext">This is a paid training position. You will train on a working jobsite, earn regular wages while you learn entry helper skills, and work toward full time career placement upon completing your hours.</p>
+        <div class="modal-form-view" id="candidateFormView">
+          <span class="section-eyebrow">Second Chances • Real Wages • Zero Debt</span>
+          <h2 id="candidateModalTitle">Trade Training Candidate Application</h2>
+          <p class="modal-subtext">Apply for tuition-free construction trade training with direct pathways into high-demand careers.</p>
           <form class="program-inquiry-form" id="candidateApplicationForm" novalidate>
             <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <input type="hidden" name="quiz_situation_result" id="quiz_situation_result" value="">
             <label>Full Legal Name
               <input name="name" type="text" autocomplete="name" placeholder="First and last name" minlength="2" maxlength="80" required>
             </label>
             <div class="form-grid-row">
-              <label>Phone Number
-                <input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="334-556-0000" pattern="^(\+?1[-.\s]?)?[0-9]{3}[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$" title="Please enter a valid 10-digit phone number, e.g. 334-556-0000">
+              <label>Phone Number (Cell / Mobile preferred)
+                <input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(334) 556-0000" pattern="^(\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$" title="Please enter a valid 10-digit phone number, e.g. (334) 556-0000">
               </label>
-              <label>Email Address <span>optional if phone is provided</span>
+              <label>Email Address <span>(optional if phone provided)</span>
                 <input name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address with a domain, e.g. you@example.com">
               </label>
             </div>
-
-            <!-- Address Fields for Nearest Career Center Routing -->
-            <div class="form-grid-row">
-              <label>Residential Street Address
-                <input name="streetAddress" id="candStreetAddress" type="text" autocomplete="street-address" placeholder="e.g. 1204 4th Ave" required>
-              </label>
-              <label>City &amp; ZIP Code
-                <input name="cityZip" id="candCityZip" type="text" placeholder="e.g. Lanett, AL 36863 or Valley, AL" required>
-              </label>
-            </div>
-
             <div class="form-grid-row">
               <label>Preferred Trade Pathway
                 <select name="trade" class="form-select">
@@ -873,6 +782,17 @@
                   <option value="Undecided / Open to Guidance">Undecided / Open to Guidance</option>
                 </select>
               </label>
+              <label>Background Status
+                <select name="backgroundStatus" class="form-select">
+                  <option value="Returning Citizen / Justice-Involved">Returning Citizen / Justice-Involved</option>
+                  <option value="Opportunity Youth (Age 18-24)">Opportunity Youth (Age 18–24)</option>
+                  <option value="Underemployed Adult / Career Changer">Underemployed Adult / Career Changer</option>
+                  <option value="Military Veteran">Military Veteran</option>
+                  <option value="Community Member">Community Member Seeking Trade Skills</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-grid-row">
               <label>Transportation Status
                 <select name="transportation" class="form-select">
                   <option value="Personal Vehicle">Have Personal Vehicle</option>
@@ -881,43 +801,20 @@
                   <option value="Need Transportation Assistance">Need Transportation Assistance</option>
                 </select>
               </label>
-            </div>
-            <div class="form-grid-row">
-              <label>Career Center Registration Status
-                <select name="careerCenter" id="candCareerCenterSelect" class="form-select">
-                  <option value="Need Help Registering">I need to visit Career Center to qualify &amp; onboard</option>
-                  <option value="Registered with AL Works / Valley">Already registered at Valley Career Center</option>
-                  <option value="Registered with AL Works / Opelika">Already registered at Opelika Career Center</option>
-                  <option value="Registered with AL Works / Phenix City">Already registered at Phenix City Career Center</option>
-                </select>
-              </label>
-              <label>Entry Level Helper Role
-                <select name="preferredRole" class="form-select">
-                  <option value="Carpenter Helper">Carpenter Helper</option>
-                  <option value="Electrician Helper">Electrician Helper</option>
-                  <option value="Plumber Helper">Plumber Helper</option>
-                  <option value="Tool & Inventory Clerk">Tool &amp; Inventory Clerk</option>
-                  <option value="Material Handler / General Laborer">Material Handler / General Laborer</option>
+              <label>Career Center Registration
+                <select name="careerCenter" class="form-select">
+                  <option value="Registered with AL Works / WorkSource GA">Yes, registered with AL Works / WorkSource GA</option>
+                  <option value="Need Help Registering">Not yet / Need help registering</option>
                 </select>
               </label>
             </div>
-            <label>Past Experience or Any Questions
-              <textarea name="notes" rows="2" class="form-input" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: inherit;" placeholder="Tell us about any past construction experience or specific scheduling needs..."></textarea>
+            <label>Prior Experience, Certifications, or Questions (optional)
+              <textarea name="notes" rows="3" class="form-input" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: inherit;" placeholder="Tell us about any past construction experience or specific scheduling needs..."></textarea>
             </label>
-            
-            <div style="background: #F1F5F9; border-left: 4px solid var(--accent-orange); padding: 0.85rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.85rem; color: #334155;">
-              <strong>Next step:</strong> Please stop by your nearest Career Center to verify eligibility and complete onboarding so you are ready to start with Springboards.
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
-              <button type="button" class="btn-cta" id="btnFormBackToQuiz" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-dark);">Back to Preliminary</button>
-              <button type="submit" class="btn-cta program-submit">Submit Application &rarr;</button>
-            </div>
+            <button type="submit" class="btn-cta program-submit">Submit Candidate Application</button>
             <p class="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
-
-        <!-- STAGE 3: CONFIRMATION & NEAREST CAREER CENTER ONBOARDING INSTRUCTIONS -->
         <div class="modal-confirmation-screen" id="candidateConfirmationScreen" hidden>
           <div class="confirmation-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -925,65 +822,17 @@
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
           </div>
-          <span class="section-eyebrow confirm-eyebrow">Step 3 of 3 • Qualification &amp; Onboarding Location</span>
-          <h2 class="confirmation-title">Application Received &amp; Next Steps</h2>
-          <p class="confirmation-text">Thank you, <strong class="confirm-name">there</strong>! You have been logged as a candidate prospect for the <strong class="confirm-trade">Carpentry &amp; Construction Technology</strong> transitional job track.</p>
-          
-          <!-- Nearest Career Center Card with Direct Location Match -->
-          <div id="nearestCenterCard" style="background: #EFF6FF; border: 2px solid var(--accent-blue); border-radius: var(--radius-md); padding: 1.25rem; margin: 1.25rem 0; text-align: left;">
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span class="badge" style="background: var(--accent-blue); color: #ffffff; font-weight: 800; font-size: 0.78rem;">📍 YOUR DESIGNATED QUALIFICATION CENTER</span>
-              <span style="font-size: 0.75rem; color: #1E40AF; font-weight: 700;">Nearest to: <span id="confirmApplicantLocation">Your Address</span></span>
-            </div>
-            <h3 id="centerNameDisplay" style="color: var(--primary-navy); margin-bottom: 0.25rem; font-size: 1.15rem;">Valley Career Center</h3>
-            <p id="centerAddressDisplay" style="font-size: 0.95rem; font-weight: 700; color: #1E3A8A; margin-bottom: 0.35rem;">
-              3300 23rd Drive, Valley, AL 36854 <span style="font-weight: 400; font-size: 0.85rem; color: #475569;">(inside Growth Academy)</span>
-            </p>
-            <div id="centerHoursDisplay" style="font-size: 0.82rem; color: #334155; margin-bottom: 0.5rem;">
-              🕒 <strong>Hours:</strong> Mon – Fri, 8:00 AM – 4:30 PM (Eastern Time) &bull; Phone: <a href="tel:3347563065" style="color: var(--accent-orange); font-weight: 700;">(334) 756-3065</a>
-            </div>
-            <div style="font-size: 0.85rem; color: #1E3A8A; background: #DBEAFE; padding: 0.75rem 1rem; border-radius: 6px; line-height: 1.5;">
-              <strong>How it works:</strong> Drop by this Career Center to qualify and finish your onboarding paperwork. Once that is done, you are ready to begin training with Springboards.
-            </div>
+          <span class="section-eyebrow confirm-eyebrow">Application Received</span>
+          <h2 class="confirmation-title">You're On Your Way!</h2>
+          <p class="confirmation-text">Thank you, <strong class="confirm-name">there</strong>! We've received your application for the <strong class="confirm-trade">Carpentry &amp; Construction Technology</strong> trade track. An intake counselor will contact you by phone or email within 1–2 business days to schedule your intake interview and verify required documents.</p>
+          <div class="confirmation-meta">
+            <p><strong>Intake Documents to Prepare:</strong><br>
+            • Valid Government Photo ID or Driver's License<br>
+            • Social Security Card or Work Authorization<br>
+            • Career Center Referral (or we will assist you on-site)<br>
+            Center Location: 2269 15th Ave. S.W., Lanett, AL 36863 | Phone: <a href="tel:+16156031157">615-603-1157</a></p>
           </div>
-
-          <div style="background: #F8FAFC; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin: 1.25rem 0; text-align: left;">
-            <h4 style="color: var(--primary-navy); margin-bottom: 0.5rem; font-size: 1rem;">Candidate Journey: From Prospect to First Day Onboarding</h4>
-            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem; color: #475569;">
-              <div style="display: flex; gap: 0.65rem; align-items: flex-start;">
-                <span style="background: var(--accent-orange); color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.75rem;">1</span>
-                <div>
-                  <strong style="color: var(--primary-navy);">Springboards Intake Reminder:</strong><br>
-                  Our Workforce Director Marilynn Ward or Director Marvin Thompson will contact you by phone or text within 24 to 48 hours to confirm your trade interests and assist with your referral.
-                </div>
-              </div>
-              <div style="display: flex; gap: 0.65rem; align-items: flex-start;">
-                <span style="background: var(--accent-blue); color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.75rem;">2</span>
-                <div>
-                  <strong style="color: var(--primary-navy);">Visit Your Career Center:</strong><br>
-                  Bring your documents to your designated center (shown above) to qualify and finish your onboarding paperwork.
-                </div>
-              </div>
-              <div style="display: flex; gap: 0.65rem; align-items: flex-start;">
-                <span style="background: var(--accent-green); color: white; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: 0.75rem;">3</span>
-                <div>
-                  <strong style="color: var(--primary-navy);">First Day Worksite Orientation &amp; Paid Training:</strong><br>
-                  Once your Career Center qualification is complete, you report to Springboards (2269 15th Ave SW, Lanett) for safety gear, orientation, and paid hands on training!
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="confirmation-meta" style="text-align: left; background: #FFFBEB; border: 1px solid #FCD34D; border-radius: var(--radius-sm); padding: 0.85rem; margin-bottom: 1.25rem;">
-            <p style="margin: 0; font-size: 0.82rem; color: #92400E; line-height: 1.5;">
-              <strong>📋 What to Bring with You to the Career Center:</strong><br>
-              &bull; Valid Driver's License or Government Photo ID<br>
-              &bull; Official Social Security Card or Work Authorization<br>
-              &bull; If applicable: Layoff notice, SNAP benefit card and receipt, recent pay stub, DD214, or disability notice.
-            </p>
-          </div>
-          <button type="button" class="btn-cta confirmation-done-button" data-candidate-close>Understood &amp; Close <span aria-hidden="true">✓</span></button>
-        </div>
+          <button type="button" class="btn-cta confirmation-done-button" data-candidate-close>Done <span aria-hidden="true">✓</span></button>
         </div>
       </div>
     </div>
@@ -1182,29 +1031,54 @@
       </div>
     </div>
 
-    <!-- TRANSITIONAL JOB FLYER MODAL -->
-    <div class="inquiry-modal" id="jobFlyerModal" hidden>
-      <div class="inquiry-modal-backdrop" data-flyer-close></div>
-      <div class="inquiry-modal-dialog modal-large" role="dialog" aria-modal="true" aria-labelledby="jobFlyerModalTitle">
-        <button type="button" class="inquiry-modal-close" data-flyer-close aria-label="Close job flyer">×</button>
-        <span class="section-eyebrow" style="color: var(--accent-orange);">Job Pathway Flyer</span>
-        <h2 id="jobFlyerModalTitle">Transitional Jobs Program Overview</h2>
-        <p class="modal-subtext">Official worksite guidelines and public workplace training overview for prospective trainees and host employers.</p>
+    <!-- DOCUMENT CENTER & DOWNLOAD HUB MODAL -->
+    <div class="inquiry-modal" id="documentModal" hidden>
+      <div class="inquiry-modal-backdrop" data-doc-close></div>
+      <div class="inquiry-modal-dialog modal-large" role="dialog" aria-modal="true" aria-labelledby="documentModalTitle">
+        <button type="button" class="inquiry-modal-close" data-doc-close aria-label="Close document center">×</button>
+        <span class="section-eyebrow">Official Resources</span>
+        <h2 id="documentModalTitle">Program Documents &amp; Downloads</h2>
+        <p class="modal-subtext">Official overview documents, worksite guides, volunteer schedule flyers, and candidate requirements for download and printing.</p>
 
-        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin: 1rem 0; box-shadow: 0 4px 14px rgba(0,0,0,0.06);">
-          <div style="text-align: center; margin-bottom: 1rem;">
-            <img src="transitional-jobs-overview.webp" alt="Transitional Jobs Program Overview Flyer" style="max-height: 480px; width: auto; margin: 0 auto; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.12);" loading="lazy">
+        <div class="document-item-card">
+          <div class="document-info">
+            <span class="document-badge">Community Flyer</span>
+            <h4>Springboards Community Flyer &amp; Volunteer Schedule</h4>
+            <p>Official community center flyer outlining Monday–Thursday work block hours (8:00 AM – 4:00 PM), dress code, tool prep, and civic service opportunities.</p>
+            <span style="font-size: 0.8rem; color: #64748b;">Optimized Web Asset (270 KB) • Original High-Res (2.3 MB)</span>
           </div>
+          <div class="document-actions">
+            <button type="button" class="btn-cta btn-view-doc" data-doc-view="springboards-community-flyer">View Preview</button>
+            <a href="springboards flyer 1.jpg" download="Springboards_Community_Flyer.jpg" class="btn-cta btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 0.85rem; text-decoration: none;">Download File ↓</a>
+          </div>
+        </div>
 
-          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; align-items: center; border-top: 1px solid var(--border-color); padding-top: 1rem;">
-            <a href="Transitional_Jobs_Program_Overview.png" download="Springboards_Transitional_Jobs_Flyer.png" class="btn-cta" style="padding: 0.65rem 1.25rem; text-decoration: none;">Download Detailed Flyer (PNG) ↓</a>
-            <button type="button" class="btn-cta btn-candidate-trigger" data-flyer-close style="background: var(--accent-green); padding: 0.65rem 1.25rem;">Apply for This Job Track →</button>
+        <div class="document-item-card">
+          <div class="document-info">
+            <span class="document-badge">Checklist</span>
+            <h4>Trainee Intake Checklist &amp; Required Documents</h4>
+            <p>Everything you need to bring to your enrollment session: Valid Government Photo ID, Social Security Card or Work Authorization, and Career Center registration.</p>
+            <span style="font-size: 0.8rem; color: #64748b;">Digital Intake Guide</span>
+          </div>
+          <div class="document-actions">
+            <button type="button" class="btn-cta btn-candidate-trigger">Start Intake Now →</button>
+          </div>
+        </div>
+
+        <!-- Document Preview Sub-Panel -->
+        <div id="docPreviewContainer" style="display: none; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+          <h4 id="docPreviewTitle" style="color: var(--primary-navy); margin-bottom: 0.5rem;">Document Preview</h4>
+          <div class="document-preview-modal-body">
+            <img id="docPreviewImg" src="" alt="Document Preview" class="document-preview-image" loading="lazy">
+            <div style="margin-top: 0.75rem;">
+              <a id="docPreviewDownloadBtn" href="#" download class="btn-cta" style="display: inline-block;">Download Full High-Resolution File ↓</a>
+              <button type="button" id="closeDocPreviewBtn" class="btn-cta" style="background: var(--primary-navy); color: #ffffff; margin-left: 0.5rem;">Close Preview</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CTA / MAKE A DIFFERENCE SECTION -->
     <section class="section cta-section" id="make-a-difference">
       <div class="container cta-banner">
         <div class="cta-box">
@@ -1212,7 +1086,7 @@
           <h2>Your Support Helps Build Opportunity.</h2>
           <div class="cta-actions" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
             <button type="button" class="btn-cta btn-cta-large btn-donate-trigger" id="openDonateModalBtn">Ways to Give &amp; Pledge Support <span aria-hidden="true">&rarr;</span></button>
-            <button type="button" class="btn-cta btn-cta-large btn-job-flyer-trigger" style="background: transparent; border: 2px solid #ffffff; color: #ffffff;">View Transitional Job Flyer <span aria-hidden="true">&darr;</span></button>
+            <button type="button" class="btn-cta btn-cta-large btn-doc-trigger" style="background: transparent; border: 2px solid #ffffff; color: #ffffff;">Download Program Documents <span aria-hidden="true">&darr;</span></button>
           </div>
         </div>
       </div>
@@ -1235,7 +1109,7 @@
           <li><a href="#candidateModal" class="btn-candidate-trigger" style="color: var(--accent-green); font-weight: 700;">Apply for Training</a></li>
           <li><a href="#partnerModal" class="btn-partner-trigger">Partner With Us</a></li>
           <li><a href="#donateModal" class="btn-donate-trigger">Donate &amp; Pledge</a></li>
-          <li><button type="button" class="btn-job-flyer-trigger" style="background: none; border: none; padding: 0; color: inherit; font: inherit; text-decoration: underline; cursor: pointer;">Transitional Job Flyer</button></li>
+          <li><button type="button" class="btn-doc-trigger" style="background: none; border: none; padding: 0; color: inherit; font: inherit; text-decoration: underline; cursor: pointer;">Documents Hub</button></li>
           <li><a href="#volunteer-events">Volunteer Schedule</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#footer">Connect</a></li>
@@ -1301,7 +1175,7 @@
   <!-- Interactive Feedback Toast -->
   <div id="toastNotification" class="toast-notification" role="status" aria-live="polite" hidden>Link copied to clipboard!</div>
 
-  <script src="main.js?v=1790022300338" defer></script>
+  <script src="main.js?v=20260929b" defer></script>
   <script src="analytics.js" defer></script>
 </body>
 </html>
