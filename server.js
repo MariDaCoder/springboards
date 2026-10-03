@@ -55,7 +55,7 @@ app.use(express.static(__dirname, {
       // Long-term cache for immutable media assets
       res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
     } else if (/\.(css|js)$/i.test(filePath)) {
-      res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=3600');
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
     } else if (filePath.endsWith('index.html') || filePath.endsWith('404.html')) {
       res.setHeader('Cache-Control', 'no-cache, must-revalidate');
     }

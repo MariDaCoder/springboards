@@ -110,22 +110,249 @@ document.addEventListener("DOMContentLoaded", () => {
       frontFace.setAttribute("aria-hidden", String(shouldFlip));
       backFace.setAttribute("aria-hidden", String(!shouldFlip));
     }
+
+    if (cardProgram === "train") {
+      if (shouldFlip && typeof window._startTrainSlideShow === "function") {
+        window._startTrainSlideShow();
+      } else if (!shouldFlip && typeof window._stopTrainSlideShow === "function") {
+        window._stopTrainSlideShow();
+      }
+    }
   };
 
   document.querySelectorAll(".program-card-flip").forEach((card) => {
     card.addEventListener("click", (event) => {
-      if (event.target.closest("form, input, button, a")) {
+      if (event.target.closest("form, input, button, a, .train-slides-carousel")) {
         return;
       }
       flipProgramCard(card, !card.classList.contains("is-flipped"));
     });
     card.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === " ") {
+        if (event.target.closest("form, input, button, a, .train-slides-carousel")) {
+          return;
+        }
         event.preventDefault();
         flipProgramCard(card, !card.classList.contains("is-flipped"));
       }
     });
   });
+
+  // TRAIN PROGRAM FLIP SLIDE CAROUSEL & PRE-QUALIFICATION ACTION CONTROLLER
+  const initTrainFlipSlider = () => {
+    const carousel = document.getElementById("trainSlidesCarousel");
+    if (!carousel) return;
+
+    const track = document.getElementById("trainSlidesTrack");
+    const frames = carousel.querySelectorAll(".train-slide-frame");
+    const dots = carousel.querySelectorAll(".train-dot");
+    const prevBtn = document.getElementById("trainSlidePrev");
+    const nextBtn = document.getElementById("trainSlideNext");
+    const counter = document.getElementById("trainCurrentSlideNum");
+    const preQualBtn = document.getElementById("trainPreQualBtn");
+    const notReadyLink = document.getElementById("trainNotReadyLink");
+    const viewport = carousel.querySelector(".train-slides-viewport");
+    const trainCard = document.querySelector('[data-program-card="train"]');
+
+    let currentIndex = 0;
+    const totalSlides = frames.length;
+    let slideTimer = null;
+    let linkTimer = null;
+
+    const clearAllTimers = () => {
+      if (slideTimer) {
+        clearTimeout(slideTimer);
+        slideTimer = null;
+      }
+      if (linkTimer) {
+        clearTimeout(linkTimer);
+        linkTimer = null;
+      }
+    };
+
+    const updateSlider = (index, triggerAuto = false) => {
+      currentIndex = Math.max(0, Math.min(index, totalSlides - 1));
+
+      // Dynamically slide the 10 uploaded SVG slides to the left (each slide is 10% of the 1000% track)
+      if (track) {
+        track.style.transform = `translateX(-${currentIndex * 10}%)`;
+      }
+
+      // Update slide frames active states
+      frames.forEach((frame, idx) => {
+        const isActive = idx === currentIndex;
+        frame.classList.toggle("active", isActive);
+        frame.setAttribute("aria-hidden", String(!isActive));
+      });
+
+      // Update dot indicators
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle("active", idx === currentIndex);
+      });
+
+      // Update slide counter
+      if (counter) {
+        counter.textContent = String(currentIndex + 1);
+      }
+
+      // Prev/Next button states
+      if (prevBtn) prevBtn.disabled = currentIndex === 0;
+      if (nextBtn) nextBtn.disabled = currentIndex === totalSlides - 1;
+
+      // Handle timing of Button and Link appearance
+      if (currentIndex < totalSlides - 1) {
+        // While browsing slides 1 through 9, keep button and link hidden
+        if (preQualBtn) preQualBtn.classList.remove("is-visible");
+        if (notReadyLink) notReadyLink.classList.remove("is-visible");
+
+        if (triggerAuto) {
+          clearAllTimers();
+          // Hold each slide for 3 seconds, then dynamically slide left to next
+          slideTimer = setTimeout(() => {
+            updateSlider(currentIndex + 1, true);
+          }, 3000);
+        }
+      } else {
+        // Tenth slide reached!
+        if (triggerAuto) {
+          clearAllTimers();
+          // "after tenth slide 3 secs complete the button appears link appears 1.5 seconds later"
+          slideTimer = setTimeout(() => {
+            if (preQualBtn) {
+              preQualBtn.classList.add("is-visible");
+            }
+            linkTimer = setTimeout(() => {
+              if (notReadyLink) {
+                notReadyLink.classList.add("is-visible");
+              }
+            }, 1500);
+          }, 3000);
+        }
+      }
+    };
+
+    const startPresentation = () => {
+      clearAllTimers();
+      if (preQualBtn) preQualBtn.classList.remove("is-visible");
+      if (notReadyLink) notReadyLink.classList.remove("is-visible");
+      updateSlider(0, true);
+    };
+
+    const stopPresentation = () => {
+      clearAllTimers();
+    };
+
+    window._startTrainSlideShow = startPresentation;
+    window._stopTrainSlideShow = stopPresentation;
+
+    if (prevBtn) {
+      prevBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (currentIndex > 0) {
+          updateSlider(currentIndex - 1, true);
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (currentIndex < totalSlides - 1) {
+          updateSlider(currentIndex + 1, true);
+        }
+      });
+    }
+
+    // Advance on viewport click
+    if (viewport) {
+      viewport.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (currentIndex < totalSlides - 1) {
+          updateSlider(currentIndex + 1, true);
+        }
+      });
+
+      // Keyboard left/right arrow navigation
+      viewport.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          e.stopPropagation();
+          if (currentIndex < totalSlides - 1) updateSlider(currentIndex + 1, true);
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          e.stopPropagation();
+          if (currentIndex > 0) updateSlider(currentIndex - 1, true);
+        }
+      });
+
+      // Touch / swipe support
+      let touchStartX = 0;
+      let touchStartY = 0;
+      viewport.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+      }, { passive: true });
+
+      viewport.addEventListener("touchend", (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+        if (Math.abs(diffX) > 30 && Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX < 0 && currentIndex < totalSlides - 1) {
+            updateSlider(currentIndex + 1, true);
+          } else if (diffX > 0 && currentIndex > 0) {
+            updateSlider(currentIndex - 1, true);
+          }
+        }
+      }, { passive: true });
+    }
+
+    // Direct dot navigation
+    dots.forEach((dot, idx) => {
+      dot.addEventListener("click", (e) => {
+        e.stopPropagation();
+        updateSlider(idx, true);
+      });
+    });
+
+    // Link under the button will go back to #our programs and replace text with No, I'm not ready yet.
+    if (notReadyLink) {
+      notReadyLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        stopPresentation();
+        if (trainCard) {
+          flipProgramCard(trainCard, false);
+        }
+        const programsSection = document.getElementById("our-programs");
+        if (programsSection) {
+          programsSection.scrollIntoView({ behavior: "smooth" });
+        }
+        if (window.location.hash !== "#our-programs") {
+          history.pushState(null, "", "#our-programs");
+        }
+      });
+    }
+
+    // Also trigger start when hover over train card if not already flipped
+    if (trainCard) {
+      trainCard.addEventListener("mouseenter", () => {
+        if (!slideTimer && !preQualBtn.classList.contains("is-visible")) {
+          startPresentation();
+        }
+      });
+    }
+
+    // If card is already flipped on load, start presentation; otherwise initialize at slide 0
+    if (trainCard && trainCard.classList.contains("is-flipped")) {
+      startPresentation();
+    } else {
+      updateSlider(0, false);
+    }
+  };
+
+  initTrainFlipSlider();
 
   // Handle jump links that specifically target a program card (Learn, Train, Build)
   document.querySelectorAll("[data-flip-target]").forEach((link) => {
@@ -134,7 +361,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const targetCard = document.querySelector(`[data-program-card="${target}"]`);
       if (targetCard) {
         setTimeout(() => {
-          flipProgramCard(targetCard, true);
+          if (targetCard.classList.contains("program-card-flip")) {
+            flipProgramCard(targetCard, true);
+          }
           targetCard.focus();
         }, 350);
       }

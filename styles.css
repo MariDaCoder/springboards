@@ -1094,6 +1094,219 @@ textarea:focus-visible,
   text-align: center;
 }
 
+/* Train Card Flip Slide Carousel & Dynamic Pre-Qualification Action */
+.program-card[data-program-card="train"] .program-card-back {
+  padding: 1.15rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  background-color: #ffffff;
+  border: 2px solid var(--accent-green);
+  overflow-y: auto;
+}
+
+.program-card[data-program-card="train"] .program-card-back h3 {
+  margin-bottom: 0.35rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  text-align: center;
+}
+
+.train-slides-carousel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  user-select: none;
+}
+
+.train-slides-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #0f172a;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+}
+
+.train-slides-viewport:focus-visible {
+  outline: 2px solid var(--accent-orange);
+  outline-offset: 2px;
+}
+
+.train-slides-track {
+  display: flex;
+  width: 1000%;
+  height: 100%;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.train-slide-frame {
+  width: 10%;
+  flex: 0 0 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.train-slide-media {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.train-slides-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  padding: 0 0.15rem;
+}
+
+.train-slide-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-dark);
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+}
+
+.train-slide-btn:hover:not(:disabled) {
+  background: var(--bg-light);
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+  transform: scale(1.08);
+}
+
+.train-slide-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.train-slides-indicator {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.train-slides-dots {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.train-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.train-dot.active {
+  background: var(--accent-orange);
+  width: 14px;
+  border-radius: 3px;
+}
+
+/* Action Button & Link: Button appears 3s after tenth slide, Link appears 1.5s later */
+.train-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
+  width: 100%;
+  min-height: 68px;
+}
+
+.train-card-actions .btn-cta {
+  width: 100%;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  border-radius: var(--radius-md);
+  background: var(--accent-orange);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+  min-height: 38px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s,
+              box-shadow 0.2s;
+}
+
+.train-card-actions .btn-cta.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.train-card-actions .btn-cta:hover {
+  background: #c2410c;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(234, 88, 12, 0.35);
+}
+
+.train-not-ready-link {
+  display: inline-block;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  background: none;
+  border: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.2s ease;
+}
+
+.train-not-ready-link.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.train-not-ready-link:hover {
+  color: var(--primary-navy);
+  text-decoration-color: var(--primary-navy);
+}
+
 /* --------------------------------------------------------------------------
    11. Getting Started Section (3 Steps)
    -------------------------------------------------------------------------- */
