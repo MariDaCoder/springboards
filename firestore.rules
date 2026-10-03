@@ -38,7 +38,7 @@ service cloud.firestore {
                     && request.resource.data.keys().hasOnly([
                       'uid', 'currentStep', 'trade', 'primaryGoal', 'timeline',
                       'careerCenter', 'backgroundStatus', 'transportation',
-                      'name', 'phone', 'email', 'notes', 'status', 'createdAt', 'updatedAt'
+                      'firstName', 'lastName', 'name', 'phone', 'email', 'notes', 'status', 'createdAt', 'updatedAt'
                     ]);
 
       allow update: if isValidId(prospectId)
@@ -51,37 +51,29 @@ service cloud.firestore {
                     && request.resource.data.keys().hasOnly([
                       'uid', 'currentStep', 'trade', 'primaryGoal', 'timeline',
                       'careerCenter', 'backgroundStatus', 'transportation',
-                      'name', 'phone', 'email', 'notes', 'status', 'createdAt', 'updatedAt'
+                      'firstName', 'lastName', 'name', 'phone', 'email', 'notes', 'status', 'createdAt', 'updatedAt'
                     ]);
 
       allow delete: if false;
     }
 
-    // Program inquiries: public write-only, no public reads, strict field validation
     match /programInquiries/{inquiryId} {
-      allow read, update, delete: if false;
-      allow create: if request.resource.data.name is string
+      allow create: if isValidId(inquiryId)
+                    && request.resource.data.name is string
                     && request.resource.data.name.size() > 0
                     && request.resource.data.name.size() <= 100
-                    && (
-                      (request.resource.data.email is string && request.resource.data.email.size() > 0) ||
-                      (request.resource.data.phone is string && request.resource.data.phone.size() > 0)
-                    )
                     && request.resource.data.program is string
-                    && request.resource.data.createdAt is timestamp;
+                    && request.resource.data.program.size() > 0
+                    && request.resource.data.program.size() <= 50;
+      allow read, update, delete: if false;
     }
 
-    // Volunteer inquiries: public write-only, no public reads, strict field validation
     match /volunteerSignups/{signupId} {
-      allow read, update, delete: if false;
-      allow create: if request.resource.data.name is string
+      allow create: if isValidId(signupId)
+                    && request.resource.data.name is string
                     && request.resource.data.name.size() > 0
-                    && request.resource.data.name.size() <= 100
-                    && (
-                      (request.resource.data.email is string && request.resource.data.email.size() > 0) ||
-                      (request.resource.data.phone is string && request.resource.data.phone.size() > 0)
-                    )
-                    && request.resource.data.createdAt is timestamp;
+                    && request.resource.data.name.size() <= 100;
+      allow read, update, delete: if false;
     }
   }
 }

@@ -45,6 +45,16 @@
           "maxLength": 100,
           "description": "Transportation access status"
         },
+        "firstName": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "First name of candidate"
+        },
+        "lastName": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Last name of candidate"
+        },
         "name": {
           "type": "string",
           "maxLength": 100,

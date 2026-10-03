@@ -382,7 +382,7 @@ app.get('/api/transitional-prospects/:id', async (req, res) => {
 
 app.post('/api/transitional-prospects', async (req, res) => {
   try {
-    const { uid, trade, primaryGoal, timeline, careerCenter, backgroundStatus, transportation, name, phone, email, notes, status, currentStep, createdAt } = req.body || {};
+    const { uid, trade, primaryGoal, timeline, careerCenter, backgroundStatus, transportation, firstName, lastName, name, phone, email, notes, status, currentStep, createdAt } = req.body || {};
     const prospectId = String(uid || '').trim();
     if (!prospectId || prospectId.length > 128) {
       return res.status(400).json({ error: 'Invalid or missing prospect UID' });
@@ -397,7 +397,9 @@ app.post('/api/transitional-prospects', async (req, res) => {
       careerCenter: String(careerCenter || '').slice(0, 150),
       backgroundStatus: String(backgroundStatus || '').slice(0, 100),
       transportation: String(transportation || '').slice(0, 100),
-      name: String(name || '').slice(0, 100),
+      firstName: String(firstName || '').slice(0, 50),
+      lastName: String(lastName || '').slice(0, 50),
+      name: String(name || `${firstName || ''} ${lastName || ''}`.trim()).slice(0, 100),
       phone: String(phone || '').slice(0, 30),
       email: String(email || '').slice(0, 120),
       notes: String(notes || '').slice(0, 500),

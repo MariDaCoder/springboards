@@ -1,5 +1,5 @@
-// Transitional Jobs - Conversational Intake & Goal-Tracking Controller
-// Uses Firebase Cloud Firestore collection Transitional_Prospects and Anonymous Authentication
+// Springboards for Community Development - Transitional Jobs Intake & Goal-Tracking Flow
+// Integrates with Cloud Firestore (Transitional_Prospects collection) and Firebase Anonymous Authentication
 
 import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js';
 import {
@@ -12,7 +12,8 @@ import {
   doc,
   setDoc,
   getDoc,
-  getDocFromServer
+  getDocFromServer,
+  updateDoc
 } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 
 // Load Firebase configuration
@@ -25,9 +26,11 @@ const firebaseConfig = {
   messagingSenderId: "1098367256506"
 };
 
+const FIRESTORE_DATABASE_ID = "ai-studio-springboardsland-71046992-4c5a-4c20-bdcd-c5ee24b8cc0a";
+
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = getFirestore(app, FIRESTORE_DATABASE_ID);
 
 // Standardized Firestore error handler conforming to FirestoreErrorInfo
 const OperationType = {
@@ -75,588 +78,457 @@ testConnection();
 // State variables
 let currentProspectUid = null;
 let currentStepNumber = 1;
+let selectedTrade = "Carpentry & Construction Technology";
+
 let prospectData = {
-  trade: "Carpentry & Construction Technology",
-  primaryGoal: "Earn immediate paid training wages while building credentials",
-  timeline: "As soon as possible (next cohort)",
-  careerCenter: "Need Help Registering at Career Center",
-  backgroundStatus: "Underemployed Adult / Career Changer",
-  transportation: "Have Personal Vehicle",
+  uid: null,
+  firstName: "",
+  lastName: "",
   name: "",
   phone: "",
   email: "",
-  notes: "",
+  trade: "Carpentry & Construction Technology",
+  primaryGoal: "Transitional Jobs & Paid Vocational Training",
   status: "in_progress",
-  currentStep: "1"
+  currentStep: "1",
+  createdAt: null,
+  updatedAt: null
 };
 
-let autosaveDebounceTimer = null;
-let lastActiveTrigger = null;
-
-// DOM Elements
-let modal = null;
-let stepPanes = [];
-let stepperIndicators = [];
-let tradeCards = [];
-
-function updateSessionUI(uid) {
-  const sessionStatus = document.getElementById("intakeSessionStatus");
-  const summaryUidDisplay = document.getElementById("summaryUidDisplay");
-  if (sessionStatus) {
-    sessionStatus.innerHTML = `<span class="session-dot"></span> Session: ${uid.slice(0, 8)}…`;
-    sessionStatus.title = `Anonymous session UID: ${uid} (no password required)`;
-  }
-  if (summaryUidDisplay) {
-    summaryUidDisplay.textContent = uid;
+// Fallback session UID if Anonymous Auth has not yet been toggled on in Firebase Console
+function getFallbackSessionUid() {
+  try {
+    let uid = sessionStorage.getItem('springboards_candidate_uid') || localStorage.getItem('springboards_candidate_uid');
+    if (!uid || !/^[a-zA-Z0-9_\-]+$/.test(uid)) {
+      uid = 'cand_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 9);
+      sessionStorage.setItem('springboards_candidate_uid', uid);
+      localStorage.setItem('springboards_candidate_uid', uid);
+    }
+    return uid;
+  } catch {
+    return 'cand_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 9);
   }
 }
 
-// Set up visual auto-save feedback
-function setAutosaveStatus(stepNum, statusText, isError = false) {
-  const indicator = document.getElementById(`autosaveIndicatorStep${stepNum}`);
-  if (!indicator) return;
-  const dot = indicator.querySelector(".autosave-dot");
-  const text = indicator.querySelector(".autosave-text");
-
-  if (text) text.textContent = statusText;
-  if (dot) {
-    dot.className = "autosave-dot" + (isError ? " error" : "") + (statusText.includes("Saving") ? " saving" : " saved");
-  }
-}
-
-// Auto-save updates directly to Cloud Firestore collection Transitional_Prospects
-async function saveProspectToFirestore(isFinalSubmit = false) {
-  if (!currentProspectUid) return;
-
-  const path = `Transitional_Prospects/${currentProspectUid}`;
-  setAutosaveStatus(currentStepNumber, "Saving…");
-
-  const nowIso = new Date().toISOString();
-  const payload = {
-    uid: currentProspectUid,
-    currentStep: String(currentStepNumber),
-    trade: prospectData.trade || "Carpentry & Construction Technology",
-    primaryGoal: prospectData.primaryGoal || "Earn immediate paid training wages while building credentials",
-    timeline: prospectData.timeline || "As soon as possible (next cohort)",
-    careerCenter: prospectData.careerCenter || "Need Help Registering at Career Center",
-    backgroundStatus: prospectData.backgroundStatus || "Underemployed Adult / Career Changer",
-    transportation: prospectData.transportation || "Have Personal Vehicle",
-    name: prospectData.name ? String(prospectData.name).slice(0, 100) : "",
-    phone: prospectData.phone ? String(prospectData.phone).slice(0, 30) : "",
-    email: prospectData.email ? String(prospectData.email).slice(0, 120) : "",
-    notes: prospectData.notes ? String(prospectData.notes).slice(0, 500) : "",
-    status: isFinalSubmit ? "submitted" : "in_progress",
-    updatedAt: nowIso
-  };
-
-  // Include createdAt only if first write
-  if (!prospectData.createdAt) {
-    payload.createdAt = nowIso;
-    prospectData.createdAt = nowIso;
-  }
+// Initialize Anonymous Firebase Auth session so guest visitors appear in Firebase Console Auth Users list
+async function initAnonymousAuthSession() {
+  onAuthStateChanged(auth, (user) => {
+    if (user && user.uid) {
+      currentProspectUid = user.uid;
+      prospectData.uid = user.uid;
+    }
+  });
 
   try {
-    const prospectRef = doc(db, "Transitional_Prospects", currentProspectUid);
-    await setDoc(prospectRef, payload, { merge: true });
-    setAutosaveStatus(currentStepNumber, isFinalSubmit ? "Submitted & saved ✓" : "Auto-saved to profile ✓");
-    updateSummaryView();
-  } catch (error) {
-    // If client direct Firestore write encounters permission or offline error, use server endpoint proxy
-    try {
-      const res = await fetch("/api/transitional-prospects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        setAutosaveStatus(currentStepNumber, isFinalSubmit ? "Submitted & saved ✓" : "Auto-saved to profile ✓");
-        updateSummaryView();
-        return;
+    if (!auth.currentUser) {
+      const cred = await signInAnonymously(auth);
+      if (cred && cred.user) {
+        currentProspectUid = cred.user.uid;
+        prospectData.uid = cred.user.uid;
       }
-    } catch {}
-
-    setAutosaveStatus(currentStepNumber, "Auto-saved locally ✓");
-    console.info('[Transitional Prospect] In-progress profile retained for session:', currentProspectUid);
-  }
-}
-
-function debouncedAutoSave() {
-  clearTimeout(autosaveDebounceTimer);
-  autosaveDebounceTimer = setTimeout(() => {
-    saveProspectToFirestore(false);
-  }, 400);
-}
-
-// Load existing profile document if session was already active
-async function loadExistingProspectData(uid) {
-  if (!uid) return;
-  const path = `Transitional_Prospects/${uid}`;
-  try {
-    const prospectRef = doc(db, "Transitional_Prospects", uid);
-    const snap = await getDoc(prospectRef);
-    if (snap.exists()) {
-      const data = snap.data();
-      prospectData = { ...prospectData, ...data };
-      syncFormFromState();
-      console.info('[Transitional Prospect] Restored in-progress profile for session:', uid);
-      return;
+    } else {
+      currentProspectUid = auth.currentUser.uid;
+      prospectData.uid = auth.currentUser.uid;
     }
   } catch (err) {
-    // Fall back to server endpoint
-  }
-
-  try {
-    const res = await fetch(`/api/transitional-prospects/${uid}`);
-    if (res.ok) {
-      const json = await res.json();
-      if (json && json.prospect) {
-        prospectData = { ...prospectData, ...json.prospect };
-        syncFormFromState();
-        console.info('[Transitional Prospect] Restored in-progress profile from server for session:', uid);
-      }
-    }
-  } catch {}
-}
-
-// Sync DOM inputs from internal state
-function syncFormFromState() {
-  // Sync trade cards
-  tradeCards.forEach(card => {
-    const cardVal = card.dataset.value;
-    const isSelected = cardVal === prospectData.trade;
-    card.classList.toggle("selected", isSelected);
-    card.setAttribute("aria-checked", String(isSelected));
-  });
-
-  const primaryGoalSelect = document.getElementById("intakePrimaryGoal");
-  if (primaryGoalSelect && prospectData.primaryGoal) {
-    primaryGoalSelect.value = prospectData.primaryGoal;
-  }
-
-  const careerCenterSelect = document.getElementById("intakeCareerCenter");
-  if (careerCenterSelect && prospectData.careerCenter) {
-    careerCenterSelect.value = prospectData.careerCenter;
-  }
-
-  const bgSelect = document.getElementById("intakeBackgroundStatus");
-  if (bgSelect && prospectData.backgroundStatus) {
-    bgSelect.value = prospectData.backgroundStatus;
-  }
-
-  const transitSelect = document.getElementById("intakeTransportation");
-  if (transitSelect && prospectData.transportation) {
-    transitSelect.value = prospectData.transportation;
-  }
-
-  const timelineSelect = document.getElementById("intakeTimeline");
-  if (timelineSelect && prospectData.timeline) {
-    timelineSelect.value = prospectData.timeline;
-  }
-
-  const nameInput = document.getElementById("intakeName");
-  if (nameInput && prospectData.name) {
-    nameInput.value = prospectData.name;
-  }
-
-  const phoneInput = document.getElementById("intakePhone");
-  if (phoneInput && prospectData.phone) {
-    phoneInput.value = prospectData.phone;
-  }
-
-  const emailInput = document.getElementById("intakeEmail");
-  if (emailInput && prospectData.email) {
-    emailInput.value = prospectData.email;
-  }
-
-  const notesInput = document.getElementById("intakeNotes");
-  if (notesInput && prospectData.notes) {
-    notesInput.value = prospectData.notes;
-  }
-}
-
-// Update the confirmation / summary step view
-function updateSummaryView() {
-  const tradeDisplay = document.getElementById("summaryTradeDisplay");
-  const goalDisplay = document.getElementById("summaryGoalDisplay");
-  const careerDisplay = document.getElementById("summaryCareerCenterDisplay");
-  const nameDisplay = document.getElementById("summaryNameDisplay");
-  const statusDisplay = document.getElementById("summaryStatusDisplay");
-
-  if (tradeDisplay) tradeDisplay.textContent = prospectData.trade || "Carpentry & Construction";
-  if (goalDisplay) goalDisplay.textContent = prospectData.primaryGoal || "Paid training & credentials";
-  if (careerDisplay) careerDisplay.textContent = prospectData.careerCenter || "Need Career Center referral";
-  if (nameDisplay) nameDisplay.textContent = prospectData.name || "In-Progress Candidate";
-  if (statusDisplay) {
-    statusDisplay.textContent = prospectData.status === "submitted" ? "Profile Submitted" : "In-Progress Intake";
-    statusDisplay.className = prospectData.status === "submitted" ? "status-badge-submitted" : "status-badge-active";
-  }
-}
-
-// Step navigation
-function goToStep(stepNumber) {
-  currentStepNumber = Math.max(1, Math.min(stepNumber, 4));
-
-  // Update step panes
-  stepPanes.forEach(pane => {
-    const paneIndex = Number(pane.dataset.stepIndex);
-    const isActive = paneIndex === currentStepNumber;
-    pane.hidden = !isActive;
-    pane.classList.toggle("active", isActive);
-  });
-
-  // Update stepper UI
-  stepperIndicators.forEach(stepEl => {
-    const stepIdx = Number(stepEl.dataset.step);
-    stepEl.classList.remove("active", "completed");
-    if (stepIdx === currentStepNumber) {
-      stepEl.classList.add("active");
-    } else if (stepIdx < currentStepNumber) {
-      stepEl.classList.add("completed");
-    }
-  });
-
-  // Update modal subtitle
-  const subtitle = document.getElementById("intakeModalSubtitle");
-  if (subtitle) {
-    const subtitles = {
-      1: "Step 1 of 4: Select your trade interest and primary goal.",
-      2: "Step 2 of 4: Review your career center readiness and schedule.",
-      3: "Step 3 of 4: Provide your contact details for intake coordination.",
-      4: "Step 4 of 4: Your transitional journey profile is initiated!"
-    };
-    subtitle.textContent = subtitles[currentStepNumber] || "Complete your goal-tracking profile.";
-  }
-
-  // Auto-save on step change
-  saveProspectToFirestore(currentStepNumber === 4);
-
-  // Focus the first meaningful element in step
-  const activePane = document.getElementById(`intakeStep${currentStepNumber}`);
-  if (activePane) {
-    const focusTarget = activePane.querySelector("input:not([type='hidden']), select, button.selected, button.intake-next-btn, h3");
-    if (focusTarget && typeof focusTarget.focus === "function") {
-      focusTarget.focus();
-    }
-  }
-}
-
-// Open modal & start goal-tracking sequence
-function openConversationalIntakeModal(tradePreference) {
-  if (!modal) {
-    modal = document.getElementById("conversationalIntakeModal");
-  }
-  if (!modal) return;
-
-  lastActiveTrigger = document.activeElement;
-
-  if (tradePreference) {
-    prospectData.trade = tradePreference;
-  }
-
-  syncFormFromState();
-  goToStep(prospectData.status === "submitted" ? 4 : 1);
-
-  modal.hidden = false;
-  document.body.classList.add("modal-open");
-
-  // Save the initiation event immediately to Firestore
-  saveProspectToFirestore(false);
-}
-
-function closeConversationalIntakeModal() {
-  if (!modal) return;
-  modal.hidden = true;
-  document.body.classList.remove("modal-open");
-  if (lastActiveTrigger && typeof lastActiveTrigger.focus === "function") {
-    lastActiveTrigger.focus();
-    lastActiveTrigger = null;
-  }
-}
-
-// Input formatting helpers
-function formatPhoneNumber(val) {
-  if (!val) return val;
-  const digits = val.replace(/\D/g, "");
-  if (digits.length < 4) return digits;
-  if (digits.length < 7) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
-  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
-}
-
-function isValidPhone(val) {
-  const digits = val.replace(/\D/g, "");
-  return digits.length === 10 || (digits.length === 11 && digits.startsWith("1"));
-}
-
-function isValidEmail(val) {
-  if (!val) return true; // Optional if phone provided
-  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(val.trim());
-}
-
-function getOrCreateSessionUid() {
-  try {
-    let stored = sessionStorage.getItem('springboards_prospect_uid');
-    if (!stored) {
-      const randStr = (typeof crypto !== 'undefined' && crypto.randomUUID)
-        ? crypto.randomUUID().replace(/-/g, '').slice(0, 20)
-        : Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-      stored = `prospect_${randStr}`;
-      sessionStorage.setItem('springboards_prospect_uid', stored);
-    }
-    return stored;
-  } catch {
-    return `prospect_${Date.now().toString(36)}`;
-  }
-}
-
-// Initialize anonymous authentication silently on session start
-function initAuth() {
-  // 1. Immediately establish session UID so user never waits and UI is fully active
-  currentProspectUid = getOrCreateSessionUid();
-  updateSessionUI(currentProspectUid);
-  loadExistingProspectData(currentProspectUid);
-
-  // 2. Listen to Firebase auth state
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      currentProspectUid = user.uid;
-      try { sessionStorage.setItem('springboards_prospect_uid', user.uid); } catch {}
-      updateSessionUI(user.uid);
-      await loadExistingProspectData(user.uid);
+    if (err && err.code === 'auth/admin-restricted-operation') {
+      console.info(
+        "[Springboards Auth] Anonymous authentication needs to be enabled in Firebase Console (Authentication > Sign-in method > Anonymous). Using fallback session ID until enabled."
+      );
     } else {
-      try {
-        const cred = await signInAnonymously(auth);
-        if (cred && cred.user) {
-          currentProspectUid = cred.user.uid;
-          try { sessionStorage.setItem('springboards_prospect_uid', cred.user.uid); } catch {}
-          updateSessionUI(cred.user.uid);
-          await loadExistingProspectData(cred.user.uid);
-        }
-      } catch (err) {
-        // If Anonymous Auth provider is disabled in Firebase Console (auth/admin-restricted-operation),
-        // gracefully continue with client-side unique session UID without throwing console errors.
-        if (err && (err.code === 'auth/admin-restricted-operation' || String(err).includes('admin-restricted-operation'))) {
-          console.info('[Firebase Auth] Anonymous sign-in provider is disabled in Firebase Console; using persistent session UID for prospect intake:', currentProspectUid);
-        } else {
-          console.info('[Firebase Auth] Continuing with active session UID:', currentProspectUid);
-        }
-      }
+      console.warn("[Springboards Auth] Anonymous auth error:", err);
     }
-  });
+    if (!currentProspectUid) {
+      currentProspectUid = getFallbackSessionUid();
+      prospectData.uid = currentProspectUid;
+    }
+  }
 }
 
-// Initialize DOM events
-function initDOM() {
-  modal = document.getElementById("conversationalIntakeModal");
-  if (!modal) return;
+// Ensure UID
+function getOrGenerateUid() {
+  if (auth.currentUser && auth.currentUser.uid) {
+    return auth.currentUser.uid;
+  }
+  if (!currentProspectUid) {
+    currentProspectUid = getFallbackSessionUid();
+  }
+  return currentProspectUid;
+}
 
-  stepPanes = Array.from(modal.querySelectorAll(".intake-step-pane"));
-  stepperIndicators = Array.from(modal.querySelectorAll(".goal-step"));
-  tradeCards = Array.from(modal.querySelectorAll(".trade-choice-card"));
+// Save / sync helper
+async function persistProspect(candidateDoc, opType = OperationType.WRITE) {
+  const docPath = `Transitional_Prospects/${candidateDoc.uid}`;
+  let firestoreSuccess = false;
 
-  // Trade selection buttons in Step 1
-  tradeCards.forEach(card => {
-    card.addEventListener("click", () => {
-      tradeCards.forEach(c => {
-        c.classList.remove("selected");
-        c.setAttribute("aria-checked", "false");
-      });
-      card.classList.add("selected");
-      card.setAttribute("aria-checked", "true");
-      prospectData.trade = card.dataset.value;
-      debouncedAutoSave();
-    });
-  });
-
-  // Primary goal select
-  const primaryGoalSelect = document.getElementById("intakePrimaryGoal");
-  if (primaryGoalSelect) {
-    primaryGoalSelect.addEventListener("change", (e) => {
-      prospectData.primaryGoal = e.target.value;
-      debouncedAutoSave();
-    });
+  // 1. Direct Cloud Firestore write
+  try {
+    const docRef = doc(db, 'Transitional_Prospects', candidateDoc.uid);
+    await setDoc(docRef, candidateDoc, { merge: true });
+    firestoreSuccess = true;
+  } catch (fsErr) {
+    console.warn("[Springboards Intake] Firestore write error, syncing via server fallback:", fsErr.message);
   }
 
-  // Step 2 field listeners
-  const fieldMap = [
-    { id: "intakeCareerCenter", prop: "careerCenter" },
-    { id: "intakeBackgroundStatus", prop: "backgroundStatus" },
-    { id: "intakeTransportation", prop: "transportation" },
-    { id: "intakeTimeline", prop: "timeline" }
-  ];
+  // 2. Dual persistence via server API
+  try {
+    await fetch('/api/transitional-prospects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(candidateDoc)
+    });
+  } catch (apiErr) {
+    console.warn("[Springboards Intake] Server sync error:", apiErr);
+  }
 
-  fieldMap.forEach(({ id, prop }) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.addEventListener("change", (e) => {
-        prospectData[prop] = e.target.value;
-        debouncedAutoSave();
-      });
+  return firestoreSuccess;
+}
+
+// DOM Setup
+document.addEventListener("DOMContentLoaded", () => {
+  initAnonymousAuthSession();
+
+  // Elements
+  const modal = document.getElementById("candidateModal");
+  const closeBtns = document.querySelectorAll("[data-candidate-close]");
+  const finishBtn = document.getElementById("intakeFinishBtn");
+
+  const progressHeader = document.getElementById("intakeProgressHeader");
+  const progressFill = document.getElementById("intakeProgressFill");
+  const stepIndicator = document.getElementById("intakeStepIndicator");
+
+  // Screen 1 Elements
+  const screen1 = document.getElementById("intakeScreen1");
+  const screen1Form = document.getElementById("intakeScreen1Form");
+  const firstNameInput = document.getElementById("intakeFirstNameInput");
+  const lastNameInput = document.getElementById("intakeLastNameInput");
+  const step1NextBtn = document.getElementById("intakeStep1Next");
+  const nameError = document.getElementById("intakeNameError");
+
+  // Screen 2 Elements
+  const screen2 = document.getElementById("intakeScreen2");
+  const phoneInput = document.getElementById("intakePhoneInput");
+  const emailInput = document.getElementById("intakeEmailInput");
+  const contactError = document.getElementById("intakeContactError");
+  const step2BackBtn = document.getElementById("intakeStep2Back");
+  const step2NextBtn = document.getElementById("intakeStep2Next");
+
+  // Screen 3 Elements
+  const screen3 = document.getElementById("intakeScreen3");
+  const tradeCardsContainer = document.getElementById("intakeTradeCards");
+  const step3BackBtn = document.getElementById("intakeStep3Back");
+  const step3NextBtn = document.getElementById("intakeStep3Next");
+
+  // Screen 4 Elements
+  const screen4 = document.getElementById("intakeScreen4");
+  const summaryName = document.getElementById("summaryProspectName");
+  const summaryContact = document.getElementById("summaryContactInfo");
+  const summaryTrade = document.getElementById("summarySelectedTrade");
+
+  // Helper: Open Modal
+  function openIntakeModal(defaultTrade) {
+    if (defaultTrade) {
+      selectedTrade = defaultTrade;
     }
-  });
-
-  // Step 3 input listeners
-  const nameInput = document.getElementById("intakeName");
-  const phoneInput = document.getElementById("intakePhone");
-  const emailInput = document.getElementById("intakeEmail");
-  const notesInput = document.getElementById("intakeNotes");
-
-  if (nameInput) {
-    nameInput.addEventListener("input", (e) => {
-      prospectData.name = e.target.value.trim();
-      nameInput.classList.remove("is-invalid");
-      const err = document.getElementById("intakeNameError");
-      if (err) err.textContent = "";
-      debouncedAutoSave();
-    });
-  }
-
-  if (phoneInput) {
-    phoneInput.addEventListener("input", (e) => {
-      const formatted = formatPhoneNumber(e.target.value);
-      e.target.value = formatted;
-      prospectData.phone = formatted;
-      phoneInput.classList.remove("is-invalid");
-      const err = document.getElementById("intakePhoneError");
-      if (err) err.textContent = "";
-      debouncedAutoSave();
-    });
-  }
-
-  if (emailInput) {
-    emailInput.addEventListener("input", (e) => {
-      prospectData.email = e.target.value.trim();
-      emailInput.classList.remove("is-invalid");
-      const err = document.getElementById("intakeEmailError");
-      if (err) err.textContent = "";
-      debouncedAutoSave();
-    });
-  }
-
-  if (notesInput) {
-    notesInput.addEventListener("input", (e) => {
-      prospectData.notes = e.target.value.trim();
-      debouncedAutoSave();
-    });
-  }
-
-  // Next / Previous buttons
-  modal.querySelectorAll("[data-next-step]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const nextStep = Number(btn.dataset.nextStep);
-      goToStep(nextStep);
-    });
-  });
-
-  modal.querySelectorAll("[data-prev-step]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const prevStep = Number(btn.dataset.prevStep);
-      goToStep(prevStep);
-    });
-  });
-
-  // Form submit in Step 3
-  const contactForm = document.getElementById("intakeContactForm");
-  if (contactForm) {
-    contactForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      let hasError = false;
-
-      const nameVal = nameInput ? nameInput.value.trim() : "";
-      const phoneVal = phoneInput ? phoneInput.value.trim() : "";
-      const emailVal = emailInput ? emailInput.value.trim() : "";
-
-      if (!nameVal || nameVal.length < 2) {
-        hasError = true;
-        if (nameInput) nameInput.classList.add("is-invalid");
-        const err = document.getElementById("intakeNameError");
-        if (err) err.textContent = "Please enter your full name (minimum 2 characters).";
-        if (nameInput) nameInput.focus();
-      }
-
-      if (!phoneVal || !isValidPhone(phoneVal)) {
-        hasError = true;
-        if (phoneInput) phoneInput.classList.add("is-invalid");
-        const err = document.getElementById("intakePhoneError");
-        if (err) err.textContent = "Please enter a valid 10-digit phone number.";
-        if (!nameVal && phoneInput) phoneInput.focus();
-      }
-
-      if (emailVal && !isValidEmail(emailVal)) {
-        hasError = true;
-        if (emailInput) emailInput.classList.add("is-invalid");
-        const err = document.getElementById("intakeEmailError");
-        if (err) err.textContent = "Please enter a valid email address.";
-      }
-
-      if (hasError) return;
-
-      prospectData.name = nameVal;
-      prospectData.phone = phoneVal;
-      prospectData.email = emailVal;
-      prospectData.status = "submitted";
-
-      const submitBtn = document.getElementById("intakeSubmitBtn");
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Saving to Firestore…";
-      }
-
-      try {
-        await saveProspectToFirestore(true);
-        goToStep(4);
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = 'Complete &amp; Submit Profile <span aria-hidden="true">✓</span>';
-        }
-      }
-    });
-  }
-
-  // Edit button on Step 4
-  const editBtn = document.getElementById("intakeEditProfileBtn");
-  if (editBtn) {
-    editBtn.addEventListener("click", () => {
+    if (modal) {
+      modal.hidden = false;
+      modal.classList.add("is-open");
+      document.body.style.overflow = "hidden";
       goToStep(1);
-    });
+      setTimeout(() => {
+        if (firstNameInput) firstNameInput.focus();
+      }, 150);
+    }
   }
 
-  // Close handlers
-  modal.querySelectorAll("[data-intake-close]").forEach(el => {
-    el.addEventListener("click", () => {
-      closeConversationalIntakeModal();
+  // Helper: Close Modal
+  function closeIntakeModal() {
+    if (modal) {
+      modal.hidden = true;
+      modal.classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+  }
+
+  const openBtns = document.querySelectorAll("#trainStartJourneyBtn, .btn-start-journey, .btn-candidate-trigger");
+  openBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const defaultTrade = btn.dataset.tradeDefault || "Carpentry & Construction Technology";
+      openIntakeModal(defaultTrade);
     });
   });
 
-  // Modal accessibility: Escape key and Tab trapping
-  document.addEventListener("keydown", (e) => {
-    if (modal && !modal.hidden && e.key === "Escape") {
-      closeConversationalIntakeModal();
+  closeBtns.forEach(btn => {
+    btn.addEventListener("click", closeIntakeModal);
+  });
+
+  if (finishBtn) {
+    finishBtn.addEventListener("click", closeIntakeModal);
+  }
+
+  // Step Navigator
+  function goToStep(step) {
+    currentStepNumber = step;
+    const screens = [screen1, screen2, screen3, screen4];
+    screens.forEach((s, idx) => {
+      if (s) {
+        if (idx + 1 === step) {
+          s.classList.add("active");
+          s.style.display = "block";
+        } else {
+          s.classList.remove("active");
+          s.style.display = "none";
+        }
+      }
+    });
+
+    if (progressFill) {
+      const pct = Math.round((step / 4) * 100);
+      progressFill.style.width = `${pct}%`;
+      const track = progressFill.closest(".intake-progress-bar-track");
+      if (track) track.setAttribute("aria-valuenow", String(pct));
+    }
+
+    if (stepIndicator) {
+      stepIndicator.innerHTML = `Step <strong>${step}</strong> of 4`;
+    }
+
+    // Step-specific focus
+    if (step === 1 && firstNameInput) {
+      firstNameInput.focus();
+    } else if (step === 2 && phoneInput) {
+      phoneInput.focus();
+    } else if (step === 4) {
+      if (summaryName) summaryName.textContent = prospectData.name || "Candidate";
+      if (summaryContact) {
+        const parts = [prospectData.phone, prospectData.email].filter(Boolean);
+        summaryContact.textContent = parts.length > 0 ? parts.join(" • ") : "To be confirmed";
+      }
+      if (summaryTrade) summaryTrade.textContent = prospectData.trade || selectedTrade;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // SCREEN 1: Introduction & User Profile Creation
+  // Line 1: Centered question prompt: "What is your name?"
+  // Line 2: Column 1 (Side-by-side First/Last Name) | Column 2 (Key-cap Continue button)
+  // Submitting Screen 1 initializes and saves the candidate document in Firebase
+  // --------------------------------------------------------------------------
+
+  function triggerKeycapPressEffect() {
+    if (step1NextBtn) {
+      step1NextBtn.classList.add("is-pressed");
+      setTimeout(() => {
+        step1NextBtn.classList.remove("is-pressed");
+      }, 180);
+    }
+  }
+
+  async function handleScreen1Submit() {
+    triggerKeycapPressEffect();
+
+    const firstName = firstNameInput ? firstNameInput.value.trim() : "";
+    const lastName = lastNameInput ? lastNameInput.value.trim() : "";
+
+    if (!firstName || !lastName) {
+      if (nameError) {
+        nameError.textContent = "Please enter both your First Name and Last Name.";
+        nameError.style.color = "#dc2626";
+      }
+      if (!firstName && firstNameInput) firstNameInput.focus();
+      else if (!lastName && lastNameInput) lastNameInput.focus();
+      return;
+    }
+
+    if (nameError) {
+      nameError.textContent = "";
+    }
+
+    // Disable button during initialization
+    if (step1NextBtn) step1NextBtn.disabled = true;
+
+    try {
+      const candidateUid = getOrGenerateUid();
+      const nowIso = new Date().toISOString();
+      const fullName = `${firstName} ${lastName}`;
+
+      prospectData.uid = candidateUid;
+      prospectData.firstName = firstName;
+      prospectData.lastName = lastName;
+      prospectData.name = fullName;
+      prospectData.status = "in_progress";
+      prospectData.currentStep = "1";
+      prospectData.createdAt = prospectData.createdAt || nowIso;
+      prospectData.updatedAt = nowIso;
+
+      // INITIALIZE & SAVE in Firebase Transitional_Prospects collection
+      await persistProspect({
+        uid: candidateUid,
+        firstName: firstName,
+        lastName: lastName,
+        name: fullName,
+        status: "in_progress",
+        currentStep: "1",
+        trade: prospectData.trade || selectedTrade,
+        primaryGoal: prospectData.primaryGoal,
+        createdAt: prospectData.createdAt,
+        updatedAt: prospectData.updatedAt
+      }, OperationType.CREATE);
+
+      // Advance to Screen 2
+      goToStep(2);
+    } catch (err) {
+      console.error("[Springboards Intake] Error initializing prospect profile:", err);
+      goToStep(2);
+    } finally {
+      if (step1NextBtn) step1NextBtn.disabled = false;
+    }
+  }
+
+  if (screen1Form) {
+    screen1Form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      handleScreen1Submit();
+    });
+  }
+
+  if (step1NextBtn) {
+    step1NextBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      handleScreen1Submit();
+    });
+  }
+
+  // Keyboard shortcut: Pressing Enter in inputs triggers submission with key-cap feedback
+  [firstNameInput, lastNameInput].forEach(inp => {
+    if (inp) {
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleScreen1Submit();
+        }
+      });
     }
   });
 
-  // Connect Green 'Start Training Journey' Button (#trainStartJourneyBtn)
-  const startJourneyBtn = document.getElementById("trainStartJourneyBtn");
-  if (startJourneyBtn) {
-    startJourneyBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openConversationalIntakeModal("Carpentry & Construction Technology");
+  // --------------------------------------------------------------------------
+  // SCREEN 2: Contact Details (Phone OR Email)
+  // --------------------------------------------------------------------------
+  if (step2BackBtn) {
+    step2BackBtn.addEventListener("click", () => goToStep(1));
+  }
+
+  async function handleScreen2Submit() {
+    const phone = phoneInput ? phoneInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+
+    if (!phone && !email) {
+      if (contactError) {
+        contactError.textContent = "Please provide at least a phone number or email address.";
+        contactError.style.color = "#dc2626";
+      }
+      return;
+    }
+
+    if (contactError) contactError.textContent = "";
+
+    prospectData.phone = phone;
+    prospectData.email = email;
+    prospectData.currentStep = "2";
+    prospectData.updatedAt = new Date().toISOString();
+
+    if (step2NextBtn) step2NextBtn.disabled = true;
+
+    try {
+      await persistProspect({
+        uid: prospectData.uid,
+        firstName: prospectData.firstName,
+        lastName: prospectData.lastName,
+        name: prospectData.name,
+        phone: prospectData.phone,
+        email: prospectData.email,
+        trade: prospectData.trade,
+        status: "in_progress",
+        currentStep: "2",
+        createdAt: prospectData.createdAt,
+        updatedAt: prospectData.updatedAt
+      }, OperationType.UPDATE);
+
+      goToStep(3);
+    } catch (err) {
+      console.warn("Screen 2 error:", err);
+      goToStep(3);
+    } finally {
+      if (step2NextBtn) step2NextBtn.disabled = false;
+    }
+  }
+
+  if (step2NextBtn) {
+    step2NextBtn.addEventListener("click", handleScreen2Submit);
+  }
+
+  [phoneInput, emailInput].forEach(inp => {
+    if (inp) {
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleScreen2Submit();
+        }
+      });
+    }
+  });
+
+  // --------------------------------------------------------------------------
+  // SCREEN 3: Trade Pathway Selection
+  // --------------------------------------------------------------------------
+  if (step3BackBtn) {
+    step3BackBtn.addEventListener("click", () => goToStep(2));
+  }
+
+  if (tradeCardsContainer) {
+    tradeCardsContainer.querySelectorAll(".intake-choice-card").forEach(card => {
+      card.addEventListener("click", () => {
+        tradeCardsContainer.querySelectorAll(".intake-choice-card").forEach(c => c.classList.remove("selected"));
+        card.classList.add("selected");
+        selectedTrade = card.dataset.value;
+        prospectData.trade = selectedTrade;
+      });
     });
   }
-}
 
-// Global hook for outside callers
-window._openConversationalIntakeModal = openConversationalIntakeModal;
-window._closeConversationalIntakeModal = closeConversationalIntakeModal;
+  async function handleScreen3Submit() {
+    prospectData.trade = selectedTrade;
+    prospectData.status = "completed";
+    prospectData.currentStep = "3";
+    prospectData.updatedAt = new Date().toISOString();
 
-// Initialize when ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    initAuth();
-    initDOM();
-  });
-} else {
-  initAuth();
-  initDOM();
-}
+    if (step3NextBtn) step3NextBtn.disabled = true;
+
+    try {
+      await persistProspect({
+        uid: prospectData.uid,
+        firstName: prospectData.firstName,
+        lastName: prospectData.lastName,
+        name: prospectData.name,
+        phone: prospectData.phone,
+        email: prospectData.email,
+        trade: prospectData.trade,
+        status: "completed",
+        currentStep: "4",
+        createdAt: prospectData.createdAt,
+        updatedAt: prospectData.updatedAt
+      }, OperationType.UPDATE);
+
+      goToStep(4);
+    } catch (err) {
+      console.warn("Screen 3 error:", err);
+      goToStep(4);
+    } finally {
+      if (step3NextBtn) step3NextBtn.disabled = false;
+    }
+  }
+
+  if (step3NextBtn) {
+    step3NextBtn.addEventListener("click", handleScreen3Submit);
+  }
+});
