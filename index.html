@@ -480,8 +480,13 @@
                 </div>
 
                 <div class="train-card-actions" id="trainCardActions">
-                  <button type="button" class="btn-cta btn-candidate-trigger" id="trainPreQualBtn" data-trade-default="Carpentry &amp; Construction Technology">Yes, get pre qualified.</button>
-                  <a href="#our-programs" class="train-not-ready-link" id="trainNotReadyLink">No, I'm not ready yet.</a>
+                  <button type="button" class="btn-train-start-journey" id="trainStartJourneyBtn" aria-label="Get Pre Qualified for Trade Training">
+                    Get Pre Qualified!
+                    <span class="btn-icon" aria-hidden="true">→</span>
+                  </button>
+                  <button type="button" class="btn-train-decline" id="trainDeclineBtn" aria-label="Not Ready Yet, return to programs">
+                    Not Ready Yet.
+                  </button>
                 </div>
               </div>
             </div>
@@ -802,6 +807,278 @@
           <p>You may request to view, modify, or delete your contact records from our database at any time by emailing <a href="mailto:info@springboardsfcd.org" style="color: var(--accent-green); font-weight: 700;">info@springboardsfcd.org</a> or calling <a href="tel:+16156031157" style="color: var(--accent-green); font-weight: 700;">615-603-1157</a>.</p>
         </div>
         <button type="button" class="btn-cta" data-privacy-close style="width: 100%; margin-top: 1.25rem;">Close Notice</button>
+      </div>
+    </div>
+
+    <!-- CONVERSATIONAL INTAKE & GOAL-TRACKING MODAL (Transitional Prospects) -->
+    <div class="inquiry-modal" id="conversationalIntakeModal" hidden>
+      <div class="inquiry-modal-backdrop" data-intake-close></div>
+      <div class="inquiry-modal-dialog modal-large intake-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="intakeModalTitle">
+        <button type="button" class="inquiry-modal-close" data-intake-close aria-label="Close intake modal">×</button>
+        
+        <!-- Header with Goal-Tracking Sequence Progress Bar -->
+        <div class="intake-header">
+          <div class="intake-badge-row">
+            <span class="section-eyebrow">Transitional Jobs Pathway</span>
+            <span class="intake-session-badge" id="intakeSessionStatus" title="Anonymous session ID protects your privacy">
+              <span class="session-dot"></span> Session Active
+            </span>
+          </div>
+          <h2 id="intakeModalTitle">Start Your Training Journey</h2>
+          <p class="modal-subtext" id="intakeModalSubtitle">Complete your goal-tracking profile. Your answers auto-save securely to your session.</p>
+          
+          <!-- Visual Goal Tracker Stepper -->
+          <div class="goal-tracker" aria-label="Intake Progress Steps">
+            <div class="goal-step active" data-step="1">
+              <div class="goal-step-circle">1</div>
+              <span class="goal-step-label">Trade Goal</span>
+            </div>
+            <div class="goal-step-connector"></div>
+            <div class="goal-step" data-step="2">
+              <div class="goal-step-circle">2</div>
+              <span class="goal-step-label">Readiness</span>
+            </div>
+            <div class="goal-step-connector"></div>
+            <div class="goal-step" data-step="3">
+              <div class="goal-step-circle">3</div>
+              <span class="goal-step-label">Contact</span>
+            </div>
+            <div class="goal-step-connector"></div>
+            <div class="goal-step" data-step="4">
+              <div class="goal-step-circle">✓</div>
+              <span class="goal-step-label">Confirmation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Conversational Intake Container -->
+        <div class="intake-body">
+          <!-- Step 1: Trade & Career Goals -->
+          <div class="intake-step-pane active" id="intakeStep1" data-step-index="1">
+            <h3 class="intake-prompt-title">What trade pathway and career goal inspires you?</h3>
+            <p class="intake-prompt-desc">Tuition-free transitional training provides paid on-the-job experience with skilled craftsman mentoring.</p>
+
+            <div class="intake-field-group">
+              <label class="intake-field-label">Select Your Preferred Trade Track:</label>
+              <div class="trade-choice-grid" role="radiogroup" aria-label="Select Trade Track">
+                <button type="button" class="trade-choice-card selected" data-value="Carpentry &amp; Construction Technology" role="radio" aria-checked="true">
+                  <span class="trade-choice-icon">🪚</span>
+                  <span class="trade-choice-title">Carpentry &amp; Construction</span>
+                  <span class="trade-choice-desc">Framing, drywall, finish carpentry &amp; power tool safety</span>
+                </button>
+                <button type="button" class="trade-choice-card" data-value="Electrical &amp; Wiring" role="radio" aria-checked="false">
+                  <span class="trade-choice-icon">⚡</span>
+                  <span class="trade-choice-title">Electrical &amp; Wiring</span>
+                  <span class="trade-choice-desc">Circuit testing, breaker boxes, conduit bending &amp; code</span>
+                </button>
+                <button type="button" class="trade-choice-card" data-value="HVAC &amp; Mechanical" role="radio" aria-checked="false">
+                  <span class="trade-choice-icon">❄️</span>
+                  <span class="trade-choice-title">HVAC &amp; Mechanical</span>
+                  <span class="trade-choice-desc">Heating, air conditioning systems &amp; airflow principles</span>
+                </button>
+                <button type="button" class="trade-choice-card" data-value="Plumbing &amp; Pipefitting" role="radio" aria-checked="false">
+                  <span class="trade-choice-icon">🔧</span>
+                  <span class="trade-choice-title">Plumbing &amp; Pipefitting</span>
+                  <span class="trade-choice-desc">Drainage systems, fixture installs &amp; pipe connections</span>
+                </button>
+                <button type="button" class="trade-choice-card" data-value="Demolition &amp; Site Preparation" role="radio" aria-checked="false">
+                  <span class="trade-choice-icon">🚧</span>
+                  <span class="trade-choice-title">Demolition &amp; Site Prep</span>
+                  <span class="trade-choice-desc">Commercial teardown, material salvage &amp; jobsite hazard control</span>
+                </button>
+                <button type="button" class="trade-choice-card" data-value="Undecided / Open to Guidance" role="radio" aria-checked="false">
+                  <span class="trade-choice-icon">🧭</span>
+                  <span class="trade-choice-title">Undecided / Need Guidance</span>
+                  <span class="trade-choice-desc">Explore multiple trades during your first intake assessment</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="intake-field-group" style="margin-top: 1.25rem;">
+              <label class="intake-field-label" for="intakePrimaryGoal">What is your primary milestone or career goal?</label>
+              <select id="intakePrimaryGoal" class="form-select intake-input">
+                <option value="Earn immediate paid training wages while building credentials">Earn immediate paid training wages while building credentials</option>
+                <option value="Gain verified certifications (NCCER, OSHA 10/30)">Gain verified certifications (NCCER, OSHA 10/30)</option>
+                <option value="Transition to full-time registered apprenticeship">Transition to full-time registered apprenticeship</option>
+                <option value="Re-enter the workforce after justice involvement">Re-enter the workforce after justice involvement (Second Chance)</option>
+                <option value="Build hands-on experience to change careers">Build hands-on experience to change careers</option>
+              </select>
+            </div>
+
+            <div class="intake-actions-footer">
+              <div class="autosave-indicator" id="autosaveIndicatorStep1">
+                <span class="autosave-dot"></span> <span class="autosave-text">Ready to save</span>
+              </div>
+              <button type="button" class="btn-cta intake-next-btn" data-next-step="2">
+                Continue to Readiness <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Readiness & Career Center Support -->
+          <div class="intake-step-pane" id="intakeStep2" data-step-index="2" hidden>
+            <h3 class="intake-prompt-title">Where are you in your career pathway?</h3>
+            <p class="intake-prompt-desc">Springboards coordinates with local Alabama Career Centers (Valley, Opelika, Phenix City) to connect you with subsidized transitional training.</p>
+
+            <div class="intake-form-grid">
+              <div class="intake-field-group">
+                <label class="intake-field-label" for="intakeCareerCenter">Career Center Status:</label>
+                <select id="intakeCareerCenter" class="form-select intake-input">
+                  <option value="Registered with Valley Career Center">Yes, registered with Valley Career Center</option>
+                  <option value="Registered with Opelika Career Center">Yes, registered with Opelika Career Center</option>
+                  <option value="Registered with Phenix City Career Center">Yes, registered with Phenix City Career Center</option>
+                  <option value="Registered with another AL Works Center">Registered with another Alabama Career Center</option>
+                  <option value="Need Help Registering at Career Center" selected>Not yet registered — Need Springboards to help me</option>
+                </select>
+              </div>
+
+              <div class="intake-field-group">
+                <label class="intake-field-label" for="intakeBackgroundStatus">Background / Demographic Focus:</label>
+                <select id="intakeBackgroundStatus" class="form-select intake-input">
+                  <option value="Returning Citizen / Justice-Involved">Returning Citizen / Justice-Involved</option>
+                  <option value="Opportunity Youth (Age 18-24)">Opportunity Youth (Age 18–24)</option>
+                  <option value="Underemployed Adult / Career Changer" selected>Underemployed Adult / Career Changer</option>
+                  <option value="Military Veteran">Military Veteran</option>
+                  <option value="Community Member Seeking Trade Skills">Community Member Seeking Trade Skills</option>
+                </select>
+              </div>
+
+              <div class="intake-field-group">
+                <label class="intake-field-label" for="intakeTransportation">Transportation Readiness:</label>
+                <select id="intakeTransportation" class="form-select intake-input">
+                  <option value="Personal Vehicle">Have Personal Vehicle</option>
+                  <option value="Ride from Family/Friends">Ride from Family / Friends</option>
+                  <option value="Public Transit / Walking">Public Transit / Walking</option>
+                  <option value="Need Transportation Assistance">Need Transportation Assistance</option>
+                </select>
+              </div>
+
+              <div class="intake-field-group">
+                <label class="intake-field-label" for="intakeTimeline">Target Start Timeline:</label>
+                <select id="intakeTimeline" class="form-select intake-input">
+                  <option value="As soon as possible (next cohort)">As soon as possible (Next available cohort)</option>
+                  <option value="Within the next 30 days">Within the next 30 days</option>
+                  <option value="Within 2 to 3 months">Within 2 to 3 months</option>
+                  <option value="Exploring options / Flexible">Exploring options / Flexible</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="intake-actions-footer">
+              <button type="button" class="btn-secondary intake-prev-btn" data-prev-step="1">
+                <span>←</span> Back
+              </button>
+              <div class="autosave-indicator" id="autosaveIndicatorStep2">
+                <span class="autosave-dot"></span> <span class="autosave-text">Auto-saved to profile</span>
+              </div>
+              <button type="button" class="btn-cta intake-next-btn" data-next-step="3">
+                Continue to Contact <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Contact & Intake Scheduling -->
+          <div class="intake-step-pane" id="intakeStep3" data-step-index="3" hidden>
+            <h3 class="intake-prompt-title">How should your intake coordinator reach you?</h3>
+            <p class="intake-prompt-desc">No password needed! Your profile document is permanently linked to your session. Provide contact details so we can schedule your on-site orientation.</p>
+
+            <form id="intakeContactForm" class="intake-form" novalidate>
+              <div class="intake-form-grid">
+                <div class="intake-field-group full-width">
+                  <label class="intake-field-label" for="intakeName">Full Legal Name <span class="req" style="color: #dc2626;">*</span></label>
+                  <input type="text" id="intakeName" name="name" class="intake-input form-input" placeholder="e.g. Marcus Johnson" minlength="2" maxlength="100" required>
+                  <span class="field-error" id="intakeNameError" style="color: #dc2626; font-size: 0.8rem; font-weight: 600;"></span>
+                </div>
+
+                <div class="intake-field-group">
+                  <label class="intake-field-label" for="intakePhone">Phone Number (Cell / Mobile preferred) <span class="req" style="color: #dc2626;">*</span></label>
+                  <input type="tel" id="intakePhone" name="phone" class="intake-input form-input" placeholder="(334) 556-0000" inputmode="tel" required>
+                  <span class="field-error" id="intakePhoneError" style="color: #dc2626; font-size: 0.8rem; font-weight: 600;"></span>
+                </div>
+
+                <div class="intake-field-group">
+                  <label class="intake-field-label" for="intakeEmail">Email Address <span>(Optional)</span></label>
+                  <input type="email" id="intakeEmail" name="email" class="intake-input form-input" placeholder="name@example.com" inputmode="email">
+                  <span class="field-error" id="intakeEmailError" style="color: #dc2626; font-size: 0.8rem; font-weight: 600;"></span>
+                </div>
+
+                <div class="intake-field-group full-width">
+                  <label class="intake-field-label" for="intakeNotes">Prior Experience or Special Needs (Optional)</label>
+                  <textarea id="intakeNotes" name="notes" rows="2" class="intake-input form-input" placeholder="Tell us if you have past worksite experience or need help obtaining an ID..."></textarea>
+                </div>
+              </div>
+
+              <div class="intake-actions-footer">
+                <button type="button" class="btn-secondary intake-prev-btn" data-prev-step="2">
+                  <span>←</span> Back
+                </button>
+                <div class="autosave-indicator" id="autosaveIndicatorStep3">
+                  <span class="autosave-dot"></span> <span class="autosave-text">Changes save automatically</span>
+                </div>
+                <button type="submit" class="btn-cta btn-submit-intake" id="intakeSubmitBtn">
+                  Complete &amp; Submit Profile <span aria-hidden="true">✓</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 4: Confirmation & Goal Tracking Summary -->
+          <div class="intake-step-pane" id="intakeStep4" data-step-index="4" hidden>
+            <div class="intake-success-banner">
+              <div class="success-icon" aria-hidden="true">✓</div>
+              <h3>Training Journey Initiated!</h3>
+              <p>Your transitional prospect profile is registered in Cloud Firestore under your secure session UID.</p>
+            </div>
+
+            <div class="prospect-summary-card">
+              <div class="prospect-summary-header">
+                <div>
+                  <span class="summary-label">Prospect Record UID</span>
+                  <code class="prospect-uid-code" id="summaryUidDisplay">Loading UID...</code>
+                </div>
+                <span class="status-badge-active" id="summaryStatusDisplay">In-Progress Intake</span>
+              </div>
+
+              <div class="prospect-summary-grid">
+                <div class="summary-item">
+                  <span class="summary-item-label">Selected Trade</span>
+                  <span class="summary-item-val" id="summaryTradeDisplay">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-item-label">Primary Goal</span>
+                  <span class="summary-item-val" id="summaryGoalDisplay">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-item-label">Career Center Step</span>
+                  <span class="summary-item-val" id="summaryCareerCenterDisplay">—</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-item-label">Prospect Name</span>
+                  <span class="summary-item-val" id="summaryNameDisplay">—</span>
+                </div>
+              </div>
+
+              <div class="intake-checklist-box">
+                <h4>Next Steps to Prepare for Intake:</h4>
+                <ul>
+                  <li>Bring your Government Photo ID (Driver's License or State ID)</li>
+                  <li>Bring your Social Security Card or Work Authorization document</li>
+                  <li>Expect a call or text message from our intake counselor within 24–48 hours</li>
+                  <li>Worksite Center: 2269 15th Ave. S.W., Lanett, AL 36863 | Phone: (615) 603-1157</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="intake-actions-footer" style="justify-content: center; gap: 1rem;">
+              <button type="button" class="btn-secondary" id="intakeEditProfileBtn">
+                Review / Edit Answers
+              </button>
+              <button type="button" class="btn-cta" data-intake-close>
+                Close &amp; Return to Programs
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1232,6 +1509,7 @@
   <div id="toastNotification" class="toast-notification" role="status" aria-live="polite" hidden>Link copied to clipboard!</div>
 
   <script src="main.js?v=20261003-deck-final" defer></script>
+  <script type="module" src="transitional-intake.js"></script>
   <script src="analytics.js" defer></script>
 </body>
 </html>

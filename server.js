@@ -68,6 +68,7 @@ const inMemoryVolunteerSignups = [];
 const inMemoryCandidates = [];
 const inMemoryPartnerships = [];
 const inMemoryDonations = [];
+const inMemoryTransitionalProspects = new Map();
 const deliveredInboxLog = [];
 
 const analyticsStore = {
@@ -99,6 +100,25 @@ try {
       };
       const store = storeMap[name] || inMemoryInquiries;
       return {
+        doc: (id) => ({
+          get: async () => {
+            if (name === 'Transitional_Prospects') {
+              const data = inMemoryTransitionalProspects.get(id);
+              return { exists: !!data, data: () => data };
+            }
+            const found = store.find(s => s.id === id);
+            return { exists: !!found, data: () => found };
+          },
+          set: async (data, opts) => {
+            if (name === 'Transitional_Prospects') {
+              const existing = inMemoryTransitionalProspects.get(id) || {};
+              const merged = (opts && opts.merge) ? { ...existing, ...data } : data;
+              inMemoryTransitionalProspects.set(id, merged);
+              return { id };
+            }
+            return { id };
+          }
+        }),
         get: async () => ({
           docs: store.map((item, idx) => ({
             id: `item-${idx}`,
@@ -342,7 +362,63 @@ app.post('/api/candidates', async (req, res) => {
   }
 });
 
-// 5B-2. Transitional Jobs: Direct OJT Alternative Inquiry
+// 5B-2. Transitional Prospects Endpoint (Auto-save profile state)
+app.get('/api/transitional-prospects/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id || id.length > 128) {
+      return res.status(400).json({ error: 'Invalid prospect id' });
+    }
+    const docRef = db.collection('Transitional_Prospects').doc(id);
+    const snap = await docRef.get();
+    if (snap && snap.exists) {
+      return res.status(200).json({ success: true, prospect: snap.data() });
+    }
+    return res.status(404).json({ error: 'Prospect not found' });
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to retrieve prospect profile' });
+  }
+});
+
+app.post('/api/transitional-prospects', async (req, res) => {
+  try {
+    const { uid, trade, primaryGoal, timeline, careerCenter, backgroundStatus, transportation, name, phone, email, notes, status, currentStep, createdAt } = req.body || {};
+    const prospectId = String(uid || '').trim();
+    if (!prospectId || prospectId.length > 128) {
+      return res.status(400).json({ error: 'Invalid or missing prospect UID' });
+    }
+
+    const payload = {
+      uid: prospectId,
+      currentStep: String(currentStep || '1'),
+      trade: String(trade || 'Carpentry & Construction Technology').slice(0, 100),
+      primaryGoal: String(primaryGoal || '').slice(0, 200),
+      timeline: String(timeline || '').slice(0, 100),
+      careerCenter: String(careerCenter || '').slice(0, 150),
+      backgroundStatus: String(backgroundStatus || '').slice(0, 100),
+      transportation: String(transportation || '').slice(0, 100),
+      name: String(name || '').slice(0, 100),
+      phone: String(phone || '').slice(0, 30),
+      email: String(email || '').slice(0, 120),
+      notes: String(notes || '').slice(0, 500),
+      status: ['in_progress', 'completed', 'submitted'].includes(status) ? status : 'in_progress',
+      updatedAt: new Date().toISOString()
+    };
+    if (createdAt) {
+      payload.createdAt = String(createdAt);
+    } else {
+      payload.createdAt = payload.updatedAt;
+    }
+
+    await db.collection('Transitional_Prospects').doc(prospectId).set(payload, { merge: true });
+    return res.status(200).json({ success: true, message: 'Prospect profile saved', prospect: payload });
+  } catch (err) {
+    console.error('Error saving transitional prospect:', err);
+    return res.status(500).json({ error: 'Failed to save prospect profile' });
+  }
+});
+
+// 5B-3. Transitional Jobs: Direct OJT Alternative Inquiry
 app.post('/api/transitional-jobs/ojt-inquiry', async (req, res) => {
   try {
     const { name, email, situation, phone } = req.body || {};

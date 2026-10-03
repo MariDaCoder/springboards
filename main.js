@@ -149,8 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevBtn = document.getElementById("trainSlidePrev");
     const nextBtn = document.getElementById("trainSlideNext");
     const counter = document.getElementById("trainCurrentSlideNum");
-    const preQualBtn = document.getElementById("trainPreQualBtn");
-    const notReadyLink = document.getElementById("trainNotReadyLink");
+    const startJourneyBtn = document.getElementById("trainStartJourneyBtn");
+    const declineBtn = document.getElementById("trainDeclineBtn");
     const viewport = carousel.querySelector(".train-slides-viewport");
     const trainCard = document.querySelector('[data-program-card="train"]');
 
@@ -199,11 +199,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (prevBtn) prevBtn.disabled = currentIndex === 0;
       if (nextBtn) nextBtn.disabled = currentIndex === totalSlides - 1;
 
-      // Handle timing of Button and Link appearance
+      // Handle timing of Green Start Journey Button and Red Decline Button appearance
       if (currentIndex < totalSlides - 1) {
         // While browsing slides 1 through 9, keep button and link hidden
-        if (preQualBtn) preQualBtn.classList.remove("is-visible");
-        if (notReadyLink) notReadyLink.classList.remove("is-visible");
+        if (startJourneyBtn) startJourneyBtn.classList.remove("is-visible");
+        if (declineBtn) declineBtn.classList.remove("is-visible");
 
         if (triggerAuto) {
           clearAllTimers();
@@ -216,14 +216,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // Tenth slide reached!
         if (triggerAuto) {
           clearAllTimers();
-          // "after tenth slide 3 secs complete the button appears link appears 1.5 seconds later"
+          // "Green ‘Start Training Journey’ Button (#trainStartJourneyBtn): Appears smoothly when the 10th slide completes its 3-second hold"
           slideTimer = setTimeout(() => {
-            if (preQualBtn) {
-              preQualBtn.classList.add("is-visible");
+            if (startJourneyBtn) {
+              startJourneyBtn.classList.add("is-visible");
             }
+            // "Red Decline Button (#trainDeclineBtn): Fades in 1.5 seconds after the green button"
             linkTimer = setTimeout(() => {
-              if (notReadyLink) {
-                notReadyLink.classList.add("is-visible");
+              if (declineBtn) {
+                declineBtn.classList.add("is-visible");
               }
             }, 1500);
           }, 3000);
@@ -233,8 +234,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const startPresentation = () => {
       clearAllTimers();
-      if (preQualBtn) preQualBtn.classList.remove("is-visible");
-      if (notReadyLink) notReadyLink.classList.remove("is-visible");
+      if (startJourneyBtn) startJourneyBtn.classList.remove("is-visible");
+      if (declineBtn) declineBtn.classList.remove("is-visible");
       updateSlider(0, true);
     };
 
@@ -316,9 +317,20 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Link under the button will go back to #our programs and replace text with No, I'm not ready yet.
-    if (notReadyLink) {
-      notReadyLink.addEventListener("click", (e) => {
+    // Green Start Training Journey Button: opens Conversational Intake Modal and initiates goal tracking
+    if (startJourneyBtn) {
+      startJourneyBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (typeof window._openConversationalIntakeModal === "function") {
+          window._openConversationalIntakeModal("Carpentry & Construction Technology");
+        }
+      });
+    }
+
+    // Red Decline Button: flips card back smoothly to front face and returns to #our-programs
+    if (declineBtn) {
+      declineBtn.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         stopPresentation();
@@ -338,7 +350,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Also trigger start when hover over train card if not already flipped
     if (trainCard) {
       trainCard.addEventListener("mouseenter", () => {
-        if (!slideTimer && !preQualBtn.classList.contains("is-visible")) {
+        if (!slideTimer && (!startJourneyBtn || !startJourneyBtn.classList.contains("is-visible"))) {
           startPresentation();
         }
       });
