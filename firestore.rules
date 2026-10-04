@@ -7,73 +7,31 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Common security helpers
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    function isValidId(id) {
-      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
-    }
-
-    // Transitional Prospects Collection
-    // Allows anonymous or session-identified prospects to initiate (create) and auto-save updates
-    // to their in-progress profile documents linked by their session UID.
-    match /Transitional_Prospects/{prospectId} {
-      allow read: if isValidId(prospectId)
-                  && (
-                    (isSignedIn() && (request.auth.uid == prospectId || resource.data.uid == request.auth.uid))
-                    || request.auth == null
-                  );
-
-      allow create: if isValidId(prospectId)
-                    && (
-                      (isSignedIn() && (request.auth.uid == prospectId || request.resource.data.uid == request.auth.uid))
-                      || request.auth == null
-                    )
-                    && request.resource.data.uid is string
-                    && request.resource.data.uid.size() > 0
-                    && request.resource.data.uid.size() <= 128
-                    && request.resource.data.status in ['in_progress', 'completed', 'submitted']
-                    && request.resource.data.keys().hasOnly([
-                      'uid', 'currentStep', 'trade', 'primaryGoal', 'timeline',
-                      'careerCenter', 'backgroundStatus', 'transportation',
-                      'firstName', 'lastName', 'name', 'phone', 'email', 'notes', 'status', 'createdAt', 'updatedAt'
-                    ]);
-
-      allow update: if isValidId(prospectId)
-                    && (
-                      (isSignedIn() && (request.auth.uid == prospectId || resource.data.uid == request.auth.uid))
-                      || request.auth == null
-                    )
-                    && request.resource.data.uid == resource.data.uid
-                    && request.resource.data.status in ['in_progress', 'completed', 'submitted']
-                    && request.resource.data.keys().hasOnly([
-                      'uid', 'currentStep', 'trade', 'primaryGoal', 'timeline',
-                      'careerCenter', 'backgroundStatus', 'transportation',
-                      'firstName', 'lastName', 'name', 'phone', 'email', 'notes', 'status', 'createdAt', 'updatedAt'
-                    ]);
-
-      allow delete: if false;
-    }
-
+    // Program inquiries: public write-only, no public reads, strict field validation
     match /programInquiries/{inquiryId} {
-      allow create: if isValidId(inquiryId)
-                    && request.resource.data.name is string
+      allow read, update, delete: if false;
+      allow create: if request.resource.data.name is string
                     && request.resource.data.name.size() > 0
                     && request.resource.data.name.size() <= 100
+                    && (
+                      (request.resource.data.email is string && request.resource.data.email.size() > 0) ||
+                      (request.resource.data.phone is string && request.resource.data.phone.size() > 0)
+                    )
                     && request.resource.data.program is string
-                    && request.resource.data.program.size() > 0
-                    && request.resource.data.program.size() <= 50;
-      allow read, update, delete: if false;
+                    && request.resource.data.createdAt is timestamp;
     }
 
+    // Volunteer inquiries: public write-only, no public reads, strict field validation
     match /volunteerSignups/{signupId} {
-      allow create: if isValidId(signupId)
-                    && request.resource.data.name is string
-                    && request.resource.data.name.size() > 0
-                    && request.resource.data.name.size() <= 100;
       allow read, update, delete: if false;
+      allow create: if request.resource.data.name is string
+                    && request.resource.data.name.size() > 0
+                    && request.resource.data.name.size() <= 100
+                    && (
+                      (request.resource.data.email is string && request.resource.data.email.size() > 0) ||
+                      (request.resource.data.phone is string && request.resource.data.phone.size() > 0)
+                    )
+                    && request.resource.data.createdAt is timestamp;
     }
   }
 }

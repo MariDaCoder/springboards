@@ -162,7 +162,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261003-intake-220">
+  <link rel="stylesheet" href="styles.css?v=20261003-deck-final">
 </head>
 <body id="top">
   <!-- Accessibility Skip Link -->
@@ -480,8 +480,8 @@
                 </div>
 
                 <div class="train-card-actions" id="trainCardActions">
-                  <button type="button" class="btn-cta btn-start-journey" id="trainStartJourneyBtn" data-trade-default="Carpentry &amp; Construction Technology">Start Training Journey</button>
-                  <button type="button" class="btn-decline" id="trainDeclineBtn">Decline</button>
+                  <button type="button" class="btn-cta btn-candidate-trigger" id="trainPreQualBtn" data-trade-default="Carpentry &amp; Construction Technology">Yes, get pre qualified.</button>
+                  <a href="#our-programs" class="train-not-ready-link" id="trainNotReadyLink">No, I'm not ready yet.</a>
                 </div>
               </div>
             </div>
@@ -778,292 +778,122 @@
       </div>
     </section>
 
-    <!-- PUBLIC PRIVACY POLICY MODAL (#policy) -->
-    <div class="inquiry-modal" id="policyModal" hidden>
-      <div class="inquiry-modal-backdrop" data-policy-close></div>
-      <div class="inquiry-modal-dialog legal-dialog" role="dialog" aria-modal="true" aria-labelledby="policyModalTitle" id="policy">
-        <button type="button" class="inquiry-modal-close" data-policy-close aria-label="Close privacy policy">&times;</button>
-        <span class="section-eyebrow">Public Legal Notice</span>
-        <h2 id="policyModalTitle">Public Privacy Policy</h2>
-        <div class="privacy-modal-body legal-modal-body">
-          <p class="legal-effective"><strong>Effective Date:</strong> October 2026 &bull; Springboards for Community Development (501(c)(3) Nonprofit Workforce Initiative)</p>
-          <p class="legal-intro">Springboards for Community Development ("Springboards," "we," "us," or "our") is committed to protecting the privacy, dignity, and rights of all prospective candidates, vocational students, program participants, community partners, volunteers, and donors. This Public Privacy Policy outlines our transparent practices regarding data collection, protection, and usage across our web platform (<a href="https://springboardsfcd.org/#policy" style="color: var(--accent-green); font-weight: 700;">https://springboardsfcd.org/#policy</a>) and related workforce intake services.</p>
+    <!-- PRIVACY POLICY & TERMS MODAL -->
+    <div class="inquiry-modal" id="privacyModal" hidden>
+      <div class="inquiry-modal-backdrop" data-privacy-close></div>
+      <div class="inquiry-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
+        <button type="button" class="inquiry-modal-close" data-privacy-close aria-label="Close privacy notice">×</button>
+        <span class="section-eyebrow">Legal &amp; Transparency</span>
+        <h2 id="privacyModalTitle">Privacy Policy &amp; Terms</h2>
+        <div class="privacy-modal-body" style="font-size: 0.95rem; line-height: 1.6; color: var(--text-dark); max-height: 60vh; overflow-y: auto; padding-right: 0.5rem;">
+          <p><strong>Effective Date:</strong> September 2026</p>
+          <p>Springboards for Community Development is dedicated to protecting the privacy of prospective students, participants, volunteers, and donors.</p>
+          
+          <h4 style="color: var(--primary-navy); margin: 1rem 0 0.35rem; font-size: 1.05rem;">1. Information We Collect</h4>
+          <p>We only collect personal information that you voluntarily submit through our program inquiry, volunteer signup, donation, or direct contact triggers, including your name, telephone number, email address, availability, and trade preferences.</p>
 
-          <h4 class="legal-subhead">1. Information We Collect</h4>
-          <p>We only collect information that you intentionally provide when seeking workforce guidance, vocational training, or community involvement:</p>
-          <ul>
-            <li><strong>Candidate &amp; Trainee Profiles:</strong> First name, last name, telephone number, email address, selected trade pathways (Carpentry, Electrical, HVAC, Plumbing, Site Prep), and target workforce timelines.</li>
-            <li><strong>Intake &amp; Goal-Tracking Data:</strong> Self-identified readiness factors, transportation access, and Alabama Career Center connection status needed to coordinate training assistance.</li>
-            <li><strong>Community &amp; Partner Inquiries:</strong> Organization details, contact names, and project inquiries submitted via our partner, donor, or volunteer forms.</li>
-            <li><strong>Diagnostic Performance Data:</strong> Anonymous technical logs (browser type, timestamp) used solely to verify web application availability, data protection, and cloud uptime.</li>
-          </ul>
+          <h4 style="color: var(--primary-navy); margin: 1rem 0 0.35rem; font-size: 1.05rem;">2. How Information Is Used</h4>
+          <p>Submitted information is used exclusively to contact you regarding vocational training enrollment, volunteer project scheduling, partner inquiries, or deductible donation receipts. We never sell, rent, trade, or distribute your personal details to external advertisers or telemarketers.</p>
 
-          <h4 class="legal-subhead">2. How We Use Your Information</h4>
-          <p>All information collected is used exclusively for nonprofit workforce development and participant support:</p>
-          <ul>
-            <li>Enrolling candidates into hands-on trade training cohorts and transitional paid work sequences.</li>
-            <li>Connecting candidates with designated Alabama Career Centers (Valley, Opelika, Phenix City) for state eligibility and onboarding documentation.</li>
-            <li>Matching trainees with mentor contractors and employer sponsors for on-the-job apprenticeship opportunities.</li>
-            <li>Issuing charitable contribution receipts and compliance documentation for donors and grant partners.</li>
-            <li>Sending essential schedule updates, class location notices, and inclement weather alerts.</li>
-          </ul>
+          <h4 style="color: var(--primary-navy); margin: 1rem 0 0.35rem; font-size: 1.05rem;">3. Equal Opportunity &amp; Equality</h4>
+          <p>Springboards provides training and career services regardless of race, color, religion, sex, national origin, age, disability, or background, in accordance with applicable federal and state guidelines.</p>
 
-          <h4 class="legal-subhead">3. No Commercial Sale of Personal Information</h4>
-          <p><strong>Springboards will never sell, rent, trade, or distribute your personal contact information to third-party commercial advertisers or data brokers.</strong> Information is shared solely with accredited workforce agencies, vetted training partners, or governmental workforce development programs directly involved in your career progression.</p>
-
-          <h4 class="legal-subhead">4. Cloud Security &amp; Data Encryption</h4>
-          <p>All candidate records and form submissions are transmitted securely via TLS/HTTPS encryption and stored within dedicated Google Cloud Firestore databases configured with strict server-side Attribute-Based Access Control (ABAC) rules to prevent unauthorized data access.</p>
-
-          <h4 class="legal-subhead">5. Equal Opportunity &amp; Non-Discrimination</h4>
-          <p>Springboards provides vocational training, transitional employment, and supportive services without regard to race, color, religion, sex, sexual orientation, gender identity, national origin, age, disability, or background, in compliance with Title VI of the Civil Rights Act and the Workforce Innovation and Opportunity Act (WIOA).</p>
-
-          <h4 class="legal-subhead">6. Your Rights &amp; Records Access</h4>
-          <p>You may request to review, modify, export, or permanently delete your intake record from our systems at any time by contacting our intake office:</p>
-          <div class="legal-contact-callout">
-            <p><strong>Springboards Privacy &amp; Records Office</strong></p>
-            <p>Direct Link: <a href="https://springboardsfcd.org/#policy" style="color: var(--accent-green); font-weight: 700;">https://springboardsfcd.org/#policy</a></p>
-            <p>Email: <a href="mailto:info@springboardsfcd.org" style="color: var(--accent-green); font-weight: 700;">info@springboardsfcd.org</a></p>
-            <p>Telephone: <a href="tel:+16156031157" style="color: var(--accent-green); font-weight: 700;">615-603-1157</a></p>
-            <p>Serving Lanett, Valley &amp; Chambers County, AL</p>
-          </div>
+          <h4 style="color: var(--primary-navy); margin: 1rem 0 0.35rem; font-size: 1.05rem;">4. Your Rights &amp; Contact</h4>
+          <p>You may request to view, modify, or delete your contact records from our database at any time by emailing <a href="mailto:info@springboardsfcd.org" style="color: var(--accent-green); font-weight: 700;">info@springboardsfcd.org</a> or calling <a href="tel:+16156031157" style="color: var(--accent-green); font-weight: 700;">615-603-1157</a>.</p>
         </div>
-        <div class="legal-modal-actions">
-          <button type="button" class="btn-cta" data-policy-close style="width: 100%;">Close Privacy Policy</button>
-        </div>
+        <button type="button" class="btn-cta" data-privacy-close style="width: 100%; margin-top: 1.25rem;">Close Notice</button>
       </div>
     </div>
 
-    <!-- PUBLIC TERMS OF SERVICE MODAL (#terms) -->
-    <div class="inquiry-modal" id="termsModal" hidden>
-      <div class="inquiry-modal-backdrop" data-terms-close></div>
-      <div class="inquiry-modal-dialog legal-dialog" role="dialog" aria-modal="true" aria-labelledby="termsModalTitle" id="terms">
-        <button type="button" class="inquiry-modal-close" data-terms-close aria-label="Close terms of service">&times;</button>
-        <span class="section-eyebrow">Public Legal Notice</span>
-        <h2 id="termsModalTitle">Public Terms of Service</h2>
-        <div class="privacy-modal-body legal-modal-body">
-          <p class="legal-effective"><strong>Effective Date:</strong> October 2026 &bull; Springboards for Community Development</p>
-          <p class="legal-intro">These Public Terms of Service ("Terms") govern your use of the Springboards for Community Development website (<a href="https://springboardsfcd.org/#terms" style="color: var(--accent-green); font-weight: 700;">https://springboardsfcd.org/#terms</a>), vocational intake sequence, curriculum slides, and workforce program services. By accessing our platform, completing an application, or enrolling in our cohorts, you agree to be bound by these Terms.</p>
-
-          <h4 class="legal-subhead">1. Program Scope &amp; Mission</h4>
-          <p>Springboards is a nonprofit community workforce initiative dedicated to delivering hands-on vocational trade training, OSHA jobsite safety certifications, paid transitional employment, and career pathway coaching for individuals seeking long-term careers in the building trades.</p>
-
-          <h4 class="legal-subhead">2. Participant Eligibility &amp; Career Center Onboarding</h4>
-          <p>Our programs serve motivated adults, opportunity youth, and returning citizens seeking skilled trades employment. Candidates participating in paid transitional work slots are required to verify their workforce eligibility and documentation through their regional Alabama Career Center (Valley, Opelika, or Phenix City).</p>
-
-          <h4 class="legal-subhead">3. Code of Conduct &amp; Safety Mandate</h4>
-          <p>Jobsite safety and mutual respect are foundational to Springboards. Participants and trainees agree to:</p>
-          <ul>
-            <li>Comply strictly with all OSHA construction safety regulations, instructor commands, and equipment guidelines.</li>
-            <li>Wear required personal protective equipment (hard hats, safety glasses, high-visibility vests, work boots) provided during hands-on rotations.</li>
-            <li>Treat all peers, instructors, homeowners, and community members with professional respect and non-violence.</li>
-            <li>Never possess, consume, or be under the influence of alcohol, recreational drugs, or illegal substances on training grounds or partner job sites.</li>
-          </ul>
-
-          <h4 class="legal-subhead">4. Integrity of Submitted Information</h4>
-          <p>You agree to provide accurate and truthful contact information and background details in the intake sequence. Misrepresenting identification or eligibility may result in removal from subsidized wage or scholarship programs.</p>
-
-          <h4 class="legal-subhead">5. Educational Intellectual Property</h4>
-          <p>All training frameworks, trade curricula, instructional slides, visual presentations, logos, and digital intake sequences remain the copyrighted property of Springboards for Community Development. Materials are provided solely for personal educational use by registered candidates.</p>
-
-          <h4 class="legal-subhead">6. Disclaimer &amp; Placement Outcomes</h4>
-          <p>Springboards provides top-tier instruction, industry-recognized credential prep, and active employer referrals in good faith. While our transitional model actively drives toward 100% graduate placement, enrollment does not guarantee specific third-party wage rates, contract terms, or permanent employment guarantees.</p>
-
-          <h4 class="legal-subhead">7. Governing Law</h4>
-          <p>These Terms are governed by and construed in accordance with the laws of the State of Alabama. Any legal matters or disputes shall be addressed within the jurisdiction of Chambers County, Alabama.</p>
-
-          <h4 class="legal-subhead">8. Contact Information</h4>
-          <div class="legal-contact-callout">
-            <p><strong>Springboards Legal &amp; Program Administration</strong></p>
-            <p>Direct Link: <a href="https://springboardsfcd.org/#terms" style="color: var(--accent-green); font-weight: 700;">https://springboardsfcd.org/#terms</a></p>
-            <p>Email: <a href="mailto:info@springboardsfcd.org" style="color: var(--accent-green); font-weight: 700;">info@springboardsfcd.org</a></p>
-            <p>Telephone: <a href="tel:+16156031157" style="color: var(--accent-green); font-weight: 700;">615-603-1157</a></p>
-            <p>Headquarters: Lanett &amp; Valley, AL</p>
-          </div>
-        </div>
-        <div class="legal-modal-actions">
-          <button type="button" class="btn-cta" data-terms-close style="width: 100%;">Close Terms of Service</button>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- CANDIDATE INTAKE & PROSPECT PROFILE CREATION MODAL -->
+    <!-- CANDIDATE INTAKE MODAL -->
     <div class="inquiry-modal" id="candidateModal" hidden>
       <div class="inquiry-modal-backdrop" data-candidate-close></div>
-      <div class="inquiry-modal-dialog intake-flow-dialog" role="dialog" aria-modal="true" aria-labelledby="intakeFlowTitle">
-        <button type="button" class="inquiry-modal-close" data-candidate-close aria-label="Close intake flow">&times;</button>
-        <!-- Conversational Intake Container -->
-        <div class="intake-flow-container" id="intakeFlowContainer">
-          
-          <!-- Top Progress Tracker -->
-          <div class="intake-progress-header" id="intakeProgressHeader">
-            <div class="intake-progress-meta">
-              <span class="intake-step-tag">Goal-Tracking Sequence</span>
-              <span class="intake-step-indicator" id="intakeStepIndicator">Step <strong>1</strong> of 4</span>
+      <div class="inquiry-modal-dialog modal-large" role="dialog" aria-modal="true" aria-labelledby="candidateModalTitle">
+        <button type="button" class="inquiry-modal-close" data-candidate-close aria-label="Close candidate application">×</button>
+        <div class="modal-form-view" id="candidateFormView">
+          <span class="section-eyebrow">Second Chances • Real Wages • Zero Debt</span>
+          <h2 id="candidateModalTitle">Trade Training Candidate Application</h2>
+          <p class="modal-subtext">Apply for tuition-free construction trade training with direct pathways into high-demand careers.</p>
+          <form class="program-inquiry-form" id="candidateApplicationForm" novalidate>
+            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <label>Full Legal Name
+              <input name="name" type="text" autocomplete="name" placeholder="First and last name" minlength="2" maxlength="80" required>
+            </label>
+            <div class="form-grid-row">
+              <label>Phone Number (Cell / Mobile preferred)
+                <input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(334) 556-0000" pattern="^(\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$" title="Please enter a valid 10-digit phone number, e.g. (334) 556-0000">
+              </label>
+              <label>Email Address <span>(optional if phone provided)</span>
+                <input name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address with a domain, e.g. you@example.com">
+              </label>
             </div>
-            <div class="intake-progress-bar-track" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-              <div class="intake-progress-bar-fill" id="intakeProgressFill" style="width: 25%;"></div>
+            <div class="form-grid-row">
+              <label>Preferred Trade Pathway
+                <select name="trade" class="form-select">
+                  <option value="Carpentry & Construction Technology">Carpentry &amp; Construction Technology</option>
+                  <option value="Electrical & Wiring">Electrical &amp; Wiring</option>
+                  <option value="HVAC & Mechanical">HVAC &amp; Mechanical Systems</option>
+                  <option value="Plumbing & Pipefitting">Plumbing &amp; Pipefitting</option>
+                  <option value="Demolition & Site Preparation">Demolition &amp; Site Preparation</option>
+                  <option value="Undecided / Open to Guidance">Undecided / Open to Guidance</option>
+                </select>
+              </label>
+              <label>Background Status
+                <select name="backgroundStatus" class="form-select">
+                  <option value="Returning Citizen / Justice-Involved">Returning Citizen / Justice-Involved</option>
+                  <option value="Opportunity Youth (Age 18-24)">Opportunity Youth (Age 18–24)</option>
+                  <option value="Underemployed Adult / Career Changer">Underemployed Adult / Career Changer</option>
+                  <option value="Military Veteran">Military Veteran</option>
+                  <option value="Community Member">Community Member Seeking Trade Skills</option>
+                </select>
+              </label>
             </div>
+            <div class="form-grid-row">
+              <label>Transportation Status
+                <select name="transportation" class="form-select">
+                  <option value="Personal Vehicle">Have Personal Vehicle</option>
+                  <option value="Ride from Family/Friends">Ride from Family / Friends</option>
+                  <option value="Public Transit">Public Transit / Walking</option>
+                  <option value="Need Transportation Assistance">Need Transportation Assistance</option>
+                </select>
+              </label>
+              <label>Career Center Registration
+                <select name="careerCenter" class="form-select">
+                  <option value="Registered with AL Works / WorkSource GA">Yes, registered with AL Works / WorkSource GA</option>
+                  <option value="Need Help Registering">Not yet / Need help registering</option>
+                </select>
+              </label>
+            </div>
+            <label>Prior Experience, Certifications, or Questions (optional)
+              <textarea name="notes" rows="3" class="form-input" style="width: 100%; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.75rem; font-family: inherit;" placeholder="Tell us about any past construction experience or specific scheduling needs..."></textarea>
+            </label>
+            <button type="submit" class="btn-cta program-submit">Submit Candidate Application</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <div class="modal-confirmation-screen" id="candidateConfirmationScreen" hidden>
+          <div class="confirmation-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
           </div>
-
-          <!-- SCREEN 1: Introduction & User Profile Creation -->
-          <div class="intake-screen active" id="intakeScreen1" data-step="1">
-            <div class="intake-screen-content intake-centered">
-              <span class="intake-eyebrow">Step 1 of 4 &bull; Profile Initiation</span>
-              <!-- Line 1: Centered question prompt: "What is your name?" -->
-              <h2 class="intake-question text-center" id="intakeFlowTitle">What is your name?</h2>
-              <p class="intake-helper text-center">We will initialize and save your prospect profile in Transitional Prospects to track your journey and follow-up support.</p>
-              
-              <!-- Line 2: Column 1 (Side-by-side First/Last Name) | Column 2 (Key-cap styled Continue button) -->
-              <form id="intakeScreen1Form" class="intake-line2-row" onsubmit="return false;">
-                <div class="intake-line2-col1">
-                  <div class="intake-name-side-by-side">
-                    <div class="intake-input-box">
-                      <label for="intakeFirstNameInput" class="intake-field-label">First Name</label>
-                      <input type="text" id="intakeFirstNameInput" class="intake-input-clean" placeholder="First Name" autocomplete="given-name" autofocus required>
-                    </div>
-                    <div class="intake-input-box">
-                      <label for="intakeLastNameInput" class="intake-field-label">Last Name</label>
-                      <input type="text" id="intakeLastNameInput" class="intake-input-clean" placeholder="Last Name" autocomplete="family-name" required>
-                    </div>
-                  </div>
-                  <div class="intake-field-feedback" id="intakeNameError" role="alert" aria-live="polite"></div>
-                </div>
-
-                <div class="intake-line2-col2">
-                  <button type="submit" class="keycap-btn" id="intakeStep1Next" aria-label="Continue to next step (Press Enter)">
-                    <span class="keycap-surface">
-                      <span class="keycap-label">Continue &rarr;</span>
-                      <span class="keycap-symbol" aria-hidden="true">&#x21B5;</span>
-                    </span>
-                  </button>
-                  <span class="keycap-hint"><kbd class="kbd-badge">Enter &#x21B5;</kbd></span>
-                </div>
-              </form>
-            </div>
+          <span class="section-eyebrow confirm-eyebrow">Application Received</span>
+          <h2 class="confirmation-title">You're On Your Way!</h2>
+          <p class="confirmation-text">Thank you, <strong class="confirm-name">there</strong>! We've received your application for the <strong class="confirm-trade">Carpentry &amp; Construction Technology</strong> trade track. An intake counselor will contact you by phone or email within 1–2 business days to schedule your intake interview and verify required documents.</p>
+          <div class="confirmation-meta">
+            <p><strong>Intake Documents to Prepare:</strong><br>
+            • Valid Government Photo ID or Driver's License<br>
+            • Social Security Card or Work Authorization<br>
+            • Career Center Referral (or we will assist you on-site)<br>
+            Center Location: 2269 15th Ave. S.W., Lanett, AL 36863 | Phone: <a href="tel:+16156031157">615-603-1157</a></p>
           </div>
-
-          <!-- SCREEN 2: Contact Method (Name & one form of contact) -->
-          <div class="intake-screen" id="intakeScreen2" data-step="2">
-            <div class="intake-screen-content intake-centered">
-              <span class="intake-eyebrow">Step 2 of 4 &bull; Follow-Up Support</span>
-              <h2 class="intake-question">How can our intake team reach you?</h2>
-              <p class="intake-helper">Provide at least one form of contact to track your journey for follow-up support.</p>
-              <div class="intake-inputs-stacked">
-                <div class="intake-input-group">
-                  <label for="intakePhoneInput">Mobile Phone (Preferred for SMS updates)</label>
-                  <input type="tel" id="intakePhoneInput" class="intake-input-large" placeholder="(334) 556-0000" autocomplete="tel">
-                </div>
-                <div class="intake-divider-or"><span>OR</span></div>
-                <div class="intake-input-group">
-                  <label for="intakeEmailInput">Email Address</label>
-                  <input type="email" id="intakeEmailInput" class="intake-input-large" placeholder="you@example.com" autocomplete="email">
-                </div>
-                <div class="intake-field-feedback" id="intakeContactError" role="alert" aria-live="polite"></div>
-              </div>
-              <div class="intake-action-row intake-action-split">
-                <button type="button" class="btn-intake-back" id="intakeStep2Back">&larr; Back</button>
-                <button type="button" class="btn-cta btn-intake-next" id="intakeStep2Next">
-                  Continue <span aria-hidden="true">&rarr;</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- SCREEN 3: Trade / Program Choices (Visual choice cards) -->
-          <div class="intake-screen" id="intakeScreen3" data-step="3">
-            <div class="intake-screen-content intake-centered">
-              <span class="intake-eyebrow">Step 3 of 4 &bull; Trade Pathway</span>
-              <h2 class="intake-question">Which trade pathway are you interested in?</h2>
-              <p class="intake-helper">Select a specialty to begin your on-the-job training pathway with paid wages.</p>
-              <div class="intake-cards-grid" id="intakeTradeCards">
-                <button type="button" class="intake-choice-card selected" data-value="Carpentry &amp; Construction Technology">
-                  <span class="intake-card-icon" aria-hidden="true">&#x2692;</span>
-                  <strong class="intake-card-title">Carpentry &amp; Framing</strong>
-                  <span class="intake-card-desc">Rough carpentry, framing, drywall, and jobsite blueprint reading.</span>
-                  <span class="intake-card-check" aria-hidden="true">&check;</span>
-                </button>
-                <button type="button" class="intake-choice-card" data-value="Electrical &amp; Wiring">
-                  <span class="intake-card-icon" aria-hidden="true">&#x26A1;</span>
-                  <strong class="intake-card-title">Electrical &amp; Wiring</strong>
-                  <span class="intake-card-desc">Residential circuits, conduit bending, breaker panels, and safety.</span>
-                  <span class="intake-card-check" aria-hidden="true">&check;</span>
-                </button>
-                <button type="button" class="intake-choice-card" data-value="HVAC &amp; Mechanical">
-                  <span class="intake-card-icon" aria-hidden="true">&#x2744;&#xFE0F;</span>
-                  <strong class="intake-card-title">HVAC &amp; Mechanical</strong>
-                  <span class="intake-card-desc">Heating, ventilation, AC system fundamentals, and EPA prep.</span>
-                  <span class="intake-card-check" aria-hidden="true">&check;</span>
-                </button>
-                <button type="button" class="intake-choice-card" data-value="Plumbing &amp; Pipefitting">
-                  <span class="intake-card-icon" aria-hidden="true">&#x1F527;</span>
-                  <strong class="intake-card-title">Plumbing &amp; Pipefitting</strong>
-                  <span class="intake-card-desc">Copper, PEX, PVC supply &amp; drain lines, and fixture prep.</span>
-                  <span class="intake-card-check" aria-hidden="true">&check;</span>
-                </button>
-                <button type="button" class="intake-choice-card" data-value="Demolition &amp; Site Preparation">
-                  <span class="intake-card-icon" aria-hidden="true">&#x1F3D7;&#xFE0F;</span>
-                  <strong class="intake-card-title">Site Prep &amp; Masonry</strong>
-                  <span class="intake-card-desc">Concrete finishing, brick masonry, and demolition safety.</span>
-                  <span class="intake-card-check" aria-hidden="true">&check;</span>
-                </button>
-                <button type="button" class="intake-choice-card" data-value="Undecided / Open to Guidance">
-                  <span class="intake-card-icon" aria-hidden="true">&#x1F9ED;</span>
-                  <strong class="intake-card-title">Undecided / Open to Guidance</strong>
-                  <span class="intake-card-desc">Explore all core trades during our foundational hands-on rotation.</span>
-                  <span class="intake-card-check" aria-hidden="true">&check;</span>
-                </button>
-              </div>
-              <div class="intake-action-row intake-action-split">
-                <button type="button" class="btn-intake-back" id="intakeStep3Back">&larr; Back</button>
-                <button type="button" class="btn-cta btn-intake-next" id="intakeStep3Next">
-                  Continue <span aria-hidden="true">&rarr;</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- SCREEN 4: Goal-Tracking & Profile Confirmation -->
-          <div class="intake-screen" id="intakeScreen4" data-step="4">
-            <div class="intake-screen-content intake-centered">
-              <div class="intake-success-badge" aria-hidden="true">&check;</div>
-              <span class="intake-eyebrow">Profile Initialized &bull; Saved to Firestore</span>
-              <h2 class="intake-question">Welcome to Springboards!</h2>
-              <p class="intake-helper">
-                Your prospect profile has been initialized and saved. Your goal-tracking sequence is now active, and an intake counselor will reach out for follow-up support.
-              </p>
-              <div class="intake-profile-summary-card">
-                <div class="summary-item">
-                  <span class="summary-label">Candidate Name</span>
-                  <strong class="summary-val" id="summaryProspectName">&mdash;</strong>
-                </div>
-                <div class="summary-item">
-                  <span class="summary-label">Contact Info</span>
-                  <strong class="summary-val" id="summaryContactInfo">&mdash;</strong>
-                </div>
-                <div class="summary-item">
-                  <span class="summary-label">Selected Trade</span>
-                  <strong class="summary-val" id="summarySelectedTrade">&mdash;</strong>
-                </div>
-                <div class="summary-item">
-                  <span class="summary-label">Profile Status</span>
-                  <span class="intake-status-badge">&bull; Saved in Transitional_Prospects</span>
-                </div>
-              </div>
-              <div class="intake-action-row" style="margin-top: 1.5rem;">
-                <button type="button" class="btn-cta" id="intakeFinishBtn" style="width: 100%;">
-                  Done &amp; Return to Programs
-                </button>
-              </div>
-            </div>
-          </div>
-
+          <button type="button" class="btn-cta confirmation-done-button" data-candidate-close>Done <span aria-hidden="true">✓</span></button>
         </div>
       </div>
     </div>
 
-    <!-- PARTNERSHIP & COLLABORATION INQUIRY MODAL -->
-
+    <!-- BUSINESS & EMPLOYER PARTNERSHIP MODAL -->
     <div class="inquiry-modal" id="partnerModal" hidden>
       <div class="inquiry-modal-backdrop" data-partner-close></div>
       <div class="inquiry-modal-dialog modal-large" role="dialog" aria-modal="true" aria-labelledby="partnerModalTitle">
@@ -1374,8 +1204,7 @@
         <p>&copy; <span id="current-year"></span> Springboards for Community Development. All rights reserved.</p>
         <div class="footer-legal-group">
           <a href="#faq" class="footer-legal-link">FAQ</a>
-          <a href="https://springboardsfcd.org/#policy" class="footer-legal-link" id="openPrivacyLink" title="Provide users a link to your public privacy policy">Privacy Policy</a>
-          <a href="https://springboardsfcd.org/#terms" class="footer-legal-link" id="openTermsLink" title="Provide users a link to your public terms of service">Terms of Service</a>
+          <button type="button" class="footer-legal-link" id="openPrivacyModal">Privacy Policy &amp; Terms</button>
           <a href="/backoffice" class="footer-legal-link">Admin Portal</a>
           <button type="button" class="btn-share-page" id="sharePageButton" aria-label="Share Springboards">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -1402,8 +1231,7 @@
   <!-- Interactive Feedback Toast -->
   <div id="toastNotification" class="toast-notification" role="status" aria-live="polite" hidden>Link copied to clipboard!</div>
 
-  <script src="main.js?v=20261003-intake-220" defer></script>
+  <script src="main.js?v=20261003-deck-final" defer></script>
   <script src="analytics.js" defer></script>
-  <script type="module" src="transitional-intake.js"></script>
 </body>
 </html>

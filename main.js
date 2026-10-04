@@ -149,8 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevBtn = document.getElementById("trainSlidePrev");
     const nextBtn = document.getElementById("trainSlideNext");
     const counter = document.getElementById("trainCurrentSlideNum");
-    const startJourneyBtn = document.getElementById("trainStartJourneyBtn") || document.getElementById("trainPreQualBtn");
-    const declineBtn = document.getElementById("trainDeclineBtn") || document.getElementById("trainNotReadyLink");
+    const preQualBtn = document.getElementById("trainPreQualBtn");
+    const notReadyLink = document.getElementById("trainNotReadyLink");
     const viewport = carousel.querySelector(".train-slides-viewport");
     const trainCard = document.querySelector('[data-program-card="train"]');
 
@@ -202,8 +202,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Handle timing of Button and Link appearance
       if (currentIndex < totalSlides - 1) {
         // While browsing slides 1 through 9, keep button and link hidden
-        if (startJourneyBtn) startJourneyBtn.classList.remove("is-visible");
-        if (declineBtn) declineBtn.classList.remove("is-visible");
+        if (preQualBtn) preQualBtn.classList.remove("is-visible");
+        if (notReadyLink) notReadyLink.classList.remove("is-visible");
 
         if (triggerAuto) {
           clearAllTimers();
@@ -216,14 +216,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Tenth slide reached!
         if (triggerAuto) {
           clearAllTimers();
-          // "after tenth slide 3 secs complete the green start journey button appears, red decline button appears 1.5 seconds later"
+          // "after tenth slide 3 secs complete the button appears link appears 1.5 seconds later"
           slideTimer = setTimeout(() => {
-            if (startJourneyBtn) {
-              startJourneyBtn.classList.add("is-visible");
+            if (preQualBtn) {
+              preQualBtn.classList.add("is-visible");
             }
             linkTimer = setTimeout(() => {
-              if (declineBtn) {
-                declineBtn.classList.add("is-visible");
+              if (notReadyLink) {
+                notReadyLink.classList.add("is-visible");
               }
             }, 1500);
           }, 3000);
@@ -233,8 +233,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const startPresentation = () => {
       clearAllTimers();
-      if (startJourneyBtn) startJourneyBtn.classList.remove("is-visible");
-      if (declineBtn) declineBtn.classList.remove("is-visible");
+      if (preQualBtn) preQualBtn.classList.remove("is-visible");
+      if (notReadyLink) notReadyLink.classList.remove("is-visible");
       updateSlider(0, true);
     };
 
@@ -316,9 +316,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Red decline button flips card back and returns smoothly
-    if (declineBtn) {
-      declineBtn.addEventListener("click", (e) => {
+    // Link under the button will go back to #our programs and replace text with No, I'm not ready yet.
+    if (notReadyLink) {
+      notReadyLink.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         stopPresentation();
@@ -335,20 +335,10 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Green Start Training Journey button starts the intake modal
-    if (startJourneyBtn) {
-      startJourneyBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const defaultTrade = startJourneyBtn.dataset.tradeDefault || "Carpentry & Construction Technology";
-        openCandidateModal(defaultTrade);
-      });
-    }
-
     // Also trigger start when hover over train card if not already flipped
     if (trainCard) {
       trainCard.addEventListener("mouseenter", () => {
-        if (!slideTimer && startJourneyBtn && !startJourneyBtn.classList.contains("is-visible")) {
+        if (!slideTimer && !preQualBtn.classList.contains("is-visible")) {
           startPresentation();
         }
       });
@@ -801,252 +791,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ==========================================================================
-  // PUBLIC PRIVACY POLICY (#policy) & TERMS OF SERVICE (#terms) MODALS
-  // ==========================================================================
-  const policyModal = document.getElementById("policyModal") || document.getElementById("privacyModal");
-  const openPrivacyBtn = document.getElementById("openPrivacyLink") || document.getElementById("openPrivacyModal");
-  
-  const termsModal = document.getElementById("termsModal");
-  const openTermsBtn = document.getElementById("openTermsLink");
-
-  const openPolicy = () => {
-    if (policyModal) {
-      openModalWithFocus(policyModal, policyModal.querySelector(".btn-cta, [data-policy-close]"));
-      if (window.location.hash !== "#policy") {
-        try { history.replaceState(null, "", "#policy"); } catch {}
-      }
-    }
-  };
-
-  const closePolicy = () => {
-    if (policyModal) {
-      closeModalWithFocus(policyModal);
-      if (window.location.hash === "#policy" || window.location.hash === "#privacy") {
-        try { history.replaceState(null, "", window.location.pathname + window.location.search); } catch {}
-      }
-    }
-  };
-
-  const openTerms = () => {
-    if (termsModal) {
-      openModalWithFocus(termsModal, termsModal.querySelector(".btn-cta, [data-terms-close]"));
-      if (window.location.hash !== "#terms") {
-        try { history.replaceState(null, "", "#terms"); } catch {}
-      }
-    }
-  };
-
-  const closeTerms = () => {
-    if (termsModal) {
-      closeModalWithFocus(termsModal);
-      if (window.location.hash === "#terms") {
-        try { history.replaceState(null, "", window.location.pathname + window.location.search); } catch {}
-      }
-    }
-  };
-
-  if (openPrivacyBtn) {
-    openPrivacyBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      openPolicy();
+  // PRIVACY POLICY & TERMS MODAL
+  const privacyModal = document.getElementById("privacyModal");
+  const openPrivacyBtn = document.getElementById("openPrivacyModal");
+  if (privacyModal && openPrivacyBtn) {
+    openPrivacyBtn.addEventListener("click", () => {
+      openModalWithFocus(privacyModal, privacyModal.querySelector(".btn-cta"));
+    });
+    privacyModal.querySelectorAll("[data-privacy-close]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        closeModalWithFocus(privacyModal);
+      });
     });
   }
-
-  if (openTermsBtn) {
-    openTermsBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      openTerms();
-    });
-  }
-
-  if (policyModal) {
-    policyModal.querySelectorAll("[data-policy-close], [data-privacy-close]").forEach((btn) => {
-      btn.addEventListener("click", closePolicy);
-    });
-  }
-
-  if (termsModal) {
-    termsModal.querySelectorAll("[data-terms-close]").forEach((btn) => {
-      btn.addEventListener("click", closeTerms);
-    });
-  }
-
-  // Handle URL hash on page load and navigation (e.g., https://springboardsfcd.org/#policy or #terms)
-  const checkLegalHash = () => {
-    const hash = (window.location.hash || "").toLowerCase();
-    if (hash === "#policy" || hash === "#privacy") {
-      openPolicy();
-    } else if (hash === "#terms") {
-      openTerms();
-    }
-  };
-
-  window.addEventListener("hashchange", checkLegalHash);
-  setTimeout(checkLegalHash, 100);
 
   // CANDIDATE INTAKE MODAL
   const candidateModal = document.getElementById("candidateModal");
-  // ==========================================================================
-  // CONVERSATIONAL CANDIDATE INTAKE & PROSPECT PROFILE CONTROLLER
-  // ==========================================================================
-  let firebaseAuthUid = null;
-  const initClientFirebase = async () => {
-    try {
-      const res = await fetch("/api/firebase-config");
-      if (!res.ok) return;
-      const config = await res.json();
-      if (!config || !config.apiKey) return;
-
-      const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js");
-      const { getAuth, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js");
-
-      const app = getApps().length === 0 ? initializeApp(config) : getApps()[0];
-      const auth = getAuth(app);
-      onAuthStateChanged(auth, (user) => {
-        firebaseAuthUid = user?.uid || null;
-      });
-    } catch {
-      // Non-critical client auth state listener
-    }
-  };
-  initClientFirebase().catch(() => {});
-
-  let prospectState = {
-    step: 1,
-    prospectId: null,
-    uid: null,
-    name: "",
-    phone: "",
-    email: "",
-    tradePathway: "Carpentry & Construction Technology",
-    targetStartDate: "Immediately (Next Cohort)",
-    statusCode: null
-  };
-
-  const progressHeader = document.getElementById("intakeProgressHeader");
-  const stepIndicator = document.getElementById("intakeStepIndicator");
-  const progressFill = document.getElementById("intakeProgressFill");
-
-  const screens = {
-    1: document.getElementById("intakeScreen1"),
-    2: document.getElementById("intakeScreen2"),
-    3: document.getElementById("intakeScreen3"),
-    4: document.getElementById("intakeScreen4"),
-    done: document.getElementById("intakeScreenDone")
-  };
-
-  const nameInput = document.getElementById("intakeNameInput");
-  const nameError = document.getElementById("intakeNameError");
-  const step1Next = document.getElementById("intakeStep1Next");
-
-  const phoneInput = document.getElementById("intakePhoneInput");
-  const emailInput = document.getElementById("intakeEmailInput");
-  const contactError = document.getElementById("intakeContactError");
-  const step2Back = document.getElementById("intakeStep2Back");
-  const step2Next = document.getElementById("intakeStep2Next");
-
-  const tradeCardsContainer = document.getElementById("intakeTradeCards");
-  const step3Back = document.getElementById("intakeStep3Back");
-  const step3Next = document.getElementById("intakeStep3Next");
-
-  const datePresets = document.getElementById("intakeDatePresets");
-  const startDateInput = document.getElementById("intakeStartDateInput");
-  const step4Back = document.getElementById("intakeStep4Back");
-  const step4Finish = document.getElementById("intakeStep4Finish");
-
-  const goToStep = (step) => {
-    prospectState.step = step;
-
-    // Toggle active screen
-    Object.keys(screens).forEach((key) => {
-      const scr = screens[key];
-      if (scr) {
-        const isActive = String(key) === String(step);
-        scr.classList.toggle("active", isActive);
-        scr.hidden = !isActive;
-      }
-    });
-
-    if (step === "done") {
-      if (progressHeader) progressHeader.hidden = true;
-      const doneBtn = document.querySelector(".btn-intake-done");
-      if (doneBtn) doneBtn.focus();
-      return;
-    }
-
-    if (progressHeader) progressHeader.hidden = false;
-    const stepNum = Number(step);
-    const totalSteps = 4;
-    const pct = Math.round((stepNum / totalSteps) * 100);
-
-    if (stepIndicator) {
-      stepIndicator.innerHTML = `Step <strong>${stepNum}</strong> of ${totalSteps}`;
-    }
-    if (progressFill) {
-      progressFill.style.width = `${pct}%`;
-    }
-
-    // Auto focus current input
-    if (stepNum === 1 && nameInput) setTimeout(() => nameInput.focus(), 50);
-    if (stepNum === 2 && phoneInput) setTimeout(() => phoneInput.focus(), 50);
-  };
+  const candidateFormView = document.getElementById("candidateFormView");
+  const candidateConfirmationScreen = document.getElementById("candidateConfirmationScreen");
+  const candidateForm = document.getElementById("candidateApplicationForm");
 
   const openCandidateModal = (defaultTrade) => {
-    if (!candidateModal) return;
-
-    // Reset prospect state
-    prospectState = {
-      step: 1,
-      prospectId: null,
-      uid: firebaseAuthUid || null,
-      name: "",
-      phone: "",
-      email: "",
-      tradePathway: defaultTrade || "Carpentry & Construction Technology",
-      targetStartDate: "Immediately (Next Cohort)",
-      statusCode: null
-    };
-
-    if (nameInput) nameInput.value = "";
-    if (phoneInput) phoneInput.value = "";
-    if (emailInput) emailInput.value = "";
-    if (nameError) nameError.textContent = "";
-    if (contactError) contactError.textContent = "";
-
-    // Sync selected trade card
-    if (tradeCardsContainer) {
-      tradeCardsContainer.querySelectorAll(".intake-choice-card").forEach((card) => {
-        const isMatch = card.dataset.value === prospectState.tradePathway;
-        card.classList.toggle("selected", isMatch);
-      });
+    if (!candidateModal || !candidateForm) return;
+    candidateForm.reset();
+    candidateFormView.hidden = false;
+    candidateConfirmationScreen.hidden = true;
+    candidateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+    const status = candidateForm.querySelector(".form-status");
+    if (status) {
+      status.textContent = "";
+      status.classList.remove("is-error");
     }
-
-    // Sync date presets
-    if (datePresets) {
-      datePresets.querySelectorAll(".intake-preset-btn").forEach((btn) => {
-        btn.classList.toggle("active", btn.dataset.preset === "Immediately (Next Cohort)");
-      });
+    if (defaultTrade && candidateForm.elements.trade) {
+      candidateForm.elements.trade.value = defaultTrade;
     }
-    if (startDateInput) {
-      startDateInput.value = "";
-    }
-
-    goToStep(1);
-    openModalWithFocus(candidateModal, nameInput);
+    const nameField = candidateForm.elements.name;
+    openModalWithFocus(candidateModal, nameField);
   };
 
-  // Close handlers
-  if (candidateModal) {
-    candidateModal.querySelectorAll("[data-candidate-close]").forEach((control) => {
-      control.addEventListener("click", () => {
-        closeModalWithFocus(candidateModal);
-      });
-    });
-  }
-
-  // Generic candidate triggers
-  document.querySelectorAll(".btn-candidate-trigger, .btn-start-journey").forEach((btn) => {
+  document.querySelectorAll(".btn-candidate-trigger").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       const defaultTrade = btn.dataset.tradeDefault || "Carpentry & Construction Technology";
@@ -1054,256 +837,128 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // SCREEN 1: Name & Profile Initiation
-  const handleStep1Submit = async () => {
-    if (!nameInput) return;
-    const trimmed = nameInput.value.trim();
-    if (!trimmed || trimmed.length < 2) {
-      if (nameError) nameError.textContent = "Please enter your full name (minimum 2 characters).";
-      nameInput.focus();
-      return;
-    }
-    if (nameError) nameError.textContent = "";
-
-    prospectState.name = trimmed;
-    prospectState.uid = firebaseAuthUid || null;
-
-    if (step1Next) {
-      step1Next.disabled = true;
-      step1Next.textContent = "Initializing...";
-    }
-
-    try {
-      // Submitting Screen 1 initializes the profile in Firebase with their name
-      const res = await fetch("/api/transitional-prospects/initiate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: trimmed,
-          uid: prospectState.uid,
-          tradePathway: prospectState.tradePathway
-        })
-      });
-
-      const data = await res.json().catch(() => ({}));
-      if (res.status === 220 || res.ok) {
-        prospectState.prospectId = data.prospectId || `TJ220-${Date.now().toString(36).toUpperCase()}`;
-        prospectState.statusCode = 220;
-        console.log("[Transitional Prospects] Screen 1 saved, Status Code 220, ID:", prospectState.prospectId);
-      } else {
-        // Fallback local prospectId
-        prospectState.prospectId = `TJ220-${Date.now().toString(36).toUpperCase()}`;
-        prospectState.statusCode = 220;
-      }
-
-      goToStep(2);
-    } catch (err) {
-      console.warn("Screen 1 initiation saved offline:", err);
-      prospectState.prospectId = `TJ220-${Date.now().toString(36).toUpperCase()}`;
-      prospectState.statusCode = 220;
-      goToStep(2);
-    } finally {
-      if (step1Next) {
-        step1Next.disabled = false;
-        step1Next.innerHTML = 'Continue <span aria-hidden="true">&rarr;</span>';
-      }
-    }
-  };
-
-  if (step1Next) {
-    step1Next.addEventListener("click", handleStep1Submit);
-  }
-  if (nameInput) {
-    nameInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleStep1Submit();
-      }
-    });
-  }
-
-  // SCREEN 2: Contact Method
-  const handleStep2Submit = async () => {
-    const phoneVal = phoneInput ? phoneInput.value.trim() : "";
-    const emailVal = emailInput ? emailInput.value.trim() : "";
-
-    if (!phoneVal && !emailVal) {
-      if (contactError) contactError.textContent = "Please provide at least a phone number or email address so we can follow up.";
-      if (phoneInput) phoneInput.focus();
-      return;
-    }
-
-    if (phoneVal && !isValidPhone(phoneVal)) {
-      if (contactError) contactError.textContent = "Please enter a valid 10-digit phone number, e.g. (334) 556-0000.";
-      if (phoneInput) phoneInput.focus();
-      return;
-    }
-
-    if (emailVal && !isValidEmail(emailVal)) {
-      if (contactError) contactError.textContent = "Please enter a valid email address (e.g. name@example.com).";
-      if (emailInput) emailInput.focus();
-      return;
-    }
-
-    if (contactError) contactError.textContent = "";
-    prospectState.phone = phoneVal;
-    prospectState.email = emailVal;
-
-    if (step2Next) {
-      step2Next.disabled = true;
-      step2Next.textContent = "Auto-saving...";
-    }
-
-    // Auto-save to Firebase profile
-    try {
-      await fetch("/api/transitional-prospects/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prospectId: prospectState.prospectId,
-          name: prospectState.name,
-          phone: prospectState.phone,
-          email: prospectState.email,
-          stepCompleted: 2
-        })
-      });
-    } catch (e) {
-      console.warn("Screen 2 auto-save note:", e);
-    } finally {
-      if (step2Next) {
-        step2Next.disabled = false;
-        step2Next.innerHTML = 'Continue <span aria-hidden="true">&rarr;</span>';
-      }
-      goToStep(3);
-    }
-  };
-
-  if (step2Next) step2Next.addEventListener("click", handleStep2Submit);
-  if (step2Back) step2Back.addEventListener("click", () => goToStep(1));
-
-  // SCREEN 3: Trade Pathway Choice Cards
-  if (tradeCardsContainer) {
-    tradeCardsContainer.querySelectorAll(".intake-choice-card").forEach((card) => {
-      card.addEventListener("click", () => {
-        tradeCardsContainer.querySelectorAll(".intake-choice-card").forEach(c => c.classList.remove("selected"));
-        card.classList.add("selected");
-        prospectState.tradePathway = card.dataset.value;
+  if (candidateModal && candidateForm) {
+    candidateModal.querySelectorAll("[data-candidate-close]").forEach((control) => {
+      control.addEventListener("click", () => {
+        closeModalWithFocus(candidateModal);
       });
     });
-  }
 
-  const handleStep3Submit = async () => {
-    if (step3Next) {
-      step3Next.disabled = true;
-      step3Next.textContent = "Auto-saving...";
-    }
+    candidateForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const status = candidateForm.querySelector(".form-status");
+      const submit = candidateForm.querySelector(".program-submit");
+      const formData = new FormData(candidateForm);
 
-    // Auto-save trade pathway selection to Firebase profile
-    try {
-      await fetch("/api/transitional-prospects/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prospectId: prospectState.prospectId,
-          tradePathway: prospectState.tradePathway,
-          stepCompleted: 3
-        })
-      });
-    } catch (e) {
-      console.warn("Screen 3 auto-save note:", e);
-    } finally {
-      if (step3Next) {
-        step3Next.disabled = false;
-        step3Next.innerHTML = 'Continue <span aria-hidden="true">&rarr;</span>';
+      // Honeypot check
+      if (formData.get("website_url")) {
+        candidateFormView.hidden = true;
+        candidateConfirmationScreen.hidden = false;
+        candidateForm.reset();
+        return;
       }
-      goToStep(4);
-    }
-  };
 
-  if (step3Next) step3Next.addEventListener("click", handleStep3Submit);
-  if (step3Back) step3Back.addEventListener("click", () => goToStep(2));
+      const name = String(formData.get("name") || "").trim();
+      const phone = String(formData.get("phone") || "").trim();
+      const email = String(formData.get("email") || "").trim();
+      const trade = String(formData.get("trade") || "Carpentry & Construction Technology").trim();
+      const backgroundStatus = String(formData.get("backgroundStatus") || "").trim();
+      const transportation = String(formData.get("transportation") || "").trim();
+      const careerCenter = String(formData.get("careerCenter") || "").trim();
+      const notes = String(formData.get("notes") || "").trim();
 
-  // SCREEN 4: Readiness Timeline / Interactive Calendar Picker
-  if (datePresets) {
-    datePresets.querySelectorAll(".intake-preset-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        datePresets.querySelectorAll(".intake-preset-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        prospectState.targetStartDate = btn.dataset.preset;
-        if (startDateInput) startDateInput.value = "";
-      });
-    });
-  }
+      status.classList.remove("is-error");
+      candidateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
 
-  if (startDateInput) {
-    startDateInput.addEventListener("change", (e) => {
-      if (e.target.value) {
-        prospectState.targetStartDate = e.target.value;
-        if (datePresets) {
-          datePresets.querySelectorAll(".intake-preset-btn").forEach(b => b.classList.remove("active"));
+      if (!name || name.length < 2) {
+        status.classList.add("is-error");
+        status.textContent = "Please enter your full legal name (minimum 2 characters).";
+        candidateForm.elements.name.classList.add("is-invalid");
+        candidateForm.elements.name.focus();
+        return;
+      }
+
+      if (!phone && !email) {
+        status.classList.add("is-error");
+        status.textContent = "Please provide either a phone number or email address so we can reach you.";
+        candidateForm.elements.phone.classList.add("is-invalid");
+        candidateForm.elements.email.classList.add("is-invalid");
+        candidateForm.elements.phone.focus();
+        return;
+      }
+
+      if (phone && !isValidPhone(phone)) {
+        status.classList.add("is-error");
+        status.textContent = "Please enter a valid 10-digit phone number, e.g. (334) 556-1234.";
+        candidateForm.elements.phone.classList.add("is-invalid");
+        candidateForm.elements.phone.focus();
+        return;
+      }
+
+      if (email && !isValidEmail(email)) {
+        status.classList.add("is-error");
+        status.textContent = "Please enter a valid email address (e.g. name@example.com).";
+        candidateForm.elements.email.classList.add("is-invalid");
+        candidateForm.elements.email.focus();
+        return;
+      }
+
+      submit.disabled = true;
+      status.textContent = "Submitting candidate application...";
+
+      try {
+        let delivered = false;
+        try {
+          const res = await fetch("/api/candidates", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, phone, email, trade, backgroundStatus, transportation, careerCenter, notes })
+          });
+          if (res.ok) delivered = true;
+        } catch {}
+
+        if (!delivered) {
+          // Direct fallback to Firestore REST
+          await fetch(
+            "https://firestore.googleapis.com/v1/projects/springboards-community-dev/databases/(default)/documents/candidateApplications",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                fields: {
+                  name: { stringValue: name },
+                  phone: { stringValue: phone },
+                  email: { stringValue: email },
+                  trade: { stringValue: trade },
+                  backgroundStatus: { stringValue: backgroundStatus },
+                  transportation: { stringValue: transportation },
+                  careerCenter: { stringValue: careerCenter },
+                  notes: { stringValue: notes },
+                  createdAt: { timestampValue: new Date().toISOString() }
+                }
+              })
+            }
+          ).catch(() => {});
         }
+
+        candidateFormView.hidden = true;
+        candidateConfirmationScreen.hidden = false;
+        const confirmName = candidateConfirmationScreen.querySelector(".confirm-name");
+        const confirmTrade = candidateConfirmationScreen.querySelector(".confirm-trade");
+        if (confirmName) confirmName.textContent = name;
+        if (confirmTrade) confirmTrade.textContent = trade;
+        const doneBtn = candidateConfirmationScreen.querySelector(".confirmation-done-button");
+        if (doneBtn) doneBtn.focus();
+        candidateForm.reset();
+      } catch (err) {
+        console.error(err);
+        status.classList.add("is-error");
+        status.textContent = "Could not submit application. Please call 615-603-1157 or email info@springboardsfcd.org.";
+      } finally {
+        submit.disabled = false;
       }
     });
   }
-
-  const handleStep4Submit = async () => {
-    if (startDateInput && startDateInput.value) {
-      prospectState.targetStartDate = startDateInput.value;
-    }
-
-    if (step4Finish) {
-      step4Finish.disabled = true;
-      step4Finish.textContent = "Finalizing Profile...";
-    }
-
-    // Auto-saves each answer seamlessly into their profile without a traditional cluttered form.
-    // Add 220 code if profile is saved
-    try {
-      const res = await fetch("/api/transitional-prospects/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          prospectId: prospectState.prospectId,
-          targetStartDate: prospectState.targetStartDate,
-          status: "active_prospect",
-          stepCompleted: 4
-        })
-      });
-
-      const data = await res.json().catch(() => ({}));
-      prospectState.statusCode = res.status === 220 ? 220 : (data.statusCode || 220);
-      console.log(`[Transitional Prospects] Complete Profile Saved, Code: ${prospectState.statusCode}`);
-    } catch (e) {
-      console.warn("Screen 4 auto-save note:", e);
-      prospectState.statusCode = 220;
-    } finally {
-      if (step4Finish) {
-        step4Finish.disabled = false;
-        step4Finish.innerHTML = 'Complete Profile &amp; Track Goals <span aria-hidden="true">&rarr;</span>';
-      }
-
-      // Populate summary screen
-      const sumName = document.getElementById("summaryProspectName");
-      const sumContact = document.getElementById("summaryProspectContact");
-      const sumTrade = document.getElementById("summaryProspectTrade");
-      const sumStart = document.getElementById("summaryProspectStart");
-      const sumId = document.getElementById("summaryProspectId");
-
-      if (sumName) sumName.textContent = prospectState.name;
-      if (sumContact) {
-        const contacts = [prospectState.phone, prospectState.email].filter(Boolean);
-        sumContact.textContent = contacts.join(" • ") || "On File";
-      }
-      if (sumTrade) sumTrade.textContent = prospectState.tradePathway;
-      if (sumStart) sumStart.textContent = prospectState.targetStartDate;
-      if (sumId) sumId.textContent = prospectState.prospectId || "TJ220-ACTIVE";
-
-      goToStep("done");
-    }
-  };
-
-  if (step4Finish) step4Finish.addEventListener("click", handleStep4Submit);
-  if (step4Back) step4Back.addEventListener("click", () => goToStep(3));
 
   // BUSINESS & EMPLOYER PARTNERSHIP MODAL
   const partnerModal = document.getElementById("partnerModal");

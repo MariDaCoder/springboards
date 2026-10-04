@@ -1,0 +1,612 @@
+{
+  "staffRoster": [
+    {
+      "id": "staff-1",
+      "name": "Marilynn L. Ward",
+      "email": "marilynn.ward@springboardsfrcd.org",
+      "secondaryEmail": "marilynn.ward@springboardsfcd.org",
+      "role": "Workforce Director & Compliance Administrator",
+      "phone": "(615) 603-1157",
+      "pin": "2026",
+      "isAdmin": true,
+      "status": "Active"
+    },
+    {
+      "id": "staff-2",
+      "name": "Marvin Thompson",
+      "role": "Executive Director",
+      "phone": "(334) 756-0123",
+      "pin": "1985",
+      "isAdmin": true,
+      "status": "Active"
+    },
+    {
+      "id": "staff-melvin",
+      "name": "Melvin M.L. Ward",
+      "role": "Founder / Board President",
+      "phone": "(706) 302-5326",
+      "pin": "1985",
+      "isAdmin": true,
+      "status": "Active"
+    },
+    {
+      "id": "staff-3",
+      "name": "Johnathan Washington",
+      "role": "Lead Trades Instructor / Field Supervisor",
+      "phone": "(334) 749-8812",
+      "pin": "4421",
+      "isAdmin": false,
+      "status": "Active"
+    },
+    {
+      "id": "staff-4",
+      "name": "Trade Crew Member",
+      "role": "General Laborer / Trades Helper",
+      "phone": "(334) 555-0199",
+      "pin": "1234",
+      "isAdmin": false,
+      "status": "Active"
+    }
+  ],
+  "chatMessages": [
+    {
+      "id": "msg-1",
+      "senderName": "Marilynn Ward",
+      "senderRole": "Workforce Director",
+      "text": "Welcome to the Springboards Staff Hub. Use this chat to coordinate daily work schedules, safety notes, and download timesheets. No Google Workspace seat is required—just your phone number.",
+      "channel": "general",
+      "timestamp": "2026-09-27T10:00:00.000Z"
+    },
+    {
+      "id": "msg-2",
+      "senderName": "Marvin Thompson",
+      "senderRole": "Executive Director",
+      "text": "Reminder for tomorrow: All crews must have personal protective equipment (hard hats, eye protection, work boots) on-site by 7:45 AM before toolbox briefing.",
+      "channel": "safety",
+      "timestamp": "2026-09-27T14:30:00.000Z"
+    },
+    {
+      "id": "msg-1790561904654",
+      "senderName": "Marilynn Ward",
+      "senderRole": "Workforce Director",
+      "text": "System check: Staff portal is active and operating smoothly.",
+      "channel": "general",
+      "attachment": null,
+      "timestamp": "2026-09-28T02:18:24.654Z"
+    }
+  ],
+  "calendarEvents": [
+    {
+      "id": "event-1",
+      "title": "Morning Tool & Safety Briefing",
+      "date": "2026-09-28",
+      "time": "7:45 AM - 8:15 AM",
+      "location": "Springboards Training Facility, Shawmut, AL",
+      "category": "safety",
+      "description": "Daily mandatory OSHA review, PPE audit, and task distribution."
+    },
+    {
+      "id": "event-2",
+      "title": "Transitional Jobs Worksite Practical Session",
+      "date": "2026-09-29",
+      "time": "8:30 AM - 3:00 PM",
+      "location": "Project Site Corridor (Chambers County)",
+      "category": "training",
+      "description": "Carpentry framing helper and electrical conduit bending practical modules."
+    },
+    {
+      "id": "event-3",
+      "title": "Career Center Referral Intake Orientation",
+      "date": "2026-10-01",
+      "time": "10:00 AM - 12:00 PM",
+      "location": "Valley Career Center / Springboards Annex",
+      "category": "onboarding",
+      "description": "Intake verification for candidate referrals from Valley and Opelika."
+    },
+    {
+      "id": "event-4",
+      "title": "Bi-Weekly Timesheet & Case Record Deadline",
+      "date": "2026-10-02",
+      "time": "5:00 PM",
+      "location": "Backoffice Portal",
+      "category": "administrative",
+      "description": "Submit bi-weekly participant training hours (verify max 32 hrs/week limit)."
+    },
+    {
+      "id": "event-5",
+      "title": "Task: Complete Sirius Staffing Avionte Timesheet Checklist",
+      "date": "2026-10-03",
+      "time": "11:00 AM",
+      "location": "Administrative Office / Sirius Portal",
+      "category": "administrative",
+      "description": "Review and verify the Sirius Staffing Avionte Timesheet Checklist for field supervisors to ensure compliance with the 32 hr/wk ceiling and overtime prohibition."
+    }
+  ],
+  "candidateApplications": [
+    {
+      "id": "cand-1790657095520",
+      "passCode": "PASS-VAL-5520",
+      "type": "transitional_candidate_application",
+      "timestamp": "2026-09-29T04:44:55.520Z",
+      "candidateName": "Marcus Vance",
+      "name": "Marcus Vance",
+      "phone": "(334) 555-0177",
+      "email": "marcus.vance@example.com",
+      "addressCity": "Valley, AL",
+      "streetAddress": "Valley, AL",
+      "nearestCareerCenter": "Valley Career Center",
+      "matchedCenter": "Valley Career Center",
+      "matchedCenterAddress": "3300 23rd Drive, Valley, AL 36854 inside Growth Academy",
+      "confirmedBackgroundStatus": "Returning Citizen or Justice Involved",
+      "backgroundStatus": "Returning Citizen or Justice Involved",
+      "targetBarrier": "Returning Citizen or Justice Involved",
+      "programTag": "Transitional Jobs (Activity 220)",
+      "programName": "Transitional Jobs",
+      "activityLabel": "220 Transitional Jobs",
+      "careerCenterVisitStatus": "Pending Career Center Verification",
+      "qualificationStatus": "Pending Career Center Visit",
+      "stage": "Career Center Appointment Set",
+      "notes": "Ready for carpentry training",
+      "intakeNotes": "Career Center Pass PASS-VAL-5520 issued. Automated email dispatched from info@springboardsfcd.org. Candidate & Staff Google Calendar links generated.",
+      "firstDayCleared": false,
+      "siriusPlacementFormSubmitted": false,
+      "siriusFormStatus": "Pending 5-Day Window",
+      "hoursLimit": "32 hrs/wk (390 total)",
+      "jobReadinessStatus": "Pending (Due before 195 hrs)",
+      "loggedHours": 0,
+      "onlineLearningBadgeEarned": false,
+      "retentionStatus": "In Training Pipeline",
+      "deliveredTo": "info@springboardsfcd.org",
+      "createdAt": "2026-09-29T04:44:55.520Z",
+      "calendarLinks": {
+        "candidateCalendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Career%20Center%20Verification%20Visit%20-%20Valley%20Career%20Center&dates=20260930T090000Z/20260930T103000Z&details=Springboards%20Transitional%20Jobs%20State%20Verification%20Visit%0A%0ADesignated%20Center%3A%20Valley%20Career%20Center%0AAddress%3A%203300%2023rd%20Drive%2C%20Valley%2C%20AL%2036854%20inside%20Growth%20Academy%0AOperating%20Hours%3A%20Monday%20through%20Friday%208%3A00%20AM%20to%204%3A30%20PM%20Eastern%20Time%0ADirect%20Call%3A%20(334)%20756-3065%0AVerification%20Pass%3A%20PASS-VAL-5520%0A%0ATwo%20Essential%20Items%20to%20Bring%3A%0A1.%20State%20Identification%20Card%20(Valid%20Alabama%20Driver%20License%20or%20Non%20Driver%20ID)%0A2.%20Social%20Security%20Card%20(Original%20Card%20for%20Wage%20Enrollment)%0A%0AState%20Requirement%20Notice%3A%20The%20state%20requires%20candidates%20to%20be%20verified%20through%20the%20Career%20Center%20before%20worksite%20assignment.%0A%0ASpringboards%20Workforce%20Intake%20%7C%20info%40springboardsfcd.org&location=3300%2023rd%20Drive%2C%20Valley%2C%20AL%2036854%20inside%20Growth%20Academy",
+        "staffCalendarUrl": "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Follow-up%3A%20State%20Clearance%20Alert%20for%20Marcus%20Vance%20(Valley%20Career%20Center)&dates=20260930T090000Z/20260930T103000Z&details=Staff%20Follow-up%20Alert%3A%20State%20Clearance%20Verification%0ACandidate%3A%20Marcus%20Vance%0APhone%3A%20(334)%20555-0177%0AEmail%3A%20marcus.vance%40example.com%0APass%20ID%3A%20PASS-VAL-5520%0ACenter%3A%20Valley%20Career%20Center%0AProgram%20Tag%3A%20Transitional%20Jobs%20(Activity%20220)%0A%0AAction%20Checklist%3A%0A-%20Confirm%20arrival%20at%20Career%20Center%0A-%20Verify%20State%20ID%20%26%20SSN%20verified%20for%20Activity%20Code%20220%0A-%20Check%20Sirius%20Workforce%20Worksites%20Placement%20status%20(5-day%20deadline)%0A%0AOfficial%20state%20clearance%20must%20be%20logged%20before%20Day%201%20worksite%20entry.&location=3300%2023rd%20Drive%2C%20Valley%2C%20AL%2036854%20inside%20Growth%20Academy"
+      },
+      "notificationsDispatched": {
+        "emailSent": true,
+        "smsSent": true,
+        "senderAccount": "info@springboardsfcd.org",
+        "recipientPhone": "(334) 555-0177",
+        "recipientEmail": "marcus.vance@example.com",
+        "locationName": "Valley Career Center",
+        "locationAddress": "3300 23rd Drive, Valley, AL 36854 inside Growth Academy",
+        "locationHours": "Monday through Friday 8:00 AM to 4:30 PM Eastern Time",
+        "locationPhone": "(334) 756-3065",
+        "callLink": "tel:+13347563065",
+        "passCode": "PASS-VAL-5520",
+        "dispatchedAt": "2026-09-29T04:44:55.520Z"
+      }
+    },
+    {
+      "id": "cand-ojt-1790654279871",
+      "type": "transitional_candidate_application",
+      "name": "Jane Trainee",
+      "phone": "",
+      "email": "jane.trainee@example.com",
+      "trade": "Construction Trades / OJT",
+      "preferredRole": "OJT Trainee",
+      "targetBarrier": "Non-Barrier (OJT Candidate)",
+      "programName": "Transitional Jobs",
+      "activityLabel": "220 Transitional Jobs",
+      "stage": "Prospect - OJT Pathway",
+      "qualificationStatus": "Host Employer OJT Screening",
+      "matchedCenter": "Valley Career Center",
+      "matchedCenterAddress": "3300 23rd Drive, Valley, AL 36854",
+      "firstDayCleared": false,
+      "siriusPlacementFormSubmitted": true,
+      "siriusFormStatus": "N/A - Direct OJT",
+      "hoursLimit": "Standard Employer Schedule",
+      "jobReadinessStatus": "Direct Employer Referral",
+      "intakeNotes": "Candidate indicated non-barrier alternative. Situation notes: Currently employed part-time in retail, looking for direct construction apprentice training.",
+      "deliveredTo": "info@springboardsfcd.org",
+      "createdAt": "2026-09-29T03:57:59.871Z"
+    },
+    {
+      "id": "cand-1790611249277",
+      "type": "transitional_candidate_application",
+      "name": "Marilynn Ward",
+      "phone": "(161) 560-3115",
+      "email": "letrell_03@yahoo.com",
+      "trade": "Carpentry & Construction Technology",
+      "preferredRole": "Carpenter Helper",
+      "backgroundStatus": "Unspecified",
+      "transportation": "Personal Vehicle",
+      "careerCenterStatus": "Need Help Registering",
+      "notes": "",
+      "stage": "Pending Intake",
+      "intakeNotes": "",
+      "deliveredTo": "info@springboardsfcd.org",
+      "createdAt": "2026-09-28T16:00:49.277Z"
+    },
+    {
+      "id": "cand-demo-1",
+      "type": "transitional_candidate_application",
+      "name": "DeMarcus Jenkins",
+      "phone": "(334) 555-0142",
+      "email": "djenkins.workforce@gmail.com",
+      "streetAddress": "1408 3rd Ave",
+      "cityZip": "Valley, AL 36854",
+      "matchedCenter": "Valley Career Center",
+      "matchedCenterAddress": "3300 23rd Drive in Valley 36854 inside Growth Academy",
+      "trade": "Carpentry & Construction Technology",
+      "preferredRole": "Carpenter Helper",
+      "backgroundStatus": "Returning Citizen / Justice-Involved",
+      "transportation": "Have Personal Vehicle",
+      "careerCenterStatus": "Needs Center Visit to Qualify",
+      "notes": "Has 6 months framing helper experience; looking for full-time living wage career path.",
+      "stage": "Career Center Appointment Set",
+      "qualificationStatus": "Appointment Confirmed",
+      "firstDayCleared": false,
+      "siriusPlacementFormSubmitted": false,
+      "intakeNotes": "Appointment scheduled at Valley Career Center for Wednesday 10:00 AM. Reminded to bring ID and Social Security card.",
+      "deliveredTo": "info@springboardsfcd.org",
+      "createdAt": "2026-09-27T18:20:00.000Z"
+    },
+    {
+      "id": "cand-demo-2",
+      "type": "transitional_candidate_application",
+      "name": "Brandon Mitchell",
+      "phone": "(334) 756-8891",
+      "email": "bmitchell99@yahoo.com",
+      "streetAddress": "2210 15th Ave SW",
+      "cityZip": "Lanett, AL 36863",
+      "matchedCenter": "Valley Career Center",
+      "matchedCenterAddress": "3300 23rd Drive in Valley 36854 inside Growth Academy",
+      "trade": "Electrical & Wiring",
+      "preferredRole": "Electrician Helper",
+      "backgroundStatus": "Opportunity Youth ages 18 to 24",
+      "transportation": "Public Transit / Walking",
+      "careerCenterStatus": "WIOA Adult Eligibility Approved",
+      "notes": "Very motivated to learn residential wiring and conduit bending.",
+      "stage": "Active Worksite Training (32 hrs/wk)",
+      "qualificationStatus": "Eligible Adult/DLW Verified",
+      "firstDayCleared": true,
+      "siriusPlacementFormSubmitted": true,
+      "loggedHours": 248,
+      "weeklyHours": 32,
+      "onlineLearningBadgeEarned": true,
+      "retentionStatus": "Active Worksite Trainee",
+      "intakeNotes": "Career Center eligibility verified. Sirius placement packet sent. Reporting to Lanett center Oct 1 for safety orientation.",
+      "deliveredTo": "info@springboardsfcd.org",
+      "createdAt": "2026-09-26T14:15:00.000Z"
+    }
+  ],
+  "attendanceLogs": [
+    {
+      "id": "att-demo-1",
+      "candidateId": "cand-demo-2",
+      "traineeName": "Brandon Mitchell",
+      "trade": "Electrical & Wiring",
+      "date": "2026-09-28",
+      "hoursWorked": 8,
+      "cumulativeHours": 248,
+      "weeklyHoursLogged": 32,
+      "taskArea": "Residential Conduit Bending & Safety Check",
+      "supervisorNotes": "Completed bending layout without errors; full PPE compliance.",
+      "siriusTimecardApproved": true,
+      "googleSheetsSynced": true,
+      "syncedAt": "2026-09-28T16:30:00.000Z"
+    },
+    {
+      "id": "att-demo-2",
+      "candidateId": "cand-demo-2",
+      "traineeName": "Brandon Mitchell",
+      "trade": "Electrical & Wiring",
+      "date": "2026-09-27",
+      "hoursWorked": 8,
+      "cumulativeHours": 240,
+      "weeklyHoursLogged": 24,
+      "taskArea": "Circuit Testing & Receptacle Wiring",
+      "supervisorNotes": "Strong attention to safety protocol and code requirements.",
+      "siriusTimecardApproved": true,
+      "googleSheetsSynced": true,
+      "syncedAt": "2026-09-27T16:30:00.000Z"
+    }
+  ],
+  "complianceItems": [
+    {
+      "id": "comp-1",
+      "contact": "Alicia Ford",
+      "program": "STAARS (State Vendor / Payment Registration)",
+      "requirement": "Signed Bank Verification Letter",
+      "details": "Letter on bank letterhead under exact legal name: Springboards for Community Development",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-18",
+      "dueDate": "2026-09-25",
+      "owner": "Marvin / Dad",
+      "targetRecipient": "Alicia Ford",
+      "notes": "Bank account opened; requesting formal verification letter from banking officer."
+    },
+    {
+      "id": "comp-2",
+      "contact": "Alicia Ford",
+      "program": "STAARS (State Vendor / Payment Registration)",
+      "requirement": "Current Signed Form W-9",
+      "details": "Must have matching legal entity name, EIN, and officer signature",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-18",
+      "dueDate": "2026-09-25",
+      "owner": "Marilynn Ward",
+      "targetRecipient": "Alicia Ford",
+      "notes": "Draft W-9 prepared; ready for signature and submission."
+    },
+    {
+      "id": "comp-3",
+      "contact": "Alicia Ford",
+      "program": "STAARS (State Vendor / Payment Registration)",
+      "requirement": "Workers' Compensation Certificate",
+      "details": "Certificate of Insurance meeting State of Alabama vendor compliance",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-20",
+      "dueDate": "2026-09-30",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "Alicia Ford",
+      "notes": "Insurance quote received; obtaining binder and certificate."
+    },
+    {
+      "id": "comp-4",
+      "contact": "Coretta Bozeman & Julie Wood",
+      "program": "Transitional Jobs (WIOA)",
+      "requirement": "Fully Executed Worksite Agreement",
+      "details": "Countersigned agreement confirming the mandatory end date of 2027-06-30",
+      "status": "Evidence ready/submitted",
+      "requestDate": "2026-09-15",
+      "dueDate": "2026-09-22",
+      "owner": "Marilynn / Marvin",
+      "targetRecipient": "Coretta Bozeman / Julie Wood",
+      "notes": "Worksite Agreement signed and submitted; awaiting formal written state acceptance."
+    },
+    {
+      "id": "comp-5",
+      "contact": "Coretta Bozeman & Julie Wood",
+      "program": "Transitional Jobs (WIOA)",
+      "requirement": "Approved Non-Supervisory Job Descriptions",
+      "details": "Revised entry-level job duties removing all unapproved/supervisory tasks",
+      "status": "In revision",
+      "requestDate": "2026-09-16",
+      "dueDate": "2026-09-24",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "Career Center / Agency",
+      "notes": "Draft revisions completed for helper roles; submitting for final Career Center signoff."
+    },
+    {
+      "id": "comp-6",
+      "contact": "Coretta Bozeman & Julie Wood",
+      "program": "Transitional Jobs (WIOA)",
+      "requirement": "Avionte / Sirius Staffing Signer Authorization",
+      "details": "Primary & backup supervisor authorization submitted to wfonboarding@siriusstaffing.com",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-19",
+      "dueDate": "2026-09-29",
+      "owner": "Marilynn Ward",
+      "targetRecipient": "Sirius Staffing Onboarding",
+      "notes": "Designated supervisors identified; awaiting portal login credentials."
+    },
+    {
+      "id": "comp-7",
+      "contact": "Jill Grant",
+      "program": "ITA / ETPL (Eligible Training Provider List)",
+      "requirement": "WIOA New Training Provider Application",
+      "details": "Full provider application packet under AD-Policy PY-2025-11 Change 2",
+      "status": "Evidence ready/submitted",
+      "requestDate": "2026-09-10",
+      "dueDate": "2026-09-26",
+      "owner": "Marilynn Ward",
+      "targetRecipient": "Jill Grant",
+      "notes": "Application packet compiled; verifying all agency attachment criteria."
+    },
+    {
+      "id": "comp-8",
+      "contact": "Jill Grant",
+      "program": "ITA / ETPL (Eligible Training Provider List)",
+      "requirement": "Curriculum, Clock Hours & Credential Syllabi",
+      "details": "NCCER trade credentials, instructor certifications, training hours breakdown",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-14",
+      "dueDate": "2026-09-28",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "Jill Grant",
+      "notes": "Trade descriptions assembled; finalizing instructor certification attachments."
+    },
+    {
+      "id": "comp-9",
+      "contact": "Jill Grant",
+      "program": "ITA / ETPL (Eligible Training Provider List)",
+      "requirement": "Facility Capacity & ADA Accessibility Documentation",
+      "details": "Zoning, life-safety inspection, equipment list, ADA accessibility documentation",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-14",
+      "dueDate": "2026-09-28",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "Jill Grant",
+      "notes": "Facility inspection walkthrough scheduled."
+    },
+    {
+      "id": "comp-10",
+      "contact": "Marvin Thompson",
+      "program": "Corporate Governance & OJT",
+      "requirement": "Corporate Governance & Board Records",
+      "details": "Articles of Incorporation, EIN letter, 501(c)(3) determination status, Bylaws, Good Standing",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-12",
+      "dueDate": "2026-09-27",
+      "owner": "Marvin Thompson / Board",
+      "targetRecipient": "Internal Records",
+      "notes": "Articles on file; IRS 501(c)(3) determination pending review."
+    },
+    {
+      "id": "comp-11",
+      "contact": "Marvin Thompson",
+      "program": "On-the-Job Training (OJT)",
+      "requirement": "E-Verify Registration & Electronically Signed DHS MOU",
+      "details": "Federal E-Verify company enrollment and executed Department of Homeland Security MOU",
+      "status": "Requirement identified",
+      "requestDate": "2026-09-15",
+      "dueDate": "2026-09-30",
+      "owner": "Marvin Thompson",
+      "targetRecipient": "DHS / E-Verify",
+      "notes": "Enrollment portal accessed; pending digital signature from authorized executive."
+    }
+  ],
+  "sharedDocuments": [
+    {
+      "id": "doc-2",
+      "title": "Approved Entry-Level Job Descriptions (Trade Helpers)",
+      "category": "Job Descriptions",
+      "fileName": "Job_Descriptions_Entry_Level_Springboards.pdf",
+      "fileUrl": "#view-job-descriptions",
+      "fileSize": "68 KB",
+      "updatedAt": "2026-09-27",
+      "description": "Official duties for Carpenter Helper, Electrician Helper, Plumber Helper, Tool & Inventory Clerk, Janitor, and Material Handler."
+    },
+    {
+      "id": "doc-3",
+      "title": "Worksite Agreement (State Compliance Copy)",
+      "category": "Compliance & Contracts",
+      "fileName": "Worksite Agreement_Springboards.pdf",
+      "fileUrl": "/Worksite Agreement_Springboards.pdf",
+      "fileSize": "1.0 MB",
+      "updatedAt": "2026-09-27",
+      "description": "Submitted Worksite Agreement establishing approved project locations and contractual terms ending 2027-06-30."
+    },
+    {
+      "id": "doc-4",
+      "title": "Springboards Community & Workforce Informational Flyer",
+      "category": "Community Outreach",
+      "fileName": "springboards flyer 1.jpg",
+      "fileUrl": "/springboards flyer 1.jpg",
+      "fileSize": "2.3 MB",
+      "updatedAt": "2026-09-27",
+      "description": "Public informational flyer detailing vocational trade pathways, community partnerships, and contact avenues."
+    },
+    {
+      "id": "doc-5",
+      "title": "Participant Timesheet & Safety Protocol Guidance",
+      "category": "Operational Forms",
+      "fileName": "Timesheet_and_Safety_Standard.pdf",
+      "fileUrl": "#view-timesheet-guide",
+      "fileSize": "45 KB",
+      "updatedAt": "2026-09-27",
+      "description": "Bi-weekly timecard submission instructions, 32-hr weekly ceiling, and mandatory personal protective equipment rules."
+    }
+  ],
+  "boardStructure": [
+    {
+      "id": "board-1",
+      "position": "Chairperson",
+      "name": "M.L. Ward",
+      "phone": "706-302-5326",
+      "primaryResponsibility": "Leads the Board, sets priorities, oversees accountability",
+      "duties": [
+        "Leads the Board of Directors",
+        "Presides over Board meetings",
+        "Keeps Board members focused on mission and governance",
+        "Works with Executive Director",
+        "Helps evaluate Executive Director"
+      ]
+    },
+    {
+      "id": "board-2",
+      "position": "Executive Director",
+      "name": "Marvin Thompson",
+      "phone": "334-756-0123",
+      "primaryResponsibility": "Runs the organization daily operations and leads community development",
+      "duties": [
+        "Runs the organization daily operations",
+        "Supervises employees and volunteers",
+        "Develops and manages programs",
+        "Builds community partnerships",
+        "Oversees fundraising and grant implementations",
+        "Reports organizational performance to the Board",
+        "Implements decisions approved by the board"
+      ]
+    },
+    {
+      "id": "board-3",
+      "position": "Secretary",
+      "name": "Shamia Morgan",
+      "primaryResponsibility": "Minutes, records, notices, policies and Board documentation",
+      "duties": [
+        "Maintain accurate Board minutes and records",
+        "Distribute meeting notices and agendas",
+        "Maintain organization and resolutions"
+      ]
+    },
+    {
+      "id": "board-4",
+      "position": "Treasurer",
+      "name": "Krisse Pollard Story",
+      "primaryResponsibility": "Financial oversight, budgets, financial reports and controls",
+      "duties": [
+        "Review financial statements",
+        "Help develop and monitor the annual budget",
+        "Ensure appropriate financial controls",
+        "Report financial concerns to the Board"
+      ]
+    },
+    {
+      "id": "board-5",
+      "position": "Construction / Trades Member",
+      "name": "Johnathan Washington",
+      "phone": "334-749-8812",
+      "primaryResponsibility": "Provides construction industry knowledge and employer connections",
+      "duties": [
+        "Advise on construction industry needs",
+        "Help identify qualified instructors and industry partners",
+        "Assist with employer relationships and job opportunities",
+        "Help ensure training reflects actual workplace requirements"
+      ]
+    },
+    {
+      "id": "board-6",
+      "position": "Workforce Development Member",
+      "name": "Marilynn Ward",
+      "phone": "615-603-1157",
+      "primaryResponsibility": "Connects training to employment, apprenticeships and certifications",
+      "duties": [
+        "Develop relationships with employers, workforce agencies and apprenticeship programs",
+        "Employment, Apprenticeships and Career Pathways",
+        "IT and Web page coordination"
+      ]
+    },
+    {
+      "id": "board-7",
+      "position": "Education / Training Member",
+      "name": "Giselle Campos",
+      "primaryResponsibility": "Advises on curriculum, instructors, testing and credentials",
+      "duties": [
+        "Training institutions and credentials",
+        "Assure Compliance with applicable licensing, safety, workforce and programs",
+        "Assure Certification for Instructor",
+        "Develops education partnerships",
+        "Identifies learning opportunities",
+        "Supports programs that improve community education outcomes",
+        "Coordinate job training and certification programs"
+      ]
+    },
+    {
+      "id": "board-8",
+      "position": "Community Member",
+      "name": "Danny Williams",
+      "primaryResponsibility": "Represents residents, participants and community needs",
+      "duties": [
+        "Represents community needs",
+        "Gathers resident input",
+        "Public relations",
+        "Builds trust and connects residents with the organization program and sources"
+      ]
+    },
+    {
+      "id": "board-9",
+      "position": "Business / Grant Development Member",
+      "name": "Rasheeda Abdullah",
+      "primaryResponsibility": "Partnerships, fundraising, grants and organizational growth",
+      "duties": [
+        "Builds relationships with businesses",
+        "Identifies grant opportunities",
+        "Supports grant applications",
+        "Develops funding partnerships"
+      ]
+    }
+  ]
+}
