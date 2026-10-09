@@ -816,6 +816,13 @@ document.addEventListener("DOMContentLoaded", () => {
     candidateForm.reset();
     candidateFormView.hidden = false;
     candidateConfirmationScreen.hidden = true;
+    const isPrequalification = new URLSearchParams(window.location.search).get("start") === "prequalification";
+    const candidateTitle = document.getElementById("candidateModalTitle");
+    const candidateIntro = candidateFormView.querySelector(".modal-subtext");
+    if (isPrequalification) {
+      if (candidateTitle) candidateTitle.textContent = "Transitional Jobs Pre-Qualification";
+      if (candidateIntro) candidateIntro.textContent = "Answer a few questions so our team can help identify your next steps toward training and work.";
+    }
     candidateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
     const status = candidateForm.querySelector(".form-status");
     if (status) {
@@ -836,6 +843,10 @@ document.addEventListener("DOMContentLoaded", () => {
       openCandidateModal(defaultTrade);
     });
   });
+
+  if (new URLSearchParams(window.location.search).get("start") === "prequalification") {
+    openCandidateModal("Carpentry & Construction Technology");
+  }
 
   if (candidateModal && candidateForm) {
     candidateModal.querySelectorAll("[data-candidate-close]").forEach((control) => {

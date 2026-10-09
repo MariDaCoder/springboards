@@ -1,0 +1,5 @@
+{
+  "livePreview.defaultPreviewPath": "/",
+  "livePreview.openPreviewTarget": "embeddedBrowser",
+  "livePreview.enableAutoRefresh": true
+}

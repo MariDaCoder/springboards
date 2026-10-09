@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transitional Jobs Pre-Qualification | Springboards</title>
+    <meta name="description" content="Watch the Springboards Transitional Jobs introduction and start the pre-qualification questionnaire.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+      :root {
+        --train-page-bg: #f8fafc;
+        --train-page-panel: #ffffff;
+        --train-page-border: rgba(148, 163, 184, 0.35);
+      }
+
+      body {
+        background: linear-gradient(180deg, #f8fafc 0%, #eef4f8 100%);
+      }
+
+      .train-page-shell {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2.5rem 1rem 4rem;
+      }
+
+      .train-page-header {
+        padding: 1.4rem 0 0.8rem;
+      }
+
+      .train-back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        color: var(--primary-navy);
+        font-weight: 700;
+        text-decoration: none;
+        margin-bottom: 1rem;
+      }
+
+      .train-back-link:hover,
+      .train-back-link:focus-visible {
+        color: var(--accent-orange);
+      }
+
+      .train-page-title {
+        font-size: clamp(2.2rem, 4vw, 4.1rem);
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+        margin: 0 0 1rem;
+        color: var(--primary-navy);
+      }
+
+      .train-page-subtitle {
+        font-size: clamp(1.02rem, 1.7vw, 1.25rem);
+        max-width: 780px;
+        color: var(--text-muted);
+        line-height: 1.7;
+      }
+
+      .train-page-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+        margin-top: 1.5rem;
+      }
+
+      .train-page-actions .btn-cta,
+      .train-page-actions .btn-cta-secondary {
+        min-width: 210px;
+      }
+
+      .train-hero {
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 1.5rem;
+        align-items: stretch;
+        margin-top: 2rem;
+      }
+
+      .train-visual-panel,
+      .train-info-panel,
+      .train-feature-card {
+        background: var(--train-page-panel);
+        border: 1px solid var(--train-page-border);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+      }
+
+      .train-visual-panel {
+        padding: 1rem;
+      }
+
+      .train-large-gallery {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .train-large-frame {
+        width: 100%;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        background: #0f172a;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+      }
+
+      .train-large-frame img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .train-thumb-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0.55rem;
+      }
+
+      .train-thumb {
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #ffffff;
+        padding: 0;
+      }
+
+      .train-thumb img {
+        display: block;
+        width: 100%;
+        height: 82px;
+        object-fit: cover;
+      }
+
+      .train-info-panel {
+        padding: 1.5rem;
+      }
+
+      .train-info-panel h2 {
+        margin: 0 0 0.8rem;
+        font-size: clamp(1.5rem, 2vw, 2.2rem);
+        color: var(--primary-navy);
+      }
+
+      .train-detail-list {
+        margin: 0;
+        padding-left: 1.25rem;
+        color: var(--text-body);
+        line-height: 1.7;
+        font-size: 1rem;
+      }
+
+      .train-detail-list li + li {
+        margin-top: 0.35rem;
+      }
+
+      .train-status {
+        margin-top: 1.2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        color: var(--accent-orange);
+        font-weight: 800;
+      }
+
+      .train-features {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 1.8rem;
+      }
+
+      .train-feature-card {
+        padding: 1.2rem 1rem;
+      }
+
+      .train-feature-card .feature-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.1rem;
+        height: 2.1rem;
+        border-radius: 50%;
+        background: var(--primary-navy);
+        color: #ffffff;
+        font-size: 0.9rem;
+        font-weight: 800;
+        margin-bottom: 0.8rem;
+      }
+
+      .train-feature-card h3 {
+        margin: 0 0 0.5rem;
+        color: var(--primary-navy);
+        font-size: 1.15rem;
+      }
+
+      .train-feature-card p {
+        margin: 0;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      @media (max-width: 900px) {
+        .train-hero,
+        .train-features {
+          grid-template-columns: 1fr;
+        }
+
+        .train-thumb-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .train-page-shell {
+          padding-top: 1.25rem;
+        }
+
+        .train-page-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .train-thumb-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      body {
+        min-height: 100vh;
+        background: radial-gradient(ellipse at top, #ffffff 0%, #f3f7fa 65%, #e9f1f5 100%);
+      }
+
+      .prequal-shell {
+        display: flex;
+        flex-direction: column;
+        max-width: 1200px;
+        min-height: 100vh;
+        min-height: 100svh;
+        margin: 0 auto;
+        padding: clamp(1rem, 3vw, 2.25rem);
+      }
+
+      .prequal-back-link {
+        align-self: flex-start;
+        color: var(--primary-navy);
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .prequal-back-link:hover,
+      .prequal-back-link:focus-visible {
+        color: var(--accent-orange);
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+      }
+
+      .prequal-content {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(1rem, 2.5vh, 1.75rem);
+        padding: 1rem 0;
+        text-align: center;
+      }
+
+      .prequal-heading {
+        margin: 0;
+        color: var(--primary-navy);
+        font-size: clamp(1.7rem, 3.5vw, 2.75rem);
+        line-height: 1.15;
+        letter-spacing: -0.025em;
+      }
+
+      .prequal-intro-copy {
+        margin: -0.5rem 0 0;
+        color: var(--text-muted);
+        font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      }
+
+      .prequal-slide-frame {
+        width: min(100%, 1040px);
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        border-radius: var(--radius-lg);
+        background: #0b192c;
+        box-shadow: 0 18px 48px rgba(15, 23, 42, 0.14);
+      }
+
+      .prequal-slide {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
+      }
+
+      .prequal-actions {
+        display: flex;
+        min-height: 6.5rem;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.85rem;
+      }
+
+      .prequal-actions [hidden] {
+        display: none !important;
+      }
+
+      .prequal-screen[hidden] {
+        display: none !important;
+      }
+
+      .prequal-yes {
+        display: inline-flex;
+        min-height: 3.25rem;
+        align-items: center;
+        justify-content: center;
+        padding: 0.85rem 1.6rem;
+        border: 2px solid #166534;
+        border-radius: var(--radius-md);
+        background: #15803d;
+        box-shadow: 0 8px 20px rgba(21, 128, 61, 0.22);
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .prequal-yes:hover,
+      .prequal-yes:focus-visible {
+        transform: translateY(-2px);
+        background: #166534;
+        box-shadow: 0 10px 24px rgba(21, 128, 61, 0.28);
+      }
+
+      .prequal-no {
+        color: #b91c1c;
+        font-weight: 700;
+        text-decoration: underline;
+        text-underline-offset: 0.2em;
+      }
+
+      .prequal-no:hover,
+      .prequal-no:focus-visible {
+        color: #7f1d1d;
+      }
+
+      @media (max-width: 600px) {
+        .prequal-shell {
+          padding: 1rem;
+        }
+
+        .prequal-content {
+          justify-content: flex-start;
+          padding-top: 8vh;
+        }
+
+        .prequal-actions {
+          min-height: 7rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .prequal-yes {
+          transition: none;
+        }
+      }
+
+        .prequal-summary-screen {
+          width: min(100%, 780px);
+          margin: auto;
+          text-align: center;
+        }
+
+        .prequal-summary-card {
+          margin: 1.5rem 0;
+          padding: clamp(1.5rem, 4vw, 2.75rem);
+          border: 1px solid rgba(21, 128, 61, 0.2);
+          border-top: 6px solid #15803d;
+          border-radius: var(--radius-lg);
+          background: #ffffff;
+          box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+          text-align: left;
+        }
+
+        .prequal-summary-card h1 {
+          margin: 0.5rem 0 1rem;
+          color: var(--primary-navy);
+          font-size: clamp(1.8rem, 4vw, 2.5rem);
+          line-height: 1.15;
+        }
+
+        .prequal-summary-goal {
+          margin: 0;
+          color: var(--text-dark);
+          font-size: clamp(1.05rem, 2vw, 1.2rem);
+          line-height: 1.75;
+        }
+
+        .prequal-summary-note {
+          margin: 1.25rem 0 0;
+          padding-top: 1.1rem;
+          border-top: 1px solid var(--border-color);
+          color: var(--text-muted);
+          line-height: 1.65;
+        }
+
+        .prequal-continue {
+          min-height: 3.25rem;
+          padding: 0.85rem 1.6rem;
+          border: 2px solid #166534;
+          border-radius: var(--radius-md);
+          background: #15803d;
+          color: #ffffff;
+          font: inherit;
+          font-weight: 800;
+          cursor: pointer;
+          box-shadow: 0 8px 20px rgba(21, 128, 61, 0.22);
+        }
+
+        .prequal-continue:hover,
+        .prequal-continue:focus-visible {
+          background: #166534;
+          box-shadow: 0 10px 24px rgba(21, 128, 61, 0.28);
+        }
+    </style>
+  </head>
+  <body>
+    <main class="prequal-shell">
+      <a class="prequal-back-link" href="index.html#our-programs">← Back to programs</a>
+      <section class="prequal-content prequal-screen" id="prequalIntroScreen" aria-labelledby="prequalTitle">
+        <p class="section-eyebrow">TRANSITIONAL JOBS</p>
+        <h1 class="prequal-heading" id="prequalTitle">Your next step starts here.</h1>
+        <p class="prequal-intro-copy">Watch this short introduction before starting pre-qualification.</p>
+
+        <div class="prequal-slide-frame">
+          <img
+            class="prequal-slide"
+            id="prequalSlide"
+            src="slides/slide-1.svg"
+            alt="Transitional Jobs introduction, slide 1 of 10"
+            width="1707"
+            height="960"
+            fetchpriority="high"
+          >
+        </div>
+
+        <div class="prequal-actions" aria-live="polite">
+          <button class="prequal-yes" id="prequalYes" type="button" hidden>Yes: Get Pre Qualified!</button>
+          <a class="prequal-no" id="prequalNo" href="index.html#our-programs" hidden>No: Not Ready Yet.</a>
+        </div>
+      </section>
+
+      <section class="prequal-screen prequal-summary-screen" id="prequalSummaryScreen" aria-labelledby="prequalSummaryTitle" hidden>
+        <span class="section-eyebrow">PROGRAM OVERVIEW</span>
+        <div class="prequal-summary-card">
+          <span class="section-eyebrow">GOALS AND OBJECTIVES</span>
+          <h1 id="prequalSummaryTitle" tabindex="-1">What this program is designed to do</h1>
+          <p class="prequal-summary-goal">Build work experience, show what you can do on the job, and strengthen the skills that can help you succeed and stay employed.</p>
+          <p class="prequal-summary-note">Taking part does not require you to stay with a particular employer. A permanent job is not guaranteed.</p>
+        </div>
+        <button class="prequal-continue" id="prequalContinue" type="button">Got it / Continue</button>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const slide = document.getElementById("prequalSlide");
+        const yesLink = document.getElementById("prequalYes");
+        const noLink = document.getElementById("prequalNo");
+        const introScreen = document.getElementById("prequalIntroScreen");
+        const summaryScreen = document.getElementById("prequalSummaryScreen");
+        const summaryTitle = document.getElementById("prequalSummaryTitle");
+        const continueButton = document.getElementById("prequalContinue");
+        if (!slide || !yesLink || !noLink || !introScreen || !summaryScreen || !continueButton) return;
+
+        yesLink.addEventListener("click", () => {
+          introScreen.hidden = true;
+          summaryScreen.hidden = false;
+          if (summaryTitle) summaryTitle.focus();
+        });
+
+        continueButton.addEventListener("click", () => {
+          window.location.href = "index.html?start=prequalification#candidateModal";
+        });
+
+        const slides = Array.from({ length: 10 }, (_, index) => `slides/slide-${index + 1}.svg`);
+        slides.slice(1).forEach((src) => {
+          const image = new Image();
+          image.src = src;
+        });
+
+        const revealActions = () => {
+          yesLink.hidden = false;
+          window.setTimeout(() => {
+            noLink.hidden = false;
+          }, 1000);
+        };
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          revealActions();
+          return;
+        }
+
+        let currentSlide = 0;
+        const advanceIntro = () => {
+          if (currentSlide === slides.length - 1) {
+            revealActions();
+            return;
+          }
+
+          currentSlide += 1;
+          slide.src = slides[currentSlide];
+          slide.alt = `Transitional Jobs introduction, slide ${currentSlide + 1} of ${slides.length}`;
+          window.setTimeout(advanceIntro, 3000);
+        };
+
+        window.setTimeout(advanceIntro, 3000);
+      })();
+    </script>
+  </body>
+</html>
