@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transitional Jobs Pre-Qualification | Springboards</title>
     <meta name="description" content="Watch the Springboards Transitional Jobs introduction and start the pre-qualification questionnaire.">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
     <style>
       :root {
         --train-page-bg: #f8fafc;
@@ -280,6 +280,7 @@
 
       .prequal-slide-frame {
         width: min(100%, 1040px);
+        position: relative;
         overflow: hidden;
         border: 1px solid rgba(148, 163, 184, 0.45);
         border-radius: var(--radius-lg);
@@ -292,6 +293,63 @@
         width: 100%;
         aspect-ratio: 16 / 9;
         object-fit: contain;
+      }
+
+      .prequal-slide-toggle {
+        position: relative;
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #ffffff;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+
+      .prequal-slide-toggle:focus-visible {
+        outline: 4px solid #f59e0b;
+        outline-offset: -5px;
+      }
+
+      .prequal-slide-control {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: grid;
+        width: clamp(3.5rem, 9vw, 5.5rem);
+        aspect-ratio: 1;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.75);
+        border-radius: 50%;
+        background: rgba(15, 23, 42, 0.3);
+        color: #ffffff;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.2s ease;
+        backdrop-filter: blur(5px);
+      }
+
+      .prequal-slide-control svg {
+        width: 42%;
+        height: 42%;
+        fill: currentColor;
+      }
+
+      .prequal-slide-toggle[data-playing="false"] .prequal-play-control {
+        opacity: 0.95;
+      }
+
+      .prequal-slide-toggle[data-playing="true"]:hover .prequal-pause-control,
+      .prequal-slide-toggle[data-playing="true"]:focus-visible .prequal-pause-control {
+        opacity: 0.95;
+      }
+
+      @media (hover: none) {
+        .prequal-slide-toggle[data-playing="true"] .prequal-pause-control {
+          opacity: 0.8;
+        }
       }
 
       .prequal-actions {
@@ -447,6 +505,14 @@
           margin: 0 auto 1.5rem;
           max-width: 680px;
           color: var(--text-muted);
+          line-height: 1.7;
+          text-align: center;
+        }
+
+        .prequal-target-groups {
+          max-width: 760px;
+          margin: -0.5rem auto 1.5rem;
+          color: var(--text-body);
           line-height: 1.7;
           text-align: center;
         }
@@ -628,27 +694,35 @@
   </head>
   <body>
     <main class="prequal-shell">
-      <a class="prequal-back-link" href="index.html#our-programs">← Back to programs</a>
+      <a class="prequal-back-link" href="/#our-programs">← Back to programs</a>
       <section class="prequal-content prequal-screen" id="prequalIntroScreen" aria-labelledby="prequalTitle">
         <p class="section-eyebrow">TRANSITIONAL JOBS</p>
         <h1 class="prequal-heading" id="prequalTitle">Your next step starts here.</h1>
         <p class="prequal-intro-copy">Watch this short introduction before starting pre-qualification.</p>
 
         <div class="prequal-slide-frame">
-          <img
-            class="prequal-slide"
-            id="prequalSlide"
-            src="slides/slide-1.svg"
-            alt="Transitional Jobs introduction, slide 1 of 10"
-            width="1707"
-            height="960"
-            fetchpriority="high"
-          >
+          <button class="prequal-slide-toggle" id="prequalSlideToggle" type="button" data-playing="false" aria-label="Play introduction" aria-pressed="false">
+            <img
+              class="prequal-slide"
+              id="prequalSlide"
+              src="/slides/slide-1.svg"
+              alt="Transitional Jobs introduction, slide 1 of 10"
+              width="1707"
+              height="960"
+              fetchpriority="high"
+            >
+            <span class="prequal-slide-control prequal-play-control" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+            </span>
+            <span class="prequal-slide-control prequal-pause-control" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"></path></svg>
+            </span>
+          </button>
         </div>
 
         <div class="prequal-actions" aria-live="polite">
           <button class="prequal-yes" id="prequalYes" type="button" hidden>Yes: Get Pre Qualified!</button>
-          <a class="prequal-no" id="prequalNo" href="index.html#our-programs" hidden>No: Not Ready Yet.</a>
+          <a class="prequal-no" id="prequalNo" href="/#our-programs" hidden>No: Not Ready Yet.</a>
         </div>
       </section>
 
@@ -660,13 +734,14 @@
           <p class="prequal-summary-goal">Build work experience, show what you can do on the job, and strengthen the skills that can help you succeed and stay employed.</p>
           <p class="prequal-summary-note">Taking part does not require you to stay with a particular employer. A permanent job is not guaranteed.</p>
         </div>
-        <button class="prequal-continue" id="prequalContinue" type="button">Got it / Continue</button>
+        <button class="prequal-continue" id="prequalContinue" type="button">Continue</button>
       </section>
 
       <section class="prequal-screen prequal-questionnaire" id="prequalQuestionnaire" aria-labelledby="prequalQuestionnaireTitle" hidden>
         <span class="section-eyebrow">ELIGIBILITY</span>
         <h1 class="prequal-questionnaire-heading" id="prequalQuestionnaireTitle" tabindex="-1">Pre-qualification questions</h1>
-        <p class="prequal-questionnaire-intro">Answer one question at a time to see whether your answers match the program's initial eligibility criteria. No TABE test is required.</p>
+        <p class="prequal-questionnaire-intro">To meet the initial criteria, you must qualify for WIOA Adult or Dislocated Worker services, have at least one barrier to employment, and meet either a chronic-unemployment definition or the inconsistent-work-history definition. Apprentices and youth who previously took part in WBL are not eligible. No TABE test is required.</p>
+        <p class="prequal-target-groups"><strong>Target groups include</strong> long-term unemployed people, ex-offenders, people currently receiving or who have exhausted TANF, people with disabilities, and unemployed or underemployed people who meet the chronic unemployment or inconsistent work-history criteria below.</p>
         <p class="prequal-progress" id="prequalProgress" aria-live="polite"></p>
         <div class="prequal-progress-track" role="progressbar" aria-label="Questionnaire progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <div class="prequal-progress-value" id="prequalProgressValue"></div>
@@ -695,6 +770,7 @@
     <script>
       (() => {
         const slide = document.getElementById("prequalSlide");
+        const slideToggle = document.getElementById("prequalSlideToggle");
         const yesLink = document.getElementById("prequalYes");
         const noLink = document.getElementById("prequalNo");
         const introScreen = document.getElementById("prequalIntroScreen");
@@ -715,7 +791,7 @@
         const resultTitle = document.getElementById("prequalResultTitle");
         const resultMessage = document.getElementById("prequalResultMessage");
         const resultContinue = document.getElementById("prequalResultContinue");
-        if (!slide || !yesLink || !noLink || !introScreen || !summaryScreen || !continueButton ||
+        if (!slide || !slideToggle || !yesLink || !noLink || !introScreen || !summaryScreen || !continueButton ||
             !questionnaire || !questionForm || !questionContent || !questionError || !questionBack ||
             !questionNext || !progressText || !progressValue || !progressTrack || !resultScreen ||
             !resultCard || !resultTitle || !resultMessage || !resultContinue) return;
@@ -723,17 +799,17 @@
         const questions = [
           {
             name: "wioaEligibility",
-            prompt: "Approved for WIOA Adult or Dislocated Worker services?",
-            help: "Youth must qualify as an Adult.",
+            prompt: "Do you qualify for WIOA Adult or Dislocated Worker services?",
+            help: "Choose “not sure” if a Career Center has not screened you yet. Youth must qualify as Adults, and a Career Center makes the official decision.",
             choices: [
-              { value: "yes", label: "Yes" },
-              { value: "no", label: "No" },
-              { value: "unsure", label: "Not sure" }
+              { value: "yes", label: "Yes, a Career Center confirmed this" },
+              { value: "no", label: "No, a Career Center told me I do not qualify" },
+              { value: "unsure", label: "Not sure, or I have not been screened yet" }
             ]
           },
           {
             name: "apprentice",
-            prompt: "Are you currently an apprentice?",
+            prompt: "Are you an apprentice?",
             choices: [
               { value: "yes", label: "Yes" },
               { value: "no", label: "No" },
@@ -742,17 +818,18 @@
           },
           {
             name: "youthWbl",
-            prompt: "Have you previously participated in work-based learning (WBL) as a youth?",
+            prompt: "If you are applying as a youth, have you previously taken part in work-based learning (WBL)?",
             choices: [
-              { value: "yes", label: "Yes" },
-              { value: "no", label: "No" },
+              { value: "yes", label: "Yes, I am a youth and I have" },
+              { value: "no", label: "No, I am a youth and I have not" },
+              { value: "not-applicable", label: "I am not applying as a youth" },
               { value: "unsure", label: "Not sure" }
             ]
           },
           {
             name: "barriers",
-            prompt: "Do one or more of these barriers to employment apply to you?",
-            help: "Select all that apply. These categories are based on WIOA Section 3(24).",
+            prompt: "Do any of these barriers to employment apply to you?",
+            help: "Choose all that apply. These are groups recognized in WIOA law as facing barriers to work.",
             multiple: true,
             choices: [
               { value: "displaced-homemaker", label: "Displaced homemaker" },
@@ -774,16 +851,16 @@
           },
           {
             name: "chronic",
-            prompt: "Do one or more of these descriptions of chronic unemployment apply to you?",
-            help: "Select all that apply.",
+            prompt: "Do any of these descriptions fit your work or benefit history?",
+            help: "Choose all that apply. These are the program's definitions of chronic unemployment.",
             multiple: true,
             choices: [
-              { value: "significant-unemployment", label: "I am unemployed at referral and have been without work for a significant portion of the last 26 weeks." },
-              { value: "minimum-wage", label: "My work history is primarily minimum-wage employment." },
-              { value: "limited-mismatch-work", label: "My current work is seasonal or temporary, is less than 10 weeks long, or does not match my demonstrated education or skill level." },
-              { value: "ui", label: "I am currently claiming or have exhausted unemployment insurance (UI) benefits." },
-              { value: "justice-recent", label: "I am on parole or probation, or was released from prison or jail within 12 months before applying." },
-              { value: "low-income-standard", label: "My income is below the Lower Living Standard Income Level (LLSIL) threshold for my local area." },
+              { value: "significant-unemployment", label: "I am out of work now and have been without work for a significant part of the last 26 weeks." },
+              { value: "minimum-wage", label: "Most of my work history is in minimum-wage jobs." },
+              { value: "limited-mismatch-work", label: "My current work is seasonal or temporary, lasts less than 10 weeks, or does not match my education or skills." },
+              { value: "ui", label: "I am receiving unemployment benefits or have used all of them." },
+              { value: "justice-recent", label: "I am on parole or probation, or was released from jail or prison within the past 12 months." },
+              { value: "low-income-standard", label: "My income is below the local Lower Living Standard Income Level (LLSIL)." },
               { value: "wioa-dislocated-worker", label: "I am eligible as a WIOA Dislocated Worker." },
               { value: "none", label: "None of these apply" },
               { value: "unsure", label: "I'm not sure" }
@@ -792,6 +869,7 @@
           {
             name: "inconsistentWork",
             prompt: "Does your work history consist of relatively short-term jobs (approximately 6 months or less) and gaps between jobs?",
+            help: "This means jobs usually lasted about six months or less, with gaps between jobs.",
             choices: [
               { value: "yes", label: "Yes" },
               { value: "no", label: "No" },
@@ -858,6 +936,14 @@
             if (!(input instanceof HTMLInputElement)) return;
             if (!question.multiple) {
               answers[question.name] = input.value;
+              const hasEarlyExit =
+                (question.name === "wioaEligibility" && input.value === "no") ||
+                (question.name === "apprentice" && input.value === "yes") ||
+                (question.name === "youthWbl" && input.value === "yes");
+              if (hasEarlyExit) {
+                showResult();
+                return;
+              }
               if (currentQuestion === questions.length - 1) {
                 showResult();
               } else {
@@ -890,21 +976,34 @@
           const barriers = answers.barriers || [];
           const chronic = answers.chronic || [];
           const excluded = answers.apprentice === "yes" || answers.youthWbl === "yes";
+          const hasChronicCriterion = chronic.some((value) => value !== "none" && value !== "unsure");
+          const hasInconsistentCriterion = answers.inconsistentWork === "yes";
+          const hasEmploymentCriterion = hasChronicCriterion || hasInconsistentCriterion;
+          const hasBarrier = barriers.some((value) => value !== "none" && value !== "unsure");
           const eligibilityUnknown = answers.wioaEligibility === "unsure" ||
             answers.apprentice === "unsure" || answers.youthWbl === "unsure" ||
-            barriers.includes("unsure") || chronic.includes("unsure") ||
-            answers.inconsistentWork === "unsure";
-          const hasBarrier = barriers.some((value) => value !== "none" && value !== "unsure");
-          const hasEmploymentCriterion = chronic.some((value) => value !== "none" && value !== "unsure") ||
-            answers.inconsistentWork === "yes";
+            (barriers.includes("unsure") && !hasBarrier) || (!hasEmploymentCriterion &&
+              (chronic.includes("unsure") || answers.inconsistentWork === "unsure"));
           const doesNotMeetCriteria = answers.wioaEligibility === "no" ||
-            (barriers.includes("none") && !eligibilityUnknown) ||
-            ((!hasEmploymentCriterion && answers.inconsistentWork === "no") && !eligibilityUnknown);
+            excluded || barriers.includes("none") ||
+            (chronic.includes("none") && answers.inconsistentWork === "no");
 
           resultCard.dataset.result = "review";
-          if (excluded || doesNotMeetCriteria) {
+          if (doesNotMeetCriteria) {
             resultTitle.textContent = "Your answers don't appear to meet the listed criteria";
-            resultMessage.innerHTML = "<p>Based on your answers, you may not meet one or more of the initial Transitional Jobs eligibility criteria. Apprentices and youth who previously participated in WBL are not eligible for this program.</p><p>You can still contact your local Alabama Career Center to discuss your circumstances and other available services.</p>";
+            let reason = "Based on your answers, you may not meet one or more of the initial Transitional Jobs criteria.";
+            if (answers.wioaEligibility === "no") {
+              reason = "This program requires WIOA Adult or Dislocated Worker eligibility. A Career Center can explain what other services may be available.";
+            } else if (answers.apprentice === "yes") {
+              reason = "Apprentices are not eligible for this program.";
+            } else if (answers.youthWbl === "yes") {
+              reason = "Youth who have previously taken part in work-based learning are not eligible for this program.";
+            } else if (barriers.includes("none")) {
+              reason = "The initial criteria require at least one listed barrier to employment.";
+            } else if (chronic.includes("none") && answers.inconsistentWork === "no") {
+              reason = "The initial criteria require either a listed chronic-unemployment condition or an inconsistent work history.";
+            }
+            resultMessage.innerHTML = `<p>${reason}</p><p>You can still contact a local Alabama Career Center to discuss your circumstances and other services.</p>`;
             resultCard.dataset.result = "not-qualified";
           } else if (eligibilityUnknown || answers.wioaEligibility !== "yes" || !hasBarrier || !hasEmploymentCriterion) {
             resultTitle.textContent = "A Career Center can help confirm your eligibility";
@@ -950,16 +1049,14 @@
         });
 
         continueButton.addEventListener("click", () => {
-          showScreen(questionnaire);
-          currentQuestion = 0;
-          renderQuestion(false);
+          window.location.assign("/eligibility");
         });
 
         resultContinue.addEventListener("click", () => {
-          window.location.href = "index.html?start=prequalification#candidateModal";
+          window.location.href = "/?start=prequalification#candidateModal";
         });
 
-        const slides = Array.from({ length: 10 }, (_, index) => `slides/slide-${index + 1}.svg`);
+        const slides = Array.from({ length: 10 }, (_, index) => `/slides/slide-${index + 1}.svg`);
         slides.slice(1).forEach((src) => {
           const image = new Image();
           image.src = src;
@@ -972,14 +1069,30 @@
           }, 1000);
         };
 
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          revealActions();
-          return;
-        }
-
         let currentSlide = 0;
+        let playbackTimer = null;
+        let isPlaying = false;
+
+        const updatePlaybackControl = () => {
+          slideToggle.dataset.playing = String(isPlaying);
+          slideToggle.setAttribute("aria-pressed", String(isPlaying));
+          slideToggle.setAttribute("aria-label", isPlaying ? "Pause introduction" : "Play introduction");
+        };
+
+        const stopPlayback = () => {
+          isPlaying = false;
+          if (playbackTimer !== null) {
+            window.clearTimeout(playbackTimer);
+            playbackTimer = null;
+          }
+          updatePlaybackControl();
+        };
+
         const advanceIntro = () => {
+          playbackTimer = null;
+          if (!isPlaying) return;
           if (currentSlide === slides.length - 1) {
+            stopPlayback();
             revealActions();
             return;
           }
@@ -987,10 +1100,33 @@
           currentSlide += 1;
           slide.src = slides[currentSlide];
           slide.alt = `Transitional Jobs introduction, slide ${currentSlide + 1} of ${slides.length}`;
-          window.setTimeout(advanceIntro, 3000);
+          playbackTimer = window.setTimeout(advanceIntro, 3000);
         };
 
-        window.setTimeout(advanceIntro, 3000);
+        const startPlayback = () => {
+          if (currentSlide === slides.length - 1) {
+            revealActions();
+            return;
+          }
+          isPlaying = true;
+          updatePlaybackControl();
+          playbackTimer = window.setTimeout(advanceIntro, 3000);
+        };
+
+        slideToggle.addEventListener("click", () => {
+          if (isPlaying) {
+            stopPlayback();
+          } else {
+            startPlayback();
+          }
+        });
+
+        if (window.location.pathname.replace(/\/+$/, "") === "/eligibility") {
+          showScreen(questionnaire);
+          renderQuestion(false);
+        } else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          revealActions();
+        }
       })();
     </script>
   </body>

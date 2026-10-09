@@ -7,6 +7,42 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "redirects": [
+      {
+        "source": "/index.html",
+        "destination": "/",
+        "type": 301
+      },
+      {
+        "source": "/train.html",
+        "destination": "/train",
+        "type": 301
+      },
+      {
+        "source": "/backoffice.html",
+        "destination": "/backoffice",
+        "type": 301
+      },
+      {
+        "source": "/portal",
+        "destination": "/backoffice",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/train",
+        "destination": "/train.html"
+      },
+      {
+        "source": "/eligibility",
+        "destination": "/train.html"
+      },
+      {
+        "source": "/backoffice",
+        "destination": "/backoffice.html"
+      }
+    ],
     "headers": [
       {
         "source": "**",

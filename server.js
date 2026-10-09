@@ -47,6 +47,21 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+// Redirect public HTML page URLs to their clean route equivalents.
+const cleanPageRedirects = new Map([
+  ['/index.html', '/'],
+  ['/train.html', '/train'],
+  ['/backoffice.html', '/backoffice'],
+  ['/404.html', '/404']
+]);
+
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  const destination = cleanPageRedirects.get(req.path.toLowerCase());
+  if (!destination) return next();
+  return res.redirect(301, `${destination}${req.url.slice(req.path.length)}`);
+});
+
 // 3. Static asset caching for sub-2-second lightning fast performance
 app.use(express.static(__dirname, {
   maxAge: '1d',
@@ -1477,13 +1492,28 @@ app.get('/api/workspace/status', (req, res) => {
   });
 });
 
-// Backoffice and Portal route
-app.get(['/backoffice', '/portal'], (req, res) => {
+// Clean routes for the website pages.
+app.get(['/train', '/eligibility'], (req, res) => {
+  res.sendFile(path.join(__dirname, 'train.html'));
+});
+
+app.get('/backoffice', (req, res) => {
   const backofficeHtmlPath = path.join(__dirname, 'backoffice.html');
   if (fs.existsSync(backofficeHtmlPath)) {
     res.sendFile(backofficeHtmlPath);
   } else {
     res.redirect('/');
+  }
+});
+
+app.get('/portal', (req, res) => res.redirect(301, '/backoffice'));
+
+app.get('/404', (req, res) => {
+  const notFoundPath = path.join(__dirname, '404.html');
+  if (fs.existsSync(notFoundPath)) {
+    res.status(404).sendFile(notFoundPath);
+  } else {
+    res.status(404).send('404 Not Found - The requested page does not exist on Springboards.');
   }
 });
 
