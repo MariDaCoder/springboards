@@ -425,6 +425,205 @@
           background: #166534;
           box-shadow: 0 10px 24px rgba(21, 128, 61, 0.28);
         }
+
+        .prequal-questionnaire {
+          width: min(100%, 820px);
+          margin: auto;
+          text-align: left;
+        }
+
+        .prequal-questionnaire-heading,
+        .prequal-question-title {
+          color: var(--primary-navy);
+        }
+
+        .prequal-questionnaire-heading {
+          margin: 0.5rem 0;
+          font-size: clamp(1.8rem, 4vw, 2.5rem);
+          text-align: center;
+        }
+
+        .prequal-questionnaire-intro {
+          margin: 0 auto 1.5rem;
+          max-width: 680px;
+          color: var(--text-muted);
+          line-height: 1.7;
+          text-align: center;
+        }
+
+        .prequal-progress {
+          margin: 0 0 0.75rem;
+          color: var(--text-muted);
+          font-size: 0.9rem;
+          font-weight: 700;
+        }
+
+        .prequal-progress-track {
+          height: 0.5rem;
+          overflow: hidden;
+          border-radius: 999px;
+          background: #dbe5ee;
+        }
+
+        .prequal-progress-value {
+          height: 100%;
+          border-radius: inherit;
+          background: #15803d;
+          transition: width 0.3s ease;
+        }
+
+        .prequal-question-card {
+          margin-top: 1rem;
+          padding: clamp(1.2rem, 4vw, 2rem);
+          border: 1px solid rgba(148, 163, 184, 0.4);
+          border-radius: var(--radius-lg);
+          background: #ffffff;
+          box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+        }
+
+        .prequal-question-card.prequal-question-enter {
+          animation: prequal-slide-down 0.35s ease both;
+        }
+
+        @keyframes prequal-slide-down {
+          from {
+            opacity: 0;
+            transform: translateY(-1.25rem);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .prequal-question-title {
+          margin: 0 0 1rem;
+          font-size: clamp(1.2rem, 3vw, 1.55rem);
+          line-height: 1.35;
+        }
+
+        .prequal-question-help {
+          margin: -0.4rem 0 1rem;
+          color: var(--text-muted);
+          line-height: 1.6;
+        }
+
+        .prequal-choice-list {
+          display: grid;
+          gap: 0.65rem;
+          margin: 0;
+          padding: 0;
+          border: 0;
+        }
+
+        .prequal-choice {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.75rem;
+          padding: 0.85rem 1rem;
+          border: 1px solid #cbd5e1;
+          border-radius: 0.75rem;
+          background: #ffffff;
+          color: var(--text-body);
+          cursor: pointer;
+          line-height: 1.5;
+        }
+
+        .prequal-choice:has(input:checked) {
+          border-color: #15803d;
+          background: #f0fdf4;
+        }
+
+        .prequal-choice input {
+          flex: 0 0 auto;
+          width: 1.1rem;
+          height: 1.1rem;
+          margin: 0.2rem 0 0;
+          accent-color: #15803d;
+        }
+
+        .prequal-question-error {
+          min-height: 1.5rem;
+          margin: 0.5rem 0 0;
+          color: #b91c1c;
+          font-weight: 700;
+        }
+
+        .prequal-question-actions {
+          display: flex;
+          justify-content: space-between;
+          gap: 0.75rem;
+          margin-top: 1rem;
+        }
+
+        .prequal-question-actions button {
+          min-height: 3rem;
+          padding: 0.7rem 1.2rem;
+          border: 1px solid #166534;
+          border-radius: var(--radius-md);
+          background: #15803d;
+          color: #ffffff;
+          font: inherit;
+          font-weight: 800;
+          cursor: pointer;
+        }
+
+        .prequal-question-actions button:hover,
+        .prequal-question-actions button:focus-visible {
+          background: #166534;
+        }
+
+        .prequal-question-actions .prequal-back-button {
+          border-color: #cbd5e1;
+          background: #ffffff;
+          color: var(--primary-navy);
+        }
+
+        .prequal-question-actions .prequal-back-button:hover,
+        .prequal-question-actions .prequal-back-button:focus-visible {
+          background: #f1f5f9;
+        }
+
+        .prequal-result-card {
+          margin: 1.5rem 0;
+          padding: clamp(1.5rem, 4vw, 2.75rem);
+          border: 1px solid rgba(21, 128, 61, 0.2);
+          border-top: 6px solid #15803d;
+          border-radius: var(--radius-lg);
+          background: #ffffff;
+          box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+        }
+
+        .prequal-result-card[data-result="not-qualified"] {
+          border-color: rgba(180, 83, 9, 0.25);
+          border-top-color: #b45309;
+        }
+
+        .prequal-result-card h2 {
+          margin: 0 0 1rem;
+          color: var(--primary-navy);
+          font-size: clamp(1.5rem, 4vw, 2.2rem);
+        }
+
+        .prequal-result-card p {
+          color: var(--text-body);
+          line-height: 1.7;
+        }
+
+        .prequal-result-note {
+          padding-top: 1rem;
+          border-top: 1px solid var(--border-color);
+          color: var(--text-muted) !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .prequal-question-card.prequal-question-enter {
+            animation: none;
+          }
+          .prequal-progress-value {
+            transition: none;
+          }
+        }
     </style>
   </head>
   <body>
@@ -463,6 +662,34 @@
         </div>
         <button class="prequal-continue" id="prequalContinue" type="button">Got it / Continue</button>
       </section>
+
+      <section class="prequal-screen prequal-questionnaire" id="prequalQuestionnaire" aria-labelledby="prequalQuestionnaireTitle" hidden>
+        <span class="section-eyebrow">ELIGIBILITY</span>
+        <h1 class="prequal-questionnaire-heading" id="prequalQuestionnaireTitle" tabindex="-1">Pre-qualification questions</h1>
+        <p class="prequal-questionnaire-intro">Answer one question at a time to see whether your answers match the program's initial eligibility criteria. No TABE test is required.</p>
+        <p class="prequal-progress" id="prequalProgress" aria-live="polite"></p>
+        <div class="prequal-progress-track" role="progressbar" aria-label="Questionnaire progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="prequal-progress-value" id="prequalProgressValue"></div>
+        </div>
+        <form id="prequalQuestionForm" class="prequal-question-card" novalidate>
+          <div id="prequalQuestionContent"></div>
+          <p class="prequal-question-error" id="prequalQuestionError" role="alert"></p>
+          <div class="prequal-question-actions">
+            <button class="prequal-back-button" id="prequalQuestionBack" type="button">Back</button>
+            <button id="prequalQuestionNext" type="submit">Continue</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="prequal-screen prequal-summary-screen" id="prequalResultScreen" aria-labelledby="prequalResultTitle" hidden>
+        <span class="section-eyebrow">ELIGIBILITY PRE-SCREEN</span>
+        <div class="prequal-result-card" id="prequalResultCard">
+          <h2 id="prequalResultTitle" tabindex="-1"></h2>
+          <div id="prequalResultMessage"></div>
+          <p class="prequal-result-note">This pre-screen is not an official WIOA eligibility determination. A local Alabama Career Center must verify WIOA Adult and/or Dislocated Worker eligibility and all program requirements. No TABE is required.</p>
+        </div>
+        <button class="prequal-continue" id="prequalResultContinue" type="button">Continue to contact information</button>
+      </section>
     </main>
 
     <script>
@@ -474,7 +701,247 @@
         const summaryScreen = document.getElementById("prequalSummaryScreen");
         const summaryTitle = document.getElementById("prequalSummaryTitle");
         const continueButton = document.getElementById("prequalContinue");
-        if (!slide || !yesLink || !noLink || !introScreen || !summaryScreen || !continueButton) return;
+        const questionnaire = document.getElementById("prequalQuestionnaire");
+        const questionForm = document.getElementById("prequalQuestionForm");
+        const questionContent = document.getElementById("prequalQuestionContent");
+        const questionError = document.getElementById("prequalQuestionError");
+        const questionBack = document.getElementById("prequalQuestionBack");
+        const questionNext = document.getElementById("prequalQuestionNext");
+        const progressText = document.getElementById("prequalProgress");
+        const progressValue = document.getElementById("prequalProgressValue");
+        const progressTrack = document.querySelector(".prequal-progress-track");
+        const resultScreen = document.getElementById("prequalResultScreen");
+        const resultCard = document.getElementById("prequalResultCard");
+        const resultTitle = document.getElementById("prequalResultTitle");
+        const resultMessage = document.getElementById("prequalResultMessage");
+        const resultContinue = document.getElementById("prequalResultContinue");
+        if (!slide || !yesLink || !noLink || !introScreen || !summaryScreen || !continueButton ||
+            !questionnaire || !questionForm || !questionContent || !questionError || !questionBack ||
+            !questionNext || !progressText || !progressValue || !progressTrack || !resultScreen ||
+            !resultCard || !resultTitle || !resultMessage || !resultContinue) return;
+
+        const questions = [
+          {
+            name: "wioaEligibility",
+            prompt: "Approved for WIOA Adult or Dislocated Worker services?",
+            help: "Youth must qualify as an Adult.",
+            choices: [
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+              { value: "unsure", label: "Not sure" }
+            ]
+          },
+          {
+            name: "apprentice",
+            prompt: "Are you currently an apprentice?",
+            choices: [
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+              { value: "unsure", label: "Not sure" }
+            ]
+          },
+          {
+            name: "youthWbl",
+            prompt: "Have you previously participated in work-based learning (WBL) as a youth?",
+            choices: [
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+              { value: "unsure", label: "Not sure" }
+            ]
+          },
+          {
+            name: "barriers",
+            prompt: "Do one or more of these barriers to employment apply to you?",
+            help: "Select all that apply. These categories are based on WIOA Section 3(24).",
+            multiple: true,
+            choices: [
+              { value: "displaced-homemaker", label: "Displaced homemaker" },
+              { value: "low-income", label: "Low-income individual" },
+              { value: "native", label: "American Indian, Alaska Native, or Native Hawaiian" },
+              { value: "disability", label: "Individual with a disability, including a youth with a disability" },
+              { value: "justice-involved", label: "Justice-involved individual, including an ex-offender" },
+              { value: "foster-care", label: "Youth in or aged out of foster care (must be made WIOA Adult eligible)" },
+              { value: "english-literacy-cultural", label: "English language learner, low literacy, or substantial cultural barrier" },
+              { value: "farmworker", label: "Eligible migrant or seasonal farmworker" },
+              { value: "single-parent", label: "Single parent, including a single pregnant woman" },
+              { value: "long-term-unemployed", label: "Long-term unemployed (27 or more weeks)" },
+              { value: "public-assistance", label: "Recipient of public assistance, including currently receiving or having exhausted TANF" },
+              { value: "dislocated-worker", label: "WIOA-eligible Dislocated Worker" },
+              { value: "homeless", label: "Homeless individual" },
+              { value: "none", label: "None of these apply" },
+              { value: "unsure", label: "Not sure" }
+            ]
+          },
+          {
+            name: "chronic",
+            prompt: "Do one or more of these descriptions of chronic unemployment apply to you?",
+            help: "Select all that apply.",
+            multiple: true,
+            choices: [
+              { value: "significant-unemployment", label: "I am unemployed at referral and have been without work for a significant portion of the last 26 weeks." },
+              { value: "minimum-wage", label: "My work history is primarily minimum-wage employment." },
+              { value: "limited-mismatch-work", label: "My current work is seasonal or temporary, is less than 10 weeks long, or does not match my demonstrated education or skill level." },
+              { value: "ui", label: "I am currently claiming or have exhausted unemployment insurance (UI) benefits." },
+              { value: "justice-recent", label: "I am on parole or probation, or was released from prison or jail within 12 months before applying." },
+              { value: "low-income-standard", label: "My income is below the Lower Living Standard Income Level (LLSIL) threshold for my local area." },
+              { value: "wioa-dislocated-worker", label: "I am eligible as a WIOA Dislocated Worker." },
+              { value: "none", label: "None of these apply" },
+              { value: "unsure", label: "I'm not sure" }
+            ]
+          },
+          {
+            name: "inconsistentWork",
+            prompt: "Does your work history consist of relatively short-term jobs (approximately 6 months or less) and gaps between jobs?",
+            choices: [
+              { value: "yes", label: "Yes" },
+              { value: "no", label: "No" },
+              { value: "unsure", label: "I'm not sure" }
+            ]
+          }
+        ];
+        const answers = {};
+        let currentQuestion = 0;
+
+        const showScreen = (screen) => {
+          [introScreen, summaryScreen, questionnaire, resultScreen].forEach((item) => {
+            item.hidden = item !== screen;
+          });
+        };
+
+        const renderQuestion = (animate = true) => {
+          const question = questions[currentQuestion];
+          questionContent.replaceChildren();
+          questionError.textContent = "";
+          questionBack.hidden = currentQuestion === 0;
+          questionNext.hidden = !question.multiple;
+          questionNext.textContent = currentQuestion === questions.length - 1 ? "See my result" : "Continue";
+          progressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+          const progress = Math.round(((currentQuestion + 1) / questions.length) * 100);
+          progressValue.style.width = `${progress}%`;
+          progressTrack.setAttribute("aria-valuenow", String(progress));
+
+          const fieldset = document.createElement("fieldset");
+          fieldset.className = "prequal-choice-list";
+          fieldset.setAttribute("aria-labelledby", "prequalQuestionTitle");
+          const legend = document.createElement("legend");
+          legend.className = "prequal-question-title";
+          legend.id = "prequalQuestionTitle";
+          legend.textContent = question.prompt;
+          fieldset.append(legend);
+
+          if (question.help) {
+            const help = document.createElement("p");
+            help.className = "prequal-question-help";
+            help.textContent = question.help;
+            fieldset.append(help);
+          }
+
+          question.choices.forEach((choice, index) => {
+            const label = document.createElement("label");
+            label.className = "prequal-choice";
+            const input = document.createElement("input");
+            input.type = question.multiple ? "checkbox" : "radio";
+            input.name = question.name;
+            input.value = choice.value;
+            input.checked = question.multiple
+              ? (answers[question.name] || []).includes(choice.value)
+              : answers[question.name] === choice.value;
+            input.id = `${question.name}-${index}`;
+            if (!question.multiple) input.required = true;
+            label.htmlFor = input.id;
+            label.append(input, document.createTextNode(choice.label));
+            fieldset.append(label);
+          });
+
+          fieldset.addEventListener("change", (event) => {
+            const input = event.target;
+            if (!(input instanceof HTMLInputElement)) return;
+            if (!question.multiple) {
+              answers[question.name] = input.value;
+              if (currentQuestion === questions.length - 1) {
+                showResult();
+              } else {
+                currentQuestion += 1;
+                renderQuestion();
+              }
+              return;
+            }
+            if (input.value === "none" || input.value === "unsure") {
+              if (input.checked) {
+                fieldset.querySelectorAll('input[type="checkbox"]').forEach((other) => {
+                  if (other !== input) other.checked = false;
+                });
+              }
+            } else if (input.checked) {
+              const exclusive = fieldset.querySelectorAll('input[value="none"], input[value="unsure"]');
+              exclusive.forEach((other) => { other.checked = false; });
+            }
+          });
+          questionContent.append(fieldset);
+          questionForm.classList.remove("prequal-question-enter");
+          if (animate) {
+            void questionForm.offsetWidth;
+            questionForm.classList.add("prequal-question-enter");
+          }
+          fieldset.querySelector("input")?.focus({ preventScroll: true });
+        };
+
+        const showResult = () => {
+          const barriers = answers.barriers || [];
+          const chronic = answers.chronic || [];
+          const excluded = answers.apprentice === "yes" || answers.youthWbl === "yes";
+          const eligibilityUnknown = answers.wioaEligibility === "unsure" ||
+            answers.apprentice === "unsure" || answers.youthWbl === "unsure" ||
+            barriers.includes("unsure") || chronic.includes("unsure") ||
+            answers.inconsistentWork === "unsure";
+          const hasBarrier = barriers.some((value) => value !== "none" && value !== "unsure");
+          const hasEmploymentCriterion = chronic.some((value) => value !== "none" && value !== "unsure") ||
+            answers.inconsistentWork === "yes";
+          const doesNotMeetCriteria = answers.wioaEligibility === "no" ||
+            (barriers.includes("none") && !eligibilityUnknown) ||
+            ((!hasEmploymentCriterion && answers.inconsistentWork === "no") && !eligibilityUnknown);
+
+          resultCard.dataset.result = "review";
+          if (excluded || doesNotMeetCriteria) {
+            resultTitle.textContent = "Your answers don't appear to meet the listed criteria";
+            resultMessage.innerHTML = "<p>Based on your answers, you may not meet one or more of the initial Transitional Jobs eligibility criteria. Apprentices and youth who previously participated in WBL are not eligible for this program.</p><p>You can still contact your local Alabama Career Center to discuss your circumstances and other available services.</p>";
+            resultCard.dataset.result = "not-qualified";
+          } else if (eligibilityUnknown || answers.wioaEligibility !== "yes" || !hasBarrier || !hasEmploymentCriterion) {
+            resultTitle.textContent = "A Career Center can help confirm your eligibility";
+            resultMessage.innerHTML = "<p>Your answers include information that needs to be confirmed, or they don't yet establish all of the initial criteria. A Career Center can review your WIOA eligibility, barriers, and work history with you.</p>";
+          } else {
+            resultTitle.textContent = "Your answers may meet the initial criteria";
+            resultMessage.innerHTML = "<p>Based on your answers, you may meet the initial criteria for a Transitional Jobs eligibility review. Your WIOA Adult or Dislocated Worker status and program eligibility still need to be verified.</p>";
+          }
+          showScreen(resultScreen);
+          resultTitle.focus();
+        };
+
+        questionForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const question = questions[currentQuestion];
+          if (!question.multiple) return;
+          const selected = Array.from(questionForm.querySelectorAll(`input[name="${question.name}"]:checked`))
+            .map((input) => input.value);
+          if (selected.length === 0) {
+            questionError.textContent = "Please select an answer to continue.";
+            questionForm.querySelector("input")?.focus();
+            return;
+          }
+          answers[question.name] = question.multiple ? selected : selected[0];
+          if (currentQuestion === questions.length - 1) {
+            showResult();
+            return;
+          }
+          currentQuestion += 1;
+          renderQuestion();
+        });
+
+        questionBack.addEventListener("click", () => {
+          if (currentQuestion === 0) return;
+          currentQuestion -= 1;
+          renderQuestion();
+        });
 
         yesLink.addEventListener("click", () => {
           introScreen.hidden = true;
@@ -483,6 +950,12 @@
         });
 
         continueButton.addEventListener("click", () => {
+          showScreen(questionnaire);
+          currentQuestion = 0;
+          renderQuestion(false);
+        });
+
+        resultContinue.addEventListener("click", () => {
           window.location.href = "index.html?start=prequalification#candidateModal";
         });
 
