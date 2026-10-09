@@ -51,6 +51,7 @@ app.use(express.json());
 const cleanPageRedirects = new Map([
   ['/index.html', '/'],
   ['/train.html', '/train'],
+  ['/eligibility.html', '/eligibility'],
   ['/backoffice.html', '/backoffice'],
   ['/404.html', '/404']
 ]);
@@ -1493,8 +1494,12 @@ app.get('/api/workspace/status', (req, res) => {
 });
 
 // Clean routes for the website pages.
-app.get(['/train', '/eligibility'], (req, res) => {
+app.get('/train', (req, res) => {
   res.sendFile(path.join(__dirname, 'train.html'));
+});
+
+app.get('/eligibility', (req, res) => {
+  res.sendFile(path.join(__dirname, 'eligibility.html'));
 });
 
 app.get('/backoffice', (req, res) => {
