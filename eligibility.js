@@ -17,11 +17,14 @@
   const profileTags = document.getElementById("profileTags");
   const activityCode = document.getElementById("activityCode");
   const restartButton = document.getElementById("restartButton");
+  const documentReadiness = document.getElementById("documentReadiness");
+  const documentReadinessStatus = document.getElementById("documentReadinessStatus");
+  const missingDocuments = document.getElementById("missingDocuments");
 
   if (!questionScreen || !resultScreen || !questionForm || !questionMount || !questionError ||
       !stepCount || !progressTrack || !progressValue || !backButton || !nextButton || !resultTop ||
       !resultEyebrow || !resultTitle || !resultMessage || !profileIntro || !profileTags || !activityCode ||
-      !restartButton) return;
+      !restartButton || !documentReadiness || !documentReadinessStatus || !missingDocuments) return;
 
   const barrierChoices = [
     { value: "displaced-homemaker", label: "I’m rebuilding after caring for home or family", detail: "Displaced homemaker", icon: "🏡" },
@@ -173,6 +176,36 @@
         ]
       }
     );
+
+    const documents = [
+      { value: "photo-id", label: "Valid state or government photo ID", detail: "A state ID or driver’s license", icon: "🪪" },
+      { value: "social-security-card", label: "Original Social Security card", detail: "Bring the original card if you have it", icon: "📄" }
+    ];
+    const selectedBarriers = answers.barriers || [];
+    const selectedWorkSituations = answers.chronic || [];
+    const benefitsDocumentationMayApply = selectedBarriers.includes("public-assistance") || selectedWorkSituations.includes("ui");
+    if (benefitsDocumentationMayApply) {
+      documents.push({
+        value: "benefit-proof",
+        label: "Proof of SNAP, public benefits, or unemployment assistance",
+        detail: "Only if you receive or have received one of these benefits",
+        icon: "🧾"
+      });
+    }
+    documents.push(
+      { value: "none", label: "I don’t have these ready yet", detail: "That’s okay—we can make a plan", icon: "🤝" },
+      { value: "unsure", label: "I’m not sure which ones I need", detail: "A team member can help confirm", icon: "❔" }
+    );
+    questions.push({
+      name: "documents",
+      prompt: "Do you have the documents for your next step?",
+      help: benefitsDocumentationMayApply
+        ? "Choose each item you have ready. Bring benefit proof only if it applies to you. No uploads or document numbers needed."
+        : "Choose each item you have ready. No uploads or document numbers needed.",
+      type: "multiple",
+      layout: "chips",
+      choices: documents
+    });
     return questions;
   };
 
@@ -368,6 +401,46 @@
     }
   };
 
+  const renderDocumentReadiness = () => {
+    const selectedDocuments = answers.documents || [];
+    if (!selectedDocuments.length) {
+      documentReadiness.hidden = true;
+      return;
+    }
+
+    documentReadiness.hidden = false;
+    missingDocuments.replaceChildren();
+    const requirements = [
+      { value: "photo-id", label: "Valid state or government photo ID" },
+      { value: "social-security-card", label: "Original Social Security card" }
+    ];
+    const benefitsDocumentationMayApply = (answers.barriers || []).includes("public-assistance") || (answers.chronic || []).includes("ui");
+    if (benefitsDocumentationMayApply) {
+      requirements.push({ value: "benefit-proof", label: "Proof of SNAP, public benefits, or unemployment assistance, if applicable" });
+    }
+
+    const isUnsure = selectedDocuments.includes("unsure");
+    const missing = requirements.filter((item) => !selectedDocuments.includes(item.value));
+    const isReady = missing.length === 0 && !isUnsure && !selectedDocuments.includes("none");
+    if (isReady) {
+      documentReadinessStatus.textContent = "You’ve marked all the listed documents as ready to bring. Nice work—you’re prepared for the next conversation.";
+      return;
+    }
+
+    if (isUnsure) {
+      documentReadinessStatus.textContent = "A Career Center team member can confirm which documents apply to your situation.";
+    } else if (missing.length) {
+      documentReadinessStatus.textContent = "You may still need to gather these items before your visit:";
+    } else {
+      documentReadinessStatus.textContent = "You marked that your documents aren’t ready yet. That won’t change this eligibility pre-screen; a team member can help you plan what to bring.";
+    }
+    missing.forEach((item) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = item.label;
+      missingDocuments.append(listItem);
+    });
+  };
+
   function showResult(outcome, message, title) {
     questionScreen.hidden = true;
     resultScreen.hidden = false;
@@ -390,6 +463,7 @@
       profileIntro.textContent = "Here are the work and life experiences you selected. A team member can help confirm anything still unclear:";
     }
     renderProfile(outcome);
+    renderDocumentReadiness();
     resultTitle.focus();
   }
 
