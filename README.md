@@ -1,2 +1,2 @@
-# springboards-landing
+# springboards
 Landing page
