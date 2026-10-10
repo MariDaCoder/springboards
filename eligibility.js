@@ -1,6 +1,7 @@
 (() => {
   const questionScreen = document.getElementById("questionScreen");
   const resultScreen = document.getElementById("resultScreen");
+  const centerScreen = document.getElementById("centerScreen");
   const questionForm = document.getElementById("questionForm");
   const questionMount = document.getElementById("questionMount");
   const questionError = document.getElementById("questionError");
@@ -17,14 +18,69 @@
   const profileTags = document.getElementById("profileTags");
   const activityCode = document.getElementById("activityCode");
   const restartButton = document.getElementById("restartButton");
+  const seeNextStepButton = document.getElementById("seeNextStepButton");
+  const centerBackButton = document.getElementById("centerBackButton");
+  const centerHeading = document.getElementById("centerHeading");
+  const centerList = document.getElementById("centerList");
+  const centerMap = document.getElementById("centerMap");
+  const centerMapCaption = document.getElementById("centerMapCaption");
+  const addressSearchForm = document.getElementById("addressSearchForm");
+  const startingAddress = document.getElementById("startingAddress");
+  const addressSearchStatus = document.getElementById("addressSearchStatus");
+  const calendarDays = document.getElementById("calendarDays");
+  const appointmentTimes = document.getElementById("appointmentTimes");
+  const calendarStatus = document.getElementById("calendarStatus");
+  const previewAppointmentButton = document.getElementById("previewAppointmentButton");
   const documentReadiness = document.getElementById("documentReadiness");
   const documentReadinessStatus = document.getElementById("documentReadinessStatus");
   const missingDocuments = document.getElementById("missingDocuments");
 
-  if (!questionScreen || !resultScreen || !questionForm || !questionMount || !questionError ||
+  if (!questionScreen || !resultScreen || !centerScreen || !questionForm || !questionMount || !questionError ||
       !stepCount || !progressTrack || !progressValue || !backButton || !nextButton || !resultTop ||
       !resultEyebrow || !resultTitle || !resultMessage || !profileIntro || !profileTags || !activityCode ||
-      !restartButton || !documentReadiness || !documentReadinessStatus || !missingDocuments) return;
+      !restartButton || !seeNextStepButton || !centerBackButton || !centerHeading || !centerList || !centerMap ||
+      !centerMapCaption || !addressSearchForm || !startingAddress || !addressSearchStatus ||
+      !calendarDays || !appointmentTimes || !calendarStatus || !previewAppointmentButton ||
+      !documentReadiness || !documentReadinessStatus || !missingDocuments) return;
+
+  const careerCenters = [
+    {
+      id: "valley",
+      name: "Valley Career Center",
+      address: "3300 23rd Drive, Valley, AL 36854 inside Growth Academy",
+      hours: "Monday–Friday, 8:00 AM–4:30 PM Eastern Time",
+      phone: "(334) 756-3065",
+      callLink: "tel:+13347563065",
+      latitude: 32.8187,
+      longitude: -85.1794
+    },
+    {
+      id: "opelika",
+      name: "Opelika Career Center",
+      address: "2300 Frederick Road, Opelika, AL 36801",
+      hours: "Monday–Friday, 8:00 AM–4:30 PM Central Time",
+      phone: "(334) 749-5065",
+      callLink: "tel:+13347495065",
+      latitude: 32.6454,
+      longitude: -85.3783
+    },
+    {
+      id: "phenix-city",
+      name: "Phenix City Career Center",
+      address: "2602 College Dr, CVCC campus, Brassell Hall Room 132, Phenix City, AL 36869",
+      hours: "Monday–Friday, 8:00 AM–4:30 PM Eastern Time",
+      phone: "(334) 214-4828",
+      callLink: "tel:+13342144828",
+      latitude: 32.4709,
+      longitude: -85.0008
+    }
+  ];
+  let selectedCareerCenter = careerCenters[0];
+  let directionsOrigin = "";
+  let nearestCenterId = "";
+  let selectedAppointmentDate = "";
+  let selectedAppointmentTime = "";
+  const sampleAppointmentTimes = ["8:30 AM", "10:00 AM", "11:30 AM", "1:00 PM", "2:30 PM"];
 
   const barrierChoices = [
     { value: "displaced-homemaker", label: "I’m rebuilding after caring for home or family", detail: "Displaced homemaker", icon: "🏡" },
@@ -210,6 +266,145 @@
   };
 
   const isMultiChoice = (question) => question.type === "multiple";
+
+  const showCenterOnMap = (center) => {
+    selectedCareerCenter = center;
+    centerMap.src = `https://www.google.com/maps?q=${encodeURIComponent(`${center.name}, ${center.address}`)}&output=embed`;
+    centerMap.title = `Interactive map showing ${center.name}`;
+    centerMapCaption.textContent = `Map showing ${center.name}. Use the map controls to zoom or explore nearby streets.`;
+  };
+
+  const distanceInMiles = (latitudeA, longitudeA, latitudeB, longitudeB) => {
+    const radians = (degrees) => degrees * (Math.PI / 180);
+    const earthRadiusMiles = 3958.8;
+    const latitudeDelta = radians(latitudeB - latitudeA);
+    const longitudeDelta = radians(longitudeB - longitudeA);
+    const haversine = Math.sin(latitudeDelta / 2) ** 2 +
+      Math.cos(radians(latitudeA)) * Math.cos(radians(latitudeB)) * Math.sin(longitudeDelta / 2) ** 2;
+    return earthRadiusMiles * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine));
+  };
+
+  const renderCareerCenters = () => {
+    centerList.replaceChildren();
+    careerCenters.forEach((center) => {
+      const card = document.createElement("article");
+      card.className = "wizard-center-card";
+      card.dataset.selected = String(center.name === selectedCareerCenter.name);
+
+      const heading = document.createElement("h3");
+      heading.textContent = center.name;
+      const address = document.createElement("p");
+      address.textContent = center.address;
+      if (nearestCenterId === center.id) {
+        const nearest = document.createElement("p");
+        nearest.textContent = "Approximate closest match based on city location";
+        card.append(heading, address, nearest);
+      } else {
+        card.append(heading, address);
+      }
+      const hours = document.createElement("p");
+      hours.textContent = center.hours;
+      const phone = document.createElement("p");
+      phone.textContent = center.phone;
+
+      const actions = document.createElement("div");
+      actions.className = "wizard-center-actions";
+      const mapButton = document.createElement("button");
+      mapButton.type = "button";
+      mapButton.className = "wizard-button secondary";
+      mapButton.textContent = "Show on map";
+      mapButton.setAttribute("aria-pressed", String(center.name === selectedCareerCenter.name));
+      mapButton.addEventListener("click", () => {
+        showCenterOnMap(center);
+        selectedAppointmentDate = "";
+        selectedAppointmentTime = "";
+        renderCareerCenters();
+        renderAppointmentCalendar();
+      });
+      actions.append(mapButton);
+
+      const phoneLink = document.createElement("a");
+      phoneLink.className = "wizard-button secondary";
+      phoneLink.href = center.callLink;
+      phoneLink.textContent = "Call center";
+      actions.append(phoneLink);
+
+      if (directionsOrigin) {
+        const directionsLink = document.createElement("a");
+        directionsLink.className = "wizard-button";
+        directionsLink.href = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(directionsOrigin)}&destination=${encodeURIComponent(`${center.name}, ${center.address}`)}`;
+        directionsLink.target = "_blank";
+        directionsLink.rel = "noopener noreferrer";
+        directionsLink.textContent = "Get directions →";
+        actions.append(directionsLink);
+      }
+
+      card.append(hours, phone, actions);
+      centerList.append(card);
+    });
+  };
+
+  const toLocalDateString = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const getSampleDates = () => {
+    const dates = [];
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    while (dates.length < 7) {
+      if (date.getDay() !== 0 && date.getDay() !== 6) dates.push(new Date(date));
+      date.setDate(date.getDate() + 1);
+    }
+    return dates;
+  };
+
+  const renderAppointmentCalendar = () => {
+    calendarDays.replaceChildren();
+    appointmentTimes.replaceChildren();
+    calendarStatus.textContent = "Choose a day to see sample appointment times.";
+    previewAppointmentButton.disabled = !(selectedAppointmentDate && selectedAppointmentTime);
+
+    getSampleDates().forEach((date) => {
+      const dateValue = toLocalDateString(date);
+      const dateButton = document.createElement("button");
+      dateButton.type = "button";
+      dateButton.className = "wizard-calendar-date";
+      dateButton.setAttribute("aria-pressed", String(dateValue === selectedAppointmentDate));
+      dateButton.setAttribute("aria-label", date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }));
+      const day = document.createElement("span");
+      day.textContent = date.toLocaleDateString(undefined, { weekday: "short" });
+      const dateText = document.createElement("strong");
+      dateText.textContent = date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      dateButton.append(day, dateText);
+      dateButton.addEventListener("click", () => {
+        selectedAppointmentDate = dateValue;
+        selectedAppointmentTime = "";
+        renderAppointmentCalendar();
+      });
+      calendarDays.append(dateButton);
+    });
+
+    if (!selectedAppointmentDate) return;
+    const chosenDate = new Date(`${selectedAppointmentDate}T12:00:00`);
+    calendarStatus.textContent = `Sample times for ${chosenDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" })} at ${selectedCareerCenter.name}.`;
+    sampleAppointmentTimes.forEach((time) => {
+      const timeButton = document.createElement("button");
+      timeButton.type = "button";
+      timeButton.className = "wizard-time-option";
+      timeButton.textContent = time;
+      timeButton.setAttribute("aria-pressed", String(time === selectedAppointmentTime));
+      timeButton.addEventListener("click", () => {
+        selectedAppointmentTime = time;
+        previewAppointmentButton.disabled = false;
+        renderAppointmentCalendar();
+      });
+      appointmentTimes.append(timeButton);
+    });
+  };
 
   const updateProgress = (question, questionIndex, questionCount) => {
     stepCount.textContent = `Question ${questionIndex + 1} of ${questionCount}`;
@@ -444,8 +639,10 @@
   function showResult(outcome, message, title) {
     questionScreen.hidden = true;
     resultScreen.hidden = false;
+    centerScreen.hidden = true;
     resultTop.dataset.outcome = outcome;
     activityCode.hidden = outcome !== "eligible";
+    seeNextStepButton.hidden = outcome !== "eligible";
     if (outcome === "eligible") {
       resultEyebrow.textContent = "YOUR TRANSITIONAL JOBS PROFILE";
       resultTitle.textContent = "This could be your next step.";
@@ -521,6 +718,77 @@
     }
   });
 
+  seeNextStepButton.addEventListener("click", () => {
+    resultScreen.hidden = true;
+    centerScreen.hidden = false;
+    centerHeading.focus();
+  });
+
+  centerBackButton.addEventListener("click", () => {
+    centerScreen.hidden = true;
+    resultScreen.hidden = false;
+    resultTitle.focus();
+  });
+
+  addressSearchForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const address = startingAddress.value.trim();
+    if (address.length < 3) {
+      addressSearchStatus.textContent = "Enter a street address, city, or ZIP code to find the closest center.";
+      startingAddress.focus();
+      return;
+    }
+    const submitButton = addressSearchForm.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    addressSearchStatus.textContent = "Finding the closest center…";
+
+    fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&country=United%20States&q=${encodeURIComponent(address)}`, {
+      headers: { Accept: "application/json" }
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Address lookup is unavailable.");
+        return response.json();
+      })
+      .then((matches) => {
+        const match = matches[0];
+        if (!match || !Number.isFinite(Number(match.lat)) || !Number.isFinite(Number(match.lon))) {
+          throw new Error("We couldn’t match that address.");
+        }
+        const latitude = Number(match.lat);
+        const longitude = Number(match.lon);
+        const rankedCenters = careerCenters
+          .map((center) => ({
+            center,
+            miles: distanceInMiles(latitude, longitude, center.latitude, center.longitude)
+          }))
+          .sort((first, second) => first.miles - second.miles);
+        const nearest = rankedCenters[0];
+        directionsOrigin = address;
+        nearestCenterId = nearest.center.id;
+        selectedAppointmentDate = "";
+        selectedAppointmentTime = "";
+        showCenterOnMap(nearest.center);
+        addressSearchStatus.textContent = `Approximate closest match: ${nearest.center.name}, based on city location. Choose a sample visit time below.`;
+        renderCareerCenters();
+        renderAppointmentCalendar();
+      })
+      .catch((error) => {
+        directionsOrigin = address;
+        addressSearchStatus.textContent = `${error.message} You can still compare the centers below or open directions from your address.`;
+        renderCareerCenters();
+      })
+      .finally(() => {
+        if (submitButton) submitButton.disabled = false;
+      });
+  });
+
+  previewAppointmentButton.addEventListener("click", () => {
+    if (!selectedAppointmentDate || !selectedAppointmentTime) return;
+    const chosenDate = new Date(`${selectedAppointmentDate}T12:00:00`);
+    const formattedDate = chosenDate.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" });
+    calendarStatus.textContent = `You selected ${selectedAppointmentTime} on ${formattedDate} at ${selectedCareerCenter.name}. This preview has not booked or reserved a visit. Call ${selectedCareerCenter.phone} to confirm.`;
+  });
+
   backButton.addEventListener("click", () => {
     if (currentQuestion === 0) return;
     const previousQuestion = getQuestions()[currentQuestion - 1];
@@ -535,10 +803,22 @@
     Object.keys(answers).forEach((key) => delete answers[key]);
     currentQuestion = 0;
     youthWorkHistoryApplies = false;
+    startingAddress.value = "";
+    addressSearchStatus.textContent = "";
+    directionsOrigin = "";
+    nearestCenterId = "";
+    selectedAppointmentDate = "";
+    selectedAppointmentTime = "";
+    showCenterOnMap(careerCenters[0]);
     resultScreen.hidden = true;
+    centerScreen.hidden = true;
     questionScreen.hidden = false;
+    renderCareerCenters();
+    renderAppointmentCalendar();
     renderQuestion();
   });
 
+  renderCareerCenters();
+  renderAppointmentCalendar();
   renderQuestion();
 })();
