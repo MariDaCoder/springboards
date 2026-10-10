@@ -1,5 +1,6 @@
 {
   "livePreview.defaultPreviewPath": "/",
   "livePreview.openPreviewTarget": "embeddedBrowser",
-  "livePreview.enableAutoRefresh": true
+  "livePreview.enableAutoRefresh": true,
+  "gitlens.ai.model": ""
 }

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
+    "genkit:hello": "node --env-file=.env hello-flow.js",
     "build": "echo 'Build complete'",
     "lint": "echo 'No lint errors'"
   },

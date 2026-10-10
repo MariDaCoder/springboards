@@ -1,5 +1,6 @@
 # .gitignore
 service-account.json
+.env
 -e 
 bun.lock
 node_modules
