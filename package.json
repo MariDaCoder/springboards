@@ -9,8 +9,10 @@
     "lint": "echo 'No lint errors'"
   },
   "dependencies": {
+    "@genkit-ai/googleai": "^1.28.0",
     "express": "^4.21.2",
-    "firebase": "^12.19.0"
+    "firebase": "^12.19.0",
+    "genkit": "^1.42.0"
   },
   "engines": {
     "node": ">=20.0.0"
