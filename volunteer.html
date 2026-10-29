@@ -72,6 +72,11 @@
           <img src="/springboards_logo.png" alt="Springboards Logo" class="nav-logo" width="250" height="90" decoding="async">
         </a>
       </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
       <div class="nav-center" id="navMenu">
         <ul class="nav-links">
           <li><a href="/" class="nav-link">Home</a></li>
@@ -81,6 +86,9 @@
           <li><a href="/partner" class="nav-link">Partner</a></li>
           <li><a href="/donate" class="nav-link">Donate</a></li>
         </ul>
+        <div class="mobile-cta-wrapper">
+          <a href="/eligibility" class="btn-cta mobile-cta">Apply for Training</a>
+        </div>
       </div>
       <div class="nav-right">
         <a href="/eligibility" class="btn-cta desktop-cta">Apply for Training</a>
@@ -185,48 +193,99 @@
     </div>
   </footer>
 
+  <script src="/analytics.js" defer></script>
   <script>
-    document.getElementById('dedicatedVolunteerForm')?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const status = document.getElementById('volStatus');
-      const fd = new FormData(form);
-      const name = String(fd.get('name') || '').trim();
-      const phone = String(fd.get('phone') || '').trim();
-      const email = String(fd.get('email') || '').trim();
-
-      status.classList.remove('is-error');
-      if (!name || name.length < 2) {
-        status.classList.add('is-error');
-        status.setAttribute('role', 'alert');
-        status.textContent = '⚠ Error: Please enter your full name.';
-        form.elements.name.focus();
-        return;
-      }
-      if (!phone && !email) {
-        status.classList.add('is-error');
-        status.setAttribute('role', 'alert');
-        status.textContent = '⚠ Error: Please provide a phone number or email address.';
-        form.elements.phone.focus();
-        return;
-      }
-
-      status.textContent = 'Submitting your volunteer interest...';
-      try {
-        const res = await fetch('/api/volunteer-signups', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(Object.fromEntries(fd.entries()))
+    (() => {
+      const navToggle = document.getElementById('navToggle');
+      const navMenu = document.getElementById('navMenu');
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+          const next = navToggle.getAttribute('aria-expanded') !== 'true';
+          navToggle.setAttribute('aria-expanded', String(next));
+          navToggle.classList.toggle('active', next);
+          navMenu.classList.toggle('open', next);
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Submission failed.');
-        status.textContent = '✓ Thank you! Your volunteer availability has been recorded.';
-        form.reset();
-      } catch (err) {
-        status.classList.add('is-error');
-        status.textContent = '⚠ Error: ' + err.message;
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && navMenu.classList.contains('open')) {
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('open');
+            navToggle.focus();
+          }
+        });
       }
-    });
+
+      const form = document.getElementById('dedicatedVolunteerForm');
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn?.disabled || form.dataset.submitting === 'true') return;
+        const status = document.getElementById('volStatus');
+        const fd = new FormData(form);
+
+        if (fd.get('website_url')) {
+          status.classList.remove('is-error');
+          status.textContent = '✓ Thank you! Your volunteer availability has been recorded.';
+          form.reset();
+          return;
+        }
+
+        const name = String(fd.get('name') || '').trim();
+        const phone = String(fd.get('phone') || '').trim();
+        const email = String(fd.get('email') || '').trim();
+
+        status.classList.remove('is-error');
+        if (!name || name.length < 2) {
+          status.classList.add('is-error');
+          status.setAttribute('role', 'alert');
+          status.textContent = '⚠ Error: Please enter your full name (minimum 2 characters).';
+          form.elements.name.focus();
+          return;
+        }
+        if (!phone && !email) {
+          status.classList.add('is-error');
+          status.setAttribute('role', 'alert');
+          status.textContent = '⚠ Error: Please provide a phone number or email address.';
+          form.elements.phone.focus();
+          return;
+        }
+        if (phone && !/^\+?1?\d{10}$/.test(phone.replace(/[\s\-\(\)\.]/g, ''))) {
+          status.classList.add('is-error');
+          status.setAttribute('role', 'alert');
+          status.textContent = '⚠ Error: Please enter a valid 10-digit phone number.';
+          form.elements.phone.focus();
+          return;
+        }
+        if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+          status.classList.add('is-error');
+          status.setAttribute('role', 'alert');
+          status.textContent = '⚠ Error: Please enter a valid email address.';
+          form.elements.email.focus();
+          return;
+        }
+
+        form.dataset.submitting = 'true';
+        if (submitBtn) submitBtn.disabled = true;
+        status.textContent = 'Submitting your volunteer interest...';
+        try {
+          const res = await fetch('/api/volunteer-signups', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(fd.entries()))
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Submission failed.');
+          status.textContent = '✓ Thank you! Your volunteer availability has been recorded.';
+          form.reset();
+        } catch (err) {
+          status.classList.add('is-error');
+          status.textContent = '⚠ Error: ' + err.message;
+        } finally {
+          delete form.dataset.submitting;
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+    })();
   </script>
 </body>
 </html>

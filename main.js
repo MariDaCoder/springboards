@@ -20,9 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (navToggle && navMenu) {
     navToggle.addEventListener("click", () => {
       const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
-      navToggle.setAttribute("aria-expanded", String(!isExpanded));
-      navToggle.classList.toggle("active");
-      navMenu.classList.toggle("open");
+      const nextExpanded = !isExpanded;
+      navToggle.setAttribute("aria-expanded", String(nextExpanded));
+      navToggle.classList.toggle("active", nextExpanded);
+      navMenu.classList.toggle("open", nextExpanded);
+      if (nextExpanded) {
+        const firstLink = navMenu.querySelector("a, button");
+        if (firstLink && typeof firstLink.focus === "function") {
+          firstLink.focus();
+        }
+      }
     });
 
     const navItems = navMenu.querySelectorAll("a, button");
@@ -33,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
         navToggle.setAttribute("aria-expanded", "false");
       });
     });
-
 
     navMenu.querySelectorAll(".nav-dropdown-toggle").forEach((toggle) => {
       toggle.addEventListener("click", () => {
@@ -52,11 +58,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && navMenu.classList.contains("open")) {
+      if (!navMenu.classList.contains("open")) return;
+      if (e.key === "Escape") {
         navToggle.classList.remove("active");
         navMenu.classList.remove("open");
         navToggle.setAttribute("aria-expanded", "false");
         navToggle.focus();
+        return;
+      }
+      if (e.key === "Tab") {
+        const focusable = [navToggle, ...Array.from(navMenu.querySelectorAll("a, button:not([disabled])"))].filter(
+          (el) => el && el.offsetParent !== null
+        );
+        if (focusable.length < 2) return;
+        const firstItem = focusable[0];
+        const lastItem = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === firstItem) {
+          e.preventDefault();
+          lastItem.focus();
+        } else if (!e.shiftKey && document.activeElement === lastItem) {
+          e.preventDefault();
+          firstItem.focus();
+        }
       }
     });
   }
@@ -384,7 +407,16 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastActiveModalTrigger = null;
 
   const openModalWithFocus = (modal, initialElement) => {
-    lastActiveModalTrigger = document.activeElement;
+    const existingOpenModals = document.querySelectorAll(".inquiry-modal:not([hidden])");
+    if (existingOpenModals.length === 0) {
+      lastActiveModalTrigger = document.activeElement;
+    } else {
+      existingOpenModals.forEach((openModal) => {
+        if (openModal !== modal) {
+          openModal.hidden = true;
+        }
+      });
+    }
     modal.hidden = false;
     document.body.classList.add("modal-open");
     if (initialElement && typeof initialElement.focus === "function") {
@@ -394,10 +426,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const closeModalWithFocus = (modal) => {
     modal.hidden = true;
-    document.body.classList.remove("modal-open");
-    if (lastActiveModalTrigger && typeof lastActiveModalTrigger.focus === "function") {
-      lastActiveModalTrigger.focus();
-      lastActiveModalTrigger = null;
+    const remainingOpen = document.querySelector(".inquiry-modal:not([hidden])");
+    if (!remainingOpen) {
+      document.body.classList.remove("modal-open");
+      if (lastActiveModalTrigger && typeof lastActiveModalTrigger.focus === "function") {
+        lastActiveModalTrigger.focus();
+        lastActiveModalTrigger = null;
+      }
     }
   };
 
@@ -556,7 +591,8 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       const status = inquiryForm.querySelector(".form-status");
       const submit = inquiryForm.querySelector(".program-submit");
-      const program = inquiryForm.elements.program.value;
+      if (submit.disabled || inquiryForm.dataset.submitting === "true") return;
+      const program = inquiryForm.elements.program.value || "General";
       const formData = new FormData(inquiryForm);
       const name = String(formData.get("name") || "").trim();
       const phone = String(formData.get("phone") || "").trim();
@@ -597,6 +633,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      inquiryForm.dataset.submitting = "true";
       submit.disabled = true;
       status.textContent = "Sending your inquiry...";
 
@@ -658,6 +695,7 @@ document.addEventListener("DOMContentLoaded", () => {
         status.classList.add("is-error");
         status.textContent = "We could not deliver this inquiry right now. Please try again or email info@springboardsfcd.org.";
       } finally {
+        delete inquiryForm.dataset.submitting;
         submit.disabled = false;
       }
     });
@@ -694,6 +732,7 @@ document.addEventListener("DOMContentLoaded", () => {
       event.preventDefault();
       const status = volunteerSignupForm.querySelector(".form-status");
       const submit = volunteerSignupForm.querySelector(".program-submit");
+      if (submit.disabled || volunteerSignupForm.dataset.submitting === "true") return;
       const formData = new FormData(volunteerSignupForm);
       const name = String(formData.get("name") || "").trim();
       const phone = String(formData.get("phone") || "").trim();
@@ -737,6 +776,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      volunteerSignupForm.dataset.submitting = "true";
       submit.disabled = true;
       status.textContent = "Submitting your volunteer interest...";
 
@@ -806,6 +846,7 @@ document.addEventListener("DOMContentLoaded", () => {
         status.classList.add("is-error");
         status.textContent = "We could not save your submission. Please try again or email info@springboardsfcd.org.";
       } finally {
+        delete volunteerSignupForm.dataset.submitting;
         submit.disabled = false;
       }
     });
@@ -879,6 +920,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const status = candidateForm.querySelector(".form-status");
       const submit = candidateForm.querySelector(".program-submit");
+      if (submit.disabled || candidateForm.dataset.submitting === "true") return;
       const formData = new FormData(candidateForm);
 
       // Honeypot check
@@ -920,6 +962,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      candidateForm.dataset.submitting = "true";
       submit.disabled = true;
       status.textContent = "Submitting candidate application...";
 
@@ -972,6 +1015,7 @@ document.addEventListener("DOMContentLoaded", () => {
         status.classList.add("is-error");
         status.textContent = "Could not submit application. Please call 615-603-1157 or email info@springboardsfcd.org.";
       } finally {
+        delete candidateForm.dataset.submitting;
         submit.disabled = false;
       }
     });
@@ -1016,6 +1060,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const status = partnerForm.querySelector(".form-status");
       const submit = partnerForm.querySelector(".program-submit");
+      if (submit.disabled || partnerForm.dataset.submitting === "true") return;
       const formData = new FormData(partnerForm);
 
       if (formData.get("website_url")) {
@@ -1060,6 +1105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      partnerForm.dataset.submitting = "true";
       submit.disabled = true;
       status.textContent = "Submitting partnership inquiry...";
 
@@ -1090,6 +1136,7 @@ document.addEventListener("DOMContentLoaded", () => {
         status.classList.add("is-error");
         status.textContent = "Could not submit inquiry. Please call 615-603-1157 or email info@springboardsfcd.org.";
       } finally {
+        delete partnerForm.dataset.submitting;
         submit.disabled = false;
       }
     });
@@ -1134,6 +1181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const status = donateForm.querySelector(".form-status");
       const submit = donateForm.querySelector(".program-submit");
+      if (submit.disabled || donateForm.dataset.submitting === "true") return;
       const formData = new FormData(donateForm);
 
       if (formData.get("website_url")) {
@@ -1168,6 +1216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      donateForm.dataset.submitting = "true";
       submit.disabled = true;
       status.textContent = "Recording your pledge...";
 
@@ -1196,6 +1245,7 @@ document.addEventListener("DOMContentLoaded", () => {
         status.classList.add("is-error");
         status.textContent = "Could not record pledge. Please contact info@springboardsfcd.org.";
       } finally {
+        delete donateForm.dataset.submitting;
         submit.disabled = false;
       }
     });

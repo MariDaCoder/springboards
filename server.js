@@ -11,6 +11,27 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load .env file if present without overriding existing process.env variables from Settings/Cloud Run
+const envFilePath = path.join(__dirname, '.env');
+if (fs.existsSync(envFilePath)) {
+  try {
+    const envRaw = fs.readFileSync(envFilePath, 'utf8');
+    for (const line of envRaw.split(/\r?\n/)) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const eqIdx = trimmed.indexOf('=');
+      if (eqIdx === -1) continue;
+      const key = trimmed.slice(0, eqIdx).trim();
+      const val = trimmed.slice(eqIdx + 1).trim().replace(/^['"]|['"]$/g, '');
+      if (key && process.env[key] === undefined) {
+        process.env[key] = val;
+      }
+    }
+  } catch {
+    // Ignore .env read errors
+  }
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -230,42 +251,62 @@ const analyticsStore = {
   events: []
 };
 
-// Initialize Firebase Admin or fallback to in-memory store
-let db;
-try {
-  const { initializeApp, getApps } = await import('firebase-admin/app');
-  const { getFirestore } = await import('firebase-admin/firestore');
-  if (getApps().length === 0) {
-    initializeApp();
+// Initialize Firebase Admin with automatic per-operation fallback to in-memory store
+let firestoreDb = null;
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS || process.env.K_SERVICE) {
+  try {
+    const { initializeApp, getApps } = await import('firebase-admin/app');
+    const { getFirestore } = await import('firebase-admin/firestore');
+    if (getApps().length === 0) {
+      initializeApp();
+    }
+    firestoreDb = getFirestore();
+  } catch {
+    firestoreDb = null;
   }
-  db = getFirestore();
-} catch {
-  console.warn('[AI Studio] Firebase Admin offline or unconfigured — using in-memory store');
-  db = {
-    collection: (name) => {
-      const storeMap = {
-        volunteerSignups: inMemoryVolunteerSignups,
-        candidateApplications: inMemoryCandidates,
-        employerPartnerships: inMemoryPartnerships,
-        donationPledges: inMemoryDonations
-      };
-      const store = storeMap[name] || inMemoryInquiries;
-      return {
-        get: async () => ({
+}
+
+const db = {
+  collection: (name) => {
+    const storeMap = {
+      volunteerSignups: inMemoryVolunteerSignups,
+      candidateApplications: inMemoryCandidates,
+      employerPartnerships: inMemoryPartnerships,
+      donationPledges: inMemoryDonations
+    };
+    const store = storeMap[name] || inMemoryInquiries;
+    return {
+      get: async () => {
+        if (firestoreDb) {
+          try {
+            return await firestoreDb.collection(name).get();
+          } catch {
+            // Fallback to local memory store
+          }
+        }
+        return {
           docs: store.map((item, idx) => ({
-            id: `item-${idx}`,
+            id: item.id || `item-${idx}`,
             data: () => item
           }))
-        }),
-        add: async (data) => {
-          const doc = { ...data, id: `item-${Date.now()}` };
-          store.push(doc);
-          return { id: doc.id };
+        };
+      },
+      add: async (data) => {
+        const doc = { ...data, id: data.id || `item-${Date.now()}-${Math.random().toString(36).slice(2, 6)}` };
+        store.push(doc);
+        if (firestoreDb) {
+          try {
+            const ref = await firestoreDb.collection(name).add(data);
+            return { id: ref.id };
+          } catch {
+            // Fallback to local memory store ID
+          }
         }
-      };
-    }
-  };
-}
+        return { id: doc.id };
+      }
+    };
+  }
+};
 
 // Helper validation functions
 function isValidEmail(email) {
@@ -1009,6 +1050,10 @@ app.post('/api/donations', publicFormLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Please provide a valid email address.' });
     }
 
+    if (trimmedPhone && !isValidPhone(trimmedPhone)) {
+      return res.status(400).json({ error: 'Please provide a valid 10-digit phone number.' });
+    }
+
     const newRecord = {
       type: 'donation_pledge',
       donor: trimmedDonor,
@@ -1064,6 +1109,9 @@ app.get('/api/documents/list', (req, res) => {
 
 // 6. Web Analytics Endpoints
 app.post('/api/analytics/event', (req, res) => {
+  if (!ANALYTICS_ENABLED) {
+    return res.status(200).json({ success: true, analyticsEnabled: false });
+  }
   const { eventType, eventLabel, sessionId, referralSource } = req.body || {};
   if (!eventType) return res.status(400).json({ error: 'Missing eventType' });
 
@@ -1088,11 +1136,12 @@ app.post('/api/analytics/event', (req, res) => {
     analyticsStore.events.shift();
   }
 
-  return res.status(200).json({ success: true });
+  return res.status(200).json({ success: true, analyticsEnabled: true });
 });
 
 app.get('/api/analytics/stats', (req, res) => {
   res.status(200).json({
+    analyticsEnabled: ANALYTICS_ENABLED,
     totalPageViews: analyticsStore.pageViews,
     uniqueSessionsCount: analyticsStore.uniqueSessions.size,
     topReferralSources: analyticsStore.referralSources,
@@ -1146,6 +1195,23 @@ app.get('/api/health', (req, res) => {
     uptimeSeconds,
     timestamp: new Date().toISOString(),
     service: 'Springboards for Community Development Web Platform',
+    configStatus: {
+      designatedInbox: DESIGNATED_INBOX,
+      hrInbox: HR_INBOX,
+      alertEmail: ALERT_EMAIL,
+      backupAlertEmail: BACKUP_ALERT_EMAIL,
+      workspaceConnectedEmail: WORKSPACE_CONNECTED_EMAIL,
+      allowedOrigins: ALLOWED_ORIGINS,
+      adminEmailsConfigured: ADMIN_ALLOWED_EMAILS.size,
+      adminSessionSecretConfigured: Boolean(ADMIN_SESSION_SECRET),
+      adminPasscodeConfigured: Boolean(ADMIN_PASSCODE),
+      staffDefaultPinConfigured: Boolean(STAFF_DEFAULT_PIN),
+      analyticsEnabled: ANALYTICS_ENABLED,
+      smtpHost: SMTP_CONFIG.host,
+      smtpPort: SMTP_CONFIG.port,
+      smtpUser: SMTP_CONFIG.user,
+      smtpAuthConfigured: Boolean(SMTP_CONFIG.pass && SMTP_CONFIG.pass !== 'replace-with-your-16-digit-gmail-app-password')
+    },
     checksSummary: {
       checks: uptimeLog.checksPerformed,
       successRate: uptimeLog.checksPerformed > 0
