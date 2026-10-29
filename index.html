@@ -221,7 +221,7 @@
     </nav>
   </header>
 
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
     <!-- SECTION 1: HERO -->
     <section class="hero-section" id="hero">
       <div class="hero-placeholder-bg" aria-hidden="true"></div>
@@ -250,10 +250,18 @@
     <!-- SECTION 2: THE PROBLEM -->
     <section class="section problem-section" id="the-reality-we-face">
       <div class="container">
-        <div class="section-intro-block">
-          <span class="section-eyebrow problem-eyebrow">THE REALITY IN EAST ALABAMA</span>
-          <h2 class="section-title problem-title">Too many people are stuck before they ever get a fair chance.</h2>
-          <p class="problem-intro">Many people in East Alabama face limited access to training, weak job pathways, and barriers that keep them from building stable work. For too many families, the challenge is not lack of effort — it is lack of access.</p>
+        <div class="problem-header-grid">
+          <div class="problem-copy-left">
+            <span class="section-eyebrow problem-eyebrow">THE REALITY IN EAST ALABAMA</span>
+            <h2 class="section-title problem-title">Too many people are stuck before they ever get a fair chance.</h2>
+            <p class="problem-intro">Many people in East Alabama face limited access to training, weak job pathways, and barriers that keep them from building stable work. For too many families, the challenge is not lack of effort — it is lack of access.</p>
+          </div>
+          <aside class="problem-callout-right" aria-label="Community reality perspective">
+            <blockquote class="problem-supporting-quote">
+              <p>“Talent is everywhere in Chambers County and East Alabama—what has been missing is a tuition-free workshop where people can learn a real trade without going into debt.”</p>
+              <footer>— Springboards Workforce Initiative • Shawmut, AL</footer>
+            </blockquote>
+          </aside>
         </div>
         <div class="proof-cards-grid" role="list">
           <article class="proof-card proof-card-dark" role="listitem">
@@ -527,7 +535,7 @@
           <form class="program-inquiry-form" id="volunteerSignupForm" novalidate>
             <input type="hidden" name="event" value="General Volunteer Interest">
             <input type="hidden" name="location" value="Springboards Community Center">
-            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank">
             <label>Name
               <input name="name" type="text" autocomplete="name" placeholder="Your full name" minlength="2" maxlength="80" required>
             </label>
@@ -587,7 +595,7 @@
           <p id="inquiryModalDescription">Share your contact information and we will follow up about this pathway.</p>
           <form class="program-inquiry-form" id="programInquiryForm" novalidate>
             <input type="hidden" name="program">
-            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank">
             <label>Name
               <input name="name" type="text" autocomplete="name" placeholder="Your full name" minlength="2" maxlength="80" required>
             </label>
@@ -738,7 +746,7 @@
           <h2 id="candidateModalTitle">Trade Training Candidate Application</h2>
           <p class="modal-subtext">Apply for tuition-free construction trade training with direct pathways into high-demand careers.</p>
           <form class="program-inquiry-form" id="candidateApplicationForm" novalidate>
-            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank">
             <label>Full Legal Name
               <input name="name" type="text" autocomplete="name" placeholder="First and last name" minlength="2" maxlength="80" required>
             </label>
@@ -826,7 +834,7 @@
           <h2 id="partnerModalTitle">Partner With Springboards</h2>
           <p class="modal-subtext">Partner with us by contributing building materials, donating commercial tools and equipment, or providing guest trade mentorship.</p>
           <form class="program-inquiry-form" id="partnerApplicationForm" novalidate>
-            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank">
             <div class="form-grid-row">
               <label>Company / Organization Name
                 <input name="companyName" type="text" autocomplete="organization" placeholder="e.g. Valley Framing Contractors" minlength="2" maxlength="100" required>
@@ -953,7 +961,7 @@
 
           <h4 style="color: var(--primary-navy); margin-top: 1.5rem; margin-bottom: 0.5rem;">Pledge Support / Request Donation Receipt</h4>
           <form class="program-inquiry-form" id="donationPledgeForm" novalidate>
-            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="text" name="website_url" class="sr-only-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank">
             <div class="form-grid-row">
               <label>Your Name / Business Name
                 <input name="donorName" type="text" autocomplete="name" placeholder="Your name or organization" minlength="2" maxlength="100" required>

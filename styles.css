@@ -4334,8 +4334,75 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 }
 
 /* ==========================================================================
-   20. CONVERSION-FOCUSED HOMEPAGE BLUEPRINT (INTEREST -> TRUST -> ACTION)
+   20. CONVERSION-FOCUSED HOMEPAGE BLUEPRINT & ACCESSIBLE LAYOUT SYSTEM
    ========================================================================== */
+
+/* Global Media & Fluid Image Guardrails */
+img,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+img,
+.mission-image,
+.impact-slide img,
+.footer-logo,
+.document-preview-image {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Keyboard Accessibility: Unmistakable Focus Outlines & Skip Target */
+main#main-content:focus {
+  outline: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--accent-orange) !important;
+  outline-offset: 3px !important;
+}
+
+/* Minimum 48px Touch Targets & Clear Button vs Link Distinction */
+.btn-cta,
+.program-submit,
+.confirmation-done-button,
+.event-signup-button {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+  padding: clamp(0.75rem, 1.5vw, 0.95rem) clamp(1.35rem, 2.5vw, 1.85rem);
+  text-decoration: none;
+}
+
+/* Non-Color State Indicators for Form Errors */
+.program-inquiry-form input.is-invalid,
+.program-inquiry-form select.is-invalid,
+.program-inquiry-form textarea.is-invalid {
+  border: 2px solid #dc2626 !important;
+  background-color: #fef2f2 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.form-status.is-error {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid #dc2626;
+  background-color: #fef2f2;
+  color: #991b1b;
+  font-weight: 700;
+}
 
 /* Nav Apply button link */
 .nav-apply-link {
@@ -4345,27 +4412,53 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   font-family: inherit;
   color: var(--accent-green);
   font-weight: 800;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .nav-apply-link:hover,
 .nav-apply-link:focus-visible {
   color: var(--accent-orange);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
-/* Section 1: Hero CTA Group & Unboxed Trust Strip */
+/* Section Spacing with clamp() */
+.section {
+  padding-top: clamp(3.5rem, 7vw, 6rem);
+  padding-bottom: clamp(3.5rem, 7vw, 6rem);
+}
+
+/* Section 1: Hero Readability Overlay, CTA Hierarchy & Trust Strip */
+.hero-section .hero-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(11, 25, 44, 0.86) 0%,
+    rgba(11, 25, 44, 0.92) 100%
+  );
+}
+
 .hero-headline-tight {
   max-width: 18ch;
-  font-size: clamp(2.4rem, 5.4vw, 4.4rem);
-  line-height: 1.06;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.15rem, 5.2vw, 4.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.hero-subtext {
+  font-size: clamp(1.05rem, 1.8vw, 1.28rem);
+  line-height: 1.6;
+  max-width: 58ch;
+  color: #f8fafc;
 }
 
 .hero-cta-group {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: clamp(0.85rem, 2vw, 1.15rem);
+  margin-top: clamp(1.5rem, 3vw, 2.1rem);
 }
 
 .hero-cta-group .hero-cta {
@@ -4373,15 +4466,15 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 }
 
 .hero-secondary-btn {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.65);
   color: #ffffff;
   backdrop-filter: blur(4px);
 }
 
 .hero-secondary-btn:hover,
 .hero-secondary-btn:focus-visible {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.22);
   border-color: #ffffff;
   color: #ffffff;
 }
@@ -4391,12 +4484,12 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.55rem 0.85rem;
-  margin-top: 2.25rem;
-  padding-top: 1.35rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  margin-top: clamp(1.75rem, 3.5vw, 2.35rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
   max-width: 66ch;
-  color: #e2e8f0;
-  font-size: 0.95rem;
+  color: #f1f5f9;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
   font-weight: 600;
   letter-spacing: 0.01em;
 }
@@ -4409,25 +4502,56 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 /* Common Section Intro Block */
 .section-intro-block {
   max-width: 740px;
-  margin-bottom: 2.75rem;
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
 }
 
-/* Section 2: Problem Proof Cards (3-Card Grid on Dark Slate) */
+/* Section 2: Problem Section (Text Left, Supporting Quote Right + 3 Proof Cards) */
+.problem-header-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  align-items: center;
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
+}
+
+.problem-supporting-quote {
+  margin: 0;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-lg);
+  color: #f8fafc;
+}
+
+.problem-supporting-quote p {
+  margin: 0 0 0.85rem;
+  font-size: clamp(1.02rem, 1.4vw, 1.15rem);
+  line-height: 1.6;
+  font-style: italic;
+  color: #ffffff;
+}
+
+.problem-supporting-quote footer {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fdba74;
+}
+
 .proof-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
-  margin-top: 2.25rem;
+  gap: clamp(1.15rem, 2.5vw, 1.5rem);
 }
 
 .proof-card-dark {
-  padding: 2rem 1.75rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
   background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  height: auto;
 }
 
 .proof-card-index {
@@ -4438,17 +4562,17 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 }
 
 .proof-card-dark h3 {
-  font-size: 1.3rem;
+  font-size: clamp(1.18rem, 1.6vw, 1.32rem);
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.28;
   color: #ffffff;
   margin: 0;
 }
 
 .proof-card-dark p {
-  font-size: 1rem;
+  font-size: clamp(0.95rem, 1.15vw, 1.02rem);
   line-height: 1.6;
-  color: #cbd5e1;
+  color: #e2e8f0;
   margin: 0;
 }
 
@@ -4456,12 +4580,12 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 .solution-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
-  margin-top: 2.25rem;
+  gap: clamp(1.15rem, 2.5vw, 1.5rem);
+  margin-top: clamp(1.75rem, 3.5vw, 2.25rem);
 }
 
 .solution-card {
-  padding: 2.15rem 1.85rem;
+  padding: clamp(1.6rem, 3vw, 2.15rem);
   background-color: var(--bg-light);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -4469,6 +4593,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  height: auto;
 }
 
 .solution-card-marker {
@@ -4479,15 +4604,15 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 }
 
 .solution-card h3 {
-  font-size: 1.35rem;
+  font-size: clamp(1.2rem, 1.6vw, 1.35rem);
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.28;
   color: var(--primary-navy);
   margin: 0;
 }
 
 .solution-card p {
-  font-size: 1rem;
+  font-size: clamp(0.95rem, 1.15vw, 1.02rem);
   line-height: 1.65;
   color: var(--text-muted);
   margin: 0;
@@ -4501,31 +4626,32 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 
 .trust-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
-  gap: clamp(2.5rem, 5vw, 4.5rem);
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  gap: clamp(2rem, 5vw, 4.25rem);
   align-items: start;
 }
 
 .trust-lead {
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
 }
 
 .trust-elements-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem;
+  gap: clamp(1rem, 2vw, 1.25rem);
 }
 
 .trust-element-item {
-  padding: 1.4rem 1.35rem;
+  padding: clamp(1.2rem, 2.2vw, 1.45rem);
   background-color: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  height: auto;
 }
 
 .trust-element-item h3 {
-  font-size: 1.1rem;
+  font-size: clamp(1.05rem, 1.3vw, 1.15rem);
   font-weight: 800;
   color: var(--primary-navy);
   margin: 0 0 0.45rem;
@@ -4540,16 +4666,24 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 
 .trust-founder-card {
   background-color: #ffffff;
+  height: auto;
+}
+
+.trust-founder-card .mission-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
 }
 
 .founder-highlight-quote {
   margin: 1.15rem 0;
-  padding: 1.1rem 1.25rem;
+  padding: clamp(1rem, 2vw, 1.25rem);
   background-color: var(--bg-light);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   color: var(--primary-navy);
-  font-size: 1.05rem;
+  font-size: clamp(1rem, 1.3vw, 1.08rem);
   font-weight: 700;
   line-height: 1.55;
   font-style: italic;
@@ -4564,18 +4698,29 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   color: var(--accent-orange);
 }
 
-/* Section 5: Mid-Page CTA in How It Works */
+/* Section 5: How It Works (3 Step Cards in Row on Desktop, Vertical Stack on Small Screens) */
 .process-section {
   background-color: #ffffff;
   border-bottom: 1px solid var(--border-color);
 }
 
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.15rem, 2.5vw, 1.75rem);
+}
+
 .process-card {
-  min-height: 230px;
+  height: auto;
+  min-height: 0;
+  padding: clamp(1.6rem, 3vw, 2.15rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
 .process-mid-cta {
-  margin-top: 2.75rem;
+  margin-top: clamp(2rem, 4vw, 2.75rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4585,10 +4730,14 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 
 .process-secondary-link {
   color: var(--primary-navy);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 4px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   transition: color var(--transition-fast);
 }
 
@@ -4597,7 +4746,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   color: var(--accent-orange);
 }
 
-/* Section 6: What People Learn (6-Card Skills Grid) */
+/* Section 6: What People Learn (Balanced 3 -> 2 -> 1 Card Grid) */
 .programs-section {
   background-color: var(--bg-light);
   text-align: left;
@@ -4612,11 +4761,11 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 .skills-learn-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
+  gap: clamp(1.15rem, 2.5vw, 1.5rem);
 }
 
 .skill-learn-card {
-  padding: 2rem 1.75rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
   background-color: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -4624,6 +4773,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+  height: auto;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
@@ -4640,7 +4790,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 }
 
 .skill-learn-card h3 {
-  font-size: 1.25rem;
+  font-size: clamp(1.15rem, 1.5vw, 1.28rem);
   font-weight: 800;
   line-height: 1.3;
   color: var(--primary-navy);
@@ -4648,7 +4798,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 }
 
 .skill-learn-card p {
-  font-size: 0.98rem;
+  font-size: clamp(0.95rem, 1.1vw, 1rem);
   line-height: 1.6;
   color: var(--text-muted);
   margin: 0;
@@ -4657,22 +4807,22 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 /* Section 7: Outcome Proof Split Layout */
 .outcome-proof-header {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
   gap: clamp(2rem, 5vw, 4rem);
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: clamp(2.25rem, 4vw, 3rem);
 }
 
 .participants-gain-box {
   margin-top: 1.5rem;
-  padding: 1.65rem 1.75rem;
+  padding: clamp(1.35rem, 2.5vw, 1.75rem);
   background-color: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-lg);
 }
 
 .gain-heading {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: #fdba74;
   margin: 0 0 1rem;
@@ -4692,7 +4842,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   position: relative;
   padding-left: 1.75rem;
   color: #f8fafc;
-  font-size: 1.02rem;
+  font-size: clamp(0.96rem, 1.15vw, 1.04rem);
   line-height: 1.55;
 }
 
@@ -4707,7 +4857,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 
 .outcome-testimonial-card {
   margin: 0;
-  padding: clamp(1.85rem, 3.5vw, 2.5rem);
+  padding: clamp(1.65rem, 3.5vw, 2.5rem);
   background-color: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-xl);
@@ -4715,7 +4865,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 }
 
 .outcome-testimonial-card p {
-  font-size: clamp(1.1rem, 1.6vw, 1.28rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
   line-height: 1.65;
   font-style: italic;
   color: #f8fafc;
@@ -4736,6 +4886,46 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   margin-top: 0.2rem;
 }
 
+.impact-carousel-button {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+/* Section 8: Accessible FAQ Accordion with Large Touch Hit Areas */
+.faq-item {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.faq-item[open] {
+  border-color: var(--primary-navy);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.faq-question {
+  min-height: 56px;
+  padding: clamp(1.1rem, 2.5vw, 1.35rem) clamp(1.15rem, 3vw, 1.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  font-size: clamp(1.05rem, 1.4vw, 1.18rem);
+  font-weight: 800;
+  color: var(--primary-navy);
+}
+
+.faq-item[open] .faq-icon {
+  transform: rotate(180deg);
+  color: var(--accent-orange);
+}
+
+.faq-answer {
+  padding: 0 clamp(1.15rem, 3vw, 1.5rem) clamp(1.15rem, 2.5vw, 1.45rem);
+}
+
 /* Section 9: Final CTA */
 .final-cta-section {
   background: linear-gradient(135deg, #0B192C 0%, #172554 100%);
@@ -4752,7 +4942,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 
 .final-cta-body {
   margin-top: 0.85rem;
-  font-size: clamp(1.08rem, 1.6vw, 1.25rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.22rem);
   line-height: 1.6;
   color: #e2e8f0;
 }
@@ -4770,6 +4960,9 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 4px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   transition: color var(--transition-fast);
 }
 
@@ -4778,7 +4971,7 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   color: #fdba74;
 }
 
-/* Footer Secondary Action Buttons */
+/* Footer Secondary Action Buttons & Hierarchy */
 .footer-secondary-actions {
   margin-bottom: 1.25rem;
 }
@@ -4786,12 +4979,17 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 .footer-action-link {
   background: none;
   border: none;
-  padding: 0;
-  color: #94a3b8;
+  padding: 0.35rem 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: #cbd5e1;
   font: inherit;
-  font-size: 1.02rem;
+  font-size: 1rem;
   font-weight: 600;
   text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 4px;
   cursor: pointer;
   transition: color var(--transition-fast);
 }
@@ -4799,8 +4997,6 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 .footer-action-link:hover,
 .footer-action-link:focus-visible {
   color: #fdba74;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 .footer-apply-highlight {
@@ -4814,21 +5010,35 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 }
 
 @media (max-width: 960px) {
-  .proof-cards-grid,
-  .solution-cards-grid,
-  .skills-learn-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
+  .problem-header-grid,
   .trust-layout,
   .outcome-proof-header {
     grid-template-columns: 1fr;
+  }
+
+  .proof-cards-grid,
+  .solution-cards-grid,
+  .skills-learn-grid,
+  .process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   body {
-    padding-bottom: 78px;
+    padding-bottom: 82px;
+  }
+
+  .hero-headline-tight {
+    max-width: 16ch;
+    font-size: clamp(2rem, 7vw, 2.75rem);
+  }
+
+  .nav-links .nav-link,
+  .nav-links .nav-apply-link {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
   }
 
   .sticky-mobile-cta-bar {
@@ -4838,10 +5048,10 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
     right: 0;
     z-index: 9990;
     display: block;
-    background-color: rgba(11, 25, 44, 0.97);
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-    padding: 0.7rem 1rem;
-    box-shadow: 0 -8px 24px rgba(11, 25, 44, 0.32);
+    background-color: rgba(11, 25, 44, 0.98);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 0.65rem 1rem;
+    box-shadow: 0 -8px 24px rgba(11, 25, 44, 0.35);
     backdrop-filter: blur(8px);
   }
 
@@ -4877,15 +5087,15 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
 
   .sticky-mobile-apply-btn {
     width: auto !important;
-    min-height: 44px;
-    padding: 0.6rem 1.15rem;
-    font-size: 0.92rem;
+    min-height: 48px;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.95rem;
     white-space: nowrap;
     flex-shrink: 0;
   }
 
   .back-to-top {
-    bottom: 5.5rem;
+    bottom: 5.75rem;
     right: 1.25rem;
   }
 }
@@ -4894,7 +5104,8 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
   .proof-cards-grid,
   .solution-cards-grid,
   .skills-learn-grid,
-  .trust-elements-grid {
+  .trust-elements-grid,
+  .process-grid {
     grid-template-columns: 1fr;
   }
 
@@ -4903,9 +5114,22 @@ main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
     align-items: stretch;
   }
 
+  .hero-cta-group .btn-cta {
+    width: 100%;
+  }
+
+  .final-cta-box {
+    text-align: center;
+  }
+
   .final-cta-actions {
     width: 100%;
   }
+
+  .final-cta-actions .btn-cta {
+    width: 100%;
+  }
 }
+
 
 

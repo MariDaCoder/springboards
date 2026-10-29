@@ -8,6 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const navToggle = document.getElementById("navToggle");
   const navMenu = document.getElementById("navMenu");
 
+  // Ensure skip link reliably moves keyboard focus to #main-content
+  const skipLink = document.querySelector(".skip-link");
+  const mainContent = document.getElementById("main-content");
+  if (skipLink && mainContent) {
+    skipLink.addEventListener("click", () => {
+      mainContent.focus();
+    });
+  }
+
   if (navToggle && navMenu) {
     navToggle.addEventListener("click", () => {
       const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
@@ -403,8 +412,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (event.key === "Tab") {
-      const focusable = activeModal.querySelectorAll(
-        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      const candidates = Array.from(
+        activeModal.querySelectorAll(
+          'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      const focusable = candidates.filter(
+        (el) => !el.closest("[hidden]") && !el.classList.contains("sr-only-honeypot") && el.offsetParent !== null
       );
       if (!focusable.length) return;
 
@@ -412,18 +426,51 @@ document.addEventListener("DOMContentLoaded", () => {
       const lastItem = focusable[focusable.length - 1];
 
       if (event.shiftKey) {
-        if (document.activeElement === firstItem) {
+        if (document.activeElement === firstItem || !activeModal.contains(document.activeElement)) {
           event.preventDefault();
           lastItem.focus();
         }
       } else {
-        if (document.activeElement === lastItem) {
+        if (document.activeElement === lastItem || !activeModal.contains(document.activeElement)) {
           event.preventDefault();
           firstItem.focus();
         }
       }
     }
   });
+
+  // Helper to announce form validation errors with non-color indicator + screen reader alert
+  const setFormError = (statusEl, message, invalidFields = []) => {
+    if (statusEl) {
+      statusEl.classList.add("is-error");
+      statusEl.setAttribute("role", "alert");
+      statusEl.setAttribute("aria-live", "assertive");
+      statusEl.textContent = `⚠ Error: ${message}`;
+    }
+    invalidFields.forEach((field, idx) => {
+      if (field) {
+        field.classList.add("is-invalid");
+        field.setAttribute("aria-invalid", "true");
+        if (idx === 0 && typeof field.focus === "function") {
+          field.focus();
+        }
+      }
+    });
+  };
+
+  const clearFormErrorState = (formEl, statusEl) => {
+    if (statusEl) {
+      statusEl.classList.remove("is-error");
+      statusEl.setAttribute("role", "status");
+      statusEl.setAttribute("aria-live", "polite");
+    }
+    if (formEl) {
+      formEl.querySelectorAll(".is-invalid, [aria-invalid='true']").forEach((el) => {
+        el.classList.remove("is-invalid");
+        el.removeAttribute("aria-invalid");
+      });
+    }
+  };
 
   // PHONE AUTO-FORMATTING & VALIDATION HELPERS
   const formatPhoneNumber = (value) => {
@@ -515,43 +562,29 @@ document.addEventListener("DOMContentLoaded", () => {
       const phone = String(formData.get("phone") || "").trim();
       const email = String(formData.get("email") || "").trim();
 
-      status.classList.remove("is-error");
-      inquiryForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+      clearFormErrorState(inquiryForm, status);
 
       // 1. Validate Name
       if (!name || name.length < 2) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter your full name, minimum 2 characters.";
-        inquiryForm.elements.name.classList.add("is-invalid");
-        inquiryForm.elements.name.focus();
+        setFormError(status, "Please enter your full name, minimum 2 characters.", [inquiryForm.elements.name]);
         return;
       }
 
       // 2. Validate at least one contact method
       if (!phone && !email) {
-        status.classList.add("is-error");
-        status.textContent = "Please provide either a phone number or email address.";
-        inquiryForm.elements.phone.classList.add("is-invalid");
-        inquiryForm.elements.email.classList.add("is-invalid");
-        inquiryForm.elements.phone.focus();
+        setFormError(status, "Please provide either a phone number or email address.", [inquiryForm.elements.phone, inquiryForm.elements.email]);
         return;
       }
 
       // 3. Validate Phone format if provided
       if (phone && !isValidPhone(phone)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number (e.g. 555-123-4567).";
-        inquiryForm.elements.phone.classList.add("is-invalid");
-        inquiryForm.elements.phone.focus();
+        setFormError(status, "Please enter a valid 10-digit phone number (e.g. 555-123-4567).", [inquiryForm.elements.phone]);
         return;
       }
 
       // 4. Validate Email format if provided
       if (email && !isValidEmail(email)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid email address, e.g. name@example.com.";
-        inquiryForm.elements.email.classList.add("is-invalid");
-        inquiryForm.elements.email.focus();
+        setFormError(status, "Please enter a valid email address, e.g. name@example.com.", [inquiryForm.elements.email]);
         return;
       }
 
@@ -669,43 +702,29 @@ document.addEventListener("DOMContentLoaded", () => {
       const interest = String(formData.get("interest") || "general").trim();
       const organization = String(formData.get("organization") || "").trim();
 
-      status.classList.remove("is-error");
-      volunteerSignupForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+      clearFormErrorState(volunteerSignupForm, status);
 
       // 1. Validate Name
       if (!name || name.length < 2) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter your full name, minimum 2 characters.";
-        volunteerSignupForm.elements.name.classList.add("is-invalid");
-        volunteerSignupForm.elements.name.focus();
+        setFormError(status, "Please enter your full name, minimum 2 characters.", [volunteerSignupForm.elements.name]);
         return;
       }
 
       // 2. Validate at least one contact method
       if (!phone && !email) {
-        status.classList.add("is-error");
-        status.textContent = "Please provide either a phone number or email address.";
-        volunteerSignupForm.elements.phone.classList.add("is-invalid");
-        volunteerSignupForm.elements.email.classList.add("is-invalid");
-        volunteerSignupForm.elements.phone.focus();
+        setFormError(status, "Please provide either a phone number or email address.", [volunteerSignupForm.elements.phone, volunteerSignupForm.elements.email]);
         return;
       }
 
       // 3. Validate Phone format if provided
       if (phone && !isValidPhone(phone)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number (e.g. 555-123-4567).";
-        volunteerSignupForm.elements.phone.classList.add("is-invalid");
-        volunteerSignupForm.elements.phone.focus();
+        setFormError(status, "Please enter a valid 10-digit phone number (e.g. 555-123-4567).", [volunteerSignupForm.elements.phone]);
         return;
       }
 
       // 4. Validate Email format if provided
       if (email && !isValidEmail(email)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid email address, e.g. name@example.com.";
-        volunteerSignupForm.elements.email.classList.add("is-invalid");
-        volunteerSignupForm.elements.email.focus();
+        setFormError(status, "Please enter a valid email address, e.g. name@example.com.", [volunteerSignupForm.elements.email]);
         return;
       }
 
@@ -879,39 +898,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const careerCenter = String(formData.get("careerCenter") || "").trim();
       const notes = String(formData.get("notes") || "").trim();
 
-      status.classList.remove("is-error");
-      candidateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+      clearFormErrorState(candidateForm, status);
 
       if (!name || name.length < 2) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter your full legal name (minimum 2 characters).";
-        candidateForm.elements.name.classList.add("is-invalid");
-        candidateForm.elements.name.focus();
+        setFormError(status, "Please enter your full legal name (minimum 2 characters).", [candidateForm.elements.name]);
         return;
       }
 
       if (!phone && !email) {
-        status.classList.add("is-error");
-        status.textContent = "Please provide either a phone number or email address so we can reach you.";
-        candidateForm.elements.phone.classList.add("is-invalid");
-        candidateForm.elements.email.classList.add("is-invalid");
-        candidateForm.elements.phone.focus();
+        setFormError(status, "Please provide either a phone number or email address so we can reach you.", [candidateForm.elements.phone, candidateForm.elements.email]);
         return;
       }
 
       if (phone && !isValidPhone(phone)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number, e.g. (334) 556-1234.";
-        candidateForm.elements.phone.classList.add("is-invalid");
-        candidateForm.elements.phone.focus();
+        setFormError(status, "Please enter a valid 10-digit phone number, e.g. (334) 556-1234.", [candidateForm.elements.phone]);
         return;
       }
 
       if (email && !isValidEmail(email)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid email address (e.g. name@example.com).";
-        candidateForm.elements.email.classList.add("is-invalid");
-        candidateForm.elements.email.focus();
+        setFormError(status, "Please enter a valid email address (e.g. name@example.com).", [candidateForm.elements.email]);
         return;
       }
 
@@ -1028,47 +1033,30 @@ document.addEventListener("DOMContentLoaded", () => {
       const tradeSpecialty = String(formData.get("tradeSpecialty") || "General").trim();
       const message = String(formData.get("message") || "").trim();
 
-      status.classList.remove("is-error");
-      partnerForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+      clearFormErrorState(partnerForm, status);
 
       if (!companyName || companyName.length < 2) {
-        status.classList.add("is-error");
-        status.textContent = "Please provide your company or organization name.";
-        partnerForm.elements.companyName.classList.add("is-invalid");
-        partnerForm.elements.companyName.focus();
+        setFormError(status, "Please provide your company or organization name.", [partnerForm.elements.companyName]);
         return;
       }
 
       if (!contactName || contactName.length < 2) {
-        status.classList.add("is-error");
-        status.textContent = "Please provide a contact person name.";
-        partnerForm.elements.contactName.classList.add("is-invalid");
-        partnerForm.elements.contactName.focus();
+        setFormError(status, "Please provide a contact person name.", [partnerForm.elements.contactName]);
         return;
       }
 
       if (!phone && !email) {
-        status.classList.add("is-error");
-        status.textContent = "Please provide either a phone number or business email address.";
-        partnerForm.elements.phone.classList.add("is-invalid");
-        partnerForm.elements.email.classList.add("is-invalid");
-        partnerForm.elements.phone.focus();
+        setFormError(status, "Please provide either a phone number or business email address.", [partnerForm.elements.phone, partnerForm.elements.email]);
         return;
       }
 
       if (phone && !isValidPhone(phone)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number.";
-        partnerForm.elements.phone.classList.add("is-invalid");
-        partnerForm.elements.phone.focus();
+        setFormError(status, "Please enter a valid 10-digit phone number.", [partnerForm.elements.phone]);
         return;
       }
 
       if (email && !isValidEmail(email)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid business email address.";
-        partnerForm.elements.email.classList.add("is-invalid");
-        partnerForm.elements.email.focus();
+        setFormError(status, "Please enter a valid business email address.", [partnerForm.elements.email]);
         return;
       }
 
@@ -1163,30 +1151,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const message = String(formData.get("message") || "").trim();
       const taxReceiptRequested = formData.get("taxReceiptRequested") === "yes";
 
-      status.classList.remove("is-error");
-      donateForm.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+      clearFormErrorState(donateForm, status);
 
       if (!donorName || donorName.length < 2) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter your full name or organization name.";
-        donateForm.elements.donorName.classList.add("is-invalid");
-        donateForm.elements.donorName.focus();
+        setFormError(status, "Please enter your full name or organization name.", [donateForm.elements.donorName]);
         return;
       }
 
       if (!email || !isValidEmail(email)) {
-        status.classList.add("is-error");
-        status.textContent = "Please provide a valid email address so we can issue your tax acknowledgment.";
-        donateForm.elements.email.classList.add("is-invalid");
-        donateForm.elements.email.focus();
+        setFormError(status, "Please provide a valid email address so we can issue your tax acknowledgment.", [donateForm.elements.email]);
         return;
       }
 
       if (phone && !isValidPhone(phone)) {
-        status.classList.add("is-error");
-        status.textContent = "Please enter a valid 10-digit phone number.";
-        donateForm.elements.phone.classList.add("is-invalid");
-        donateForm.elements.phone.focus();
+        setFormError(status, "Please enter a valid 10-digit phone number.", [donateForm.elements.phone]);
         return;
       }
 
