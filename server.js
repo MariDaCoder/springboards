@@ -1,6 +1,11 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
+import crypto from 'crypto';
+import helmet from 'helmet';
+import compression from 'compression';
+import rateLimit from 'express-rate-limit';
+import cors from 'cors';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -8,50 +13,171 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DESIGNATED_INBOX = 'info@springboardsfcd.org';
-const ALERT_EMAIL = 'marilynn.ward@springboards.org';
-const BACKUP_ALERT_EMAIL = 'marilynnlward@gmail.com';
+
+// 1. Environment-Driven Configuration
+const DESIGNATED_INBOX = process.env.DESIGNATED_INBOX || 'marilynnlward@gmail.com';
+const HR_INBOX = process.env.HR_INBOX || 'marilynnlward@gmail.com';
+const ALERT_EMAIL = process.env.ALERT_EMAIL || 'marilynnlward@gmail.com';
+const BACKUP_ALERT_EMAIL = process.env.BACKUP_ALERT_EMAIL || 'marilynnlward@gmail.com';
+const WORKSPACE_CONNECTED_EMAIL = process.env.WORKSPACE_CONNECTED_EMAIL || 'marilynnlward@gmail.com';
+const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || '2026';
+const STAFF_DEFAULT_PIN = process.env.STAFF_DEFAULT_PIN || '1985';
+const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || 'sb-fcd-admin-session-2026-9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c';
+const ANALYTICS_ENABLED = String(process.env.ANALYTICS_ENABLED ?? 'true').toLowerCase() !== 'false';
+const SMTP_CONFIG = {
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: Number(process.env.SMTP_PORT || 587),
+  user: process.env.SMTP_USER || 'marilynnlward@gmail.com',
+  pass: process.env.SMTP_PASS || ''
+};
+const ADMIN_ALLOWED_EMAILS = new Set(
+  (process.env.ADMIN_ALLOWED_EMAILS || 'marilynnlward@gmail.com,springboardforcommunitydev@gmail.com,info@springboardsfcd.org')
+    .split(',')
+    .map(e => e.trim().toLowerCase())
+    .filter(Boolean)
+);
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://springboardsfcd.org,https://www.springboardsfcd.org,https://springboards-community-dev.web.app,http://localhost:3000')
+  .split(',')
+  .map(o => o.replace(/^\[.*\]\((.*)\)$/, '$1').trim())
+  .filter(Boolean);
 
 // Trust reverse proxy for SSL and Host headers (Cloud Run / Load Balancer)
-app.set('trust proxy', true);
+app.set('trust proxy', 1);
 
-// 1. Clean Domain Routing & HTTPS Redirection
+// 2. Clean Domain Routing & HTTPS Redirection
 app.use((req, res, next) => {
   const host = req.headers.host || '';
   const proto = req.headers['x-forwarded-proto'];
 
-  // Enforce HTTPS in production when behind SSL proxy
   if (proto === 'http' && !host.includes('localhost') && !host.includes('127.0.0.1')) {
     return res.redirect(301, `https://${host}${req.url}`);
   }
 
-  // Route www.springboardsfcd.org smoothly to root springboardsfcd.org
   if (host.startsWith('www.')) {
     const cleanHost = host.replace(/^www\./, '');
     const targetProto = proto || 'https';
     return res.redirect(301, `${targetProto}://${cleanHost}${req.url}`);
   }
 
-  // 2. Security Headers (HSTS, Clickjacking, MIME sniffing, Permissions Policy)
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  if (proto === 'https') {
-    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-  }
-
   next();
 });
 
-app.use(express.json());
+// 3. Helmet Security Headers & Content Security Policy (CSP)
+app.use(helmet({
+  frameguard: false, // Allow AI Studio preview iframe while protecting via CSP
+  contentSecurityPolicy: {
+    useDefaults: false,
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://apis.google.com", "https://accounts.google.com", "https://www.gstatic.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+      imgSrc: ["'self'", "data:", "https:"],
+      frameSrc: ["'self'", "https://www.google.com", "https://maps.google.com", "https://accounts.google.com", "https://*.firebaseapp.com"],
+      connectSrc: ["'self'", "https://firestore.googleapis.com", "https://*.googleapis.com", "https://identitytoolkit.googleapis.com", "https://securetoken.googleapis.com"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      upgradeInsecureRequests: []
+    }
+  },
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
+}));
+
+// 4. Response Compression (Gzip / Deflate)
+app.use(compression());
+
+// 5. Restricted CORS Policy
+app.use('/api', cors({
+  origin: (origin, callback) => {
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || /\.run\.app$|\.ai\.studio$/.test(origin)) {
+      return callback(null, true);
+    }
+    return callback(null, false);
+  },
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
+
+app.use(express.json({ limit: '250kb' }));
+
+// 6. Rate Limiting Middleware
+const apiGeneralLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 120,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please wait a moment and try again.' }
+});
+
+const publicFormLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 25,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many form submissions from this IP. Please try again in 15 minutes.' }
+});
+
+const adminAuthLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many login attempts. Please wait 15 minutes before retrying.' }
+});
+
+app.use('/api', apiGeneralLimiter);
+
+// 7. Signed Session Token Helpers & Admin No-Store Protection
+function createAdminSessionToken(payload) {
+  const data = Buffer.from(JSON.stringify({
+    ...payload,
+    exp: Date.now() + 8 * 60 * 60 * 1000 // 8-hour session expiry
+  })).toString('base64url');
+  const sig = crypto.createHmac('sha256', ADMIN_SESSION_SECRET).update(data).digest('base64url');
+  return `${data}.${sig}`;
+}
+
+function verifyAdminSessionToken(token) {
+  if (!token || typeof token !== 'string' || !token.includes('.')) return null;
+  const [data, sig] = token.split('.');
+  const expectedSig = crypto.createHmac('sha256', ADMIN_SESSION_SECRET).update(data).digest('base64url');
+  if (sig !== expectedSig) return null;
+  try {
+    const parsed = JSON.parse(Buffer.from(data, 'base64url').toString('utf8'));
+    if (!parsed.exp || Date.now() > parsed.exp) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function parseCookies(req) {
+  const raw = req.headers.cookie || '';
+  return Object.fromEntries(
+    raw.split(';').map(part => {
+      const idx = part.indexOf('=');
+      if (idx === -1) return ['', ''];
+      return [part.slice(0, idx).trim(), decodeURIComponent(part.slice(idx + 1).trim())];
+    }).filter(([k]) => k)
+  );
+}
+
+function adminNoStore(req, res, next) {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+  next();
+}
 
 // Redirect public HTML page URLs to their clean route equivalents.
 const cleanPageRedirects = new Map([
   ['/index.html', '/'],
   ['/train.html', '/train'],
   ['/eligibility.html', '/eligibility'],
+  ['/volunteer.html', '/volunteer'],
+  ['/partner.html', '/partner'],
+  ['/donate.html', '/donate'],
   ['/backoffice.html', '/backoffice'],
   ['/404.html', '/404']
 ]);
@@ -63,16 +189,26 @@ app.use((req, res, next) => {
   return res.redirect(301, `${destination}${req.url.slice(req.path.length)}`);
 });
 
-// 3. Static asset caching for sub-2-second lightning fast performance
+// 8. Static Asset Caching Strategy (Immutable for hashed assets, no-cache for HTML)
+app.use('/assets', express.static(path.join(__dirname, 'assets'), {
+  maxAge: '365d',
+  immutable: true,
+  setHeaders: (res) => {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  }
+}));
+
 app.use(express.static(__dirname, {
-  maxAge: '1d',
+  index: false,
+  maxAge: '7d',
   setHeaders: (res, filePath) => {
-    if (/\.(webp|jpg|jpeg|png|ico|svg|woff2)$/i.test(filePath)) {
-      // Long-term cache for immutable media assets
+    if (/\.[a-f0-9]{8,}\.(css|js|webp|jpg|jpeg|png|svg|woff2)$/i.test(filePath)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else if (/\.(webp|jpg|jpeg|png|ico|svg|woff2)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=604800, stale-while-revalidate=86400');
     } else if (/\.(css|js)$/i.test(filePath)) {
-      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
-    } else if (filePath.endsWith('index.html') || filePath.endsWith('404.html')) {
+      res.setHeader('Cache-Control', 'public, max-age=3600, must-revalidate');
+    } else if (/\.html$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'no-cache, must-revalidate');
     }
   }
@@ -154,8 +290,8 @@ app.get('/robots.txt', (req, res) => {
   res.sendFile(path.join(__dirname, 'robots.txt'));
 });
 
-// 5. Inquiries & Volunteer Signups API Endpoints
-app.post('/api/inquiries', async (req, res) => {
+// 5. Inquiries & Volunteer Signups API Endpoints (Rate Limited)
+app.post('/api/inquiries', publicFormLimiter, async (req, res) => {
   try {
     const { name, phone, email, program, website_url } = req.body || {};
     // Silent honeypot spam deflection
@@ -209,7 +345,7 @@ app.post('/api/inquiries', async (req, res) => {
   }
 });
 
-app.post('/api/volunteer-signups', async (req, res) => {
+app.post('/api/volunteer-signups', publicFormLimiter, async (req, res) => {
   try {
     const { name, phone, email, availability, interest, website_url } = req.body || {};
     // Silent honeypot spam deflection
@@ -267,7 +403,7 @@ app.post('/api/volunteer-signups', async (req, res) => {
 });
 
 // 5B. Transitional Jobs Candidate Intake Endpoint
-app.post('/api/candidates', async (req, res) => {
+app.post('/api/candidates', publicFormLimiter, async (req, res) => {
   try {
     const { name, phone, email, trade, backgroundStatus, transportation, careerCenter, notes, website_url } = req.body || {};
     if (website_url) {
@@ -344,7 +480,7 @@ app.post('/api/candidates', async (req, res) => {
     const docRef = await db.collection('candidateApplications').add(newRecord);
     deliveredInboxLog.push({ ...newRecord, id: docRef.id });
 
-    console.log(`[Transitional Candidate Intake] Notification sent to internal admin marilynn.ward@springboardsfcd.org & ${DESIGNATED_INBOX} for ${trimmedName}`);
+    console.log(`[Transitional Candidate Intake] Notification routed to ${DESIGNATED_INBOX} for ${trimmedName}`);
 
     return res.status(200).json({
       success: true,
@@ -359,7 +495,7 @@ app.post('/api/candidates', async (req, res) => {
 });
 
 // 5B-2. Transitional Jobs: Direct OJT Alternative Inquiry
-app.post('/api/transitional-jobs/ojt-inquiry', async (req, res) => {
+app.post('/api/transitional-jobs/ojt-inquiry', publicFormLimiter, async (req, res) => {
   try {
     const { name, email, situation, phone } = req.body || {};
     const trimmedEmail = String(email || '').trim();
@@ -404,7 +540,7 @@ app.post('/api/transitional-jobs/ojt-inquiry', async (req, res) => {
     const docRef = await db.collection('candidateApplications').add(newRecord);
     deliveredInboxLog.push({ ...newRecord, id: docRef.id });
 
-    console.log(`[OJT Inquiry] Alert routed to internal workforce admin marilynn.ward@springboardsfcd.org & ${DESIGNATED_INBOX} for ${trimmedEmail}`);
+    console.log(`[OJT Inquiry] Alert routed to ${DESIGNATED_INBOX} for ${trimmedEmail}`);
 
     return res.status(200).json({
       success: true,
@@ -419,7 +555,7 @@ app.post('/api/transitional-jobs/ojt-inquiry', async (req, res) => {
 });
 
 // 5B-3. Stage 2: Eligibility Check Intake & Google Workspace Sync
-app.post('/api/transitional-jobs/eligibility-submit', async (req, res) => {
+app.post('/api/transitional-jobs/eligibility-submit', publicFormLimiter, async (req, res) => {
   try {
     const {
       candidateName,
@@ -711,8 +847,8 @@ app.post('/api/trainee/clock-in', async (req, res) => {
       trainee.googleDriveRecordUrl = `https://drive.google.com/drive/folders/Springboards-Retention-${trainee.id}`;
 
       hrPackageNotice = {
-        routedTo: 'hr@springboardsfcd.org',
-        cc: 'marilynn.ward@springboards.org',
+        routedTo: HR_INBOX,
+        cc: ALERT_EMAIL,
         candidateName: trainee.name,
         totalHours: 390,
         digitalTrainingRecordStored: true,
@@ -720,7 +856,7 @@ app.post('/api/trainee/clock-in', async (req, res) => {
         message: `Candidate ${trainee.name} reached 390-hour state cap. Automated HR onboarding package generated and routed to HR for permanent staff hiring review.`
       };
 
-      console.log(`[Internal Retention Win] ${trainee.name} reached 390 hours. Record transitioned to Permanent Candidate (NOT archived). HR onboarding package dispatched to hr@springboardsfcd.org`);
+      console.log(`[Internal Retention Win] ${trainee.name} reached 390 hours. Record transitioned to Permanent Candidate (NOT archived). HR onboarding package dispatched to ${HR_INBOX}`);
     }
 
     saveBackofficeData();
@@ -777,7 +913,7 @@ app.post('/api/backoffice/candidates/retention-transition', (req, res) => {
 });
 
 // 5C. Business & Employer Partnership Endpoint
-app.post('/api/partnerships', async (req, res) => {
+app.post('/api/partnerships', publicFormLimiter, async (req, res) => {
   try {
     const { companyName, contactName, title, phone, email, partnershipType, tradeSpecialty, openings, message, website_url } = req.body || {};
     if (website_url) {
@@ -846,7 +982,7 @@ app.post('/api/partnerships', async (req, res) => {
 });
 
 // 5D. Donor Pledge & Support Endpoint
-app.post('/api/donations', async (req, res) => {
+app.post('/api/donations', publicFormLimiter, async (req, res) => {
   try {
     const { donorName, phone, email, donationType, pledgeAmount, message, taxReceiptRequested, website_url } = req.body || {};
     if (website_url) {
@@ -1085,30 +1221,43 @@ function saveBackofficeData() {
   }
 }
 
-// Backoffice Authentication (Phone + PIN for Staff, Google or Admin PIN for Admin)
-app.post('/api/backoffice/auth', (req, res) => {
+// Apply no-store & noindex headers to all private backoffice & workspace routes
+app.use('/api/backoffice', adminNoStore);
+app.use('/api/workspace', adminNoStore);
+
+// Backoffice Authentication (Environment-configured Admin Passcode / Allowed Email or Staff Roster PIN)
+app.post('/api/backoffice/auth', adminAuthLimiter, (req, res) => {
   const { type, phone, pin, adminEmail, adminCode } = req.body || {};
 
-  // Admin bypass with designated admin email or code
   if (type === 'admin') {
-    const isMarilynn = adminEmail === 'marilynn.ward@springboardsfrcd.org' || adminEmail === 'marilynn.ward@springboardsfcd.org' || adminEmail === 'marilynn.ward@springboards.org' || adminEmail === 'marilynnlward@gmail.com';
-    if (adminCode === '2026' || adminCode === '1985' || isMarilynn || adminEmail === 'info@springboardsfrcd.org' || adminEmail === 'info@springboardsfcd.org') {
-      const email = isMarilynn ? (adminEmail || 'marilynn.ward@springboardsfrcd.org') : (adminEmail || 'marilynn.ward@springboardsfrcd.org');
+    const normalizedEmail = String(adminEmail || '').trim().toLowerCase();
+    const trimmedCode = String(adminCode || '').trim();
+    const isAllowedEmail = normalizedEmail && ADMIN_ALLOWED_EMAILS.has(normalizedEmail);
+    const isValidCode = trimmedCode && (trimmedCode === ADMIN_PASSCODE || trimmedCode === STAFF_DEFAULT_PIN);
+
+    if (isValidCode || isAllowedEmail) {
+      const userObj = {
+        id: 'admin-1',
+        name: 'Workforce Administrator',
+        role: 'Workforce Director & Compliance Administrator',
+        isAdmin: true,
+        email: normalizedEmail || DESIGNATED_INBOX
+      };
+      const token = createAdminSessionToken(userObj);
+      res.setHeader(
+        'Set-Cookie',
+        `sb_admin_session=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800`
+      );
       return res.status(200).json({
         success: true,
-        user: {
-          id: 'admin-1',
-          name: isMarilynn ? 'Marilynn L. Ward' : 'Administrator',
-          role: 'Workforce Director & Compliance Administrator',
-          isAdmin: true,
-          email: email
-        }
+        token,
+        user: userObj
       });
     }
     return res.status(401).json({ error: 'Invalid admin credentials.' });
   }
 
-  // Staff phone + PIN authentication
+  // Staff phone + PIN authentication via configured roster
   const cleanedInputPhone = String(phone || '').replace(/\D/g, '');
   const trimmedPin = String(pin || '').trim();
 
@@ -1119,71 +1268,45 @@ app.post('/api/backoffice/auth', (req, res) => {
     return res.status(400).json({ error: 'Please enter your 4-digit staff PIN.' });
   }
 
-  const staffMatch = backofficeData.staffRoster.find(member => {
+  const staffMatch = (backofficeData.staffRoster || []).find(member => {
     const memberPhone = String(member.phone || '').replace(/\D/g, '');
     return memberPhone.endsWith(cleanedInputPhone.slice(-10)) && String(member.pin).trim() === trimmedPin;
   });
 
   if (staffMatch) {
+    const userObj = {
+      id: staffMatch.id,
+      name: staffMatch.name,
+      role: staffMatch.role,
+      isAdmin: !!staffMatch.isAdmin,
+      phone: staffMatch.phone
+    };
+    const token = createAdminSessionToken(userObj);
+    res.setHeader(
+      'Set-Cookie',
+      `sb_admin_session=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800`
+    );
     return res.status(200).json({
       success: true,
-      user: {
-        id: staffMatch.id,
-        name: staffMatch.name,
-        role: staffMatch.role,
-        isAdmin: !!staffMatch.isAdmin,
-        phone: staffMatch.phone
-      }
+      token,
+      user: userObj
     });
   }
 
-  // Quick access helpers for leadership
-  if (cleanedInputPhone.endsWith('6031157') || cleanedInputPhone.endsWith('7560123') || cleanedInputPhone.endsWith('3025326')) {
-    if (trimmedPin === '2026' || trimmedPin === '1985') {
-      if (cleanedInputPhone.endsWith('6031157') || trimmedPin === '2026') {
-        return res.status(200).json({
-          success: true,
-          user: {
-            id: 'staff-marilynn',
-            name: 'Marilynn L. Ward',
-            role: 'Workforce Director & Compliance Administrator',
-            isAdmin: true,
-            email: 'marilynn.ward@springboards.org',
-            phone: '(615) 603-1157'
-          }
-        });
-      } else if (cleanedInputPhone.endsWith('3025326')) {
-        return res.status(200).json({
-          success: true,
-          user: {
-            id: 'staff-melvin',
-            name: 'Melvin M.L. Ward',
-            role: 'Founder / Board President',
-            isAdmin: true,
-            phone: '706-302-5326'
-          }
-        });
-      } else {
-        return res.status(200).json({
-          success: true,
-          user: {
-            id: 'staff-marvin',
-            name: 'Marvin Thompson',
-            role: 'Executive Director',
-            isAdmin: true,
-            phone: '(334) 756-0123'
-          }
-        });
-      }
-    }
-  }
+  return res.status(401).json({ error: 'Phone number or staff PIN not recognized. Please contact an administrator to be added to the team roster.' });
+});
 
-  return res.status(401).json({ error: 'Phone number or staff PIN not recognized. Please contact Marilynn or Marvin to be added to the team roster.' });
+app.post('/api/backoffice/logout', (req, res) => {
+  res.setHeader('Set-Cookie', 'sb_admin_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0');
+  return res.status(200).json({ success: true });
 });
 
 // Get state (chat, calendar, documents, compliance, candidates, and roster if authorized)
 app.get('/api/backoffice/state', (req, res) => {
-  const isAdmin = req.headers['x-admin-auth'] === 'true' || req.query.admin === 'true';
+  const cookies = parseCookies(req);
+  const bearer = (req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
+  const sessionUser = verifyAdminSessionToken(bearer || cookies.sb_admin_session);
+  const isAdmin = Boolean(sessionUser?.isAdmin) || req.headers['x-admin-auth'] === 'true' || req.query.admin === 'true';
 
   res.status(200).json({
     chatMessages: backofficeData.chatMessages || [],
@@ -1420,7 +1543,7 @@ app.get('/api/backoffice/candidate-sheets/csv', (req, res) => {
 // Google Workspace & Sheets Configuration and Live Sync State
 app.get('/api/workspace/config', (req, res) => {
   const ws = backofficeData.workspaceSettings || {
-    connectedEmail: 'marilynn.ward@springboardsfcd.org',
+    connectedEmail: WORKSPACE_CONNECTED_EMAIL,
     spreadsheetId: '',
     spreadsheetUrl: '',
     sheetName: 'Candidate Intake',
@@ -1454,7 +1577,7 @@ app.post('/api/workspace/sync-log', (req, res) => {
   }
   backofficeData.workspaceSettings.lastSyncedAt = timestamp || new Date().toISOString();
   backofficeData.workspaceSettings.lastSyncCount = rowCount || (backofficeData.candidateApplications || []).length;
-  backofficeData.workspaceSettings.lastSyncUser = user || 'marilynn.ward@springboardsfcd.org';
+  backofficeData.workspaceSettings.lastSyncUser = user || WORKSPACE_CONNECTED_EMAIL;
   if (spreadsheetId) backofficeData.workspaceSettings.spreadsheetId = spreadsheetId;
 
   if (!Array.isArray(backofficeData.workspaceSyncHistory)) {
@@ -1480,7 +1603,7 @@ app.get('/api/workspace/status', (req, res) => {
   const candidatesCount = (backofficeData.candidateApplications || []).length;
   const attendanceCount = (backofficeData.attendanceLogs || []).length;
   res.status(200).json({
-    connectedEmail: ws.connectedEmail || 'marilynn.ward@springboardsfcd.org',
+    connectedEmail: ws.connectedEmail || WORKSPACE_CONNECTED_EMAIL,
     designatedInbox: DESIGNATED_INBOX,
     isLinked: Boolean(ws.spreadsheetId),
     spreadsheetId: ws.spreadsheetId || null,
@@ -1493,16 +1616,34 @@ app.get('/api/workspace/status', (req, res) => {
   });
 });
 
-// Clean routes for the website pages.
+// Clean routes for the public SEO intent pages
 app.get('/train', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, must-revalidate');
   res.sendFile(path.join(__dirname, 'train.html'));
 });
 
 app.get('/eligibility', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, must-revalidate');
   res.sendFile(path.join(__dirname, 'eligibility.html'));
 });
 
-app.get('/backoffice', (req, res) => {
+app.get('/volunteer', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  res.sendFile(path.join(__dirname, 'volunteer.html'));
+});
+
+app.get('/partner', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  res.sendFile(path.join(__dirname, 'partner.html'));
+});
+
+app.get('/donate', (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  res.sendFile(path.join(__dirname, 'donate.html'));
+});
+
+// Private Executive Admin Portal (strictly separated with no-store & noindex)
+app.get('/backoffice', adminNoStore, (req, res) => {
   const backofficeHtmlPath = path.join(__dirname, 'backoffice.html');
   if (fs.existsSync(backofficeHtmlPath)) {
     res.sendFile(backofficeHtmlPath);
@@ -1511,7 +1652,7 @@ app.get('/backoffice', (req, res) => {
   }
 });
 
-app.get('/portal', (req, res) => res.redirect(301, '/backoffice'));
+app.get('/portal', adminNoStore, (req, res) => res.redirect(301, '/backoffice'));
 
 app.get('/404', (req, res) => {
   const notFoundPath = path.join(__dirname, '404.html');

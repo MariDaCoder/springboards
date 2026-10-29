@@ -11,3 +11,25 @@ runConfig:
 env:
   - variable: NODE_ENV
     value: production
+  - variable: ALLOWED_ORIGINS
+    value: https://springboardsfcd.org,https://www.springboardsfcd.org,https://springboards-community-dev.web.app
+  - variable: DESIGNATED_INBOX
+    value: marilynnlward@gmail.com
+  - variable: HR_INBOX
+    value: marilynnlward@gmail.com
+  - variable: ALERT_EMAIL
+    value: marilynnlward@gmail.com
+  - variable: BACKUP_ALERT_EMAIL
+    value: marilynnlward@gmail.com
+  - variable: WORKSPACE_CONNECTED_EMAIL
+    value: marilynnlward@gmail.com
+  - variable: ADMIN_ALLOWED_EMAILS
+    value: marilynnlward@gmail.com,springboardforcommunitydev@gmail.com
+  - variable: ANALYTICS_ENABLED
+    value: "true"
+  - variable: SMTP_HOST
+    value: smtp.gmail.com
+  - variable: SMTP_PORT
+    value: "587"
+  - variable: SMTP_USER
+    value: marilynnlward@gmail.com
