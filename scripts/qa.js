@@ -157,6 +157,15 @@ for (const item of modalInventory) {
   }
 }
 
+// Interactive Progress Roadmap & Google Classroom Hub checks
+assert(indexHtml.includes('id="participantJourneyRoadmap"'), '[How It Works] Interactive Participant Journey Roadmap exists');
+assert((indexHtml.match(/class=["'][^"']*journey-step-item/g) || []).length === 5, '[How It Works] Contains 5 interactive roadmap milestones');
+assert(indexHtml.includes('id="googleClassroomHub"'), '[How It Works] Google Classroom Learning Hub exists');
+assert(indexHtml.includes('id="classroomSignInBtn"'), '[How It Works] Official Sign in with Google button exists');
+
+const fbConfigRaw = fs.readFileSync(path.join(rootDir, 'firebase-applet-config.json'), 'utf8');
+assert(fbConfigRaw.includes('1:651964189612:web:fc444ee616bf91da99c809'), '[Firebase] Connected to appId 1:651964189612:web:fc444ee616bf91da99c809');
+
 console.log(`  ✓ Phase 2 checks completed (${passed} passed, ${failed} failed)\n`);
 
 // ---------------------------------------------------------------------------

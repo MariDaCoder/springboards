@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "ProgramInquiry": {
+      "title": "ProgramInquiry",
+      "description": "Public inquiry about Springboards training pathways",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "program": { "type": "string" },
+        "deliveredTo": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "program", "createdAt"]
+    },
+    "CandidateApplication": {
+      "title": "CandidateApplication",
+      "description": "Candidate intake application for trade training and transitional jobs",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "trade": { "type": "string" },
+        "backgroundStatus": { "type": "string" },
+        "transportation": { "type": "string" },
+        "careerCenter": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "trade", "createdAt"]
+    },
+    "VolunteerSignup": {
+      "title": "VolunteerSignup",
+      "description": "Community volunteer interest registration",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "availability": { "type": "string" },
+        "interest": { "type": "string" },
+        "location": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "availability", "interest", "createdAt"]
+    },
+    "RoadmapProgress": {
+      "title": "RoadmapProgress",
+      "description": "Participant journey roadmap milestone tracking and Classroom course sync",
+      "type": "object",
+      "properties": {
+        "completedSteps": { "type": "array", "items": { "type": "number" } },
+        "currentStep": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["currentStep", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/programInquiries/{docId}": {
+      "schema": { "$ref": "#/entities/ProgramInquiry" },
+      "description": "Public program inquiries"
+    },
+    "/candidateApplications/{docId}": {
+      "schema": { "$ref": "#/entities/CandidateApplication" },
+      "description": "Candidate training applications"
+    },
+    "/volunteerSignups/{docId}": {
+      "schema": { "$ref": "#/entities/VolunteerSignup" },
+      "description": "Volunteer signups"
+    },
+    "/roadmapProgress/{userId}": {
+      "schema": { "$ref": "#/entities/RoadmapProgress" },
+      "description": "User progress along the How It Works participant roadmap"
+    }
+  }
+}

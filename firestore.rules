@@ -1,37 +1,58 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Deny all reads and writes across the entire database by default
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        request.auth.token.email_verified == true &&
+        (request.auth.token.email == 'marilynnlward@gmail.com' ||
+         request.auth.token.email == 'springboardforcommunitydev@gmail.com' ||
+         request.auth.token.email == 'info@springboardsfcd.org');
+    }
+
+    function isValidInquiry(data) {
+      return data.keys().hasAll(['name', 'program', 'createdAt']) &&
+             data.name is string && data.name.size() >= 2 && data.name.size() <= 100 &&
+             data.program is string && data.program.size() >= 1 && data.program.size() <= 100;
+    }
+
+    function isValidCandidate(data) {
+      return data.keys().hasAll(['name', 'trade', 'createdAt']) &&
+             data.name is string && data.name.size() >= 2 && data.name.size() <= 100 &&
+             data.trade is string && data.trade.size() >= 2 && data.trade.size() <= 120;
+    }
+
+    function isValidVolunteer(data) {
+      return data.keys().hasAll(['name', 'availability', 'interest', 'createdAt']) &&
+             data.name is string && data.name.size() >= 2 && data.name.size() <= 100 &&
+             data.availability is string && data.availability.size() <= 60 &&
+             data.interest is string && data.interest.size() <= 80;
+    }
+
+    match /programInquiries/{docId} {
+      allow create: if isValidInquiry(request.resource.data);
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /candidateApplications/{docId} {
+      allow create: if isValidCandidate(request.resource.data);
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /volunteerSignups/{docId} {
+      allow create: if isValidVolunteer(request.resource.data);
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /roadmapProgress/{userId} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
     match /{document=**} {
       allow read, write: if false;
-    }
-
-    // Program inquiries: public write-only, no public reads, strict field validation
-    match /programInquiries/{inquiryId} {
-      allow read, update, delete: if false;
-      allow create: if request.resource.data.name is string
-                    && request.resource.data.name.size() > 0
-                    && request.resource.data.name.size() <= 100
-                    && (
-                      (request.resource.data.email is string && request.resource.data.email.size() > 0) ||
-                      (request.resource.data.phone is string && request.resource.data.phone.size() > 0)
-                    )
-                    && request.resource.data.program is string
-                    && request.resource.data.createdAt is timestamp;
-    }
-
-    // Volunteer inquiries: public write-only, no public reads, strict field validation
-    match /volunteerSignups/{signupId} {
-      allow read, update, delete: if false;
-      allow create: if request.resource.data.name is string
-                    && request.resource.data.name.size() > 0
-                    && request.resource.data.name.size() <= 100
-                    && (
-                      (request.resource.data.email is string && request.resource.data.email.size() > 0) ||
-                      (request.resource.data.phone is string && request.resource.data.phone.size() > 0)
-                    )
-                    && request.resource.data.createdAt is timestamp;
     }
   }
 }

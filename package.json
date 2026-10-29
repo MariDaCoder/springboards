@@ -14,13 +14,21 @@
     "@genkit-ai/googleai": "^1.28.0",
     "compression": "^1.8.2",
     "cors": "^2.8.6",
+    "dotenv": "^18.0.9",
+    "drizzle-orm": "^0.45.4",
     "express": "^4.21.2",
     "express-rate-limit": "^8.7.1",
     "firebase": "^12.19.0",
+    "firebase-admin": "^14.5.0",
     "genkit": "^1.42.0",
-    "helmet": "^8.3.0"
+    "helmet": "^8.3.0",
+    "pg": "^8.23.1"
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^0.31.11"
   }
 }

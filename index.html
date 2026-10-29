@@ -370,6 +370,7 @@
           <h2 class="section-title">This is how you move forward.</h2>
           <p class="section-subtitle">A clear, step-by-step path from your first conversation to hands-on training and work.</p>
         </div>
+
         <div class="process-grid">
           <article class="process-card">
             <span class="process-number" aria-hidden="true">1</span>
@@ -389,6 +390,7 @@
         </div>
         <div class="process-mid-cta">
           <button type="button" class="btn-cta btn-candidate-trigger">Apply for Training</button>
+          <button type="button" class="btn-cta btn-secondary btn-profile-journey-trigger">Create Profile &amp; Custom Journey</button>
           <a href="/train" class="process-secondary-link">Explore WIOA Transitional Jobs &amp; OJT details <span aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
@@ -628,7 +630,10 @@
           <div class="confirmation-meta">
             <p>Direct contact: <a href="tel:+16156031157">615-603-1157</a> &bull; <a href="mailto:info@springboardsfcd.org">info@springboardsfcd.org</a></p>
           </div>
-          <button type="button" class="btn-cta confirmation-done-button" data-inquiry-close>Done <span aria-hidden="true">✓</span></button>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;">
+            <button type="button" class="btn-cta" id="inquiryOpenJourneyBtn">Open My Custom Program Journey &rarr;</button>
+            <button type="button" class="btn-cta btn-secondary confirmation-done-button" data-inquiry-close>Done <span aria-hidden="true">✓</span></button>
+          </div>
         </div>
       </div>
     </div>
@@ -815,9 +820,9 @@
               <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
           </div>
-          <span class="section-eyebrow confirm-eyebrow">Application Received</span>
+          <span class="section-eyebrow confirm-eyebrow">Application &amp; Profile Created</span>
           <h2 class="confirmation-title">You're On Your Way!</h2>
-          <p class="confirmation-text">Thank you, <strong class="confirm-name">there</strong>! We've received your application for the <strong class="confirm-trade">Carpentry &amp; Construction Technology</strong> trade track. An intake counselor will contact you by phone or email within 1–2 business days to schedule your intake interview and verify required documents.</p>
+          <p class="confirmation-text">Thank you, <strong class="confirm-name">there</strong>! We've created your profile and received your application for the <strong class="confirm-trade">Carpentry &amp; Construction Technology</strong> program path. Your customized 5-stage participant journey is ready below.</p>
           <div class="confirmation-meta">
             <p><strong>Intake Documents to Prepare:</strong><br>
             • Valid Government Photo ID or Driver's License<br>
@@ -825,7 +830,292 @@
             • Career Center Referral (or we will assist you on-site)<br>
             Center Location: 2269 15th Ave. S.W., Lanett, AL 36863 | Phone: <a href="tel:+16156031157">615-603-1157</a></p>
           </div>
-          <button type="button" class="btn-cta confirmation-done-button" data-candidate-close>Done <span aria-hidden="true">✓</span></button>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;">
+            <button type="button" class="btn-cta" id="candidateOpenJourneyBtn">Open My Customized Program Journey &rarr;</button>
+            <button type="button" class="btn-cta btn-secondary confirmation-done-button" data-candidate-close>Done <span aria-hidden="true">✓</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRAINEE PROFILE CREATION & CUSTOMIZED PARTICIPANT JOURNEY SCREEN MODAL -->
+    <div class="inquiry-modal" id="profileJourneyModal" hidden>
+      <div class="inquiry-modal-backdrop" data-profile-journey-close></div>
+      <div class="inquiry-modal-dialog modal-large" style="max-width: 1080px; width: 95%;" role="dialog" aria-modal="true" aria-labelledby="profileJourneyModalTitle">
+        <button type="button" class="inquiry-modal-close" data-profile-journey-close aria-label="Close participant journey screen">×</button>
+
+        <!-- STEP 1: CREATE TRAINEE PROFILE VIEW -->
+        <div class="modal-form-view" id="profileCreationView">
+          <span class="section-eyebrow">Personalized Workforce Pathway</span>
+          <h2 id="profileJourneyModalTitle">Create Your Trainee Profile</h2>
+          <p class="modal-subtext">Create your participant profile and select your program path to generate a customized 5-stage journey from application to full-time job placement.</p>
+          <form class="program-inquiry-form" id="profileCreationForm" novalidate>
+            <div class="form-grid-row">
+              <label>Full Name
+                <input name="profileName" type="text" autocomplete="name" placeholder="First and last name" minlength="2" maxlength="80" required>
+              </label>
+              <label>Email or Mobile Phone
+                <input name="profileContact" type="text" placeholder="you@example.com or (334) 556-0000" required>
+              </label>
+            </div>
+            <div class="form-grid-row">
+              <label>Program Path (Track &amp; Specialty)
+                <select name="programPath" class="form-select" id="profileFormProgramPath">
+                  <option value="Carpentry & Construction Technology">Carpentry &amp; Construction Technology (195h Lab + 390h Paid Worksite)</option>
+                  <option value="Electrical & Wiring">Electrical &amp; Wiring Fundamentals (195h Lab + 390h Paid Worksite)</option>
+                  <option value="Plumbing & Pipefitting">Plumbing &amp; Pipefitting Systems (195h Lab + 390h Paid Worksite)</option>
+                  <option value="HVAC & Mechanical">HVAC &amp; Mechanical Systems + EPA 608 (195h Lab + 390h Paid Worksite)</option>
+                  <option value="Demolition & Site Preparation">Demolition, Safety &amp; Site Preparation Crew (OSHA-10/30 + Worksite)</option>
+                  <option value="Learn">Learn Path — Accelerated 195-Hour Classroom &amp; Craft Credentials</option>
+                  <option value="Train">Train Path — WIOA Activity 220 Paid Transitional Jobs (390 Hours)</option>
+                  <option value="Build">Build Path — Employer On-the-Job Training (OJT) &amp; Apprenticeship</option>
+                </select>
+              </label>
+              <label>Career Center Status
+                <select name="careerCenterStatus" class="form-select">
+                  <option value="Need Guided Career Center Verification">Need Guided Alabama Career Center Verification</option>
+                  <option value="Registered with AL Works / WorkSource GA">Already Registered with AL Works / WorkSource GA</option>
+                </select>
+              </label>
+            </div>
+            <button type="submit" class="btn-cta program-submit">Create Profile &amp; Generate Custom Journey &rarr;</button>
+            <p class="form-status" id="profileCreationStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <!-- STEP 2: GENERATED CUSTOMIZED PARTICIPANT JOURNEY SCREEN -->
+        <div id="profileJourneyGeneratedView" hidden>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border-color);">
+            <div>
+              <span class="section-eyebrow" id="generatedProfileBannerTag">CUSTOMIZED PARTICIPANT PROFILE</span>
+              <h2 style="margin:0.2rem 0;color:var(--primary-navy);font-size:1.55rem;" id="generatedProfileHeading">Participant Journey Roadmap</h2>
+              <p style="margin:0;color:var(--text-muted);font-size:0.95rem;" id="generatedProfileSubtext">Tailored milestone progression from intake to full-time placement.</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
+              <label style="font-size:0.82rem;font-weight:700;color:var(--primary-navy);display:flex;flex-direction:column;gap:0.25rem;">
+                <span>Customize Program Path:</span>
+                <select id="profileProgramPathSelector" class="form-select" style="min-width:250px;padding:0.45rem 0.7rem;font-size:0.86rem;">
+                  <option value="Carpentry & Construction Technology">Carpentry &amp; Construction Technology</option>
+                  <option value="Electrical & Wiring">Electrical &amp; Wiring Fundamentals</option>
+                  <option value="Plumbing & Pipefitting">Plumbing &amp; Pipefitting Systems</option>
+                  <option value="HVAC & Mechanical">HVAC &amp; Mechanical Systems</option>
+                  <option value="Demolition & Site Preparation">Demolition &amp; Site Preparation</option>
+                  <option value="Learn">Learn Path (195-Hour Craft &amp; Safety Credentials)</option>
+                  <option value="Train">Train Path (390-Hour WIOA Paid Transitional Worksite)</option>
+                  <option value="Build">Build Path (Employer OJT &amp; Apprenticeship)</option>
+                </select>
+              </label>
+              <button type="button" class="journey-util-btn" id="editTraineeProfileBtn" style="align-self:flex-end;">Edit Profile</button>
+            </div>
+          </div>
+
+          <!-- INTERACTIVE PARTICIPANT JOURNEY PROGRESS ROADMAP (GENERATED FOR PROFILE) -->
+          <div class="journey-roadmap-card" id="participantJourneyRoadmap" aria-label="Interactive Participant Journey Roadmap" style="margin-bottom:0;">
+            <div class="journey-roadmap-header">
+              <div class="journey-roadmap-title-group">
+                <span class="journey-badge-pill" id="roadmapPathBadgePill">CUSTOM PROGRAM PATHWAY ROADMAP</span>
+                <h3 class="journey-roadmap-title" id="roadmapMainHeading">From Application to Full-Time Job Placement</h3>
+                <p class="journey-roadmap-desc" id="roadmapMainSubdesc">Click any milestone or mark stages complete to track your customized Springboards workforce pathway.</p>
+              </div>
+              <div class="journey-roadmap-meter" aria-live="polite">
+                <div class="journey-meter-top">
+                  <span class="journey-meter-label" id="roadmapStatusLabel">Stage 1 of 5 Active</span>
+                  <strong class="journey-meter-pct" id="roadmapPercentValue">20% Complete</strong>
+                </div>
+                <div class="journey-meter-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20" id="roadmapMeterBar" aria-label="Journey completion progress">
+                  <div class="journey-meter-fill" id="roadmapMeterFill" style="width: 20%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stepper Track with CSS Transitions -->
+            <div class="journey-stepper-wrapper">
+              <div class="journey-track-line" aria-hidden="true">
+                <div class="journey-track-progress" id="roadmapTrackProgress" style="width: 0%;"></div>
+              </div>
+              <ol class="journey-steps-list" role="list">
+                <li class="journey-step-item is-current" data-roadmap-step="0">
+                  <button type="button" class="journey-step-btn" aria-current="step" aria-label="Step 1: Application and Intake">
+                    <span class="journey-step-node">
+                      <span class="journey-step-num">1</span>
+                      <svg class="journey-step-check" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </span>
+                    <span class="journey-step-meta">
+                      <span class="journey-step-status-tag">In Progress</span>
+                      <strong class="journey-step-name">1. Application &amp; Intake</strong>
+                      <span class="journey-step-time">Days 1–2</span>
+                    </span>
+                  </button>
+                </li>
+
+                <li class="journey-step-item is-upcoming" data-roadmap-step="1">
+                  <button type="button" class="journey-step-btn" aria-label="Step 2: Career Center Verification">
+                    <span class="journey-step-node">
+                      <span class="journey-step-num">2</span>
+                      <svg class="journey-step-check" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </span>
+                    <span class="journey-step-meta">
+                      <span class="journey-step-status-tag">Upcoming</span>
+                      <strong class="journey-step-name">2. Career Center Verification</strong>
+                      <span class="journey-step-time">Week 1</span>
+                    </span>
+                  </button>
+                </li>
+
+                <li class="journey-step-item is-upcoming" data-roadmap-step="2">
+                  <button type="button" class="journey-step-btn" aria-label="Step 3: Classroom &amp; Safety Lab">
+                    <span class="journey-step-node">
+                      <span class="journey-step-num">3</span>
+                      <svg class="journey-step-check" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </span>
+                    <span class="journey-step-meta">
+                      <span class="journey-step-status-tag">Upcoming</span>
+                      <strong class="journey-step-name">3. Classroom &amp; Safety Lab</strong>
+                      <span class="journey-step-time">195 Hours</span>
+                    </span>
+                  </button>
+                </li>
+
+                <li class="journey-step-item is-upcoming" data-roadmap-step="3">
+                  <button type="button" class="journey-step-btn" aria-label="Step 4: Paid Transitional Worksite">
+                    <span class="journey-step-node">
+                      <span class="journey-step-num">4</span>
+                      <svg class="journey-step-check" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </span>
+                    <span class="journey-step-meta">
+                      <span class="journey-step-status-tag">Upcoming</span>
+                      <strong class="journey-step-name">4. Paid Worksite Training</strong>
+                      <span class="journey-step-time">Up to 390 Hours</span>
+                    </span>
+                  </button>
+                </li>
+
+                <li class="journey-step-item is-upcoming" data-roadmap-step="4">
+                  <button type="button" class="journey-step-btn" aria-label="Step 5: Full-Time Job Placement">
+                    <span class="journey-step-node">
+                      <span class="journey-step-num">5</span>
+                      <svg class="journey-step-check" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </span>
+                    <span class="journey-step-meta">
+                      <span class="journey-step-status-tag">Upcoming</span>
+                      <strong class="journey-step-name">5. Full-Time Job Placement</strong>
+                      <span class="journey-step-time">Career Launch</span>
+                    </span>
+                  </button>
+                </li>
+              </ol>
+            </div>
+
+            <!-- Active Stage Details Panel with Smooth CSS Transition -->
+            <div class="journey-detail-panel" id="roadmapDetailPanel" aria-live="polite">
+              <div class="journey-detail-main">
+                <div class="journey-detail-eyebrow-row">
+                  <span class="journey-detail-stage-badge" id="roadmapDetailStageBadge">STAGE 1 • APPLICATION &amp; INTAKE</span>
+                  <span class="journey-detail-completion-pill" id="roadmapDetailStatePill">In Progress</span>
+                </div>
+                <h4 class="journey-detail-heading" id="roadmapDetailTitle">Share Your Goals &amp; Complete Intake</h4>
+                <p class="journey-detail-copy" id="roadmapDetailDesc">
+                  Submit our brief online candidate application. Within 1–2 business days, a Springboards intake advisor connects with you one-on-one to discuss your trade interest, transportation needs, and career goals.
+                </p>
+                <ul class="journey-checklist" id="roadmapDetailChecklist">
+                  <li class="journey-check-item">
+                    <span class="journey-check-bullet" aria-hidden="true">✓</span>
+                    <span>Choose your preferred trade track (Carpentry, Electrical, Plumbing, or HVAC)</span>
+                  </li>
+                  <li class="journey-check-item">
+                    <span class="journey-check-bullet" aria-hidden="true">✓</span>
+                    <span>1-on-1 intake conversation with a Springboards advisor</span>
+                  </li>
+                  <li class="journey-check-item">
+                    <span class="journey-check-bullet" aria-hidden="true">✓</span>
+                    <span>Document readiness review (Photo ID &amp; work authorization checklist)</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="journey-detail-controls">
+                <div class="journey-outcome-card">
+                  <span class="journey-outcome-label">STAGE MILESTONE OUTCOME</span>
+                  <strong class="journey-outcome-value" id="roadmapDetailOutcome">Personal Training Plan &amp; Advisor Assigned</strong>
+                  <span class="journey-outcome-Classroom" id="roadmapDetailClassroomTag">📚 Google Classroom: Orientation &amp; Trade Selection Module</span>
+                </div>
+                <div class="journey-action-buttons">
+                  <button type="button" class="btn-cta journey-advance-btn" id="roadmapAdvanceBtn">
+                    Mark Stage Complete &amp; Next &rarr;
+                  </button>
+                  <div class="journey-secondary-btns">
+                    <button type="button" class="journey-util-btn" id="roadmapCompleteAllBtn">Complete All 5 Stages</button>
+                    <button type="button" class="journey-util-btn" id="roadmapResetBtn">Reset Progress</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- GOOGLE WORKSPACE & CLASSROOM LIVE LEARNING INTEGRATION HUB -->
+            <div class="classroom-hub-panel" id="googleClassroomHub">
+              <div class="classroom-hub-top">
+                <div class="classroom-hub-brand">
+                  <div class="classroom-icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="classroom-title-row">
+                      <h4>Google Workspace &amp; Classroom Trainee Hub</h4>
+                      <span class="classroom-status-pill" id="classroomAuthBadge">Sign in to sync coursework &amp; tools</span>
+                    </div>
+                    <p>Access your 195-hour NCCER craft curriculum in Google Classroom, shop safety notes in Google Keep, training manuals in Docs, onboarding Tasks, Slides decks, Contacts, Chat, and Meet.</p>
+                  </div>
+                </div>
+
+                <div class="classroom-auth-controls">
+                  <button type="button" class="gsi-material-button" id="classroomSignInBtn">
+                    <div class="gsi-material-button-state"></div>
+                    <div class="gsi-material-button-content-wrapper">
+                      <div class="gsi-material-button-icon">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                          <path fill="none" d="M0 0h48v48H0z"></path>
+                        </svg>
+                      </div>
+                      <span class="gsi-material-button-contents">Sign in with Google</span>
+                      <span style="display: none;">Sign in with Google</span>
+                    </div>
+                  </button>
+
+                  <div class="classroom-connected-btns" id="classroomConnectedActions" hidden>
+                    <button type="button" class="journey-util-btn" id="classroomRefreshBtn">↻ Load Courses</button>
+                    <button type="button" class="journey-util-btn" id="classroomCreateCourseBtn">+ Create Trade Cohort Course</button>
+                    <button type="button" class="journey-util-btn" id="classroomSignOutBtn">Sign Out</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Google Workspace Suite Selector Toolbar -->
+              <div id="workspaceSuiteTabs" style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem;padding-top:0.85rem;border-top:1px solid rgba(15,23,42,0.09);">
+                <button type="button" class="journey-util-btn" data-ws-tab="classroom" style="font-weight:700;">Google Classroom</button>
+                <button type="button" class="journey-util-btn" data-ws-tab="keep">Google Keep (Shop Safety Notes)</button>
+                <button type="button" class="journey-util-btn" data-ws-tab="docs">Google Docs</button>
+                <button type="button" class="journey-util-btn" data-ws-tab="tasks">Google Tasks</button>
+                <button type="button" class="journey-util-btn" data-ws-tab="slides">Google Slides</button>
+                <button type="button" class="journey-util-btn" data-ws-tab="contacts">Google Contacts</button>
+                <button type="button" class="journey-util-btn" data-ws-tab="chatmeet">Chat &amp; Meet</button>
+              </div>
+
+              <div class="classroom-courses-Mount" id="classroomCoursesMount" hidden>
+                <div class="classroom-courses-grid" id="classroomCoursesList"></div>
+                <div class="classroom-course-detail-drawer" id="classroomCourseDetail" hidden></div>
+              </div>
+
+              <!-- Dynamic Workspace Tool Panel (Keep, Docs, Tasks, Slides, Contacts, Chat, Meet) -->
+              <div class="classroom-course-detail-drawer" id="workspaceSuiteToolPanel" hidden style="margin-top:1rem;"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1193,6 +1483,7 @@
   <!-- Interactive Feedback Toast -->
   <div id="toastNotification" class="toast-notification" role="status" aria-live="polite" hidden>Link copied to clipboard!</div>
 
+  <script type="module" src="workspace-sheets.js"></script>
   <script src="main.js?v=20261003-deck-final" defer></script>
   <script src="analytics.js" defer></script>
 </body>

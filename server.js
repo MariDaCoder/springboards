@@ -7,6 +7,10 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
+import { db as sqlDb } from './src/db/index.js';
+import { traineeApplications, workspaceActivityLogs } from './src/db/schema.js';
+import { getOrCreateUser } from './src/db/users.js';
+import { verifyAuth } from './src/middleware/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -2248,6 +2252,61 @@ app.get('/api/workspace/status', (req, res) => {
     attendanceCount,
     recentSyncs: backofficeData.workspaceSyncHistory || []
   });
+});
+
+// Cloud SQL + Firebase Auth Protected Routes (Two-Layer Error Handling)
+app.post('/api/sql/user-sync', verifyAuth, async (req, res) => {
+  try {
+    const uid = req.user?.uid;
+    const email = req.user?.email || '';
+    const displayName = req.body?.displayName || req.user?.name || null;
+    if (!uid || !email) {
+      return res.status(400).json({ error: 'Missing user identity fields' });
+    }
+    const syncedUser = await getOrCreateUser(uid, email, displayName);
+    return res.status(200).json({ success: true, user: syncedUser });
+  } catch (error) {
+    console.error('Database error:', error);
+    return res.status(500).json({ error: 'Failed to synchronize user profile' });
+  }
+});
+
+app.post('/api/sql/workspace-activity', verifyAuth, async (req, res) => {
+  try {
+    const uid = req.user?.uid;
+    const email = req.user?.email || '';
+    if (uid && email) {
+      await getOrCreateUser(uid, email, req.user?.name);
+    }
+    const { service, action, resourceId, resourceTitle, resourceUrl } = req.body || {};
+    if (!service || !action) {
+      return res.status(400).json({ error: 'Service and action are required' });
+    }
+    const id = `ws-act-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`;
+    await sqlDb.insert(workspaceActivityLogs).values({
+      id,
+      userId: uid || null,
+      service: String(service).slice(0, 60),
+      action: String(action).slice(0, 100),
+      resourceId: resourceId ? String(resourceId).slice(0, 200) : null,
+      resourceTitle: resourceTitle ? String(resourceTitle).slice(0, 250) : null,
+      resourceUrl: resourceUrl ? String(resourceUrl).slice(0, 500) : null
+    });
+    return res.status(201).json({ success: true, id });
+  } catch (error) {
+    console.error('Database error:', error);
+    return res.status(500).json({ error: 'Failed to record workspace activity' });
+  }
+});
+
+app.get('/api/sql/applications', verifyAuth, async (req, res) => {
+  try {
+    const rows = await sqlDb.select().from(traineeApplications);
+    return res.status(200).json({ applications: rows });
+  } catch (error) {
+    console.error('Database error:', error);
+    return res.status(500).json({ error: 'Failed to load trainee applications' });
+  }
 });
 
 // Clean routes for the public SEO intent pages
