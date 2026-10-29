@@ -4269,3 +4269,643 @@ body.modal-open {
   color: #92400E;
   border: 1px solid #FCD34D;
 }
+
+/* ==========================================================================
+   TRANSITIONAL JOBS DECK & POLICIES QUESTIONNAIRE CONTROLS
+   ========================================================================== */
+section#screenIntroDeck {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.5rem 0 2rem;
+  text-align: center;
+}
+
+section#screenIntroDeck .prequal-deck-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 960px;
+}
+
+main > section#screenIntroDeck > div > div > button#btnStartWizardFromDeck {
+  display: inline-flex;
+  min-height: 3.35rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 2rem;
+  border: 2px solid #166534;
+  border-radius: 1rem;
+  background: #15803d;
+  box-shadow: 0 10px 24px rgba(21, 128, 61, 0.26);
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+main > section#screenIntroDeck > div > div > button#btnStartWizardFromDeck:hover,
+main > section#screenIntroDeck > div > div > button#btnStartWizardFromDeck:focus-visible {
+  transform: translateY(-2px);
+  background: #166534;
+  box-shadow: 0 14px 28px rgba(21, 128, 61, 0.34);
+}
+
+main > section#screenIntroDeck > div > div > a#btnDeckNotReady {
+  display: inline-block;
+  color: #b91c1c;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  transition: color 0.15s ease;
+  margin-top: 0.25rem;
+}
+
+main > section#screenIntroDeck > div > div > a#btnDeckNotReady:hover,
+main > section#screenIntroDeck > div > div > a#btnDeckNotReady:focus-visible {
+  color: #7f1d1d;
+}
+
+/* ==========================================================================
+   20. CONVERSION-FOCUSED HOMEPAGE BLUEPRINT (INTEREST -> TRUST -> ACTION)
+   ========================================================================== */
+
+/* Nav Apply button link */
+.nav-apply-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--accent-green);
+  font-weight: 800;
+}
+
+.nav-apply-link:hover,
+.nav-apply-link:focus-visible {
+  color: var(--accent-orange);
+}
+
+/* Section 1: Hero CTA Group & Unboxed Trust Strip */
+.hero-headline-tight {
+  max-width: 18ch;
+  font-size: clamp(2.4rem, 5.4vw, 4.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.hero-cta-group .hero-cta {
+  margin-top: 0;
+}
+
+.hero-secondary-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+  backdrop-filter: blur(4px);
+}
+
+.hero-secondary-btn:hover,
+.hero-secondary-btn:focus-visible {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.hero-trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 0.85rem;
+  margin-top: 2.25rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  max-width: 66ch;
+  color: #e2e8f0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.hero-trust-strip .trust-sep {
+  color: var(--accent-orange);
+  font-weight: 800;
+}
+
+/* Common Section Intro Block */
+.section-intro-block {
+  max-width: 740px;
+  margin-bottom: 2.75rem;
+}
+
+/* Section 2: Problem Proof Cards (3-Card Grid on Dark Slate) */
+.proof-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.25rem;
+}
+
+.proof-card-dark {
+  padding: 2rem 1.75rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.proof-card-index {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #fdba74;
+}
+
+.proof-card-dark h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 0;
+}
+
+.proof-card-dark p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+/* Section 3: Solution Cards (3-Card Grid on Light Surface) */
+.solution-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.25rem;
+}
+
+.solution-card {
+  padding: 2.15rem 1.85rem;
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.solution-card-marker {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--accent-green);
+}
+
+.solution-card h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--primary-navy);
+  margin: 0;
+}
+
+.solution-card p {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Section 4: Why Trust Springboards */
+.trust-section {
+  background-color: var(--bg-light);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.trust-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.trust-lead {
+  margin-bottom: 2rem;
+}
+
+.trust-elements-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.trust-element-item {
+  padding: 1.4rem 1.35rem;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.trust-element-item h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  margin: 0 0 0.45rem;
+}
+
+.trust-element-item p {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.trust-founder-card {
+  background-color: #ffffff;
+}
+
+.founder-highlight-quote {
+  margin: 1.15rem 0;
+  padding: 1.1rem 1.25rem;
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--primary-navy);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.55;
+  font-style: italic;
+}
+
+.founder-highlight-quote cite {
+  display: block;
+  margin-top: 0.55rem;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--accent-orange);
+}
+
+/* Section 5: Mid-Page CTA in How It Works */
+.process-section {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.process-card {
+  min-height: 230px;
+}
+
+.process-mid-cta {
+  margin-top: 2.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.95rem;
+  text-align: center;
+}
+
+.process-secondary-link {
+  color: var(--primary-navy);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--transition-fast);
+}
+
+.process-secondary-link:hover,
+.process-secondary-link:focus-visible {
+  color: var(--accent-orange);
+}
+
+/* Section 6: What People Learn (6-Card Skills Grid) */
+.programs-section {
+  background-color: var(--bg-light);
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.programs-section .section-subtitle {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.skills-learn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.skill-learn-card {
+  padding: 2rem 1.75rem;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.skill-learn-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.09);
+}
+
+.skill-card-num {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--accent-orange);
+}
+
+.skill-learn-card h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--primary-navy);
+  margin: 0;
+}
+
+.skill-learn-card p {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Section 7: Outcome Proof Split Layout */
+.outcome-proof-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.participants-gain-box {
+  margin-top: 1.5rem;
+  padding: 1.65rem 1.75rem;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+}
+
+.gain-heading {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fdba74;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.participants-gain-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.participants-gain-list li {
+  position: relative;
+  padding-left: 1.75rem;
+  color: #f8fafc;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.participants-gain-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #34d399;
+  font-weight: 800;
+}
+
+.outcome-testimonial-card {
+  margin: 0;
+  padding: clamp(1.85rem, 3.5vw, 2.5rem);
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-xl);
+  color: #ffffff;
+}
+
+.outcome-testimonial-card p {
+  font-size: clamp(1.1rem, 1.6vw, 1.28rem);
+  line-height: 1.65;
+  font-style: italic;
+  color: #f8fafc;
+  margin: 0 0 1.35rem;
+}
+
+.outcome-testimonial-card footer strong {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fdba74;
+}
+
+.outcome-testimonial-card footer span {
+  display: block;
+  font-size: 0.875rem;
+  color: #cbd5e1;
+  margin-top: 0.2rem;
+}
+
+/* Section 9: Final CTA */
+.final-cta-section {
+  background: linear-gradient(135deg, #0B192C 0%, #172554 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.final-cta-box {
+  align-items: center;
+}
+
+.final-cta-copy {
+  max-width: 620px;
+}
+
+.final-cta-body {
+  margin-top: 0.85rem;
+  font-size: clamp(1.08rem, 1.6vw, 1.25rem);
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+
+.final-cta-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.final-cta-support-link {
+  color: #f8fafc;
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--transition-fast);
+}
+
+.final-cta-support-link:hover,
+.final-cta-support-link:focus-visible {
+  color: #fdba74;
+}
+
+/* Footer Secondary Action Buttons */
+.footer-secondary-actions {
+  margin-bottom: 1.25rem;
+}
+
+.footer-action-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #94a3b8;
+  font: inherit;
+  font-size: 1.02rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.footer-action-link:hover,
+.footer-action-link:focus-visible {
+  color: #fdba74;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-apply-highlight {
+  color: #34d399;
+  font-weight: 800;
+}
+
+/* Sticky Mobile Conversion Bar */
+.sticky-mobile-cta-bar {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .proof-cards-grid,
+  .solution-cards-grid,
+  .skills-learn-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .trust-layout,
+  .outcome-proof-header {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 78px;
+  }
+
+  .sticky-mobile-cta-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9990;
+    display: block;
+    background-color: rgba(11, 25, 44, 0.97);
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 0.7rem 1rem;
+    box-shadow: 0 -8px 24px rgba(11, 25, 44, 0.32);
+    backdrop-filter: blur(8px);
+  }
+
+  body.modal-open .sticky-mobile-cta-bar {
+    display: none;
+  }
+
+  .sticky-mobile-cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .sticky-mobile-cta-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+  }
+
+  .sticky-mobile-cta-text strong {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 800;
+  }
+
+  .sticky-mobile-cta-text span {
+    color: #cbd5e1;
+    font-size: 0.78rem;
+  }
+
+  .sticky-mobile-apply-btn {
+    width: auto !important;
+    min-height: 44px;
+    padding: 0.6rem 1.15rem;
+    font-size: 0.92rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .back-to-top {
+    bottom: 5.5rem;
+    right: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .proof-cards-grid,
+  .solution-cards-grid,
+  .skills-learn-grid,
+  .trust-elements-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .final-cta-actions {
+    width: 100%;
+  }
+}
+
+

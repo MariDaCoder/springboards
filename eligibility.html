@@ -19,8 +19,8 @@
       --wizard-orange: #e05b32;
       --wizard-gold: #f1bf52;
       --wizard-green: #27664f;
-      --wizard-line: #e7dfd2;
-      --wizard-shadow: 0 22px 70px rgba(47, 34, 19, 0.12);
+      --wizard-line: #dcd4c5;
+      --wizard-shadow: 0 2px 5px rgba(24, 20, 16, 0.05), 0 1px 2px rgba(24, 20, 16, 0.04);
     }
 
     * { box-sizing: border-box; }
@@ -50,10 +50,11 @@
       min-height: 340px;
       margin: 0 auto 1.5rem;
       overflow: hidden;
-      border-radius: 1.35rem;
+      border-radius: 14px;
+      border: 1px solid #363027;
       background: #201d18;
       color: #fffaf0;
-      box-shadow: var(--wizard-shadow);
+      box-shadow: 0 2px 6px rgba(24, 20, 16, 0.06);
     }
     .wizard-hero-copy { align-self: center; padding: clamp(1.75rem, 5vw, 4rem); }
     .wizard-eyebrow { display: block; margin: 0 0 0.9rem; color: var(--wizard-gold); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; }
@@ -65,7 +66,7 @@
     .wizard-hero-caption { position: absolute; z-index: 1; right: 1.1rem; bottom: 1.1rem; padding: 0.55rem 0.85rem; border: 1px solid rgba(255,255,255,0.32); border-radius: 999px; background: rgba(24,22,19,0.78); color: #fffaf0; font-size: 0.78rem; font-weight: 700; }
 
     .wizard-main { max-width: 900px; margin: 0 auto; }
-    .wizard-panel { padding: clamp(1.3rem, 4vw, 2.6rem); border: 1px solid var(--wizard-line); border-radius: 1.25rem; background: var(--wizard-card); box-shadow: var(--wizard-shadow); }
+    .wizard-panel { padding: clamp(1.3rem, 4vw, 2.6rem); border: 1.5px solid var(--wizard-line); border-radius: 12px; background: var(--wizard-card); box-shadow: var(--wizard-shadow); }
     .wizard-progress-row { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.65rem; color: var(--wizard-muted); font-size: 0.85rem; font-weight: 750; }
     .wizard-progress-track { height: 0.55rem; overflow: hidden; border-radius: 999px; background: #eee8dd; }
     .wizard-progress-value { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--wizard-orange), #f0a64d); transition: width 260ms ease; }
@@ -139,7 +140,7 @@
     .wizard-button:disabled { cursor: wait; opacity: 0.65; }
 
     .wizard-result { max-width: 900px; margin: 0 auto; }
-    .wizard-result-card { overflow: hidden; border: 1px solid var(--wizard-line); border-radius: 1.25rem; background: var(--wizard-card); box-shadow: var(--wizard-shadow); }
+    .wizard-result-card { overflow: hidden; border: 1.5px solid var(--wizard-line); border-radius: 12px; background: var(--wizard-card); box-shadow: var(--wizard-shadow); }
     .wizard-result-top { padding: clamp(1.5rem, 4vw, 2.75rem); background: #211e19; color: #fffaf0; }
     .wizard-result-top[data-outcome="not-eligible"] { background: #342620; }
     .wizard-result-top[data-outcome="review"] { background: #302b21; }

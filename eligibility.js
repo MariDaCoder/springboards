@@ -34,6 +34,7 @@
   const documentReadiness = document.getElementById("documentReadiness");
   const documentReadinessStatus = document.getElementById("documentReadinessStatus");
   const missingDocuments = document.getElementById("missingDocuments");
+  const contactButton = document.getElementById("contactButton");
 
   if (!questionScreen || !resultScreen || !centerScreen || !questionForm || !questionMount || !questionError ||
       !stepCount || !progressTrack || !progressValue || !backButton || !nextButton || !resultTop ||
@@ -262,6 +263,218 @@
       layout: "chips",
       choices: documents
     });
+
+    // POLICIES & AVAILABILITY QUESTIONNAIRE (Success & Placement Checkpoints)
+    questions.push(
+      {
+        name: "placementVision",
+        chapter: "Your Journey Chapter: Setting Up Your Success & Placement",
+        badge: "Checkpoint 1 · Aligning Your Vision (IEP & Placement Fit)",
+        prompt: "Tell us which path is right for you so we don't send you somewhere you don't want to be: Whats your passion?",
+        help: "A great career starts with a clear direction. To ensure your placement matches your passion (for example, stepping into healthcare if that's where your heart is, rather than manufacturing):",
+        type: "single",
+        layout: "compact",
+        choices: [
+          { value: "healthcare", label: "Healthcare / Medical Services", detail: "Care, clinic support, patient services & community wellness", icon: "🩺" },
+          { value: "manufacturing", label: "Advanced Manufacturing / Technology", detail: "Modern production, machinery, technical assembly & industrial trades", icon: "⚙️" },
+          { value: "community", label: "Community Services / Public Sector", detail: "Public agencies, municipal support, outreach & civic development", icon: "🤝" },
+          { value: "undecided", label: "I dont have a specific industry in mind", detail: "Open to discovery—let's find the best high-growth match together", icon: "🌟" }
+        ]
+      },
+      {
+        name: "skillBoost",
+        badge: "Checkpoint 2 · Leveling Up Your Skills (Readiness Training & Certifications)",
+        prompt: "Before you hit your halfway mark of 195 hours, you'll want to lock in a quick credential to boost your resume. Which of these sounds like your style?",
+        help: "Lock in a quick credential to boost your resume before you hit your halfway mark of 195 hours.",
+        type: "single",
+        layout: "compact",
+        choices: [
+          { value: "alison", label: "Alison Online Course via AlabamaWorks!", detail: "Flexible online modules tailored through AlabamaWorks! career pathways", icon: "🎓" },
+          { value: "skills-for-success", label: "Skills for Success", detail: "Rapid employer-recognized job readiness & workplace excellence certification", icon: "🏆" },
+          { value: "maps", label: "MAPs (Modules for Academic Proficiency)", detail: "Foundational math, reading & workplace communication boosters", icon: "📚" },
+          { value: "ace", label: "ACE Training", detail: "Accelerated career & essential work ethic credential", icon: "⚡" }
+        ]
+      },
+      {
+        name: "scheduleCommitment",
+        badge: "Checkpoint 3 · Securing Your Schedule & Support",
+        prompt: "To keep you moving forward without burnout, we cap work at 32 hours a week (up to 390 total hours). How does that fit into your life?",
+        help: "This program is built to give you momentum without burnout. Work hours are structured up to 32 hours per week for a maximum of 390 total hours, ensuring you balance work, life, and growth. Note: Supportive services are available to help you succeed along the way (supportiveservices@workforce.alabama.gov).",
+        type: "single",
+        layout: "compact",
+        choices: [
+          { value: "ready-schedule", label: "Yes, I’m ready to commit to this schedule.", detail: "Up to 32 hours per week for a maximum of 390 total hours fits my availability.", icon: "✅" },
+          { value: "constraints", label: "I have scheduling constraints to discuss with my career advisor.", detail: "I have caregiving, transit, or shift constraints we can work through together.", icon: "💬" }
+        ]
+      },
+      {
+        name: "subsidizedPayroll",
+        badge: "Checkpoint 4 · Payroll & Status Verification",
+        prompt: "To make sure you're heading down the exact right track and not mixed up with an apprenticeship or youth program:",
+        help: "Your paycheck is fully covered—100% subsidized and managed smoothly through our trusted payroll partner, Sirius Workforce LLC.",
+        type: "single",
+        layout: "compact",
+        choices: [
+          { value: "confirmed-transitional", label: "Sounds good! I confirm I'm not currently enrolled in an apprenticeship program and I'm ready to roll on this transitional track.", detail: "100% subsidized earnings via Sirius Workforce LLC · Transitional track confirmed.", icon: "💼" },
+          { value: "need-discussion", label: "I'd like to talk with an advisor about my current program or apprenticeship status.", detail: "Let's connect with a Career Advisor to make sure you're routed to the right track.", icon: "ℹ️" }
+        ]
+      }
+    );
+
+    // CHAPTER: FINDING YOUR IDEAL WORKSITE & STAYING PROTECTED
+    questions.push(
+      {
+        name: "worksiteEnvironment",
+        chapter: "Chapter: Finding Your Ideal Worksite & Staying Protected",
+        badge: "Finding Your Environment (Worksites)",
+        prompt: "We partner with trusted public, non-profit, and private businesses across Alabama to host your work placement. Let's make sure you find a spot that fits your vision.",
+        help: "You're stepping into an environment designed for your success. Here is how your placement, safety, and agreements come together:",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "ready-explore-worksites",
+            label: "I'm ready to explore vetted public, non-profit, and private worksite options.",
+            detail: "Vetted employer host sites aligned to your personal goals and trade pathway.",
+            icon: "🏢"
+          }
+        ]
+      },
+      {
+        name: "worksiteAgreement",
+        badge: "Setting the Ground Rules (Worksite Agreement)",
+        prompt: "Every great partnership starts with clear expectations. Your host site will handle the official agreement, walk you through orientation, and keep track of your hours and evaluations so you can focus entirely on growing.",
+        help: "Your host site coordinates your orientation, tracks attendance, and provides continuous feedback.",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "confirm-worksite-rules",
+            label: "Sounds good—I'm ready to review and confirm my site's onboarding and attendance guidelines.",
+            detail: "Structured orientation, clear expectations, and regular evaluation feedback.",
+            icon: "📋"
+          }
+        ]
+      },
+      {
+        name: "prohibitedActivities",
+        badge: "Keeping It Professional (Prohibited Activities)",
+        prompt: "We keep things fair, safe, and strictly professional. That means a zero-tolerance policy for nepotism, political or religious activities, favoritism, or unsafe conditions—it's all about uplifting our people through professional excellence.",
+        help: "A fair, safe, and respectful environment ensures every participant thrives.",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "respect-professional-standards",
+            label: "I understand and respect these professional standards for a fair, safe, and respectful workplace.",
+            detail: "Zero-tolerance for favoritism or unsafe conditions · 100% professional respect.",
+            icon: "🛡️"
+          }
+        ]
+      },
+      {
+        name: "worksiteSelection",
+        badge: "The Perfect Match (Worksite Selection)",
+        prompt: "Your placement should tie directly into your Individual Employment Plan (IEP) goals. We’ll hold a quick chat with your supervisor beforehand and lock in your official job description so you're set up for success.",
+        help: "Your official job description will be confirmed before day one to support your career direction.",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "match-iep-goals",
+            label: "Let's ensure my worksite placement matches my IEP goals and career path.",
+            detail: "Aligned job description and supervisor check-in before starting your assignment.",
+            icon: "🎯"
+          }
+        ]
+      },
+      {
+        name: "workersCompensation",
+        badge: "Covered Every Step of the Way (Workers’ Compensation)",
+        prompt: "Your peace of mind matters. All approved job placements come with primary injury insurance coverage fully managed through our trusted partner, Sirius Workforce LLC.",
+        help: "Comprehensive primary injury insurance coverage gives you complete confidence on the job.",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "reassured-sirius-coverage",
+            label: "I'm reassured knowing my placement includes Sirius Workforce workers' compensation coverage.",
+            detail: "Primary injury insurance active from day one through Sirius Workforce LLC.",
+            icon: "🩹"
+          }
+        ]
+      }
+    );
+
+    // CHAPTER: GETTING ONBOARDED, TRACKING YOUR TIME, AND GETTING PAID
+    questions.push(
+      {
+        name: "payrollOnboarding",
+        chapter: "Chapter: Getting Onboarded, Tracking Your Time, and Getting Paid",
+        badge: "Getting Setup from Day One (Payroll Vendor & Onboarding)",
+        prompt: "Your onboarding and weekly pay are managed smoothly through our trusted partner, Sirius Workforce LLC. They handle your placement forms, automated timesheets, and workers’ compensation coverage.",
+        help: "You've put in the work, now let's make sure getting set up and receiving your weekly paycheck is completely frictionless:",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "sirius-form-email-ready",
+            label: "Ready to complete my Sirius Placement Form and email it to wfonboarding@siriusstaffing.com at least 5 days before my start date.",
+            detail: "Direct onboarding submission to wfonboarding@siriusstaffing.com.",
+            icon: "✉️"
+          }
+        ]
+      },
+      {
+        name: "timesheetRhythm",
+        badge: "The Weekly Rhythm (Timesheets & Approvals)",
+        prompt: "To keep your weekly pay hitting your account on time, consistency is key. You'll submit your hours by Monday at 10:00 a.m., and your supervisor and case manager will quickly review and approve them by Tuesday morning.",
+        help: "Consistent weekly timesheets guarantee timely payroll every single week.",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "monday-timesheet-timeline",
+            label: "I understand the weekly timeline to submit my timesheet by Monday morning so my team can verify and approve it.",
+            detail: "Monday 10:00 a.m. submission deadline → Tuesday morning approvals.",
+            icon: "⏰"
+          }
+        ]
+      },
+      {
+        name: "wagesDirectDeposit",
+        badge: "Your Weekly Payday (Wages & Direct Deposit)",
+        prompt: "Hard work deserves reliable pay. Depending on your role and location, you'll earn between $7.25 and $19.66 per hour, with direct deposit payments hitting your account every Friday for all hours worked.",
+        help: "Direct deposit ensures reliable weekly cash flow for all hours worked.",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "friday-direct-deposit",
+            label: "Sounds great—I'm ready to earn competitive wages and receive my direct deposit every Friday (keeping in mind timecards reflect hours worked, excluding lunch and breaks).",
+            detail: "Wages $7.25 to $19.66/hr · Weekly Friday direct deposit.",
+            icon: "💵"
+          }
+        ]
+      },
+      {
+        name: "requiredForms",
+        badge: "Your Checklist for Success (Required Forms)",
+        prompt: "Before you step onto the job site and officially begin your assignment, we just need to get three quick documents uploaded to your file:",
+        help: "Checklist items: 1. Sirius Workforce Development Placement Form · 2. Worksite Agreement · 3. Participant Program Information and Guidelines Receipt Form",
+        type: "single",
+        layout: "compact",
+        choices: [
+          {
+            value: "all-three-forms-ready",
+            label: "All documents are ready to be uploaded so I can start my assignment with confidence.",
+            detail: "Sirius Placement Form, Worksite Agreement & Participant Guidelines Receipt.",
+            icon: "📑"
+          }
+        ]
+      }
+    );
+
     return questions;
   };
 
@@ -407,13 +620,17 @@
   };
 
   const updateProgress = (question, questionIndex, questionCount) => {
-    stepCount.textContent = `Question ${questionIndex + 1} of ${questionCount}`;
+    if (question.badge) {
+      stepCount.textContent = `${question.badge.split(" · ")[0]} · Step ${questionIndex + 1} of ${questionCount}`;
+    } else {
+      stepCount.textContent = `Question ${questionIndex + 1} of ${questionCount}`;
+    }
     const percentage = Math.round(((questionIndex + 1) / questionCount) * 100);
     progressValue.style.width = `${percentage}%`;
     progressTrack.setAttribute("aria-valuenow", String(percentage));
     nextButton.hidden = !isMultiChoice(question);
     backButton.hidden = questionIndex === 0;
-    nextButton.textContent = questionIndex === questionCount - 1 ? "See my next step →" : "Continue →";
+    nextButton.textContent = questionIndex === questionCount - 1 ? "See my profile & next step →" : "Continue →";
   };
 
   const renderChoice = (question, choice, index) => {
@@ -498,6 +715,24 @@
     const fieldset = document.createElement("fieldset");
     fieldset.className = "wizard-fieldset";
     fieldset.setAttribute("aria-describedby", question.help ? "activeQuestionHelp" : "");
+
+    if (question.chapter) {
+      const chapter = document.createElement("span");
+      chapter.className = "wizard-eyebrow";
+      chapter.style.display = "block";
+      chapter.style.marginBottom = "0.4rem";
+      chapter.textContent = question.chapter;
+      fieldset.append(chapter);
+    }
+
+    if (question.badge) {
+      const badge = document.createElement("span");
+      badge.className = "wizard-code";
+      badge.style.display = "inline-flex";
+      badge.style.marginBottom = "0.75rem";
+      badge.textContent = question.badge;
+      fieldset.append(badge);
+    }
 
     const legend = document.createElement("legend");
     legend.id = "questionTitle";
@@ -588,6 +823,89 @@
     });
     if (answers.inconsistentWork === "yes") addTag("Short-term jobs with gaps between work");
     if (youthWorkHistoryApplies) addTag("Young adult · ages 18–24");
+
+    const visionMap = {
+      healthcare: "Placement Track: Healthcare / Medical Services",
+      manufacturing: "Placement Track: Advanced Manufacturing & Tech",
+      community: "Placement Track: Community Services / Public Sector",
+      undecided: "Placement Track: Open to Discovery"
+    };
+    if (answers.placementVision && visionMap[answers.placementVision]) {
+      addTag(visionMap[answers.placementVision]);
+    }
+
+    const skillMap = {
+      alison: "195-Hr Credential: Alison Online via AlabamaWorks!",
+      "skills-for-success": "195-Hr Credential: Skills for Success",
+      maps: "195-Hr Credential: MAPs Modules",
+      ace: "195-Hr Credential: ACE Training"
+    };
+    if (answers.skillBoost && skillMap[answers.skillBoost]) {
+      addTag(skillMap[answers.skillBoost]);
+    }
+
+    if (answers.scheduleCommitment === "ready-schedule") {
+      addTag("Schedule: 32 hrs/wk (390 Max Hours)");
+    } else if (answers.scheduleCommitment === "constraints") {
+      addTag("Schedule: Scheduling constraints to discuss");
+    }
+
+    if (answers.subsidizedPayroll === "confirmed-transitional") {
+      addTag("Payroll: 100% Subsidized (Sirius Workforce LLC)");
+    } else if (answers.subsidizedPayroll === "need-discussion") {
+      addTag("Apprenticeship/Track Consultation Requested");
+    }
+
+    if (answers.worksiteEnvironment === "ready-explore-worksites") {
+      addTag("Worksite: Vetted Public, Non-Profit & Private Options");
+    }
+    if (answers.worksiteAgreement === "confirm-worksite-rules") {
+      addTag("Worksite Agreement & Orientation Confirmed");
+    }
+    if (answers.prohibitedActivities === "respect-professional-standards") {
+      addTag("Professional Standards: Respectful & Safe Workplace");
+    }
+    if (answers.worksiteSelection === "match-iep-goals") {
+      addTag("Worksite Aligned with IEP Goals");
+    }
+    if (answers.workersCompensation === "reassured-sirius-coverage") {
+      addTag("Sirius Workers' Comp Injury Coverage Active");
+    }
+    if (answers.payrollOnboarding === "sirius-form-email-ready") {
+      addTag("Sirius Onboarding Form Ready (5-Day Window)");
+    }
+    if (answers.timesheetRhythm === "monday-timesheet-timeline") {
+      addTag("Timesheets: Monday 10:00 AM Submission Schedule");
+    }
+    if (answers.wagesDirectDeposit === "friday-direct-deposit") {
+      addTag("Weekly Pay: $7.25–$19.66/hr Friday Direct Deposit");
+    }
+    if (answers.requiredForms === "all-three-forms-ready") {
+      addTag("Checklist: 3 Required Onboarding Forms Ready");
+    }
+
+    if (contactButton) {
+      const vText = visionMap[answers.placementVision] || "Open to Discovery";
+      const sText = skillMap[answers.skillBoost] || "Credential booster";
+      const schedText = answers.scheduleCommitment === "ready-schedule" ? "32 hrs/wk committed" : "Scheduling constraints noted";
+      const payText = answers.subsidizedPayroll === "confirmed-transitional" ? "Transitional track confirmed" : "Advisor discussion requested";
+      const subject = encodeURIComponent("Transitional Jobs Eligibility & Placement Profile");
+      const body = encodeURIComponent(
+        `Hello Springboards Team,\n\nI just completed my Eligibility, Placement, and Worksite onboarding checkpoints:\n\n` +
+        `• Activity Code: 220 (Springboards Transitional Jobs)\n` +
+        `• ${vText}\n` +
+        `• ${sText}\n` +
+        `• Schedule: ${schedText}\n` +
+        `• Subsidized Payroll: ${payText}\n` +
+        `• Worksite & Safety: Vetted site matching IEP, Workers' Comp active\n` +
+        `• Timesheet Rhythm: Monday 10:00 a.m. submission routine\n` +
+        `• Weekly Payday: Friday Direct Deposit ($7.25–$19.66/hr)\n` +
+        `• Onboarding Package: 3 required forms ready for upload\n\n` +
+        `I am ready to connect on next steps with my local Career Center!`
+      );
+      contactButton.href = `mailto:info@springboardsfcd.org?cc=supportiveservices@workforce.alabama.gov&subject=${subject}&body=${body}`;
+    }
+
     if (!profileTags.childElementCount) {
       const fallback = outcome === "not-eligible"
         ? "No matching barrier or work-history tags selected"

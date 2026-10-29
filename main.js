@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       navMenu.classList.toggle("open");
     });
 
-    const navItems = navMenu.querySelectorAll("a");
+    const navItems = navMenu.querySelectorAll("a, button");
     navItems.forEach((link) => {
       link.addEventListener("click", () => {
         navToggle.classList.remove("active");
@@ -54,8 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const sections = [
     { id: "our-mission", link: document.querySelector(".nav-link[href='#our-mission']") },
-    { id: "our-programs", link: document.querySelectorAll(".nav-dropdown-toggle")[0] },
-    { id: "our-impact", link: document.querySelectorAll(".nav-dropdown-toggle")[1] },
+    { id: "how-it-works", link: document.querySelector(".nav-link[href='#how-it-works']") },
+    { id: "our-programs", link: document.querySelector(".nav-link[href='#our-programs']") },
+    { id: "faq", link: document.querySelector(".nav-link[href='#faq']") },
     { id: "footer", link: document.querySelector(".nav-link[href='#footer']") }
   ].filter(s => s.link && document.getElementById(s.id));
 

@@ -36,7 +36,7 @@
       },
       {
         "source": "/eligibility",
-        "destination": "/train.html"
+        "destination": "/eligibility.html"
       },
       {
         "source": "/backoffice",

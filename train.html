@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transitional Jobs Pre-Qualification | Springboards</title>
-    <meta name="description" content="Watch the Springboards Transitional Jobs introduction and start the pre-qualification questionnaire.">
+    <title>Transitional Jobs Introduction | Springboards</title>
+    <meta name="description" content="Watch the Springboards Transitional Jobs introduction and start the eligibility and placement check.">
     <link rel="stylesheet" href="/styles.css">
     <style>
       :root {
@@ -14,219 +14,10 @@
       }
 
       body {
-        background: linear-gradient(180deg, #f8fafc 0%, #eef4f8 100%);
-      }
-
-      .train-page-shell {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2.5rem 1rem 4rem;
-      }
-
-      .train-page-header {
-        padding: 1.4rem 0 0.8rem;
-      }
-
-      .train-back-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        color: var(--primary-navy);
-        font-weight: 700;
-        text-decoration: none;
-        margin-bottom: 1rem;
-      }
-
-      .train-back-link:hover,
-      .train-back-link:focus-visible {
-        color: var(--accent-orange);
-      }
-
-      .train-page-title {
-        font-size: clamp(2.2rem, 4vw, 4.1rem);
-        line-height: 1.08;
-        letter-spacing: -0.04em;
-        margin: 0 0 1rem;
-        color: var(--primary-navy);
-      }
-
-      .train-page-subtitle {
-        font-size: clamp(1.02rem, 1.7vw, 1.25rem);
-        max-width: 780px;
-        color: var(--text-muted);
-        line-height: 1.7;
-      }
-
-      .train-page-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.85rem;
-        margin-top: 1.5rem;
-      }
-
-      .train-page-actions .btn-cta,
-      .train-page-actions .btn-cta-secondary {
-        min-width: 210px;
-      }
-
-      .train-hero {
-        display: grid;
-        grid-template-columns: 1.3fr 0.7fr;
-        gap: 1.5rem;
-        align-items: stretch;
-        margin-top: 2rem;
-      }
-
-      .train-visual-panel,
-      .train-info-panel,
-      .train-feature-card {
-        background: var(--train-page-panel);
-        border: 1px solid var(--train-page-border);
-        border-radius: var(--radius-lg);
-        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
-      }
-
-      .train-visual-panel {
-        padding: 1rem;
-      }
-
-      .train-large-gallery {
-        display: grid;
-        gap: 0.9rem;
-      }
-
-      .train-large-frame {
-        width: 100%;
-        border-radius: var(--radius-lg);
-        overflow: hidden;
-        background: #0f172a;
-        border: 1px solid rgba(148, 163, 184, 0.35);
-      }
-
-      .train-large-frame img {
-        display: block;
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
-
-      .train-thumb-grid {
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 0.55rem;
-      }
-
-      .train-thumb {
-        border: 1px solid rgba(148, 163, 184, 0.35);
-        border-radius: 12px;
-        overflow: hidden;
-        background: #ffffff;
-        padding: 0;
-      }
-
-      .train-thumb img {
-        display: block;
-        width: 100%;
-        height: 82px;
-        object-fit: cover;
-      }
-
-      .train-info-panel {
-        padding: 1.5rem;
-      }
-
-      .train-info-panel h2 {
-        margin: 0 0 0.8rem;
-        font-size: clamp(1.5rem, 2vw, 2.2rem);
-        color: var(--primary-navy);
-      }
-
-      .train-detail-list {
-        margin: 0;
-        padding-left: 1.25rem;
-        color: var(--text-body);
-        line-height: 1.7;
-        font-size: 1rem;
-      }
-
-      .train-detail-list li + li {
-        margin-top: 0.35rem;
-      }
-
-      .train-status {
-        margin-top: 1.2rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border-color);
-        color: var(--accent-orange);
-        font-weight: 800;
-      }
-
-      .train-features {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 1rem;
-        margin-top: 1.8rem;
-      }
-
-      .train-feature-card {
-        padding: 1.2rem 1rem;
-      }
-
-      .train-feature-card .feature-number {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.1rem;
-        height: 2.1rem;
-        border-radius: 50%;
-        background: var(--primary-navy);
-        color: #ffffff;
-        font-size: 0.9rem;
-        font-weight: 800;
-        margin-bottom: 0.8rem;
-      }
-
-      .train-feature-card h3 {
-        margin: 0 0 0.5rem;
-        color: var(--primary-navy);
-        font-size: 1.15rem;
-      }
-
-      .train-feature-card p {
-        margin: 0;
-        color: var(--text-muted);
-        line-height: 1.6;
-      }
-
-      @media (max-width: 900px) {
-        .train-hero,
-        .train-features {
-          grid-template-columns: 1fr;
-        }
-
-        .train-thumb-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-      }
-
-      @media (max-width: 560px) {
-        .train-page-shell {
-          padding-top: 1.25rem;
-        }
-
-        .train-page-actions {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        .train-thumb-grid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
-      body {
         min-height: 100vh;
-        background: radial-gradient(ellipse at top, #ffffff 0%, #f3f7fa 65%, #e9f1f5 100%);
+        margin: 0;
+        background: #f8fafc;
+        font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       }
 
       .prequal-shell {
@@ -241,14 +32,15 @@
 
       .prequal-back-link {
         align-self: flex-start;
-        color: var(--primary-navy);
+        color: var(--primary-navy, #0b192c);
         font-weight: 700;
         text-decoration: none;
+        margin-bottom: 0.5rem;
       }
 
       .prequal-back-link:hover,
       .prequal-back-link:focus-visible {
-        color: var(--accent-orange);
+        color: var(--accent-orange, #e05b32);
         text-decoration: underline;
         text-underline-offset: 0.2em;
       }
@@ -260,39 +52,40 @@
         align-items: center;
         justify-content: center;
         gap: clamp(1rem, 2.5vh, 1.75rem);
-        padding: 1rem 0;
+        padding: 0.5rem 0 2rem;
         text-align: center;
+      }
+
+      .prequal-deck-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 1040px;
       }
 
       .prequal-heading {
         margin: 0;
-        color: var(--primary-navy);
+        color: var(--primary-navy, #0b192c);
         font-size: clamp(1.7rem, 3.5vw, 2.75rem);
         line-height: 1.15;
         letter-spacing: -0.025em;
       }
 
       .prequal-intro-copy {
-        margin: -0.5rem 0 0;
-        color: var(--text-muted);
+        margin: 0 0 1.25rem;
+        color: var(--text-muted, #64748b);
         font-size: clamp(0.95rem, 1.5vw, 1.1rem);
       }
 
       .prequal-slide-frame {
-        width: min(100%, 1040px);
+        width: 100%;
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(148, 163, 184, 0.45);
-        border-radius: var(--radius-lg);
+        border: 1.5px solid #cbd5e1;
+        border-radius: 12px;
         background: #0b192c;
-        box-shadow: 0 18px 48px rgba(15, 23, 42, 0.14);
-      }
-
-      .prequal-slide {
-        display: block;
-        width: 100%;
-        aspect-ratio: 16 / 9;
-        object-fit: contain;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
       }
 
       .prequal-slide-toggle {
@@ -310,6 +103,13 @@
       .prequal-slide-toggle:focus-visible {
         outline: 4px solid #f59e0b;
         outline-offset: -5px;
+      }
+
+      .prequal-slide {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
       }
 
       .prequal-slide-control {
@@ -354,19 +154,12 @@
 
       .prequal-actions {
         display: flex;
-        min-height: 6.5rem;
+        min-height: 6rem;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
         gap: 0.85rem;
-      }
-
-      .prequal-actions [hidden] {
-        display: none !important;
-      }
-
-      .prequal-screen[hidden] {
-        display: none !important;
+        margin-top: 1.5rem;
       }
 
       .prequal-yes {
@@ -374,15 +167,16 @@
         min-height: 3.25rem;
         align-items: center;
         justify-content: center;
-        padding: 0.85rem 1.6rem;
+        padding: 0.85rem 1.75rem;
         border: 2px solid #166534;
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-md, 0.75rem);
         background: #15803d;
         box-shadow: 0 8px 20px rgba(21, 128, 61, 0.22);
         color: #ffffff;
-        font-size: 1rem;
+        font-size: 1.05rem;
         font-weight: 800;
         text-decoration: none;
+        cursor: pointer;
         transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
       }
 
@@ -398,6 +192,7 @@
         font-weight: 700;
         text-decoration: underline;
         text-underline-offset: 0.2em;
+        cursor: pointer;
       }
 
       .prequal-no:hover,
@@ -409,14 +204,8 @@
         .prequal-shell {
           padding: 1rem;
         }
-
         .prequal-content {
-          justify-content: flex-start;
-          padding-top: 8vh;
-        }
-
-        .prequal-actions {
-          min-height: 7rem;
+          padding-top: 4vh;
         }
       }
 
@@ -425,345 +214,42 @@
           transition: none;
         }
       }
-
-        .prequal-summary-screen {
-          width: min(100%, 780px);
-          margin: auto;
-          text-align: center;
-        }
-
-        .prequal-summary-card {
-          margin: 1.5rem 0;
-          padding: clamp(1.5rem, 4vw, 2.75rem);
-          border: 1px solid rgba(21, 128, 61, 0.2);
-          border-top: 6px solid #15803d;
-          border-radius: var(--radius-lg);
-          background: #ffffff;
-          box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
-          text-align: left;
-        }
-
-        .prequal-summary-card h1 {
-          margin: 0.5rem 0 1rem;
-          color: var(--primary-navy);
-          font-size: clamp(1.8rem, 4vw, 2.5rem);
-          line-height: 1.15;
-        }
-
-        .prequal-summary-goal {
-          margin: 0;
-          color: var(--text-dark);
-          font-size: clamp(1.05rem, 2vw, 1.2rem);
-          line-height: 1.75;
-        }
-
-        .prequal-summary-note {
-          margin: 1.25rem 0 0;
-          padding-top: 1.1rem;
-          border-top: 1px solid var(--border-color);
-          color: var(--text-muted);
-          line-height: 1.65;
-        }
-
-        .prequal-continue {
-          min-height: 3.25rem;
-          padding: 0.85rem 1.6rem;
-          border: 2px solid #166534;
-          border-radius: var(--radius-md);
-          background: #15803d;
-          color: #ffffff;
-          font: inherit;
-          font-weight: 800;
-          cursor: pointer;
-          box-shadow: 0 8px 20px rgba(21, 128, 61, 0.22);
-        }
-
-        .prequal-continue:hover,
-        .prequal-continue:focus-visible {
-          background: #166534;
-          box-shadow: 0 10px 24px rgba(21, 128, 61, 0.28);
-        }
-
-        .prequal-questionnaire {
-          width: min(100%, 820px);
-          margin: auto;
-          text-align: left;
-        }
-
-        .prequal-questionnaire-heading,
-        .prequal-question-title {
-          color: var(--primary-navy);
-        }
-
-        .prequal-questionnaire-heading {
-          margin: 0.5rem 0;
-          font-size: clamp(1.8rem, 4vw, 2.5rem);
-          text-align: center;
-        }
-
-        .prequal-questionnaire-intro {
-          margin: 0 auto 1.5rem;
-          max-width: 680px;
-          color: var(--text-muted);
-          line-height: 1.7;
-          text-align: center;
-        }
-
-        .prequal-target-groups {
-          max-width: 760px;
-          margin: -0.5rem auto 1.5rem;
-          color: var(--text-body);
-          line-height: 1.7;
-          text-align: center;
-        }
-
-        .prequal-progress {
-          margin: 0 0 0.75rem;
-          color: var(--text-muted);
-          font-size: 0.9rem;
-          font-weight: 700;
-        }
-
-        .prequal-progress-track {
-          height: 0.5rem;
-          overflow: hidden;
-          border-radius: 999px;
-          background: #dbe5ee;
-        }
-
-        .prequal-progress-value {
-          height: 100%;
-          border-radius: inherit;
-          background: #15803d;
-          transition: width 0.3s ease;
-        }
-
-        .prequal-question-card {
-          margin-top: 1rem;
-          padding: clamp(1.2rem, 4vw, 2rem);
-          border: 1px solid rgba(148, 163, 184, 0.4);
-          border-radius: var(--radius-lg);
-          background: #ffffff;
-          box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
-        }
-
-        .prequal-question-card.prequal-question-enter {
-          animation: prequal-slide-down 0.35s ease both;
-        }
-
-        @keyframes prequal-slide-down {
-          from {
-            opacity: 0;
-            transform: translateY(-1.25rem);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .prequal-question-title {
-          margin: 0 0 1rem;
-          font-size: clamp(1.2rem, 3vw, 1.55rem);
-          line-height: 1.35;
-        }
-
-        .prequal-question-help {
-          margin: -0.4rem 0 1rem;
-          color: var(--text-muted);
-          line-height: 1.6;
-        }
-
-        .prequal-choice-list {
-          display: grid;
-          gap: 0.65rem;
-          margin: 0;
-          padding: 0;
-          border: 0;
-        }
-
-        .prequal-choice {
-          display: flex;
-          align-items: flex-start;
-          gap: 0.75rem;
-          padding: 0.85rem 1rem;
-          border: 1px solid #cbd5e1;
-          border-radius: 0.75rem;
-          background: #ffffff;
-          color: var(--text-body);
-          cursor: pointer;
-          line-height: 1.5;
-        }
-
-        .prequal-choice:has(input:checked) {
-          border-color: #15803d;
-          background: #f0fdf4;
-        }
-
-        .prequal-choice input {
-          flex: 0 0 auto;
-          width: 1.1rem;
-          height: 1.1rem;
-          margin: 0.2rem 0 0;
-          accent-color: #15803d;
-        }
-
-        .prequal-question-error {
-          min-height: 1.5rem;
-          margin: 0.5rem 0 0;
-          color: #b91c1c;
-          font-weight: 700;
-        }
-
-        .prequal-question-actions {
-          display: flex;
-          justify-content: space-between;
-          gap: 0.75rem;
-          margin-top: 1rem;
-        }
-
-        .prequal-question-actions button {
-          min-height: 3rem;
-          padding: 0.7rem 1.2rem;
-          border: 1px solid #166534;
-          border-radius: var(--radius-md);
-          background: #15803d;
-          color: #ffffff;
-          font: inherit;
-          font-weight: 800;
-          cursor: pointer;
-        }
-
-        .prequal-question-actions button:hover,
-        .prequal-question-actions button:focus-visible {
-          background: #166534;
-        }
-
-        .prequal-question-actions .prequal-back-button {
-          border-color: #cbd5e1;
-          background: #ffffff;
-          color: var(--primary-navy);
-        }
-
-        .prequal-question-actions .prequal-back-button:hover,
-        .prequal-question-actions .prequal-back-button:focus-visible {
-          background: #f1f5f9;
-        }
-
-        .prequal-result-card {
-          margin: 1.5rem 0;
-          padding: clamp(1.5rem, 4vw, 2.75rem);
-          border: 1px solid rgba(21, 128, 61, 0.2);
-          border-top: 6px solid #15803d;
-          border-radius: var(--radius-lg);
-          background: #ffffff;
-          box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
-        }
-
-        .prequal-result-card[data-result="not-qualified"] {
-          border-color: rgba(180, 83, 9, 0.25);
-          border-top-color: #b45309;
-        }
-
-        .prequal-result-card h2 {
-          margin: 0 0 1rem;
-          color: var(--primary-navy);
-          font-size: clamp(1.5rem, 4vw, 2.2rem);
-        }
-
-        .prequal-result-card p {
-          color: var(--text-body);
-          line-height: 1.7;
-        }
-
-        .prequal-result-note {
-          padding-top: 1rem;
-          border-top: 1px solid var(--border-color);
-          color: var(--text-muted) !important;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .prequal-question-card.prequal-question-enter {
-            animation: none;
-          }
-          .prequal-progress-value {
-            transition: none;
-          }
-        }
     </style>
   </head>
   <body>
     <main class="prequal-shell">
       <a class="prequal-back-link" href="/#our-programs">← Back to programs</a>
-      <section class="prequal-content prequal-screen" id="prequalIntroScreen" aria-labelledby="prequalTitle">
+      <section class="prequal-content prequal-screen" id="screenIntroDeck" aria-labelledby="prequalTitle">
         <p class="section-eyebrow">TRANSITIONAL JOBS</p>
         <h1 class="prequal-heading" id="prequalTitle">Your next step starts here.</h1>
         <p class="prequal-intro-copy">Watch this short introduction before starting pre-qualification.</p>
 
-        <div class="prequal-slide-frame">
-          <button class="prequal-slide-toggle" id="prequalSlideToggle" type="button" data-playing="false" aria-label="Play introduction" aria-pressed="false">
-            <img
-              class="prequal-slide"
-              id="prequalSlide"
-              src="/slides/slide-1.svg"
-              alt="Transitional Jobs introduction, slide 1 of 10"
-              width="1707"
-              height="960"
-              fetchpriority="high"
-            >
-            <span class="prequal-slide-control prequal-play-control" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
-            </span>
-            <span class="prequal-slide-control prequal-pause-control" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"></path></svg>
-            </span>
-          </button>
-        </div>
-
-        <div class="prequal-actions" aria-live="polite">
-          <button class="prequal-yes" id="prequalYes" type="button" hidden>Yes: Get Pre Qualified!</button>
-          <a class="prequal-no" id="prequalNo" href="/#our-programs" hidden>No: Not Ready Yet.</a>
-        </div>
-      </section>
-
-      <section class="prequal-screen prequal-summary-screen" id="prequalSummaryScreen" aria-labelledby="prequalSummaryTitle" hidden>
-        <span class="section-eyebrow">PROGRAM OVERVIEW</span>
-        <div class="prequal-summary-card">
-          <span class="section-eyebrow">GOALS AND OBJECTIVES</span>
-          <h1 id="prequalSummaryTitle" tabindex="-1">What this program is designed to do</h1>
-          <p class="prequal-summary-goal">Build work experience, show what you can do on the job, and strengthen the skills that can help you succeed and stay employed.</p>
-          <p class="prequal-summary-note">Taking part does not require you to stay with a particular employer. A permanent job is not guaranteed.</p>
-        </div>
-        <button class="prequal-continue" id="prequalContinue" type="button">Continue</button>
-      </section>
-
-      <section class="prequal-screen prequal-questionnaire" id="prequalQuestionnaire" aria-labelledby="prequalQuestionnaireTitle" hidden>
-        <span class="section-eyebrow">ELIGIBILITY</span>
-        <h1 class="prequal-questionnaire-heading" id="prequalQuestionnaireTitle" tabindex="-1">Pre-qualification questions</h1>
-        <p class="prequal-questionnaire-intro">To meet the initial criteria, you must qualify for WIOA Adult or Dislocated Worker services, have at least one barrier to employment, and meet either a chronic-unemployment definition or the inconsistent-work-history definition. Apprentices and youth who previously took part in WBL are not eligible. No TABE test is required.</p>
-        <p class="prequal-target-groups"><strong>Target groups include</strong> long-term unemployed people, ex-offenders, people currently receiving or who have exhausted TANF, people with disabilities, and unemployed or underemployed people who meet the chronic unemployment or inconsistent work-history criteria below.</p>
-        <p class="prequal-progress" id="prequalProgress" aria-live="polite"></p>
-        <div class="prequal-progress-track" role="progressbar" aria-label="Questionnaire progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="prequal-progress-value" id="prequalProgressValue"></div>
-        </div>
-        <form id="prequalQuestionForm" class="prequal-question-card" novalidate>
-          <div id="prequalQuestionContent"></div>
-          <p class="prequal-question-error" id="prequalQuestionError" role="alert"></p>
-          <div class="prequal-question-actions">
-            <button class="prequal-back-button" id="prequalQuestionBack" type="button">Back</button>
-            <button id="prequalQuestionNext" type="submit">Continue</button>
+        <div class="prequal-deck-container">
+          <div class="prequal-slide-frame">
+            <button class="prequal-slide-toggle" id="prequalSlideToggle" type="button" data-playing="false" aria-label="Play introduction" aria-pressed="false">
+              <img
+                class="prequal-slide"
+                id="prequalSlide"
+                src="/slides/slide-1.svg"
+                alt="Transitional Jobs introduction, slide 1 of 10"
+                width="1707"
+                height="960"
+                fetchpriority="high"
+              >
+              <span class="prequal-slide-control prequal-play-control" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+              </span>
+              <span class="prequal-slide-control prequal-pause-control" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zm8 0h4v14h-4z"></path></svg>
+              </span>
+            </button>
           </div>
-        </form>
-      </section>
 
-      <section class="prequal-screen prequal-summary-screen" id="prequalResultScreen" aria-labelledby="prequalResultTitle" hidden>
-        <span class="section-eyebrow">ELIGIBILITY PRE-SCREEN</span>
-        <div class="prequal-result-card" id="prequalResultCard">
-          <h2 id="prequalResultTitle" tabindex="-1"></h2>
-          <div id="prequalResultMessage"></div>
-          <p class="prequal-result-note">This pre-screen is not an official WIOA eligibility determination. A local Alabama Career Center must verify WIOA Adult and/or Dislocated Worker eligibility and all program requirements. No TABE is required.</p>
+          <div class="prequal-actions" aria-live="polite">
+            <button class="prequal-yes" id="btnStartWizardFromDeck" type="button">Yes: Get Pre Qualified!</button>
+            <a class="prequal-no" id="btnDeckNotReady" href="/#our-programs">No: Not Ready Yet.</a>
+          </div>
         </div>
-        <button class="prequal-continue" id="prequalResultContinue" type="button">Continue to contact information</button>
       </section>
     </main>
 
@@ -771,303 +257,15 @@
       (() => {
         const slide = document.getElementById("prequalSlide");
         const slideToggle = document.getElementById("prequalSlideToggle");
-        const yesLink = document.getElementById("prequalYes");
-        const noLink = document.getElementById("prequalNo");
-        const introScreen = document.getElementById("prequalIntroScreen");
-        const summaryScreen = document.getElementById("prequalSummaryScreen");
-        const summaryTitle = document.getElementById("prequalSummaryTitle");
-        const continueButton = document.getElementById("prequalContinue");
-        const questionnaire = document.getElementById("prequalQuestionnaire");
-        const questionForm = document.getElementById("prequalQuestionForm");
-        const questionContent = document.getElementById("prequalQuestionContent");
-        const questionError = document.getElementById("prequalQuestionError");
-        const questionBack = document.getElementById("prequalQuestionBack");
-        const questionNext = document.getElementById("prequalQuestionNext");
-        const progressText = document.getElementById("prequalProgress");
-        const progressValue = document.getElementById("prequalProgressValue");
-        const progressTrack = document.querySelector(".prequal-progress-track");
-        const resultScreen = document.getElementById("prequalResultScreen");
-        const resultCard = document.getElementById("prequalResultCard");
-        const resultTitle = document.getElementById("prequalResultTitle");
-        const resultMessage = document.getElementById("prequalResultMessage");
-        const resultContinue = document.getElementById("prequalResultContinue");
-        if (!slide || !slideToggle || !yesLink || !noLink || !introScreen || !summaryScreen || !continueButton ||
-            !questionnaire || !questionForm || !questionContent || !questionError || !questionBack ||
-            !questionNext || !progressText || !progressValue || !progressTrack || !resultScreen ||
-            !resultCard || !resultTitle || !resultMessage || !resultContinue) return;
+        const startWizardBtn = document.getElementById("btnStartWizardFromDeck");
 
-        const questions = [
-          {
-            name: "wioaEligibility",
-            prompt: "Do you qualify for WIOA Adult or Dislocated Worker services?",
-            help: "Choose “not sure” if a Career Center has not screened you yet. Youth must qualify as Adults, and a Career Center makes the official decision.",
-            choices: [
-              { value: "yes", label: "Yes, a Career Center confirmed this" },
-              { value: "no", label: "No, a Career Center told me I do not qualify" },
-              { value: "unsure", label: "Not sure, or I have not been screened yet" }
-            ]
-          },
-          {
-            name: "apprentice",
-            prompt: "Are you an apprentice?",
-            choices: [
-              { value: "yes", label: "Yes" },
-              { value: "no", label: "No" },
-              { value: "unsure", label: "Not sure" }
-            ]
-          },
-          {
-            name: "youthWbl",
-            prompt: "If you are applying as a youth, have you previously taken part in work-based learning (WBL)?",
-            choices: [
-              { value: "yes", label: "Yes, I am a youth and I have" },
-              { value: "no", label: "No, I am a youth and I have not" },
-              { value: "not-applicable", label: "I am not applying as a youth" },
-              { value: "unsure", label: "Not sure" }
-            ]
-          },
-          {
-            name: "barriers",
-            prompt: "Do any of these barriers to employment apply to you?",
-            help: "Choose all that apply. These are groups recognized in WIOA law as facing barriers to work.",
-            multiple: true,
-            choices: [
-              { value: "displaced-homemaker", label: "Displaced homemaker" },
-              { value: "low-income", label: "Low-income individual" },
-              { value: "native", label: "American Indian, Alaska Native, or Native Hawaiian" },
-              { value: "disability", label: "Individual with a disability, including a youth with a disability" },
-              { value: "justice-involved", label: "Justice-involved individual, including an ex-offender" },
-              { value: "foster-care", label: "Youth in or aged out of foster care (must be made WIOA Adult eligible)" },
-              { value: "english-literacy-cultural", label: "English language learner, low literacy, or substantial cultural barrier" },
-              { value: "farmworker", label: "Eligible migrant or seasonal farmworker" },
-              { value: "single-parent", label: "Single parent, including a single pregnant woman" },
-              { value: "long-term-unemployed", label: "Long-term unemployed (27 or more weeks)" },
-              { value: "public-assistance", label: "Recipient of public assistance, including currently receiving or having exhausted TANF" },
-              { value: "dislocated-worker", label: "WIOA-eligible Dislocated Worker" },
-              { value: "homeless", label: "Homeless individual" },
-              { value: "none", label: "None of these apply" },
-              { value: "unsure", label: "Not sure" }
-            ]
-          },
-          {
-            name: "chronic",
-            prompt: "Do any of these descriptions fit your work or benefit history?",
-            help: "Choose all that apply. These are the program's definitions of chronic unemployment.",
-            multiple: true,
-            choices: [
-              { value: "significant-unemployment", label: "I am out of work now and have been without work for a significant part of the last 26 weeks." },
-              { value: "minimum-wage", label: "Most of my work history is in minimum-wage jobs." },
-              { value: "limited-mismatch-work", label: "My current work is seasonal or temporary, lasts less than 10 weeks, or does not match my education or skills." },
-              { value: "ui", label: "I am receiving unemployment benefits or have used all of them." },
-              { value: "justice-recent", label: "I am on parole or probation, or was released from jail or prison within the past 12 months." },
-              { value: "low-income-standard", label: "My income is below the local Lower Living Standard Income Level (LLSIL)." },
-              { value: "wioa-dislocated-worker", label: "I am eligible as a WIOA Dislocated Worker." },
-              { value: "none", label: "None of these apply" },
-              { value: "unsure", label: "I'm not sure" }
-            ]
-          },
-          {
-            name: "inconsistentWork",
-            prompt: "Does your work history consist of relatively short-term jobs (approximately 6 months or less) and gaps between jobs?",
-            help: "This means jobs usually lasted about six months or less, with gaps between jobs.",
-            choices: [
-              { value: "yes", label: "Yes" },
-              { value: "no", label: "No" },
-              { value: "unsure", label: "I'm not sure" }
-            ]
-          }
-        ];
-        const answers = {};
-        let currentQuestion = 0;
-
-        const showScreen = (screen) => {
-          [introScreen, summaryScreen, questionnaire, resultScreen].forEach((item) => {
-            item.hidden = item !== screen;
-          });
-        };
-
-        const renderQuestion = (animate = true) => {
-          const question = questions[currentQuestion];
-          questionContent.replaceChildren();
-          questionError.textContent = "";
-          questionBack.hidden = currentQuestion === 0;
-          questionNext.hidden = !question.multiple;
-          questionNext.textContent = currentQuestion === questions.length - 1 ? "See my result" : "Continue";
-          progressText.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
-          const progress = Math.round(((currentQuestion + 1) / questions.length) * 100);
-          progressValue.style.width = `${progress}%`;
-          progressTrack.setAttribute("aria-valuenow", String(progress));
-
-          const fieldset = document.createElement("fieldset");
-          fieldset.className = "prequal-choice-list";
-          fieldset.setAttribute("aria-labelledby", "prequalQuestionTitle");
-          const legend = document.createElement("legend");
-          legend.className = "prequal-question-title";
-          legend.id = "prequalQuestionTitle";
-          legend.textContent = question.prompt;
-          fieldset.append(legend);
-
-          if (question.help) {
-            const help = document.createElement("p");
-            help.className = "prequal-question-help";
-            help.textContent = question.help;
-            fieldset.append(help);
-          }
-
-          question.choices.forEach((choice, index) => {
-            const label = document.createElement("label");
-            label.className = "prequal-choice";
-            const input = document.createElement("input");
-            input.type = question.multiple ? "checkbox" : "radio";
-            input.name = question.name;
-            input.value = choice.value;
-            input.checked = question.multiple
-              ? (answers[question.name] || []).includes(choice.value)
-              : answers[question.name] === choice.value;
-            input.id = `${question.name}-${index}`;
-            if (!question.multiple) input.required = true;
-            label.htmlFor = input.id;
-            label.append(input, document.createTextNode(choice.label));
-            fieldset.append(label);
-          });
-
-          fieldset.addEventListener("change", (event) => {
-            const input = event.target;
-            if (!(input instanceof HTMLInputElement)) return;
-            if (!question.multiple) {
-              answers[question.name] = input.value;
-              const hasEarlyExit =
-                (question.name === "wioaEligibility" && input.value === "no") ||
-                (question.name === "apprentice" && input.value === "yes") ||
-                (question.name === "youthWbl" && input.value === "yes");
-              if (hasEarlyExit) {
-                showResult();
-                return;
-              }
-              if (currentQuestion === questions.length - 1) {
-                showResult();
-              } else {
-                currentQuestion += 1;
-                renderQuestion();
-              }
-              return;
-            }
-            if (input.value === "none" || input.value === "unsure") {
-              if (input.checked) {
-                fieldset.querySelectorAll('input[type="checkbox"]').forEach((other) => {
-                  if (other !== input) other.checked = false;
-                });
-              }
-            } else if (input.checked) {
-              const exclusive = fieldset.querySelectorAll('input[value="none"], input[value="unsure"]');
-              exclusive.forEach((other) => { other.checked = false; });
-            }
-          });
-          questionContent.append(fieldset);
-          questionForm.classList.remove("prequal-question-enter");
-          if (animate) {
-            void questionForm.offsetWidth;
-            questionForm.classList.add("prequal-question-enter");
-          }
-          fieldset.querySelector("input")?.focus({ preventScroll: true });
-        };
-
-        const showResult = () => {
-          const barriers = answers.barriers || [];
-          const chronic = answers.chronic || [];
-          const excluded = answers.apprentice === "yes" || answers.youthWbl === "yes";
-          const hasChronicCriterion = chronic.some((value) => value !== "none" && value !== "unsure");
-          const hasInconsistentCriterion = answers.inconsistentWork === "yes";
-          const hasEmploymentCriterion = hasChronicCriterion || hasInconsistentCriterion;
-          const hasBarrier = barriers.some((value) => value !== "none" && value !== "unsure");
-          const eligibilityUnknown = answers.wioaEligibility === "unsure" ||
-            answers.apprentice === "unsure" || answers.youthWbl === "unsure" ||
-            (barriers.includes("unsure") && !hasBarrier) || (!hasEmploymentCriterion &&
-              (chronic.includes("unsure") || answers.inconsistentWork === "unsure"));
-          const doesNotMeetCriteria = answers.wioaEligibility === "no" ||
-            excluded || barriers.includes("none") ||
-            (chronic.includes("none") && answers.inconsistentWork === "no");
-
-          resultCard.dataset.result = "review";
-          if (doesNotMeetCriteria) {
-            resultTitle.textContent = "Your answers don't appear to meet the listed criteria";
-            let reason = "Based on your answers, you may not meet one or more of the initial Transitional Jobs criteria.";
-            if (answers.wioaEligibility === "no") {
-              reason = "This program requires WIOA Adult or Dislocated Worker eligibility. A Career Center can explain what other services may be available.";
-            } else if (answers.apprentice === "yes") {
-              reason = "Apprentices are not eligible for this program.";
-            } else if (answers.youthWbl === "yes") {
-              reason = "Youth who have previously taken part in work-based learning are not eligible for this program.";
-            } else if (barriers.includes("none")) {
-              reason = "The initial criteria require at least one listed barrier to employment.";
-            } else if (chronic.includes("none") && answers.inconsistentWork === "no") {
-              reason = "The initial criteria require either a listed chronic-unemployment condition or an inconsistent work history.";
-            }
-            resultMessage.innerHTML = `<p>${reason}</p><p>You can still contact a local Alabama Career Center to discuss your circumstances and other services.</p>`;
-            resultCard.dataset.result = "not-qualified";
-          } else if (eligibilityUnknown || answers.wioaEligibility !== "yes" || !hasBarrier || !hasEmploymentCriterion) {
-            resultTitle.textContent = "A Career Center can help confirm your eligibility";
-            resultMessage.innerHTML = "<p>Your answers include information that needs to be confirmed, or they don't yet establish all of the initial criteria. A Career Center can review your WIOA eligibility, barriers, and work history with you.</p>";
-          } else {
-            resultTitle.textContent = "Your answers may meet the initial criteria";
-            resultMessage.innerHTML = "<p>Based on your answers, you may meet the initial criteria for a Transitional Jobs eligibility review. Your WIOA Adult or Dislocated Worker status and program eligibility still need to be verified.</p>";
-          }
-          showScreen(resultScreen);
-          resultTitle.focus();
-        };
-
-        questionForm.addEventListener("submit", (event) => {
-          event.preventDefault();
-          const question = questions[currentQuestion];
-          if (!question.multiple) return;
-          const selected = Array.from(questionForm.querySelectorAll(`input[name="${question.name}"]:checked`))
-            .map((input) => input.value);
-          if (selected.length === 0) {
-            questionError.textContent = "Please select an answer to continue.";
-            questionForm.querySelector("input")?.focus();
-            return;
-          }
-          answers[question.name] = question.multiple ? selected : selected[0];
-          if (currentQuestion === questions.length - 1) {
-            showResult();
-            return;
-          }
-          currentQuestion += 1;
-          renderQuestion();
-        });
-
-        questionBack.addEventListener("click", () => {
-          if (currentQuestion === 0) return;
-          currentQuestion -= 1;
-          renderQuestion();
-        });
-
-        yesLink.addEventListener("click", () => {
-          introScreen.hidden = true;
-          summaryScreen.hidden = false;
-          if (summaryTitle) summaryTitle.focus();
-        });
-
-        continueButton.addEventListener("click", () => {
-          window.location.assign("/eligibility");
-        });
-
-        resultContinue.addEventListener("click", () => {
-          window.location.href = "/?start=prequalification#candidateModal";
-        });
+        if (!slide || !slideToggle || !startWizardBtn) return;
 
         const slides = Array.from({ length: 10 }, (_, index) => `/slides/slide-${index + 1}.svg`);
         slides.slice(1).forEach((src) => {
           const image = new Image();
           image.src = src;
         });
-
-        const revealActions = () => {
-          yesLink.hidden = false;
-          window.setTimeout(() => {
-            noLink.hidden = false;
-          }, 1000);
-        };
 
         let currentSlide = 0;
         let playbackTimer = null;
@@ -1093,7 +291,6 @@
           if (!isPlaying) return;
           if (currentSlide === slides.length - 1) {
             stopPlayback();
-            revealActions();
             return;
           }
 
@@ -1105,8 +302,8 @@
 
         const startPlayback = () => {
           if (currentSlide === slides.length - 1) {
-            revealActions();
-            return;
+            currentSlide = 0;
+            slide.src = slides[currentSlide];
           }
           isPlaying = true;
           updatePlaybackControl();
@@ -1121,12 +318,10 @@
           }
         });
 
-        if (window.location.pathname.replace(/\/+$/, "") === "/eligibility") {
-          showScreen(questionnaire);
-          renderQuestion(false);
-        } else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          revealActions();
-        }
+        startWizardBtn.addEventListener("click", () => {
+          stopPlayback();
+          window.location.assign("/eligibility");
+        });
       })();
     </script>
   </body>
