@@ -1,5 +1,5 @@
-// Springboards Web Analytics Client
-// Lightweight, privacy-respecting traffic, referral, and button click tracking
+// Springboards Web Analytics, Conversion Funnel & Real-User Monitoring Client
+// Lightweight, privacy-respecting traffic, referral, conversion funnel, Core Web Vitals, and runtime error tracking
 (function () {
   'use strict';
 
@@ -12,6 +12,13 @@
     } catch {
       // Storage unavailable fallback
     }
+  }
+
+  function getDeviceType() {
+    const w = window.innerWidth || 1024;
+    if (w < 768) return 'mobile';
+    if (w < 1024) return 'tablet';
+    return 'desktop';
   }
 
   // Parse referrer category
@@ -41,8 +48,10 @@
       eventLabel,
       sessionId,
       path: window.location.pathname + window.location.hash,
+      pageRoute: window.location.pathname || '/',
       referrer: document.referrer || '',
       referralSource: getReferralSource(),
+      deviceType: getDeviceType(),
       timestamp: new Date().toISOString(),
       screen: `${window.innerWidth}x${window.innerHeight}`,
       ...metadata
@@ -64,16 +73,136 @@
     }
   }
 
+  // Report frontend runtime errors or asset load failures to server error monitor
+  let errorReportCount = 0;
+  function reportClientError(errorType, message, details = {}) {
+    if (errorReportCount >= 10) return;
+    errorReportCount++;
+    const payload = {
+      errorType,
+      message: String(message || 'Unknown client error').slice(0, 300),
+      path: window.location.pathname,
+      sessionId,
+      deviceType: getDeviceType(),
+      timestamp: new Date().toISOString(),
+      ...details
+    };
+    fetch('/api/monitoring/error', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).catch(() => {});
+  }
+
+  window.addEventListener('error', (event) => {
+    if (event.target && (event.target.tagName === 'IMG' || event.target.tagName === 'SCRIPT' || event.target.tagName === 'LINK')) {
+      const assetUrl = event.target.src || event.target.href || 'unknown-asset';
+      reportClientError('missing_asset', `Failed to load asset: ${assetUrl}`, { assetUrl });
+      return;
+    }
+    if (event.message) {
+      reportClientError('runtime_exception', event.message, {
+        filename: event.filename || '',
+        lineno: event.lineno || 0,
+        colno: event.colno || 0
+      });
+    }
+  }, true);
+
+  window.addEventListener('unhandledrejection', (event) => {
+    const reason = event.reason ? (event.reason.message || String(event.reason)) : 'Unhandled Promise Rejection';
+    reportClientError('unhandled_rejection', reason);
+  });
+
+  // Expose analytics helper API for form scripts
+  window.SpringboardsAnalytics = {
+    trackEvent: sendEvent,
+    trackFormStart: (formId) => sendEvent('form_start', `Form Start: ${formId}`, { formId }),
+    trackFormSuccess: (formId) => sendEvent('form_submit_success', `Form Completed: ${formId}`, { formId }),
+    trackFormError: (formId, reason) => sendEvent('form_submit_error', `Form Error: ${formId}`, { formId, reason })
+  };
+
   // 1. Track initial Page View
-  sendEvent('page_view', 'Home Landing Page');
+  const pageTitle = document.title ? document.title.split('|')[0].trim() : (window.location.pathname || 'Home');
+  sendEvent('page_view', pageTitle);
 
   // 2. Track on hash change (in-page jumps)
   window.addEventListener('hashchange', () => {
     sendEvent('page_view', 'Section Jump: ' + window.location.hash);
   });
 
-  // 3. Track button clicks & interactive triggers
+  // 3. Track Core Web Vitals & Page Load Performance
+  const vitals = { lcpMs: null, clsScore: 0, inpMs: null, loadTimeMs: null };
+  try {
+    if ('PerformanceObserver' in window) {
+      const lcpObserver = new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        const last = entries[entries.length - 1];
+        if (last) vitals.lcpMs = Math.round(last.startTime);
+      });
+      lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+
+      const clsObserver = new PerformanceObserver((entryList) => {
+        for (const entry of entryList.getEntries()) {
+          if (!entry.hadRecentInput && entry.value) {
+            vitals.clsScore = Math.round((vitals.clsScore + entry.value) * 1000) / 1000;
+          }
+        }
+      });
+      clsObserver.observe({ type: 'layout-shift', buffered: true });
+
+      const firstInputObserver = new PerformanceObserver((entryList) => {
+        const first = entryList.getEntries()[0];
+        if (first) {
+          vitals.inpMs = Math.round(first.processingStart ? (first.processingStart - first.startTime) : first.duration || 0);
+        }
+      });
+      firstInputObserver.observe({ type: 'first-input', buffered: true });
+    }
+  } catch {
+    // PerformanceObserver unsupported for specific entry type
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      try {
+        const navEntry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+        if (navEntry && navEntry.loadEventEnd > 0) {
+          vitals.loadTimeMs = Math.round(navEntry.loadEventEnd);
+        } else if (performance.timing) {
+          vitals.loadTimeMs = Math.max(0, performance.timing.loadEventEnd - performance.timing.navigationStart);
+        }
+      } catch {
+        // Ignore timing errors
+      }
+      sendEvent('web_vitals', 'Core Web Vitals', vitals);
+    }, 1500);
+  });
+
+  // 4. Track button clicks, form funnel starts, and FAQ interactions
   document.addEventListener('DOMContentLoaded', () => {
+    const startedForms = new Set();
+
+    // Track form_start on first focus/input inside any form
+    document.addEventListener('focusin', (event) => {
+      const form = event.target && event.target.closest ? event.target.closest('form') : null;
+      if (!form) return;
+      const formId = form.id || form.getAttribute('name') || window.location.pathname;
+      if (!startedForms.has(formId)) {
+        startedForms.add(formId);
+        sendEvent('form_start', `Form Start: ${formId}`, { formId });
+      }
+    });
+
+    // Track form submission attempts
+    document.addEventListener('submit', (event) => {
+      const form = event.target;
+      if (!form || form.tagName !== 'FORM') return;
+      const formId = form.id || form.getAttribute('name') || window.location.pathname;
+      sendEvent('form_submit_attempt', `Form Submit Attempt: ${formId}`, { formId });
+    });
+
     // Track clicks on all CTAs and key buttons
     document.addEventListener('click', (event) => {
       const target = event.target.closest('a, button');
@@ -81,6 +210,11 @@
 
       const href = target.getAttribute('href') || '';
       const text = (target.textContent || '').trim().replace(/\s+/g, ' ');
+      const trackCta = target.getAttribute('data-track-cta') || '';
+
+      if (trackCta) {
+        sendEvent('button_click', `CTA: ${trackCta}`, { ctaId: trackCta, buttonText: text, href });
+      }
 
       // Direct Contact Triggers
       if (href.startsWith('tel:')) {

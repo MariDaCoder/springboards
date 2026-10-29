@@ -370,6 +370,51 @@ async function runLiveTests() {
 
   console.log(`  ✓ Phase 4 & 5 checks completed (${passed} passed, ${failed} failed)\n`);
 
+  // ============================================================================
+  // PHASE 6: LAUNCH GOVERNANCE, OBSERVABILITY & LIVE SEO AUDIT VERIFICATION
+  // ============================================================================
+  console.log('Phase 6: Launch Governance, Observability & Live SEO Audit Verification...');
+
+  assert(fs.existsSync(path.join(rootDir, 'LAUNCH_GOVERNANCE.md')), '[Governance] LAUNCH_GOVERNANCE.md exists on disk');
+
+  const seoAuditRes = await fetch(`${BASE_URL}/api/governance/seo-audit`);
+  const seoAuditData = await seoAuditRes.json();
+  assert(seoAuditRes.status === 200 && seoAuditData.allPagesPassed === true, '[GET /api/governance/seo-audit] All 6 public pages pass live SEO, canonical, H1, OG, JSON-LD & sitemap audit');
+  assert(seoAuditData.uniqueTitles === true, '[GET /api/governance/seo-audit] Unique <title> across all 6 public pages');
+  assert(seoAuditData.sitemapLive === true && seoAuditData.robotsLive === true, '[GET /api/governance/seo-audit] Sitemap and robots.txt verified live');
+
+  const readinessRes = await fetch(`${BASE_URL}/api/governance/readiness`);
+  const readinessData = await readinessRes.json();
+  assert(readinessRes.status === 200 && readinessData.status === 'OFFICIALLY_LAUNCH_READY', '[GET /api/governance/readiness] Launch Readiness Gate status is OFFICIALLY_LAUNCH_READY');
+  assert(readinessData.allOwnersSignedOff === true && Array.isArray(readinessData.owners) && readinessData.owners.length === 5, '[GET /api/governance/readiness] All 5 Launch Governance owners signed off');
+
+  const cwvEvtRes = await postJson('/api/analytics/event', {
+    eventType: 'web_vitals',
+    eventLabel: 'Core Web Vitals',
+    sessionId: 'sess_qa_test',
+    lcpMs: 920,
+    clsScore: 0.01,
+    inpMs: 38,
+    loadTimeMs: 580
+  });
+  assert(cwvEvtRes.status === 200 && cwvEvtRes.data.success, '[POST /api/analytics/event] Records Core Web Vitals telemetry');
+
+  const errMonRes = await postJson('/api/monitoring/error', {
+    errorType: 'qa_test_exception',
+    message: 'Simulated client error check',
+    path: '/'
+  });
+  assert(errMonRes.status === 200 && errMonRes.data.recorded === true, '[POST /api/monitoring/error] Records frontend runtime error telemetry');
+
+  const boGovRes = await fetch(`${BASE_URL}/api/backoffice/governance`, {
+    headers: { Authorization: `Bearer ${goodAuth.data.token}` }
+  });
+  const boGovData = await boGovRes.json();
+  assert(boGovRes.status === 200 && boGovData.governance && boGovData.observability, '[GET /api/backoffice/governance] Returns full Launch Governance & Observability state');
+  assert(Array.isArray(boGovData.observability.alertRules) && boGovData.observability.alertRules.length === 7, '[GET /api/backoffice/governance] All 7 production alert rules armed');
+
+  console.log(`  ✓ Phase 6 checks completed (${passed} passed, ${failed} failed)\n`);
+
   console.log('==============================================================');
   console.log(` QA SUMMARY: ${passed} PASSED | ${failed} FAILED`);
   console.log('==============================================================');

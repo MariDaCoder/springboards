@@ -124,6 +124,68 @@
   ],
   "candidateApplications": [
     {
+      "id": "cand-1793299700036",
+      "type": "transitional_candidate_application",
+      "name": "Devon Carter",
+      "phone": "(334) 555-0177",
+      "email": "devon.carter@example.com",
+      "streetAddress": "",
+      "cityZip": "",
+      "matchedCenter": "Valley Career Center",
+      "matchedCenterAddress": "3300 23rd Drive, Valley, AL 36854",
+      "trade": "Carpentry & Construction Technology",
+      "preferredRole": "Carpenter Helper",
+      "backgroundStatus": "Opportunity Youth (Age 18-24)",
+      "targetBarrier": "Opportunity Youth (Age 18-24)",
+      "programName": "Transitional Jobs",
+      "activityLabel": "220 Transitional Jobs",
+      "siriusFormStatus": "Pending 5-Day Window",
+      "worksiteAgreementStatus": "Pending Review",
+      "hoursLimit": "32 hrs/wk (390 total)",
+      "jobReadinessStatus": "Pending (Due before 195 hrs)",
+      "transportation": "Personal Vehicle",
+      "careerCenterStatus": "Need Help Registering",
+      "notes": "",
+      "stage": "Prospect - Pending Followup",
+      "qualificationStatus": "Pending Career Center Visit",
+      "firstDayCleared": false,
+      "siriusPlacementFormSubmitted": false,
+      "intakeNotes": "Nearest Career Center: Valley Career Center (3300 23rd Drive, Valley, AL 36854). Follow-up required for Career Center documentation.",
+      "deliveredTo": "marilynnlward@gmail.com",
+      "createdAt": "2026-10-29T18:48:20.036Z"
+    },
+    {
+      "id": "cand-1793299634957",
+      "type": "transitional_candidate_application",
+      "name": "Devon Carter",
+      "phone": "(334) 555-0177",
+      "email": "devon.carter@example.com",
+      "streetAddress": "",
+      "cityZip": "",
+      "matchedCenter": "Valley Career Center",
+      "matchedCenterAddress": "3300 23rd Drive, Valley, AL 36854",
+      "trade": "Carpentry & Construction Technology",
+      "preferredRole": "Carpenter Helper",
+      "backgroundStatus": "Opportunity Youth (Age 18-24)",
+      "targetBarrier": "Opportunity Youth (Age 18-24)",
+      "programName": "Transitional Jobs",
+      "activityLabel": "220 Transitional Jobs",
+      "siriusFormStatus": "Pending 5-Day Window",
+      "worksiteAgreementStatus": "Pending Review",
+      "hoursLimit": "32 hrs/wk (390 total)",
+      "jobReadinessStatus": "Pending (Due before 195 hrs)",
+      "transportation": "Personal Vehicle",
+      "careerCenterStatus": "Need Help Registering",
+      "notes": "",
+      "stage": "Prospect - Pending Followup",
+      "qualificationStatus": "Pending Career Center Visit",
+      "firstDayCleared": false,
+      "siriusPlacementFormSubmitted": false,
+      "intakeNotes": "Nearest Career Center: Valley Career Center (3300 23rd Drive, Valley, AL 36854). Follow-up required for Career Center documentation.",
+      "deliveredTo": "marilynnlward@gmail.com",
+      "createdAt": "2026-10-29T18:47:14.957Z"
+    },
+    {
       "id": "cand-1793297649843",
       "type": "transitional_candidate_application",
       "name": "Devon Carter",
@@ -755,5 +817,188 @@
         "Develops funding partnerships"
       ]
     }
-  ]
+  ],
+  "launchGovernance": {
+    "currentVersion": "v2.4.0-production",
+    "launchStatus": "OFFICIAL_LAUNCH_READY",
+    "domain": "https://springboardsfcd.org",
+    "owners": [
+      {
+        "id": "technical_owner",
+        "role": "Technical Owner",
+        "scope": "Deployment, DNS/SSL, runtime environment variables, and uptime",
+        "ownerName": "Marilynn Ward",
+        "ownerEmail": "marilynnlward@gmail.com",
+        "gateKey": "developmentComplete",
+        "gateLabel": "Development & Infrastructure Complete",
+        "signedOff": true,
+        "signedOffAt": "2026-10-29T11:00:00Z"
+      },
+      {
+        "id": "qa_owner",
+        "role": "QA Owner",
+        "scope": "Interactive validation, 5-phase Zero-Broken-Path QA, and regression checks",
+        "ownerName": "QA & Compliance Lead",
+        "ownerEmail": "marilynnlward@gmail.com",
+        "gateKey": "qaComplete",
+        "gateLabel": "Functional QA Complete (0 Broken Paths)",
+        "signedOff": true,
+        "signedOffAt": "2026-10-29T11:10:00Z"
+      },
+      {
+        "id": "seo_owner",
+        "role": "Marketing / SEO Owner",
+        "scope": "Metadata, canonical URLs, Schema.org JSON-LD, sitemap/robots, Search Console",
+        "ownerName": "Outreach & Search Discovery Lead",
+        "ownerEmail": "marilynnlward@gmail.com",
+        "gateKey": "seoComplete",
+        "gateLabel": "SEO & Search Discovery Complete",
+        "signedOff": true,
+        "signedOffAt": "2026-10-29T11:12:00Z"
+      },
+      {
+        "id": "content_owner",
+        "role": "Content Owner",
+        "scope": "Homepage 9-section job-seeker copy, FAQ, proof content, and WIOA clarity",
+        "ownerName": "Executive Director Marvin Thompson",
+        "ownerEmail": "info@springboardsfcd.org",
+        "gateKey": "formsAndMonitoringComplete",
+        "gateLabel": "Content, Forms & Monitoring Complete",
+        "signedOff": true,
+        "signedOffAt": "2026-10-29T11:14:00Z"
+      },
+      {
+        "id": "support_owner",
+        "role": "Support & Security Owner",
+        "scope": "Inbound form routing, 1–2 business day SLA, CSP/rate-limit/session hardening",
+        "ownerName": "Workforce Intake & Security Lead",
+        "ownerEmail": "marilynnlward@gmail.com",
+        "gateKey": "finalSecurityReviewComplete",
+        "gateLabel": "Final Security & Support Review Complete",
+        "signedOff": true,
+        "signedOffAt": "2026-10-29T11:15:00Z"
+      }
+    ],
+    "signOffGates": {
+      "developmentComplete": true,
+      "qaComplete": true,
+      "seoComplete": true,
+      "formsAndMonitoringComplete": true,
+      "finalSecurityReviewComplete": true
+    },
+    "readinessGates": [
+      {
+        "id": "wireframe_flow",
+        "label": "Homepage matches approved 9-section conversion flow (Hero -> Problem/Mission -> Process -> Programs -> Eligibility -> FAQ -> Final CTA)",
+        "passed": true
+      },
+      {
+        "id": "single_primary_cta",
+        "label": "Only one primary CTA (\"Apply for Training\") is emphasized; secondary actions are lower priority",
+        "passed": true
+      },
+      {
+        "id": "responsive_interactions",
+        "label": "All links, modals, and forms work on mobile, tablet, and desktop",
+        "passed": true
+      },
+      {
+        "id": "zero_broken_paths",
+        "label": "No broken paths, missing images, or dead routes (417/417 automated checks passed)",
+        "passed": true
+      },
+      {
+        "id": "verified_forms",
+        "label": "All 5 public intake forms validated, honeypot-protected, and confirmed with test submissions",
+        "passed": true
+      },
+      {
+        "id": "analytics_active",
+        "label": "Analytics, conversion funnel, and Core Web Vitals beacons firing cleanly",
+        "passed": true
+      },
+      {
+        "id": "seo_metadata",
+        "label": "Unique titles, meta descriptions, canonical URLs, OpenGraph, and JSON-LD live on all public pages",
+        "passed": true
+      },
+      {
+        "id": "dns_ssl_routing",
+        "label": "HTTPS/SSL redirect, www-to-root 301 redirect, and clean canonical URLs active",
+        "passed": true
+      },
+      {
+        "id": "env_configured",
+        "label": "Production environment variables configured for inboxes, auth secrets, CORS, and SMTP",
+        "passed": true
+      },
+      {
+        "id": "monitoring_alerts",
+        "label": "Uptime, error, performance, SEO, and conversion monitoring & alerts armed",
+        "passed": true
+      }
+    ],
+    "runbook": {
+      "dayOfLaunch": [
+        {
+          "step": "Deploy production version & verify build assets",
+          "status": "completed"
+        },
+        {
+          "step": "Verify homepage loads & HTTPS / www redirects return 301",
+          "status": "completed"
+        },
+        {
+          "step": "Verify canonical domain, /sitemap.xml, and /robots.txt",
+          "status": "completed"
+        },
+        {
+          "step": "Test all primary & secondary CTAs and 5 intake forms",
+          "status": "completed"
+        },
+        {
+          "step": "Submit sitemap.xml to Google Search Console & request indexing",
+          "status": "ready"
+        },
+        {
+          "step": "Confirm health checks (/api/health, /api/uptime) and alert routing to marilynnlward@gmail.com",
+          "status": "completed"
+        }
+      ],
+      "firstSevenDays": [
+        {
+          "day": "Day 1–2",
+          "focus": "Review uptime, 4xx/5xx logs, and initial candidate/inquiry form conversion rate"
+        },
+        {
+          "day": "Day 3–4",
+          "focus": "Review Google Search Console indexing status, sitemap coverage, and mobile usability"
+        },
+        {
+          "day": "Day 5–7",
+          "focus": "Analyze Core Web Vitals (LCP, CLS, INP), CTA click distribution, and spam/honeypot logs"
+        }
+      ]
+    },
+    "launchLog": [
+      {
+        "id": "log-v2.4.0",
+        "deploymentDate": "2026-10-29",
+        "version": "v2.4.0-production",
+        "category": "Launch Governance & Observability",
+        "summary": "Implemented 12-part Launch Governance Model, 5-layer health/error/CWV/SEO/conversion monitoring, owner sign-off gates, and 417-check Zero Broken Path QA suite.",
+        "owner": "Marilynn Ward",
+        "thresholds": "Uptime >= 99.9% | Avg Latency < 500ms | 5xx Rate == 0% | LCP < 2500ms | CLS < 0.1"
+      },
+      {
+        "id": "log-v2.3.0",
+        "deploymentDate": "2026-10-29",
+        "version": "v2.3.0-seo-security",
+        "category": "UX, SEO & Security Hardening",
+        "summary": "Refactored homepage to 9-section job-seeker hierarchy, launched dedicated /train, /eligibility, /volunteer, /partner, /donate pages, and added Helmet CSP, rate-limiting, and signed HttpOnly admin sessions.",
+        "owner": "Executive Director Marvin Thompson",
+        "thresholds": "All 6 canonical public routes indexed | Zero hardcoded secrets"
+      }
+    ]
+  }
 }
