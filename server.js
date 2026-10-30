@@ -11,6 +11,7 @@ import { db as sqlDb } from './src/db/index.js';
 import { traineeApplications, workspaceActivityLogs } from './src/db/schema.js';
 import { getOrCreateUser } from './src/db/users.js';
 import { verifyAuth } from './src/middleware/auth.js';
+import { getAdminFirestore } from './src/lib/firebase-admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -94,12 +95,12 @@ app.use(helmet({
     useDefaults: false,
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://apis.google.com", "https://accounts.google.com", "https://www.gstatic.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://apis.google.com", "https://accounts.google.com", "https://www.gstatic.com", "https://maps.googleapis.com"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
       imgSrc: ["'self'", "data:", "https:"],
-      frameSrc: ["'self'", "https://www.google.com", "https://maps.google.com", "https://accounts.google.com", "https://*.firebaseapp.com"],
-      connectSrc: ["'self'", "https://firestore.googleapis.com", "https://*.googleapis.com", "https://identitytoolkit.googleapis.com", "https://securetoken.googleapis.com"],
+      frameSrc: ["'self'", "https://www.google.com", "https://maps.google.com", "https://accounts.google.com", "https://*.firebaseapp.com", "https://*.web.app", "https://*.hosted.app"],
+      connectSrc: ["'self'", "https://firestore.googleapis.com", "https://*.googleapis.com", "https://identitytoolkit.googleapis.com", "https://securetoken.googleapis.com", "https://www.gstatic.com", "https://nominatim.openstreetmap.org"],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
       formAction: ["'self'"],
@@ -115,7 +116,7 @@ app.use(compression());
 // 5. Restricted CORS Policy
 app.use('/api', cors({
   origin: (origin, callback) => {
-    if (!origin || ALLOWED_ORIGINS.includes(origin) || /\.run\.app$|\.ai\.studio$/.test(origin)) {
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || /\.(run\.app|ai\.studio|hosted\.app|web\.app|firebaseapp\.com)$/.test(origin)) {
       return callback(null, true);
     }
     return callback(null, false);
@@ -361,17 +362,8 @@ app.use((req, res, next) => {
 
 // Initialize Firebase Admin with automatic per-operation fallback to in-memory store
 let firestoreDb = null;
-if (process.env.GOOGLE_APPLICATION_CREDENTIALS || process.env.K_SERVICE) {
-  try {
-    const { initializeApp, getApps } = await import('firebase-admin/app');
-    const { getFirestore } = await import('firebase-admin/firestore');
-    if (getApps().length === 0) {
-      initializeApp();
-    }
-    firestoreDb = getFirestore();
-  } catch {
-    firestoreDb = null;
-  }
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS || process.env.K_SERVICE || process.env.FIREBASE_CONFIG) {
+  firestoreDb = getAdminFirestore();
 }
 
 const db = {

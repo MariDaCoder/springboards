@@ -1,11 +1,37 @@
 {
+  "apphosting": {
+    "backendId": "springboards",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "backup"
+    ]
+  },
   "hosting": {
     "site": "springboards-community-dev",
     "public": ".",
     "ignore": [
       "firebase.json",
+      "apphosting.yaml",
+      "firestore.rules",
+      "firestore.indexes.json",
+      "firebase-blueprint.json",
+      "server.js",
+      "hello-flow.js",
+      "backoffice-data.json",
+      "qa-audit-report.json",
+      "package.json",
+      "package-lock.json",
+      "bun.lock",
       "**/.*",
-      "**/node_modules/**"
+      "**/node_modules/**",
+      "src/**",
+      "scripts/**",
+      "backup/**",
+      "program-readiness/**"
     ],
     "redirects": [
       {
@@ -16,6 +42,26 @@
       {
         "source": "/train.html",
         "destination": "/train",
+        "type": 301
+      },
+      {
+        "source": "/eligibility.html",
+        "destination": "/eligibility",
+        "type": 301
+      },
+      {
+        "source": "/volunteer.html",
+        "destination": "/volunteer",
+        "type": 301
+      },
+      {
+        "source": "/partner.html",
+        "destination": "/partner",
+        "type": 301
+      },
+      {
+        "source": "/donate.html",
+        "destination": "/donate",
         "type": 301
       },
       {
@@ -39,6 +85,18 @@
         "destination": "/eligibility.html"
       },
       {
+        "source": "/volunteer",
+        "destination": "/volunteer.html"
+      },
+      {
+        "source": "/partner",
+        "destination": "/partner.html"
+      },
+      {
+        "source": "/donate",
+        "destination": "/donate.html"
+      },
+      {
         "source": "/backoffice",
         "destination": "/backoffice.html"
       }
@@ -56,8 +114,8 @@
     ]
   },
   "firestore": {
-    "database": "(default)",
-    "location": "nam5",
+    "database": "ai-studio-springboardsland-71046992-4c5a-4c20-bdcd-c5ee24b8cc0a",
+    "location": "us-east1",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   }
