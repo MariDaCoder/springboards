@@ -13,12 +13,24 @@ env:
     value: production
   - variable: FIREBASE_PROJECT_ID
     value: springboards-community-dev
+  - variable: FIREBASE_PROJECT_NUMBER
+    value: "651964189612"
+  - variable: FIREBASE_MESSAGING_SENDER_ID
+    value: "651964189612"
+  - variable: FIREBASE_APP_ID
+    value: "1:651964189612:web:fc444ee616bf91da99c809"
   - variable: GCLOUD_PROJECT
     value: springboards-community-dev
   - variable: FIRESTORE_DATABASE_ID
     value: ai-studio-springboardsland-71046992-4c5a-4c20-bdcd-c5ee24b8cc0a
+  - variable: APPHOSTING_BACKEND_ID
+    value: springboards-backend
+  - variable: APPHOSTING_REGION
+    value: us-east4
+  - variable: APPHOSTING_HOSTED_DOMAIN
+    value: springboards-backend--springboards-community-dev.us-east4.hosted.app
   - variable: ALLOWED_ORIGINS
-    value: https://springboardsfcd.org,https://www.springboardsfcd.org,https://springboards-community-dev.web.app,https://springboards-community-dev.firebaseapp.com
+    value: https://springboardsfcd.org,https://www.springboardsfcd.org,https://springboards-backend--springboards-community-dev.us-east4.hosted.app,https://springboards-community-dev.web.app,https://springboards-community-dev.firebaseapp.com
   - variable: DESIGNATED_INBOX
     value: marilynnlward@gmail.com
   - variable: HR_INBOX

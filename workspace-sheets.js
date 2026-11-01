@@ -8,6 +8,11 @@ import {
   onAuthStateChanged,
   signOut
 } from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js';
+import {
+  getFirestore,
+  doc,
+  getDocFromServer
+} from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 
 // Firebase configuration from firebase-applet-config.json
 const firebaseConfig = {
@@ -22,6 +27,8 @@ const firebaseConfig = {
 };
 
 export const SCOPES = [
+  'https://www.googleapis.com/auth/keep',
+  'https://www.googleapis.com/auth/keep.readonly',
   'https://www.googleapis.com/auth/spreadsheets',
   'https://www.googleapis.com/auth/spreadsheets.readonly',
   'https://www.googleapis.com/auth/classroom.addons.student',
@@ -96,9 +103,21 @@ export const SCOPES = [
   'https://www.googleapis.com/auth/meetings.space.settings'
 ];
 
-// Initialize Firebase App
+// Initialize Firebase App & Firestore Connection Validation
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
+export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+async function testConnection() {
+  try {
+    await getDocFromServer(doc(db, 'test', 'connection'));
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('the client is offline')) {
+      console.error('Please check your Firebase configuration.');
+    }
+  }
+}
+testConnection();
 
 // Google Auth Provider with Google Workspace Suite scopes
 const provider = new GoogleAuthProvider();

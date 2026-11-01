@@ -5719,6 +5719,60 @@ summary:focus-visible,
   }
 }
 
+/* 10-Section Narrative & Mobile Conversational Flow */
+.mission-one-liner {
+  margin: 1rem auto 0;
+  max-width: 68ch;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #334155;
+  font-weight: 500;
+}
 
+.structured-proof-statements {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
 
+.structured-proof-item {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
 
+.structured-proof-item strong {
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.structured-proof-item span {
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.mobile-conversational-summary {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .desktop-detailed-copy {
+    display: none;
+  }
+
+  .mobile-conversational-summary {
+    display: block;
+  }
+
+  .mission-one-liner {
+    font-size: 0.92rem;
+    margin-top: 0.75rem;
+  }
+}

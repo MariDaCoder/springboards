@@ -130,12 +130,55 @@ console.log('Phase 2: Homepage Navigation, Modal & Form Inventory...');
 
 const indexHtml = fs.readFileSync(path.join(rootDir, 'index.html'), 'utf8');
 
-// Required Navigation anchors/triggers
-const expectedNavTargets = ['#top', '#our-mission', '#our-programs', '#how-it-works', '#faq', '#footer'];
+// Required Navigation anchors/triggers (Mission, Programs, How It Works, FAQ, Apply, Contact)
+const expectedNavTargets = ['#our-mission', '#our-programs', '#how-it-works', '#faq', '#footer'];
 for (const navHref of expectedNavTargets) {
   assert(indexHtml.includes(`href="${navHref}"`), `[Homepage Nav] Contains link to ${navHref}`);
 }
 assert(/class=["'][^"']*nav-apply-link\s+btn-candidate-trigger/i.test(indexHtml), '[Homepage Nav] Contains Apply trigger button');
+
+// Recommended 9-Section Homepage Flow Verification (Interest -> Trust -> Action)
+const mainContentMatch = indexHtml.match(/<main\b[^>]*id=["']main-content["'][^>]*>([\s\S]*?)<\/main>/i);
+assert(Boolean(mainContentMatch), '[Homepage Flow] <main id="main-content"> exists in index.html');
+if (mainContentMatch) {
+  const mainBody = mainContentMatch[1];
+  const sectionMatches = [...mainBody.matchAll(/<section\b([^>]*)>/gi)];
+  const expectedFlow = [
+    { step: '1', id: 'hero', slug: 'hero', label: '1. Hero' },
+    { step: '2', id: 'the-reality-we-face', slug: 'the-problem', label: '2. The problem' },
+    { step: '3', id: 'our-mission', slug: 'the-solution', label: '3. The solution' },
+    { step: '4', id: 'why-trust-springboards', slug: 'why-trust-springboards', label: '4. Why trust Springboards' },
+    { step: '5', id: 'how-it-works', slug: 'how-the-program-works', label: '5. How the program works' },
+    { step: '6', id: 'our-programs', slug: 'what-people-learn', label: '6. What people learn' },
+    { step: '7', id: 'our-impact', slug: 'outcome-proof', label: '7. Outcome proof / testimonials' },
+    { step: '8', id: 'faq', slug: 'faq', label: '8. FAQ' },
+    { step: '9', id: 'final-cta', slug: 'final-cta', label: '9. Final CTA' }
+  ];
+  assert(
+    sectionMatches.length === expectedFlow.length,
+    `[Homepage Flow] <main> has exact 9-section structure without duplicates (found ${sectionMatches.length})`
+  );
+  expectedFlow.forEach((exp, idx) => {
+    const attrs = sectionMatches[idx] ? sectionMatches[idx][1] : '';
+    const idMatch = attrs.match(/\bid=["']([^"']+)["']/i);
+    const stepMatch = attrs.match(/\bdata-flow-step=["']([^"']+)["']/i);
+    const slugMatch = attrs.match(/\bdata-flow-section=["']([^"']+)["']/i);
+    assert(
+      Boolean(idMatch && idMatch[1] === exp.id && stepMatch && stepMatch[1] === exp.step && slugMatch && slugMatch[1] === exp.slug),
+      `[Homepage Flow] Section ${exp.label} is at position ${exp.step} (#${exp.id})`
+    );
+  });
+}
+
+// Verify Section 10: Footer with secondary links & conversational mobile summaries
+assert(
+  /<footer\b[^>]*id=["']footer["'][^>]*data-flow-step=["']10["'][^>]*data-flow-section=["']footer["']/i.test(indexHtml),
+  '[Homepage Flow] Section 10. Footer with secondary links is at position 10 (#footer)'
+);
+assert(
+  indexHtml.includes('class="hero-subtext mobile-conversational-summary"'),
+  '[Homepage Flow] Short conversational mobile version exists in index.html'
+);
 
 // Required Modals and corresponding Triggers on index.html
 const modalInventory = [
@@ -157,14 +200,23 @@ for (const item of modalInventory) {
   }
 }
 
-// Interactive Progress Roadmap & Google Classroom Hub checks
-assert(indexHtml.includes('id="participantJourneyRoadmap"'), '[How It Works] Interactive Participant Journey Roadmap exists');
-assert((indexHtml.match(/class=["'][^"']*journey-step-item/g) || []).length === 5, '[How It Works] Contains 5 interactive roadmap milestones');
-assert(indexHtml.includes('id="googleClassroomHub"'), '[How It Works] Google Classroom Learning Hub exists');
-assert(indexHtml.includes('id="classroomSignInBtn"'), '[How It Works] Official Sign in with Google button exists');
+// Verify irrelevant legacy components have been removed from the homepage
+assert(!indexHtml.includes('id="profileJourneyModal"'), '[Clean Homepage Flow] Legacy #profileJourneyModal removed from index.html');
+assert(!indexHtml.includes('id="participantJourneyRoadmap"'), '[Clean Homepage Flow] Legacy #participantJourneyRoadmap removed from index.html');
+assert(!indexHtml.includes('id="googleClassroomHub"'), '[Clean Homepage Flow] Legacy #googleClassroomHub removed from index.html');
+assert(!indexHtml.includes('class="impact-carousel"'), '[Clean Homepage Flow] Legacy .impact-carousel removed from Testimonials section');
 
 const fbConfigRaw = fs.readFileSync(path.join(rootDir, 'firebase-applet-config.json'), 'utf8');
 assert(fbConfigRaw.includes('1:651964189612:web:fc444ee616bf91da99c809'), '[Firebase] Connected to appId 1:651964189612:web:fc444ee616bf91da99c809');
+assert(fbConfigRaw.includes('"messagingSenderId": "651964189612"'), '[Firebase] Connected to project number 651964189612');
+assert(fbConfigRaw.includes('"projectId": "springboards-community-dev"'), '[Firebase] Connected to projectId springboards-community-dev');
+
+const appHostingYamlRaw = fs.readFileSync(path.join(rootDir, 'apphosting.yaml'), 'utf8');
+assert(appHostingYamlRaw.includes('651964189612') && appHostingYamlRaw.includes('1:651964189612:web:fc444ee616bf91da99c809'), '[App Hosting] apphosting.yaml binds project 651964189612 & appId 1:651964189612:web:fc444ee616bf91da99c809');
+assert(appHostingYamlRaw.includes('springboards-backend') && appHostingYamlRaw.includes('us-east4') && appHostingYamlRaw.includes('springboards-backend--springboards-community-dev.us-east4.hosted.app'), '[App Hosting] apphosting.yaml configures backend springboards-backend, region us-east4 & hosted domain');
+
+const firebaseJsonRaw = fs.readFileSync(path.join(rootDir, 'firebase.json'), 'utf8');
+assert(firebaseJsonRaw.includes('"backendId": "springboards-backend"'), '[App Hosting] firebase.json sets apphosting.backendId to springboards-backend');
 
 console.log(`  ✓ Phase 2 checks completed (${passed} passed, ${failed} failed)\n`);
 
@@ -349,6 +401,26 @@ async function runLiveTests() {
   const healthRes = await fetch(`${BASE_URL}/api/health`);
   const healthData = await healthRes.json();
   assert(healthRes.status === 200 && healthData.status === 'healthy', '[GET /api/health] Returns healthy status');
+  assert(
+    healthData.firebaseAppHosting?.projectNumber === '651964189612' &&
+      healthData.firebaseAppHosting?.appId === '1:651964189612:web:fc444ee616bf91da99c809',
+    '[GET /api/health] Reports verified Firebase App Hosting project 651964189612 & appId'
+  );
+
+  const fbStatusRes = await fetch(`${BASE_URL}/api/firebase/status`);
+  const fbStatusData = await fbStatusRes.json();
+  assert(
+    fbStatusRes.status === 200 &&
+      fbStatusData.verified === true &&
+      fbStatusData.projectNumber === '651964189612' &&
+      fbStatusData.appId === '1:651964189612:web:fc444ee616bf91da99c809' &&
+      fbStatusData.apphostingBackendId === 'springboards-backend' &&
+      fbStatusData.region === 'us-east4' &&
+      Array.isArray(fbStatusData.domains) &&
+      fbStatusData.domains.includes('springboards-backend--springboards-community-dev.us-east4.hosted.app') &&
+      fbStatusData.domains.includes('springboardsfcd.org'),
+    '[GET /api/firebase/status] Live Firebase App Hosting connection verified (springboards-backend / us-east4 / domains)'
+  );
 
   const uptimeRes = await fetch(`${BASE_URL}/api/uptime`);
   const uptimeData = await uptimeRes.json();

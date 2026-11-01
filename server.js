@@ -11,7 +11,7 @@ import { db as sqlDb } from './src/db/index.js';
 import { traineeApplications, workspaceActivityLogs } from './src/db/schema.js';
 import { getOrCreateUser } from './src/db/users.js';
 import { verifyAuth } from './src/middleware/auth.js';
-import { getAdminFirestore } from './src/lib/firebase-admin.js';
+import { getAdminFirestore, getFirebaseConnectionStatus } from './src/lib/firebase-admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,7 +62,7 @@ const ADMIN_ALLOWED_EMAILS = new Set(
     .map(e => e.trim().toLowerCase())
     .filter(Boolean)
 );
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://springboardsfcd.org,https://www.springboardsfcd.org,https://springboards-community-dev.web.app,http://localhost:3000')
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://springboardsfcd.org,https://www.springboardsfcd.org,https://springboards-backend--springboards-community-dev.us-east4.hosted.app,https://springboards-community-dev.web.app,http://localhost:3000')
   .split(',')
   .map(o => o.replace(/^\[.*\]\((.*)\)$/, '$1').trim())
   .filter(Boolean);
@@ -361,10 +361,7 @@ app.use((req, res, next) => {
 
 
 // Initialize Firebase Admin with automatic per-operation fallback to in-memory store
-let firestoreDb = null;
-if (process.env.GOOGLE_APPLICATION_CREDENTIALS || process.env.K_SERVICE || process.env.FIREBASE_CONFIG) {
-  firestoreDb = getAdminFirestore();
-}
+const firestoreDb = getAdminFirestore();
 
 const db = {
   collection: (name) => {
@@ -1443,12 +1440,14 @@ setInterval(() => {
 app.get('/api/health', (req, res) => {
   const uptimeSeconds = Math.floor(process.uptime());
   const obs = getObservabilitySummary();
+  const firebaseAppHosting = getFirebaseConnectionStatus();
   res.status(200).json({
     status: 'healthy',
     domain: 'springboardsfcd.org',
     uptimeSeconds,
     timestamp: new Date().toISOString(),
     service: 'Springboards for Community Development Web Platform',
+    firebaseAppHosting,
     configStatus: {
       designatedInbox: DESIGNATED_INBOX,
       hrInbox: HR_INBOX,
@@ -1478,6 +1477,34 @@ app.get('/api/health', (req, res) => {
       unexpected404Count: obs.unexpected404Count,
       formConversions: analyticsStore.formFunnel.conversions,
       formErrors: analyticsStore.formFunnel.errors
+    }
+  });
+});
+
+app.get('/api/firebase/status', (req, res) => {
+  const connection = getFirebaseConnectionStatus();
+  const hasFirebaserc = fs.existsSync(path.join(__dirname, '.firebaserc'));
+  const hasFirebaseJson = fs.existsSync(path.join(__dirname, 'firebase.json'));
+  const hasAppHostingYaml = fs.existsSync(path.join(__dirname, 'apphosting.yaml'));
+  const hasAppletConfig = fs.existsSync(path.join(__dirname, 'firebase-applet-config.json'));
+  const hasFirestoreRules = fs.existsSync(path.join(__dirname, 'firestore.rules'));
+  const hasPackageLock = fs.existsSync(path.join(__dirname, 'package-lock.json'));
+
+  res.status(200).json({
+    ...connection,
+    verified:
+      connection.projectId === 'springboards-community-dev' &&
+      connection.projectNumber === '651964189612' &&
+      connection.appId === '1:651964189612:web:fc444ee616bf91da99c809' &&
+      connection.apphostingBackendId === 'springboards-backend' &&
+      connection.region === 'us-east4',
+    filesVerified: {
+      firebaserc: hasFirebaserc,
+      firebaseJson: hasFirebaseJson,
+      apphostingYaml: hasAppHostingYaml,
+      firebaseAppletConfig: hasAppletConfig,
+      firestoreRules: hasFirestoreRules,
+      packageLockJson: hasPackageLock
     }
   });
 });
