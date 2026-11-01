@@ -532,7 +532,7 @@
                 </span>
               </div>
               <p style="margin: 0.2rem 0 0; font-size: 0.82rem; color: #475569;">
-                Master Candidate Intake &amp; Daily Attendance records sync to <strong>marilynn.ward@springboardsfcd.org</strong>
+                Master Candidate Intake &amp; Daily Attendance records sync to <strong>info@springboardsfcd.org</strong>
               </p>
             </div>
           </div>
@@ -552,7 +552,7 @@
                     <path fill="none" d="M0 0h48v48H0z"></path>
                   </svg>
                 </div>
-                <span class="gsi-material-button-contents">Enable Google Sheets for marilynn.ward@springboardsfcd.org</span>
+                <span class="gsi-material-button-contents">Enable Google Sheets Sync</span>
               </div>
             </button>
 
@@ -1181,9 +1181,9 @@
           showLiveToast('Google Sheets module initializing, please try again in a second.');
           return;
         }
-        showLiveToast('Connecting Google account for marilynn.ward@springboardsfcd.org...');
+        showLiveToast('Connecting Google Workspace account...');
         const authRes = await window.SpringboardsWorkspace.signInWithGoogle();
-        showLiveToast(`Google Sheets connected for ${authRes.user?.email || 'Marilynn Ward'}!`);
+        showLiveToast(`Google Sheets connected for ${authRes.user?.email || 'Workforce Administrator'}!`);
         updateWorkspaceHubUI(true);
 
         // If no sheet is linked yet, offer to create one immediately
@@ -1194,7 +1194,7 @@
           }
         }
       } catch (err) {
-        alert('Could not complete Google Sign-in: ' + err.message);
+        showLiveNotification('Could not complete Google Sign-in: ' + err.message);
       }
     }
 
@@ -1229,14 +1229,14 @@
 
         showLiveToast('✓ Master Google Sheet created and synced successfully!');
       } catch (err) {
-        alert('Error creating Google Sheet: ' + err.message);
+        showLiveNotification('Error creating Google Sheet: ' + err.message);
       }
     }
 
     async function handleSyncAllCandidates() {
       const spreadsheetId = workspaceState.spreadsheetId || document.getElementById('ws-input-sheet-id')?.value.trim();
       if (!spreadsheetId) {
-        alert('Please connect or create a Google Sheet first, or paste your Sheet ID/URL.');
+        showLiveNotification('Please connect or create a Google Sheet first, or paste your Sheet ID/URL.');
         return;
       }
 
@@ -1263,7 +1263,7 @@
         updateWorkspaceHubUI(true);
         showLiveToast(`✓ Successfully synced ${candidates.length} candidates to Google Sheets!`);
       } catch (err) {
-        alert('Sync error: ' + err.message);
+        showLiveNotification('Sync error: ' + err.message);
       }
     }
 
@@ -1271,7 +1271,7 @@
       const input = document.getElementById('ws-input-sheet-id');
       const val = input ? input.value.trim() : '';
       if (!val) {
-        alert('Please paste a Google Sheets URL or ID.');
+        showLiveNotification('Please paste a Google Sheets URL or ID.');
         return;
       }
 
@@ -1290,7 +1290,7 @@
 
         const info = await window.SpringboardsWorkspace.testSpreadsheetAccess(sheetId);
         if (!info.accessible) {
-          throw new Error(info.error || 'Could not access sheet. Verify sharing permissions for marilynn.ward@springboardsfcd.org.');
+          throw new Error(info.error || 'Could not access sheet. Verify sharing permissions for your Workspace account.');
         }
 
         workspaceState.spreadsheetId = sheetId;
@@ -1307,7 +1307,7 @@
           await handleSyncAllCandidates();
         }
       } catch (err) {
-        alert('Could not link sheet: ' + err.message);
+        showLiveNotification('Could not link sheet: ' + err.message);
       }
     }
 
@@ -2133,7 +2133,7 @@
             version,
             category,
             summary,
-            owner: appState.user?.name || 'Marilynn Ward'
+            owner: appState.user?.name || 'Workforce Administrator'
           })
         });
         if (res.ok) {

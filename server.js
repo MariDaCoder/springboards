@@ -2,11 +2,34 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
-import helmet from 'helmet';
 import compression from 'compression';
-import rateLimit from 'express-rate-limit';
-import cors from 'cors';
 import { fileURLToPath } from 'url';
+import {
+  PORT,
+  DESIGNATED_INBOX,
+  HR_INBOX,
+  ALERT_EMAIL,
+  BACKUP_ALERT_EMAIL,
+  WORKSPACE_CONNECTED_EMAIL,
+  ADMIN_PASSCODE,
+  STAFF_DEFAULT_PIN,
+  ADMIN_SESSION_SECRET,
+  ADMIN_ALLOWED_EMAILS,
+  ANALYTICS_ENABLED,
+  ANALYTICS_WRITE_KEY,
+  SMTP_CONFIG,
+  ALLOWED_ORIGINS
+} from './src/config/env.js';
+import {
+  cspAndSecurityHeaders,
+  apiCorsMiddleware,
+  apiGeneralLimiter,
+  publicFormLimiter,
+  adminNoStore,
+  isValidEmail,
+  isValidPhone
+} from './src/middleware/security.js';
+import { createAdminRouter } from './src/routes/adminRoutes.js';
 import { db as sqlDb } from './src/db/index.js';
 import { traineeApplications, workspaceActivityLogs } from './src/db/schema.js';
 import { getOrCreateUser } from './src/db/users.js';
@@ -16,61 +39,12 @@ import { getAdminFirestore, getFirebaseConnectionStatus } from './src/lib/fireba
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load .env file if present without overriding existing process.env variables from Settings/Cloud Run
-const envFilePath = path.join(__dirname, '.env');
-if (fs.existsSync(envFilePath)) {
-  try {
-    const envRaw = fs.readFileSync(envFilePath, 'utf8');
-    for (const line of envRaw.split(/\r?\n/)) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const eqIdx = trimmed.indexOf('=');
-      if (eqIdx === -1) continue;
-      const key = trimmed.slice(0, eqIdx).trim();
-      const val = trimmed.slice(eqIdx + 1).trim().replace(/^['"]|['"]$/g, '');
-      if (key && process.env[key] === undefined) {
-        process.env[key] = val;
-      }
-    }
-  } catch {
-    // Ignore .env read errors
-  }
-}
-
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// 1. Environment-Driven Configuration
-const DESIGNATED_INBOX = process.env.DESIGNATED_INBOX || 'marilynnlward@gmail.com';
-const HR_INBOX = process.env.HR_INBOX || 'marilynnlward@gmail.com';
-const ALERT_EMAIL = process.env.ALERT_EMAIL || 'marilynnlward@gmail.com';
-const BACKUP_ALERT_EMAIL = process.env.BACKUP_ALERT_EMAIL || 'marilynnlward@gmail.com';
-const WORKSPACE_CONNECTED_EMAIL = process.env.WORKSPACE_CONNECTED_EMAIL || 'marilynnlward@gmail.com';
-const ADMIN_PASSCODE = process.env.ADMIN_PASSCODE || '2026';
-const STAFF_DEFAULT_PIN = process.env.STAFF_DEFAULT_PIN || '1985';
-const ADMIN_SESSION_SECRET = process.env.ADMIN_SESSION_SECRET || 'sb-fcd-admin-session-2026-9f8e7d6c5b4a3f2e1d0c9b8a7f6e5d4c';
-const ANALYTICS_ENABLED = String(process.env.ANALYTICS_ENABLED ?? 'true').toLowerCase() !== 'false';
-const SMTP_CONFIG = {
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: Number(process.env.SMTP_PORT || 587),
-  user: process.env.SMTP_USER || 'marilynnlward@gmail.com',
-  pass: process.env.SMTP_PASS || ''
-};
-const ADMIN_ALLOWED_EMAILS = new Set(
-  (process.env.ADMIN_ALLOWED_EMAILS || 'marilynnlward@gmail.com,springboardforcommunitydev@gmail.com,info@springboardsfcd.org')
-    .split(',')
-    .map(e => e.trim().toLowerCase())
-    .filter(Boolean)
-);
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://springboardsfcd.org,https://www.springboardsfcd.org,https://springboards-backend--springboards-community-dev.us-east4.hosted.app,https://springboards-community-dev.web.app,http://localhost:3000')
-  .split(',')
-  .map(o => o.replace(/^\[.*\]\((.*)\)$/, '$1').trim())
-  .filter(Boolean);
 
 // Trust reverse proxy for SSL and Host headers (Cloud Run / Load Balancer)
 app.set('trust proxy', 1);
 
-// 2. Clean Domain Routing & HTTPS Redirection
+// Clean Domain Routing & HTTPS Redirection
 app.use((req, res, next) => {
   const host = req.headers.host || '';
   const proto = req.headers['x-forwarded-proto'];
@@ -88,117 +62,19 @@ app.use((req, res, next) => {
   next();
 });
 
-// 3. Helmet Security Headers & Content Security Policy (CSP)
-app.use(helmet({
-  frameguard: false, // Allow AI Studio preview iframe while protecting via CSP
-  contentSecurityPolicy: {
-    useDefaults: false,
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://apis.google.com", "https://accounts.google.com", "https://www.gstatic.com", "https://maps.googleapis.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
-      imgSrc: ["'self'", "data:", "https:"],
-      frameSrc: ["'self'", "https://www.google.com", "https://maps.google.com", "https://accounts.google.com", "https://*.firebaseapp.com", "https://*.web.app", "https://*.hosted.app"],
-      connectSrc: ["'self'", "https://firestore.googleapis.com", "https://*.googleapis.com", "https://identitytoolkit.googleapis.com", "https://securetoken.googleapis.com", "https://www.gstatic.com", "https://nominatim.openstreetmap.org"],
-      objectSrc: ["'none'"],
-      baseUri: ["'self'"],
-      formAction: ["'self'"],
-      upgradeInsecureRequests: []
-    }
-  },
-  referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
-}));
+// Helmet Security Headers & Content Security Policy (CSP)
+app.use(cspAndSecurityHeaders);
 
-// 4. Response Compression (Gzip / Deflate)
+// Response Compression (Gzip / Deflate)
 app.use(compression());
 
-// 5. Restricted CORS Policy
-app.use('/api', cors({
-  origin: (origin, callback) => {
-    if (!origin || ALLOWED_ORIGINS.includes(origin) || /\.(run\.app|ai\.studio|hosted\.app|web\.app|firebaseapp\.com)$/.test(origin)) {
-      return callback(null, true);
-    }
-    return callback(null, false);
-  },
-  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-  credentials: true
-}));
+// Restricted CORS Policy for API Routes
+app.use('/api', apiCorsMiddleware);
 
 app.use(express.json({ limit: '250kb' }));
 
-// 6. Rate Limiting Middleware
-const apiGeneralLimiter = rateLimit({
-  windowMs: 60 * 1000,
-  max: 240,
-  standardHeaders: true,
-  legacyHeaders: false,
-  validate: false,
-  message: { error: 'Too many requests. Please wait a moment and try again.' }
-});
-
-const publicFormLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 25,
-  keyGenerator: (req) => `${req.ip || '127.0.0.1'}:${req.path}`,
-  standardHeaders: true,
-  legacyHeaders: false,
-  validate: false,
-  message: { error: 'Too many form submissions from this IP. Please try again in 15 minutes.' }
-});
-
-const adminAuthLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 15,
-  standardHeaders: true,
-  legacyHeaders: false,
-  validate: false,
-  message: { error: 'Too many login attempts. Please wait 15 minutes before retrying.' }
-});
-
+// Rate Limiting Middleware
 app.use('/api', apiGeneralLimiter);
-
-// 7. Signed Session Token Helpers & Admin No-Store Protection
-function createAdminSessionToken(payload) {
-  const data = Buffer.from(JSON.stringify({
-    ...payload,
-    exp: Date.now() + 8 * 60 * 60 * 1000 // 8-hour session expiry
-  })).toString('base64url');
-  const sig = crypto.createHmac('sha256', ADMIN_SESSION_SECRET).update(data).digest('base64url');
-  return `${data}.${sig}`;
-}
-
-function verifyAdminSessionToken(token) {
-  if (!token || typeof token !== 'string' || !token.includes('.')) return null;
-  const [data, sig] = token.split('.');
-  const expectedSig = crypto.createHmac('sha256', ADMIN_SESSION_SECRET).update(data).digest('base64url');
-  if (sig !== expectedSig) return null;
-  try {
-    const parsed = JSON.parse(Buffer.from(data, 'base64url').toString('utf8'));
-    if (!parsed.exp || Date.now() > parsed.exp) return null;
-    return parsed;
-  } catch {
-    return null;
-  }
-}
-
-function parseCookies(req) {
-  const raw = req.headers.cookie || '';
-  return Object.fromEntries(
-    raw.split(';').map(part => {
-      const idx = part.indexOf('=');
-      if (idx === -1) return ['', ''];
-      return [part.slice(0, idx).trim(), decodeURIComponent(part.slice(idx + 1).trim())];
-    }).filter(([k]) => k)
-  );
-}
-
-function adminNoStore(req, res, next) {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('X-Robots-Tag', 'noindex, nofollow');
-  next();
-}
 
 // Redirect public HTML page URLs to their clean route equivalents.
 const cleanPageRedirects = new Map([
@@ -405,17 +281,6 @@ const db = {
   }
 };
 
-// Helper validation functions
-function isValidEmail(email) {
-  if (!email) return false;
-  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
-}
-
-function isValidPhone(phone) {
-  if (!phone) return false;
-  const cleaned = phone.replace(/[\s\-\(\)\.]/g, '');
-  return /^\+?1?\d{10}$/.test(cleaned);
-}
 
 // 4. Sitemap & Robots explicitly served
 app.get('/sitemap.xml', (req, res) => {
@@ -1037,39 +902,6 @@ app.post('/api/trainee/clock-in', async (req, res) => {
   }
 });
 
-// 5B-6. Backoffice: Internal Retention Status Confirmation & Hiring Review
-app.post('/api/backoffice/candidates/retention-transition', (req, res) => {
-  try {
-    const { candidateId, decision, notes } = req.body || {};
-    const candidates = backofficeData.candidateApplications || [];
-    const trainee = candidates.find(c => c.id === candidateId);
-
-    if (!trainee) {
-      return res.status(404).json({ error: 'Candidate not found.' });
-    }
-
-    if (decision === 'HIRE_PERMANENT') {
-      trainee.stage = 'Hired Permanent (Internal Retention)';
-      trainee.retentionStatus = 'Hired Permanent - Full-Time Employee';
-      trainee.intakeNotes = `${trainee.intakeNotes || ''} | Internal Retention Confirmed: Onboarded as full-time permanent trade staff. (${notes || 'Full package submitted to HR'})`;
-    } else {
-      trainee.stage = 'Permanent Candidate (Internal Retention Review)';
-      trainee.retentionStatus = 'Under Internal Hiring Review';
-      if (notes) trainee.intakeNotes = `${trainee.intakeNotes || ''} | Retention Review: ${notes}`;
-    }
-
-    saveBackofficeData();
-
-    return res.status(200).json({
-      success: true,
-      trainee,
-      message: `Retention status updated to "${trainee.retentionStatus}". Full work history preserved.`
-    });
-  } catch (err) {
-    console.error('Error updating retention transition:', err);
-    return res.status(500).json({ error: 'Server error updating retention status.' });
-  }
-});
 
 // 5C. Business & Employer Partnership Endpoint
 app.post('/api/partnerships', publicFormLimiter, async (req, res) => {
@@ -1460,6 +1292,7 @@ app.get('/api/health', (req, res) => {
       adminPasscodeConfigured: Boolean(ADMIN_PASSCODE),
       staffDefaultPinConfigured: Boolean(STAFF_DEFAULT_PIN),
       analyticsEnabled: ANALYTICS_ENABLED,
+      analyticsWriteKeyConfigured: Boolean(ANALYTICS_WRITE_KEY),
       smtpHost: SMTP_CONFIG.host,
       smtpPort: SMTP_CONFIG.port,
       smtpUser: SMTP_CONFIG.user,
@@ -1586,7 +1419,7 @@ function getDefaultLaunchGovernance() {
         id: 'technical_owner',
         role: 'Technical Owner',
         scope: 'Deployment, DNS/SSL, runtime environment variables, and uptime',
-        ownerName: 'Marilynn Ward',
+        ownerName: process.env.TECHNICAL_OWNER_NAME || 'Technical Operations Lead',
         ownerEmail: WORKSPACE_CONNECTED_EMAIL,
         gateKey: 'developmentComplete',
         gateLabel: 'Development & Infrastructure Complete',
@@ -1679,7 +1512,7 @@ function getDefaultLaunchGovernance() {
         version: 'v2.4.0-production',
         category: 'Launch Governance & Observability',
         summary: 'Implemented 12-part Launch Governance Model, 5-layer health/error/CWV/SEO/conversion monitoring, owner sign-off gates, and 417-check Zero Broken Path QA suite.',
-        owner: 'Marilynn Ward',
+        owner: 'Workforce Administrator',
         thresholds: 'Uptime >= 99.9% | Avg Latency < 500ms | 5xx Rate == 0% | LCP < 2500ms | CLS < 0.1'
       },
       {
@@ -1811,467 +1644,19 @@ app.get('/api/governance/readiness', (req, res) => {
   });
 });
 
-// Apply no-store & noindex headers to all private backoffice & workspace routes
-app.use('/api/backoffice', adminNoStore);
-app.use('/api/workspace', adminNoStore);
-
-// Admin Governance Endpoints
-app.get('/api/backoffice/governance', (req, res) => {
-  const gov = backofficeData.launchGovernance || getDefaultLaunchGovernance();
-  res.status(200).json({
-    governance: gov,
-    seoAudit: runLiveSeoAudit(),
-    observability: getObservabilitySummary(),
-    analytics: {
-      totalPageViews: analyticsStore.pageViews,
-      uniqueSessionsCount: analyticsStore.uniqueSessions.size,
-      topReferralSources: analyticsStore.referralSources,
-      topPages: analyticsStore.topPages,
-      deviceBreakdown: analyticsStore.deviceBreakdown,
-      formConversionFunnel: analyticsStore.formFunnel
-    }
-  });
-});
-
-app.post('/api/backoffice/governance/signoff', (req, res) => {
-  const { ownerId, signedOff } = req.body || {};
-  if (!backofficeData.launchGovernance) {
-    backofficeData.launchGovernance = getDefaultLaunchGovernance();
-  }
-  const gov = backofficeData.launchGovernance;
-  const owner = (gov.owners || []).find(o => o.id === ownerId);
-  if (!owner) {
-    return res.status(404).json({ error: 'Governance owner not found.' });
-  }
-  owner.signedOff = Boolean(signedOff);
-  owner.signedOffAt = owner.signedOff ? new Date().toISOString() : null;
-  if (owner.gateKey && gov.signOffGates) {
-    gov.signOffGates[owner.gateKey] = owner.signedOff;
-  }
-  saveBackofficeData();
-  return res.status(200).json({
-    success: true,
-    owner,
-    signOffGates: gov.signOffGates,
-    allOwnersSignedOff: Object.values(gov.signOffGates || {}).every(Boolean)
-  });
-});
-
-app.post('/api/backoffice/governance/log', (req, res) => {
-  const { version, category, summary, owner, thresholds } = req.body || {};
-  if (!summary || !String(summary).trim()) {
-    return res.status(400).json({ error: 'Please provide a summary of the deployment or governance change.' });
-  }
-  if (!backofficeData.launchGovernance) {
-    backofficeData.launchGovernance = getDefaultLaunchGovernance();
-  }
-  const gov = backofficeData.launchGovernance;
-  const newEntry = {
-    id: `log-${Date.now()}`,
-    deploymentDate: new Date().toISOString().split('T')[0],
-    version: String(version || gov.currentVersion || 'v2.4.1').trim(),
-    category: String(category || 'Production Release').trim(),
-    summary: String(summary).trim(),
-    owner: String(owner || 'Workforce Administrator').trim(),
-    thresholds: String(thresholds || 'Uptime >= 99.9% | 5xx == 0%').trim()
-  };
-  gov.currentVersion = newEntry.version;
-  if (!Array.isArray(gov.launchLog)) gov.launchLog = [];
-  gov.launchLog.unshift(newEntry);
-  saveBackofficeData();
-  return res.status(200).json({ success: true, entry: newEntry, launchLog: gov.launchLog });
-});
-
-// Backoffice Authentication (Environment-configured Admin Passcode / Allowed Email or Staff Roster PIN)
-app.post('/api/backoffice/auth', adminAuthLimiter, (req, res) => {
-  const { type, phone, pin, adminEmail, adminCode } = req.body || {};
-
-  if (type === 'admin') {
-    const normalizedEmail = String(adminEmail || '').trim().toLowerCase();
-    const trimmedCode = String(adminCode || '').trim();
-    const isAllowedEmail = normalizedEmail && ADMIN_ALLOWED_EMAILS.has(normalizedEmail);
-    const isValidCode = trimmedCode && (trimmedCode === ADMIN_PASSCODE || trimmedCode === STAFF_DEFAULT_PIN);
-
-    if (isValidCode || isAllowedEmail) {
-      const userObj = {
-        id: 'admin-1',
-        name: 'Workforce Administrator',
-        role: 'Workforce Director & Compliance Administrator',
-        isAdmin: true,
-        email: normalizedEmail || DESIGNATED_INBOX
-      };
-      const token = createAdminSessionToken(userObj);
-      res.setHeader(
-        'Set-Cookie',
-        `sb_admin_session=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800`
-      );
-      return res.status(200).json({
-        success: true,
-        token,
-        user: userObj
-      });
-    }
-    return res.status(401).json({ error: 'Invalid admin credentials.' });
-  }
-
-  // Staff phone + PIN authentication via configured roster
-  const cleanedInputPhone = String(phone || '').replace(/\D/g, '');
-  const trimmedPin = String(pin || '').trim();
-
-  if (!cleanedInputPhone || cleanedInputPhone.length < 10) {
-    return res.status(400).json({ error: 'Please enter a valid 10-digit mobile phone number.' });
-  }
-  if (!trimmedPin) {
-    return res.status(400).json({ error: 'Please enter your 4-digit staff PIN.' });
-  }
-
-  const staffMatch = (backofficeData.staffRoster || []).find(member => {
-    const memberPhone = String(member.phone || '').replace(/\D/g, '');
-    return memberPhone.endsWith(cleanedInputPhone.slice(-10)) && String(member.pin).trim() === trimmedPin;
-  });
-
-  if (staffMatch) {
-    const userObj = {
-      id: staffMatch.id,
-      name: staffMatch.name,
-      role: staffMatch.role,
-      isAdmin: !!staffMatch.isAdmin,
-      phone: staffMatch.phone
-    };
-    const token = createAdminSessionToken(userObj);
-    res.setHeader(
-      'Set-Cookie',
-      `sb_admin_session=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800`
-    );
-    return res.status(200).json({
-      success: true,
-      token,
-      user: userObj
-    });
-  }
-
-  return res.status(401).json({ error: 'Phone number or staff PIN not recognized. Please contact an administrator to be added to the team roster.' });
-});
-
-app.post('/api/backoffice/logout', (req, res) => {
-  res.setHeader('Set-Cookie', 'sb_admin_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0');
-  return res.status(200).json({ success: true });
-});
-
-// Get state (chat, calendar, documents, compliance, candidates, and roster if authorized)
-app.get('/api/backoffice/state', (req, res) => {
-  const cookies = parseCookies(req);
-  const bearer = (req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
-  const sessionUser = verifyAdminSessionToken(bearer || cookies.sb_admin_session);
-  const isAdmin = Boolean(sessionUser?.isAdmin) || req.headers['x-admin-auth'] === 'true' || req.query.admin === 'true';
-
-  res.status(200).json({
-    chatMessages: backofficeData.chatMessages || [],
-    calendarEvents: backofficeData.calendarEvents || [],
-    sharedDocuments: backofficeData.sharedDocuments || [],
-    complianceItems: backofficeData.complianceItems || [],
-    candidateApplications: backofficeData.candidateApplications || [],
-    inboxMessages: deliveredInboxLog || [],
-    boardStructure: backofficeData.boardStructure || [],
-    staffRoster: isAdmin ? backofficeData.staffRoster : (backofficeData.staffRoster || []).map(m => ({ id: m.id, name: m.name, role: m.role, status: m.status }))
-  });
-});
-
-// Post chat message
-app.post('/api/backoffice/chat', (req, res) => {
-  const { senderName, senderRole, text, channel, attachment } = req.body || {};
-  const trimmedText = String(text || '').trim();
-
-  if (!trimmedText && !attachment) {
-    return res.status(400).json({ error: 'Message cannot be empty.' });
-  }
-
-  const newMsg = {
-    id: `msg-${Date.now()}`,
-    senderName: String(senderName || 'Staff Member').trim(),
-    senderRole: String(senderRole || 'Team Member').trim(),
-    text: trimmedText,
-    channel: channel || 'general',
-    attachment: attachment || null,
-    timestamp: new Date().toISOString()
-  };
-
-  if (!Array.isArray(backofficeData.chatMessages)) {
-    backofficeData.chatMessages = [];
-  }
-
-  backofficeData.chatMessages.push(newMsg);
-  // Keep last 150 messages
-  if (backofficeData.chatMessages.length > 150) {
-    backofficeData.chatMessages = backofficeData.chatMessages.slice(-150);
-  }
-  saveBackofficeData();
-
-  return res.status(200).json({ success: true, message: newMsg });
-});
-
-// Add calendar event (admin)
-app.post('/api/backoffice/calendar', (req, res) => {
-  const { title, date, time, location, category, description } = req.body || {};
-  if (!title || !date) {
-    return res.status(400).json({ error: 'Title and date are required.' });
-  }
-
-  const newEvent = {
-    id: `event-${Date.now()}`,
-    title: String(title).trim(),
-    date: String(date).trim(),
-    time: String(time || 'All Day').trim(),
-    location: String(location || 'Springboards Facility').trim(),
-    category: String(category || 'general').trim(),
-    description: String(description || '').trim()
-  };
-
-  if (!Array.isArray(backofficeData.calendarEvents)) {
-    backofficeData.calendarEvents = [];
-  }
-  backofficeData.calendarEvents.push(newEvent);
-  saveBackofficeData();
-
-  return res.status(200).json({ success: true, event: newEvent });
-});
-
-// Delete calendar event
-app.delete('/api/backoffice/calendar/:id', (req, res) => {
-  const { id } = req.params;
-  backofficeData.calendarEvents = (backofficeData.calendarEvents || []).filter(e => e.id !== id);
-  saveBackofficeData();
-  return res.status(200).json({ success: true });
-});
-
-// Add staff member to roster (admin)
-app.post('/api/backoffice/roster', (req, res) => {
-  const { name, role, phone, pin, isAdmin } = req.body || {};
-  if (!name || !phone || !pin) {
-    return res.status(400).json({ error: 'Name, phone number, and 4-digit PIN are required.' });
-  }
-
-  const newMember = {
-    id: `staff-${Date.now()}`,
-    name: String(name).trim(),
-    role: String(role || 'Trades Crew Member').trim(),
-    phone: String(phone).trim(),
-    pin: String(pin).trim(),
-    isAdmin: !!isAdmin,
-    status: 'Active'
-  };
-
-  if (!Array.isArray(backofficeData.staffRoster)) {
-    backofficeData.staffRoster = [];
-  }
-  backofficeData.staffRoster.push(newMember);
-  saveBackofficeData();
-
-  return res.status(200).json({ success: true, member: newMember });
-});
-
-// Delete staff member from roster
-app.delete('/api/backoffice/roster/:id', (req, res) => {
-  const { id } = req.params;
-  backofficeData.staffRoster = (backofficeData.staffRoster || []).filter(m => m.id !== id);
-  saveBackofficeData();
-  return res.status(200).json({ success: true });
-});
-
-// Update compliance item status & notes
-app.post('/api/backoffice/compliance/update', (req, res) => {
-  const { id, status, notes, requestDate, dueDate } = req.body || {};
-  const item = (backofficeData.complianceItems || []).find(c => c.id === id);
-  if (!item) {
-    return res.status(404).json({ error: 'Compliance item not found.' });
-  }
-
-  if (status) item.status = status;
-  if (notes !== undefined) item.notes = notes;
-  if (requestDate) item.requestDate = requestDate;
-  if (dueDate) item.dueDate = dueDate;
-
-  saveBackofficeData();
-  return res.status(200).json({ success: true, item });
-});
-
-// Update candidate stage & intake notes
-app.post('/api/backoffice/candidates/update', (req, res) => {
-  const { id, stage, intakeNotes, qualificationStatus, firstDayCleared, siriusPlacementFormSubmitted, programName, targetBarrier, siriusFormStatus } = req.body || {};
-  const cand = (backofficeData.candidateApplications || []).find(c => c.id === id);
-  if (!cand) {
-    return res.status(404).json({ error: 'Candidate record not found.' });
-  }
-
-  if (stage) cand.stage = stage;
-  if (intakeNotes !== undefined) cand.intakeNotes = intakeNotes;
-  if (qualificationStatus !== undefined) cand.qualificationStatus = qualificationStatus;
-  if (firstDayCleared !== undefined) cand.firstDayCleared = Boolean(firstDayCleared);
-  if (siriusPlacementFormSubmitted !== undefined) cand.siriusPlacementFormSubmitted = Boolean(siriusPlacementFormSubmitted);
-  if (programName) {
-    cand.programName = programName;
-    cand.activityLabel = (programName === 'On-The-Job Training (OJT Referral)' || programName === 'On-The-Job Training') ? 'OJT Referral' : '220 Transitional Jobs';
-  }
-  if (targetBarrier) cand.targetBarrier = targetBarrier;
-  if (siriusFormStatus) cand.siriusFormStatus = siriusFormStatus;
-
-  saveBackofficeData();
-  return res.status(200).json({ success: true, candidate: cand });
-});
-
-// Delete candidate record
-app.delete('/api/backoffice/candidates/:id', (req, res) => {
-  const { id } = req.params;
-  backofficeData.candidateApplications = (backofficeData.candidateApplications || []).filter(c => c.id !== id);
-  saveBackofficeData();
-  return res.status(200).json({ success: true });
-});
-
-// Google Workspace Master Candidate Intake Sheet Data Endpoint
-app.get('/api/backoffice/candidate-sheets', (req, res) => {
-  const candidates = backofficeData.candidateApplications || [];
-  const rows = candidates.map(c => ({
-    timestamp: c.timestamp || c.createdAt || '',
-    candidateName: c.candidateName || c.name || '',
-    phone: c.phone || '',
-    email: c.email || '',
-    addressCity: c.addressCity || c.cityZip || c.streetAddress || '',
-    nearestCareerCenter: c.nearestCareerCenter || c.matchedCenter || 'Valley Career Center',
-    confirmedBackgroundStatus: c.confirmedBackgroundStatus || c.targetBarrier || c.backgroundStatus || '',
-    programTag: c.programTag || (c.programName && c.programName.includes('OJT') ? 'Program: On-The-Job Training (OJT Follow-up)' : 'Transitional Jobs (Activity 220)'),
-    careerCenterVisitStatus: c.careerCenterVisitStatus || c.qualificationStatus || 'Pending Career Center Verification',
-    notes: c.notes || c.intakeNotes || ''
-  }));
-
-  return res.status(200).json({
-    columns: [
-      'Timestamp',
-      'Candidate Name',
-      'Phone',
-      'Email',
-      'Address & City',
-      'Nearest Career Center',
-      'Confirmed Background Status',
-      'Program Tag',
-      'Career Center Visit Status',
-      'Notes'
-    ],
-    rows
-  });
-});
-
-app.get('/api/backoffice/candidate-sheets/csv', (req, res) => {
-  const candidates = backofficeData.candidateApplications || [];
-  const headers = [
-    'Timestamp',
-    'Candidate Name',
-    'Phone',
-    'Email',
-    'Address & City',
-    'Nearest Career Center',
-    'Confirmed Background Status',
-    'Program Tag',
-    'Career Center Visit Status',
-    'Notes'
-  ];
-
-  const csvRows = [headers.join(',')];
-  candidates.forEach(c => {
-    const row = [
-      `"${String(c.timestamp || c.createdAt || '').replace(/"/g, '""')}"`,
-      `"${String(c.candidateName || c.name || '').replace(/"/g, '""')}"`,
-      `"${String(c.phone || '').replace(/"/g, '""')}"`,
-      `"${String(c.email || '').replace(/"/g, '""')}"`,
-      `"${String(c.addressCity || c.cityZip || c.streetAddress || '').replace(/"/g, '""')}"`,
-      `"${String(c.nearestCareerCenter || c.matchedCenter || 'Valley Career Center').replace(/"/g, '""')}"`,
-      `"${String(c.confirmedBackgroundStatus || c.targetBarrier || c.backgroundStatus || '').replace(/"/g, '""')}"`,
-      `"${String(c.programTag || (c.programName && c.programName.includes('OJT') ? 'Program: On-The-Job Training (OJT Follow-up)' : 'Transitional Jobs (Activity 220)')).replace(/"/g, '""')}"`,
-      `"${String(c.careerCenterVisitStatus || c.qualificationStatus || 'Pending Career Center Verification').replace(/"/g, '""')}"`,
-      `"${String(c.notes || c.intakeNotes || '').replace(/"/g, '""')}"`
-    ];
-    csvRows.push(row.join(','));
-  });
-
-  res.setHeader('Content-Type', 'text/csv');
-  res.setHeader('Content-Disposition', 'attachment; filename="Springboards_Master_Candidate_Intake.csv"');
-  return res.status(200).send(csvRows.join('\r\n'));
-});
-
-// Google Workspace & Sheets Configuration and Live Sync State
-app.get('/api/workspace/config', (req, res) => {
-  const ws = backofficeData.workspaceSettings || {
-    connectedEmail: WORKSPACE_CONNECTED_EMAIL,
-    spreadsheetId: '',
-    spreadsheetUrl: '',
-    sheetName: 'Candidate Intake',
-    attendanceSheetName: 'Worksite Daily Attendance',
-    lastSyncedAt: null,
-    autoSync: true
-  };
-  return res.status(200).json(ws);
-});
-
-app.post('/api/workspace/config', (req, res) => {
-  const { spreadsheetId, spreadsheetUrl, autoSync, connectedEmail } = req.body || {};
-  if (!backofficeData.workspaceSettings) {
-    backofficeData.workspaceSettings = {};
-  }
-
-  if (spreadsheetId !== undefined) backofficeData.workspaceSettings.spreadsheetId = String(spreadsheetId).trim();
-  if (spreadsheetUrl !== undefined) backofficeData.workspaceSettings.spreadsheetUrl = String(spreadsheetUrl).trim();
-  if (autoSync !== undefined) backofficeData.workspaceSettings.autoSync = Boolean(autoSync);
-  if (connectedEmail) backofficeData.workspaceSettings.connectedEmail = String(connectedEmail).trim();
-  backofficeData.workspaceSettings.updatedAt = new Date().toISOString();
-
-  saveBackofficeData();
-  return res.status(200).json({ success: true, workspaceSettings: backofficeData.workspaceSettings });
-});
-
-app.post('/api/workspace/sync-log', (req, res) => {
-  const { spreadsheetId, rowCount, user, timestamp } = req.body || {};
-  if (!backofficeData.workspaceSettings) {
-    backofficeData.workspaceSettings = {};
-  }
-  backofficeData.workspaceSettings.lastSyncedAt = timestamp || new Date().toISOString();
-  backofficeData.workspaceSettings.lastSyncCount = rowCount || (backofficeData.candidateApplications || []).length;
-  backofficeData.workspaceSettings.lastSyncUser = user || WORKSPACE_CONNECTED_EMAIL;
-  if (spreadsheetId) backofficeData.workspaceSettings.spreadsheetId = spreadsheetId;
-
-  if (!Array.isArray(backofficeData.workspaceSyncHistory)) {
-    backofficeData.workspaceSyncHistory = [];
-  }
-  backofficeData.workspaceSyncHistory.unshift({
-    id: `sync-${Date.now()}`,
-    timestamp: backofficeData.workspaceSettings.lastSyncedAt,
-    spreadsheetId: backofficeData.workspaceSettings.spreadsheetId,
-    rowCount: backofficeData.workspaceSettings.lastSyncCount,
-    user: backofficeData.workspaceSettings.lastSyncUser
-  });
-  if (backofficeData.workspaceSyncHistory.length > 50) {
-    backofficeData.workspaceSyncHistory = backofficeData.workspaceSyncHistory.slice(0, 50);
-  }
-
-  saveBackofficeData();
-  return res.status(200).json({ success: true, workspaceSettings: backofficeData.workspaceSettings });
-});
-
-app.get('/api/workspace/status', (req, res) => {
-  const ws = backofficeData.workspaceSettings || {};
-  const candidatesCount = (backofficeData.candidateApplications || []).length;
-  const attendanceCount = (backofficeData.attendanceLogs || []).length;
-  res.status(200).json({
-    connectedEmail: ws.connectedEmail || WORKSPACE_CONNECTED_EMAIL,
-    designatedInbox: DESIGNATED_INBOX,
-    isLinked: Boolean(ws.spreadsheetId),
-    spreadsheetId: ws.spreadsheetId || null,
-    spreadsheetUrl: ws.spreadsheetUrl || null,
-    autoSync: ws.autoSync !== false,
-    lastSyncedAt: ws.lastSyncedAt || null,
-    candidatesCount,
-    attendanceCount,
-    recentSyncs: backofficeData.workspaceSyncHistory || []
-  });
-});
+// Mount separated private Admin & Workspace API router (/api/backoffice/* and /api/workspace/*)
+app.use(
+  '/api',
+  createAdminRouter({
+    backofficeData,
+    saveBackofficeData,
+    deliveredInboxLog,
+    getDefaultLaunchGovernance,
+    runLiveSeoAudit,
+    getObservabilitySummary,
+    analyticsStore
+  })
+);
 
 // Cloud SQL + Firebase Auth Protected Routes (Two-Layer Error Handling)
 app.post('/api/sql/user-sync', verifyAuth, async (req, res) => {

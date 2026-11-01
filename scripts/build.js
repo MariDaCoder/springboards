@@ -70,9 +70,29 @@ for (const page of publicPages) {
   }
 }
 
+// 3. Backend Security & Separation Audit (Zero Hardcoded Secrets/PINs in Source)
+const requiredModules = [
+  'src/config/env.js',
+  'src/middleware/security.js',
+  'src/routes/adminRoutes.js'
+];
+
+for (const mod of requiredModules) {
+  if (!fs.existsSync(path.join(ROOT, mod))) {
+    console.error(`[SECURITY AUDIT FAIL] Missing separated backend module: ${mod}`);
+    hasErrors = true;
+  }
+}
+
+const serverSource = fs.readFileSync(path.join(ROOT, 'server.js'), 'utf8');
+if (/['"]2026['"]|['"]1985['"]|sb-fcd-admin-session-2026/.test(serverSource)) {
+  console.error('[SECURITY AUDIT FAIL] Hardcoded PIN or session secret detected in server.js');
+  hasErrors = true;
+}
+
 if (hasErrors) {
   process.exit(1);
 }
 
 console.log('[Build Pipeline] Asset hashing complete:', manifest.assets);
-console.log('[Build Pipeline] SEO, canonical, OpenGraph, and H1 verification passed for all 6 intent pages.');
+console.log('[Build Pipeline] SEO, canonical, OpenGraph, H1, and backend security separation verified for all 6 intent pages.');

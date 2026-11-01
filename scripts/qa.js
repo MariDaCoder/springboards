@@ -442,11 +442,21 @@ async function runLiveTests() {
   const wsData = await wsRes.json();
   assert(wsRes.status === 200 && Boolean(wsData.designatedInbox), '[GET /api/workspace/status] Returns workspace status');
 
-  // 7. Backoffice Auth & State Verification
+  // 7. Backoffice Auth, Backend Separation & State Verification
+  assert(
+    fs.existsSync(path.join(rootDir, 'src/config/env.js')) &&
+      fs.existsSync(path.join(rootDir, 'src/middleware/security.js')) &&
+      fs.existsSync(path.join(rootDir, 'src/routes/adminRoutes.js')),
+    '[Security Architecture] Separated env config, security middleware, and private admin router modules verified'
+  );
+
   const badAuth = await postJson('/api/backoffice/auth', { type: 'admin', adminCode: 'wrong-code-9999' });
   assert(badAuth.status === 401, '[POST /api/backoffice/auth] Rejects invalid admin passcode with 401');
 
-  const goodAuth = await postJson('/api/backoffice/auth', { type: 'admin', adminEmail: 'marilynnlward@gmail.com' });
+  const goodAuth = await postJson('/api/backoffice/auth', {
+    type: 'admin',
+    adminEmail: process.env.ADMIN_TEST_EMAIL || 'info@springboardsfcd.org'
+  });
   assert(goodAuth.status === 200 && goodAuth.data.success && goodAuth.data.token, '[POST /api/backoffice/auth] Authenticates allowed admin and issues signed session token');
 
   const boStateRes = await fetch(`${BASE_URL}/api/backoffice/state`, {
