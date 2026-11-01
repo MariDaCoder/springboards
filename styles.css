@@ -4430,12 +4430,22 @@ summary:focus-visible,
   padding-bottom: clamp(3.5rem, 7vw, 6rem);
 }
 
-/* Section 1: Hero Readability Overlay, CTA Hierarchy & Trust Strip */
+/* Section 1: Hero Readability, CTA Hierarchy & Trust Strip */
+.hero-section {
+  background: linear-gradient(135deg, #06101E 0%, #0B192C 58%, #162B47 100%);
+  min-height: 0;
+  padding: clamp(4rem, 8vw, 6.75rem) 1.5rem;
+}
+
+.hero-section .hero-placeholder-bg {
+  opacity: 0.14;
+}
+
 .hero-section .hero-overlay {
   background: linear-gradient(
     180deg,
-    rgba(11, 25, 44, 0.86) 0%,
-    rgba(11, 25, 44, 0.92) 100%
+    rgba(6, 16, 30, 0.92) 0%,
+    rgba(11, 25, 44, 0.96) 100%
   );
 }
 
@@ -4467,16 +4477,18 @@ summary:focus-visible,
 
 .hero-secondary-btn {
   background-color: rgba(255, 255, 255, 0.12);
-  border: 2px solid rgba(255, 255, 255, 0.65);
+  border: 2px solid rgba(255, 255, 255, 0.75);
   color: #ffffff;
-  backdrop-filter: blur(4px);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .hero-secondary-btn:hover,
 .hero-secondary-btn:focus-visible {
-  background-color: rgba(255, 255, 255, 0.22);
+  background-color: #ffffff;
   border-color: #ffffff;
-  color: #ffffff;
+  color: var(--primary-navy);
+  text-decoration: none;
 }
 
 .hero-trust-strip {
@@ -4539,7 +4551,7 @@ summary:focus-visible,
 
 .proof-cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: clamp(1.15rem, 2.5vw, 1.5rem);
 }
 
@@ -4579,7 +4591,7 @@ summary:focus-visible,
 /* Section 3: Solution Cards (3-Card Grid on Light Surface) */
 .solution-cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: clamp(1.15rem, 2.5vw, 1.5rem);
   margin-top: clamp(1.75rem, 3.5vw, 2.25rem);
 }
@@ -4637,7 +4649,7 @@ summary:focus-visible,
 
 .trust-elements-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: clamp(1rem, 2vw, 1.25rem);
 }
 
@@ -4706,7 +4718,7 @@ summary:focus-visible,
 
 .process-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: clamp(1.15rem, 2.5vw, 1.75rem);
 }
 
@@ -4724,20 +4736,25 @@ summary:focus-visible,
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.95rem;
+  gap: 0.75rem;
   text-align: center;
 }
 
 .process-secondary-link {
+  background: none;
+  border: none;
+  padding: 0.4rem 0.75rem;
+  font-family: inherit;
   color: var(--primary-navy);
   font-size: 0.98rem;
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 4px;
-  min-height: 44px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  cursor: pointer;
   transition: color var(--transition-fast);
 }
 
@@ -4746,7 +4763,7 @@ summary:focus-visible,
   color: var(--accent-orange);
 }
 
-/* Section 6: What People Learn (Balanced 3 -> 2 -> 1 Card Grid) */
+/* Section 6: What People Learn (Balanced 3 -> 2 -> 1 Card Grid using minmax) */
 .programs-section {
   background-color: var(--bg-light);
   text-align: left;
@@ -4760,7 +4777,7 @@ summary:focus-visible,
 
 .skills-learn-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: clamp(1.15rem, 2.5vw, 1.5rem);
 }
 
@@ -4891,21 +4908,22 @@ summary:focus-visible,
   min-height: 48px;
 }
 
-/* Section 8: Accessible FAQ Accordion with Large Touch Hit Areas */
+/* Section 8: Accessible FAQ Accordion with Large Touch Hit Areas & Non-Color State Indicators */
 .faq-item {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   background-color: #ffffff;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
 .faq-item[open] {
-  border-color: var(--primary-navy);
+  border: 2px solid var(--primary-navy);
+  background-color: #fcfdfe;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
 }
 
 .faq-question {
-  min-height: 56px;
+  min-height: 58px;
   padding: clamp(1.1rem, 2.5vw, 1.35rem) clamp(1.15rem, 3vw, 1.5rem);
   display: flex;
   align-items: center;
@@ -4917,13 +4935,17 @@ summary:focus-visible,
   color: var(--primary-navy);
 }
 
+.faq-item[open] .faq-question {
+  border-bottom: 1px solid var(--border-color);
+}
+
 .faq-item[open] .faq-icon {
   transform: rotate(180deg);
   color: var(--accent-orange);
 }
 
 .faq-answer {
-  padding: 0 clamp(1.15rem, 3vw, 1.5rem) clamp(1.15rem, 2.5vw, 1.45rem);
+  padding: clamp(1rem, 2vw, 1.25rem) clamp(1.15rem, 3vw, 1.5rem) clamp(1.15rem, 2.5vw, 1.45rem);
 }
 
 /* Section 9: Final CTA */
@@ -4960,7 +4982,7 @@ summary:focus-visible,
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 4px;
-  min-height: 44px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   transition: color var(--transition-fast);
@@ -4980,7 +5002,7 @@ summary:focus-visible,
   background: none;
   border: none;
   padding: 0.35rem 0;
-  min-height: 44px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   color: #cbd5e1;
@@ -5026,12 +5048,21 @@ summary:focus-visible,
 
 @media (max-width: 768px) {
   body {
-    padding-bottom: 82px;
+    padding-bottom: 84px;
+  }
+
+  .hero-section .hero-placeholder-bg {
+    display: none;
   }
 
   .hero-headline-tight {
-    max-width: 16ch;
-    font-size: clamp(2rem, 7vw, 2.75rem);
+    max-width: 15ch;
+    font-size: clamp(1.95rem, 6.8vw, 2.65rem);
+  }
+
+  .nav-toggle {
+    min-width: 48px;
+    min-height: 48px;
   }
 
   .nav-links .nav-link,
@@ -5116,6 +5147,12 @@ summary:focus-visible,
 
   .hero-cta-group .btn-cta {
     width: 100%;
+    min-height: 50px;
+  }
+
+  .process-mid-cta .btn-cta {
+    width: 100%;
+    min-height: 50px;
   }
 
   .final-cta-box {
@@ -5128,6 +5165,7 @@ summary:focus-visible,
 
   .final-cta-actions .btn-cta {
     width: 100%;
+    min-height: 52px;
   }
 }
 

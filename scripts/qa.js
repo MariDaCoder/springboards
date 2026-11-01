@@ -206,6 +206,18 @@ assert(!indexHtml.includes('id="participantJourneyRoadmap"'), '[Clean Homepage F
 assert(!indexHtml.includes('id="googleClassroomHub"'), '[Clean Homepage Flow] Legacy #googleClassroomHub removed from index.html');
 assert(!indexHtml.includes('class="impact-carousel"'), '[Clean Homepage Flow] Legacy .impact-carousel removed from Testimonials section');
 
+// Layout System & Accessibility-First Interaction Checklist Verification
+const stylesCssRaw = fs.readFileSync(path.join(rootDir, 'styles.css'), 'utf8');
+const mainJsRaw = fs.readFileSync(path.join(rootDir, 'main.js'), 'utf8');
+assert(stylesCssRaw.includes('repeat(auto-fit, minmax('), '[Layout System] Card grids use repeat(auto-fit, minmax())');
+assert(stylesCssRaw.includes('clamp('), '[Layout System] Typography and spacing use clamp()');
+assert(stylesCssRaw.includes('max-width: 100%;') && stylesCssRaw.includes('height: auto;'), '[Layout System] Media enforces max-width: 100% and height: auto');
+assert(indexHtml.includes('loading="lazy"'), '[Layout System] Below-the-fold images use loading="lazy"');
+assert(indexHtml.includes('href="#main-content" class="skip-link"'), '[Accessibility] Skip link to #main-content exists');
+assert(indexHtml.includes('id="navToggle"') && indexHtml.includes('aria-controls="navMenu"') && indexHtml.includes('aria-expanded="false"'), '[Accessibility] Hamburger menu has aria-controls and aria-expanded');
+assert(mainJsRaw.includes('openModalWithFocus') && mainJsRaw.includes('closeModalWithFocus'), '[Accessibility] Modal focus trap and focus return implemented in main.js');
+assert(mainJsRaw.includes('setFormError') && mainJsRaw.includes('aria-live'), '[Accessibility] Form errors are announced via aria-live/role="alert" and non-color indicators');
+
 const fbConfigRaw = fs.readFileSync(path.join(rootDir, 'firebase-applet-config.json'), 'utf8');
 assert(fbConfigRaw.includes('1:651964189612:web:fc444ee616bf91da99c809'), '[Firebase] Connected to appId 1:651964189612:web:fc444ee616bf91da99c809');
 assert(fbConfigRaw.includes('"messagingSenderId": "651964189612"'), '[Firebase] Connected to project number 651964189612');
