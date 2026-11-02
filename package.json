@@ -25,7 +25,7 @@
     "pg": "^8.23.1"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": "24.x"
   },
   "devDependencies": {
     "@types/pg": "^8.23.1",

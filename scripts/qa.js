@@ -616,10 +616,14 @@ async function runLiveTests() {
     );
   }
   const appHostingRaw = fs.readFileSync(path.join(rootDir, 'apphosting.yaml'), 'utf8');
+  const packageJson = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
+  const packageLock = JSON.parse(fs.readFileSync(path.join(rootDir, 'package-lock.json'), 'utf8'));
   assert(
-    appHostingRaw.includes('NODE_RUNTIME_VERSION') &&
-      appHostingRaw.includes('FORCE_JAVASCRIPT_ACTIONS_TO_NODE24'),
-    '[Node 24 Runtime] apphosting.yaml configures NODE_RUNTIME_VERSION=24 and FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true'
+    packageJson.engines?.node === '24.x' &&
+      packageLock.packages?.['']?.engines?.node === packageJson.engines.node &&
+      !appHostingRaw.includes('NODE_RUNTIME_VERSION') &&
+      !appHostingRaw.includes('FORCE_JAVASCRIPT_ACTIONS_TO_NODE24'),
+    '[Firebase App Hosting] package.json pins Node.js 24.x; runtime selection is not configured through environment variables'
   );
   assert(
     readinessData.node24Migration?.status === 'MIGRATED_TO_NODE24' &&
