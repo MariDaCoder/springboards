@@ -11,6 +11,10 @@ runConfig:
 env:
   - variable: NODE_ENV
     value: production
+  - variable: NODE_RUNTIME_VERSION
+    value: "24"
+  - variable: FORCE_JAVASCRIPT_ACTIONS_TO_NODE24
+    value: "true"
   - variable: FIREBASE_PROJECT_ID
     value: springboards-community-dev
   - variable: FIREBASE_PROJECT_NUMBER

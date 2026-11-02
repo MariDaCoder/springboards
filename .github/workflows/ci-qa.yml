@@ -1,0 +1,42 @@
+name: Springboards CI & Zero-Broken-Path QA (Node 24)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  NODE_ENV: production
+
+jobs:
+  build-and-qa:
+    name: Build, Lint & 6-Phase QA Gate (Node 24)
+    # Node 24 requires Ubuntu x64/ARM64 or macOS 14+ (macOS <= 13.4 and ARM32 are unsupported)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Verify Node 24 Runtime & Architecture
+        run: |
+          node -v
+          npm -v
+          node -e "const major = Number(process.versions.node.split('.')[0]); if (major < 22) { console.error('Node 20 is EOL; Node >= 22 (target Node 24) required.'); process.exit(1); }"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Springboards Node 24 QA Gate Action
+        uses: ./.github/actions/springboards-qa-gate
+        with:
+          base-url: "http://127.0.0.1:3000"

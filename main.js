@@ -184,6 +184,10 @@ document.addEventListener("DOMContentLoaded", () => {
       statusEl.setAttribute("role", "alert");
       statusEl.setAttribute("aria-live", "assertive");
       statusEl.textContent = `⚠ Error: ${message}`;
+      const parentForm = statusEl.closest("form");
+      if (window.SpringboardsAnalytics?.trackFormError) {
+        window.SpringboardsAnalytics.trackFormError(parentForm?.id || "form", message);
+      }
     }
     invalidFields.forEach((field, idx) => {
       if (field) {
@@ -341,6 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         let delivered = false;
+        let serverValidationError = null;
         try {
           const res = await fetch("/api/inquiries", {
             method: "POST",
@@ -349,9 +354,17 @@ document.addEventListener("DOMContentLoaded", () => {
           });
           if (res.ok) {
             delivered = true;
+          } else if (res.status === 400 || res.status === 429) {
+            const errData = await res.json().catch(() => ({}));
+            serverValidationError = errData.error || "Please check your entries and try again.";
           }
         } catch {
           // Server endpoint fallback
+        }
+
+        if (serverValidationError) {
+          setFormError(status, serverValidationError);
+          return;
         }
 
         if (!delivered) {
@@ -377,6 +390,8 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(`Inquiry submission failed with status ${directRes.status}.`);
           }
         }
+
+        window.SpringboardsAnalytics?.trackFormSuccess?.("programInquiryForm");
 
         // Show Confirmation Screen
         inquiryFormView.hidden = true;
@@ -482,6 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         let delivered = false;
+        let serverValidationError = null;
         try {
           const res = await fetch("/api/volunteer-signups", {
             method: "POST",
@@ -490,9 +506,17 @@ document.addEventListener("DOMContentLoaded", () => {
           });
           if (res.ok) {
             delivered = true;
+          } else if (res.status === 400 || res.status === 429) {
+            const errData = await res.json().catch(() => ({}));
+            serverValidationError = errData.error || "Please check your entries and try again.";
           }
         } catch {
           // Server endpoint fallback
+        }
+
+        if (serverValidationError) {
+          setFormError(status, serverValidationError);
+          return;
         }
 
         if (!delivered) {
@@ -520,6 +544,8 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(`Volunteer interest submission failed with status ${directRes.status}.`);
           }
         }
+
+        window.SpringboardsAnalytics?.trackFormSuccess?.("volunteerSignupForm");
 
         // Show Confirmation Screen
         volunteerFormView.hidden = true;
@@ -668,14 +694,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         let delivered = false;
+        let serverValidationError = null;
         try {
           const res = await fetch("/api/candidates", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, phone, email, trade, backgroundStatus, transportation, careerCenter, notes })
           });
-          if (res.ok) delivered = true;
+          if (res.ok) {
+            delivered = true;
+          } else if (res.status === 400 || res.status === 429) {
+            const errData = await res.json().catch(() => ({}));
+            serverValidationError = errData.error || "Please check your application details and try again.";
+          }
         } catch {}
+
+        if (serverValidationError) {
+          setFormError(status, serverValidationError);
+          return;
+        }
 
         if (!delivered) {
           // Direct fallback to Firestore REST
@@ -700,6 +737,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           ).catch(() => {});
         }
+
+        window.SpringboardsAnalytics?.trackFormSuccess?.("candidateApplicationForm");
 
         candidateFormView.hidden = true;
         candidateConfirmationScreen.hidden = false;
@@ -810,13 +849,25 @@ document.addEventListener("DOMContentLoaded", () => {
       status.textContent = "Submitting partnership inquiry...";
 
       try {
+        let serverValidationError = null;
         try {
-          await fetch("/api/partnerships", {
+          const res = await fetch("/api/partnerships", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ companyName, contactName, phone, email, partnershipType, tradeSpecialty, message })
           });
+          if (res.status === 400 || res.status === 429) {
+            const errData = await res.json().catch(() => ({}));
+            serverValidationError = errData.error || "Please check your partnership details and try again.";
+          }
         } catch {}
+
+        if (serverValidationError) {
+          setFormError(status, serverValidationError);
+          return;
+        }
+
+        window.SpringboardsAnalytics?.trackFormSuccess?.("partnerApplicationForm");
 
         partnerFormView.hidden = true;
         partnerConfirmationScreen.hidden = false;
@@ -919,13 +970,25 @@ document.addEventListener("DOMContentLoaded", () => {
       status.textContent = "Recording your pledge...";
 
       try {
+        let serverValidationError = null;
         try {
-          await fetch("/api/donations", {
+          const res = await fetch("/api/donations", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ donorName, phone, email, donationType, pledgeAmount, message, taxReceiptRequested })
           });
+          if (res.status === 400 || res.status === 429) {
+            const errData = await res.json().catch(() => ({}));
+            serverValidationError = errData.error || "Please check your pledge details and try again.";
+          }
         } catch {}
+
+        if (serverValidationError) {
+          setFormError(status, serverValidationError);
+          return;
+        }
+
+        window.SpringboardsAnalytics?.trackFormSuccess?.("donationPledgeForm");
 
         donateFormView.hidden = true;
         donateConfirmationScreen.hidden = false;

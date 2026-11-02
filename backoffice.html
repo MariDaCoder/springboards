@@ -912,13 +912,27 @@
       <!-- Live SEO / Indexing Verification & Alert Rules -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
         <div class="admin-card" style="margin-bottom: 0;">
-          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">Search, Indexing &amp; Discovery Audit</h3>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">1. Launch Readiness Gates &amp; Final Launch Standard</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">All 11 pre-launch readiness gates and 10 final launch standard criteria verified before go-live.</p>
+          <div id="gov-readiness-gates" style="font-size: 0.82rem;">Loading readiness gates...</div>
+        </div>
+
+        <div class="admin-card" style="margin-bottom: 0;">
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">2. Production Deployment &amp; Pre-Go-Live Checklist</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Domain/SSL, Node runtime, security guardrails, performance guardrails, and 13-point validation pass.</p>
+          <div id="gov-deployment-checklist" style="font-size: 0.82rem;">Loading deployment checklist...</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+        <div class="admin-card" style="margin-bottom: 0;">
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">3. Search, Indexing &amp; Discovery Audit</h3>
           <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Live check of unique titles, canonical tags, OpenGraph, single H1, JSON-LD schema, and XML sitemap inclusion.</p>
           <div id="gov-seo-matrix" style="font-size: 0.82rem;">Loading SEO audit...</div>
         </div>
 
         <div class="admin-card" style="margin-bottom: 0;">
-          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">Production Alerting &amp; Runbook Checklists</h3>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--primary-navy); margin-bottom: 0.35rem;">4. Production Alerting &amp; Runbook Checklists</h3>
           <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Automated alert rules and Day-of-Launch / First-7-Days operating procedures.</p>
           <div id="gov-alerts-runbook" style="font-size: 0.82rem;">Loading alert rules &amp; runbook...</div>
         </div>
@@ -2040,6 +2054,59 @@
           `).join('');
         }
 
+        // Render Readiness Gates & Final Launch Standard
+        const readinessGatesEl = document.getElementById('gov-readiness-gates');
+        if (readinessGatesEl) {
+          const gates = gov.readinessGates || [];
+          const standards = gov.finalLaunchStandard || [];
+          readinessGatesEl.innerHTML = `
+            <div style="margin-bottom: 0.75rem;">
+              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">11 Pre-Launch Readiness Gates:</strong>
+              ${gates.map(g => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.25rem 0; border-bottom: 1px dashed var(--admin-border);">
+                  <span>${escapeHtml(g.label)}</span>
+                  <span class="badge ${g.passed ? 'badge-green' : 'badge-amber'}" style="font-size: 0.7rem;">${g.passed ? '✓ Passed' : 'Pending'}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div>
+              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">10 Final Launch Standard Criteria:</strong>
+              ${standards.map(s => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.22rem 0;">
+                  <span>✓ ${escapeHtml(s.criterion)}</span>
+                  <strong style="color: #059669; font-size: 0.72rem;">MET</strong>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        // Render Production Deployment Checklist & 13-Point Pre-Go-Live Validation Pass
+        const depChecklistEl = document.getElementById('gov-deployment-checklist');
+        if (depChecklistEl) {
+          const valPass = gov.productionValidationPass || [];
+          const stack = gov.productionStack || [];
+          depChecklistEl.innerHTML = `
+            <div style="margin-bottom: 0.75rem;">
+              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">13-Point Pre-Go-Live Validation Pass:</strong>
+              ${valPass.map(v => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.22rem 0; border-bottom: 1px dashed var(--admin-border);">
+                  <span>${escapeHtml(v.check)}</span>
+                  <span class="badge ${v.passed ? 'badge-green' : 'badge-amber'}" style="font-size: 0.7rem;">${v.passed ? '✓ Verified' : 'Check'}</span>
+                </div>
+              `).join('')}
+            </div>
+            <div>
+              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">Production Stack Architecture:</strong>
+              ${stack.map(st => `
+                <div style="padding: 0.22rem 0; font-size: 0.78rem;">
+                  <strong>${escapeHtml(st.component)}:</strong> <span style="color: var(--text-muted);">${escapeHtml(st.role)}</span>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+
         // Render SEO Audit Matrix
         const seoMatrixEl = document.getElementById('gov-seo-matrix');
         if (seoMatrixEl) {
@@ -2059,9 +2126,10 @@
         if (alertsRunbookEl) {
           const rules = obs.alertRules || [];
           const daySteps = gov.runbook?.dayOfLaunch || [];
+          const sevenDays = gov.runbook?.firstSevenDays || [];
           alertsRunbookEl.innerHTML = `
             <div style="margin-bottom: 0.75rem;">
-              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">Active Production Alert Rules:</strong>
+              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">Active Production Alert Rules (7 Armed):</strong>
               ${rules.map(r => `
                 <div style="display: flex; justify-content: space-between; padding: 0.28rem 0; border-bottom: 1px dashed var(--admin-border);">
                   <span>${escapeHtml(r.name)} <small style="color: var(--text-muted);">(${escapeHtml(r.threshold)})</small></span>
@@ -2069,12 +2137,20 @@
                 </div>
               `).join('')}
             </div>
-            <div>
-              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">Day-of-Launch Runbook Verification:</strong>
+            <div style="margin-bottom: 0.75rem;">
+              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">Day-of-Launch Runbook (11 Steps):</strong>
               ${daySteps.map(s => `
-                <div style="display: flex; justify-content: space-between; padding: 0.25rem 0;">
+                <div style="display: flex; justify-content: space-between; padding: 0.22rem 0;">
                   <span>✓ ${escapeHtml(s.step)}</span>
                   <strong style="color: #059669; text-transform: uppercase; font-size: 0.72rem;">${escapeHtml(s.status)}</strong>
+                </div>
+              `).join('')}
+            </div>
+            <div>
+              <strong style="color: var(--primary-navy); display: block; margin-bottom: 0.35rem;">First 7 Days Post-Launch Schedule:</strong>
+              ${sevenDays.map(d => `
+                <div style="padding: 0.2rem 0; font-size: 0.78rem;">
+                  <strong>${escapeHtml(d.day)}:</strong> <span style="color: var(--text-muted);">${escapeHtml(d.focus)}</span>
                 </div>
               `).join('')}
             </div>
