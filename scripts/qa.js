@@ -599,6 +599,9 @@ async function runLiveTests() {
   const actionYmlPath = path.join(rootDir, '.github/actions/springboards-qa-gate/action.yml');
   const ciQaWorkflowPath = path.join(rootDir, '.github/workflows/ci-qa.yml');
   const fbDeployWorkflowPath = path.join(rootDir, '.github/workflows/firebase-deploy.yml');
+  const fbDeployWorkflow = fs.existsSync(fbDeployWorkflowPath)
+    ? fs.readFileSync(fbDeployWorkflowPath, 'utf8')
+    : '';
   assert(
     fs.existsSync(actionYmlPath) &&
       fs.readFileSync(actionYmlPath, 'utf8').includes("using: 'node24'") &&
@@ -615,6 +618,17 @@ async function runLiveTests() {
       `[GitHub Actions Node 24] Workflow ${path.basename(wfPath)} targets Node 24 with FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true and excludes unsupported runners`
     );
   }
+  assert(
+    fbDeployWorkflow.includes('apphosting:rollouts:create') &&
+      fbDeployWorkflow.includes('--git-commit "$GITHUB_SHA"') &&
+      fbDeployWorkflow.includes('APPHOSTING_BACKEND_ID'),
+    '[Firebase App Hosting] Deployment workflow creates a rollout for the exact commit and configured backend'
+  );
+  assert(
+    fbDeployWorkflow.includes('FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}') &&
+      fbDeployWorkflow.includes("steps.firebase-credentials.outputs.available == 'true'"),
+    '[Firebase Deployment] Credential secret is scoped to deployment and gates both deploy steps'
+  );
   const appHostingRaw = fs.readFileSync(path.join(rootDir, 'apphosting.yaml'), 'utf8');
   const packageJson = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf8'));
   const packageLock = JSON.parse(fs.readFileSync(path.join(rootDir, 'package-lock.json'), 'utf8'));

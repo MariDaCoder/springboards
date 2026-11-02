@@ -36,8 +36,36 @@ jobs:
         with:
           base-url: "http://127.0.0.1:3000"
 
+      - name: Check Firebase deployment credentials
+        id: firebase-credentials
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::FIREBASE_SERVICE_ACCOUNT is not configured; deployments will be skipped."
+          fi
+
+      - name: Deploy Firebase App Hosting rollout
+        if: ${{ steps.firebase-credentials.outputs.available == 'true' }}
+        env:
+          APPHOSTING_BACKEND_ID: ${{ env.APPHOSTING_BACKEND_ID }}
+          FIREBASE_PROJECT_ID: ${{ env.FIREBASE_PROJECT_ID }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-service-account.json
+        run: |
+          umask 077
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$GOOGLE_APPLICATION_CREDENTIALS"
+          trap 'rm -f "$GOOGLE_APPLICATION_CREDENTIALS"' EXIT
+          npx --yes firebase-tools@latest apphosting:rollouts:create "$APPHOSTING_BACKEND_ID" \
+            --git-commit "$GITHUB_SHA" \
+            --project "$FIREBASE_PROJECT_ID" \
+            --non-interactive
+
       - name: Deploy to Firebase Hosting
-        if: ${{ env.FIREBASE_SERVICE_ACCOUNT != '' }}
+        if: ${{ steps.firebase-credentials.outputs.available == 'true' }}
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
