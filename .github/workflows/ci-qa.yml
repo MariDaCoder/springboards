@@ -1,4 +1,4 @@
-name: Springboards CI & Zero-Broken-Path QA (Node 24)
+name: Springboards CI & Zero-Broken-Path QA 
 
 on:
   push:
